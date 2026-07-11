@@ -2,10 +2,12 @@
 
 import { forwardRef } from "react";
 import type { LessonCopy } from "../taigi-content";
+import type { Lesson } from "../types/lesson";
 import LessonStagePanel from "./LessonStagePanel";
 
 type LessonAccordionProps = {
   text: LessonCopy;
+  lesson: Lesson;
   stage: number;
   reviewScheduled: boolean;
   onStageChange: (stage: number) => void;
@@ -14,7 +16,7 @@ type LessonAccordionProps = {
 
 const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
   function LessonAccordion(
-    { text, stage, reviewScheduled, onStageChange, onReviewAdded },
+    { text, lesson, stage, reviewScheduled, onStageChange, onReviewAdded },
     ref,
   ) {
     const advance = () => onStageChange(Math.min(stage + 1, 4));
@@ -23,10 +25,10 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
       <section className="lesson-card" aria-labelledby="lesson-title" ref={ref}>
         <div className="lesson-heading">
           <span className="section-label">{text.currentLesson}</span>
-          <h2 id="lesson-title">{text.lesson}</h2>
-          <p>{text.lessonSummary}</p>
-          <div className="progress-line" aria-label={text.lessonProgress}>
-            <span><i /></span><b>{text.lessonProgress}</b>
+          <h2 id="lesson-title">{text.lessonNumber(lesson.number)} · {lesson.title[text.locale]}</h2>
+          <p>{lesson.summary[text.locale]}</p>
+          <div className="progress-line" aria-label={text.phraseProgress(1, lesson.phrases.length)}>
+            <span><i /></span><b>{text.phraseProgress(1, lesson.phrases.length)}</b>
           </div>
         </div>
 
@@ -58,6 +60,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
                     key={stage}
                     stage={stage}
                     text={text}
+                    lesson={lesson}
                     reviewScheduled={reviewScheduled}
                     onAdvance={advance}
                     onReviewAdded={onReviewAdded}

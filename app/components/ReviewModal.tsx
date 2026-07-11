@@ -3,9 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import type { LessonCopy, Locale } from "../taigi-content";
 import type { ReviewCard, ReviewRating } from "../types/learning";
+import type { LessonPhrase } from "../types/lesson";
 
 type ReviewModalProps = {
   text: LessonCopy;
+  phrase: LessonPhrase;
   card: ReviewCard | null;
   isDue: boolean;
   locale: Locale;
@@ -15,6 +17,7 @@ type ReviewModalProps = {
 
 export default function ReviewModal({
   text,
+  phrase,
   card,
   isDue,
   locale,
@@ -43,11 +46,11 @@ export default function ReviewModal({
           <>
             <div className="review-count"><b>1</b><span>{text.cardsLeft}</span></div>
             <p>{text.reviewPrompt}</p>
-            <h2>{text.meaning}</h2>
+            <h2>{phrase.meaning[locale]}</h2>
             {showAnswer ? (
               <div className="review-answer">
-                <strong>{text.phrase}</strong>
-                <small>Lí tsia̍h-pá--buē?</small>
+                <strong>{phrase.hanji}</strong>
+                <small>{phrase.tailo}</small>
                 <p>{text.rate}</p>
                 <div>
                   <RatingButton label={text.again} hint={text.againHint} onClick={() => onRate("again")} />

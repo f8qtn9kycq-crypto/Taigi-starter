@@ -3,11 +3,12 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("ships the first-time Taigi landing content and production worker", async () => {
-  const [layout, landing, lesson, copy, worker] = await Promise.all([
+  const [layout, landing, lesson, copy, content, worker] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonAccordion.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/taigi-content.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/data/lessons.ts", import.meta.url), "utf8"),
     readFile(new URL("../dist/server/index.js", import.meta.url), "utf8"),
   ]);
 
@@ -21,7 +22,7 @@ test("ships the first-time Taigi landing content and production worker", async (
   assert.match(copy, /先聽發音/);
   assert.match(copy, /聽 → 看 → 說 → 想 → 用/);
   assert.match(copy, /第 1 課 · 相借問/);
-  assert.match(copy, /教育部《臺灣台語常用詞辭典》/);
+  assert.match(content, /教育部《臺灣台語常用詞辭典》/);
   assert.match(copy, /第 1 課可用版本 · 學習紀錄儲存在此裝置/);
   assert.match(worker, /api\/feedback/);
   assert.doesNotMatch(worker, /codex-preview|_sites-preview|react-loading-skeleton/);
@@ -56,14 +57,20 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.ok(audio.length > 10_000);
 });
 
-test("saved progress gates returning-user navigation without fake first-time status", async () => {
-  const [storage, types] = await Promise.all([
+test("saved progress and lesson content stay explicit and truthful", async () => {
+  const [storage, types, content, copy] = await Promise.all([
     readFile(new URL("../app/services/progress-storage.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/types/learning.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/data/lessons.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/taigi-content.ts", import.meta.url), "utf8"),
   ]);
 
   assert.match(types, /hasStarted: false/);
   assert.match(types, /lessonOneReview: null/);
   assert.match(storage, /hasStarted: parsed\.hasStarted === true/);
   assert.match(storage, /parsed\.hasStarted === true &&[\s\S]*parsed\.dueCount/);
+  assert.match(content, /status: "prototype"/);
+  assert.match(content, /CC BY-ND 3\.0 TW/);
+  assert.match(copy, /1 \/ 1 句可體驗/);
+  assert.doesNotMatch(copy, /7 \/ 12/);
 });

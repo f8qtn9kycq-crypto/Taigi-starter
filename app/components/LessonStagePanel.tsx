@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import type { LessonCopy } from "../taigi-content";
+import type { Lesson } from "../types/lesson";
 import LessonStageContent from "./LessonStageContent";
 import RecordingPractice from "./RecordingPractice";
-
-const LESSON_AUDIO = "/audio/li-tsiah-pa-bue.mp3";
 
 type LessonStagePanelProps = {
   stage: number;
   text: LessonCopy;
+  lesson: Lesson;
   reviewScheduled: boolean;
   onAdvance: () => void;
   onReviewAdded: () => void;
@@ -19,13 +19,15 @@ type LessonStagePanelProps = {
 export default function LessonStagePanel({
   stage,
   text,
+  lesson,
   reviewScheduled,
   onAdvance,
   onReviewAdded,
 }: LessonStagePanelProps) {
   const [audioPlays, setAudioPlays] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
-  const { isPlaying, hasError, toggle } = useAudioPlayer(LESSON_AUDIO);
+  const phrase = lesson.phrases[0];
+  const { isPlaying, hasError, toggle } = useAudioPlayer(phrase.audioUrl);
 
   const playAudio = async () => {
     const started = await toggle();
@@ -43,6 +45,7 @@ export default function LessonStagePanel({
       <LessonStageContent
         stage={stage}
         text={text}
+        phrase={phrase}
         showAnswer={showAnswer}
         onPlay={() => void playAudio()}
       />
@@ -50,11 +53,11 @@ export default function LessonStagePanel({
       {stage === 0 && (
         <p className="media-attribution">
           {text.audioSourcePrefix}{" "}
-          <a href="https://sutian.moe.edu.tw/und-hani/su/1653/" target="_blank" rel="noreferrer">
-            {text.audioSource}
+          <a href={phrase.source.canonicalUrl} target="_blank" rel="noreferrer">
+            {phrase.source.title[text.locale]}
           </a>{" · "}
-          <a href="https://creativecommons.org/licenses/by-nd/3.0/tw/" target="_blank" rel="noreferrer">
-            CC BY-ND 3.0 TW
+          <a href={phrase.source.licenseUrl} target="_blank" rel="noreferrer">
+            {phrase.source.license}
           </a>
         </p>
       )}

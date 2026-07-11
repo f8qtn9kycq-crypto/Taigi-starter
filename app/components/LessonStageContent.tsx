@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import type { LessonCopy } from "../taigi-content";
+import type { LessonPhrase } from "../types/lesson";
 
 type LessonStageContentProps = {
   stage: number;
   text: LessonCopy;
+  phrase: LessonPhrase;
   showAnswer: boolean;
   onPlay: () => void;
 };
@@ -13,6 +15,7 @@ type LessonStageContentProps = {
 export default function LessonStageContent({
   stage,
   text,
+  phrase,
   showAnswer,
   onPlay,
 }: LessonStageContentProps) {
@@ -27,16 +30,16 @@ export default function LessonStageContent({
       <div className="phrase-card">
         <span className="script-label">繁體中文</span>
         <div className="han-row">
-          <strong>{text.phrase}</strong>
+          <strong>{phrase.hanji}</strong>
           <button type="button" onClick={onPlay} aria-label={text.listen}>▶</button>
         </div>
-        <p className="meaning">{text.meaning}</p>
+        <p className="meaning">{phrase.meaning[text.locale]}</p>
         <div className="script-tabs" role="group" aria-label={text.romanizationSystem}>
           <button type="button" className={script === "tailo" ? "active" : ""} onClick={() => setScript("tailo")}>{text.tailoLabel}</button>
           <button type="button" className={script === "poj" ? "active" : ""} onClick={() => setScript("poj")}>{text.pojLabel}</button>
         </div>
         <span className="script-label roman-label">ROMANIZATION</span>
-        <p className="romanization">{script === "tailo" ? "Lí tsia̍h-pá--buē?" : "Lí chia̍h-pá--bōe?"}</p>
+        <p className="romanization">{script === "tailo" ? phrase.tailo : phrase.poj}</p>
       </div>
     );
   }
@@ -45,7 +48,7 @@ export default function LessonStageContent({
     return (
       <div className="speaking-cue">
         <button type="button" onClick={onPlay} aria-label={text.listen}>▶</button>
-        <div><strong>{text.phrase}</strong><span>Lí tsia̍h-pá--buē?</span></div>
+        <div><strong>{phrase.hanji}</strong><span>{phrase.tailo}</span></div>
       </div>
     );
   }
@@ -53,8 +56,8 @@ export default function LessonStageContent({
   if (stage === 3) {
     return (
       <div className={showAnswer ? "recall-card revealed" : "recall-card"}>
-        <span>{text.meaning}</span>
-        {showAnswer && <div><strong>{text.phrase}</strong><p>Lí tsia̍h-pá--buē?</p></div>}
+        <span>{phrase.meaning[text.locale]}</span>
+        {showAnswer && <div><strong>{phrase.hanji}</strong><p>{phrase.tailo}</p></div>}
       </div>
     );
   }
@@ -62,7 +65,7 @@ export default function LessonStageContent({
   return (
     <div className="culture-note">
       <span aria-hidden="true">語</span>
-      <p>{text.cultureText}</p>
+      <p>{phrase.cultureNote[text.locale]}</p>
     </div>
   );
 }
