@@ -90,7 +90,16 @@ export default function TaigiStartPage() {
           onReviewAdded={addReview}
         />
         <CoursePath ref={pathRef} text={text} locale={progress.locale} />
-        <footer>{text.prototype}</footer>
+        <footer>
+          <span>{text.prototype}</span>
+          <a
+            href="https://github.com/f8qtn9kycq-crypto/Taigi-Starter"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub · Technical feedback ↗
+          </a>
+        </footer>
       </div>
 
       {progress.hasStarted && (

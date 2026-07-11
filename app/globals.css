@@ -1200,6 +1200,16 @@ footer {
   text-align: center;
 }
 
+footer a {
+  color: var(--jade);
+  font-weight: 750;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
 .bottom-nav {
   position: fixed;
   right: 0;
