@@ -1,0 +1,75 @@
+"use client";
+
+import { forwardRef } from "react";
+import type { LessonCopy } from "../taigi-content";
+import LessonStagePanel from "./LessonStagePanel";
+
+type LessonAccordionProps = {
+  text: LessonCopy;
+  stage: number;
+  reviewScheduled: boolean;
+  onStageChange: (stage: number) => void;
+  onReviewAdded: () => void;
+};
+
+const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
+  function LessonAccordion(
+    { text, stage, reviewScheduled, onStageChange, onReviewAdded },
+    ref,
+  ) {
+    const advance = () => onStageChange(Math.min(stage + 1, 4));
+
+    return (
+      <section className="lesson-card" aria-labelledby="lesson-title" ref={ref}>
+        <div className="lesson-heading">
+          <span className="section-label">{text.currentLesson}</span>
+          <h2 id="lesson-title">{text.lesson}</h2>
+          <p>{text.lessonSummary}</p>
+          <div className="progress-line" aria-label={text.lessonProgress}>
+            <span><i /></span><b>{text.lessonProgress}</b>
+          </div>
+        </div>
+
+        <ol className="stage-accordion" aria-label={text.learningStages}>
+          {text.stageLabels.map((label, index) => {
+            const isCurrent = index === stage;
+            const isComplete = index < stage;
+
+            return (
+              <li key={label} className={isCurrent ? "current" : isComplete ? "complete" : "locked"}>
+                <button
+                  type="button"
+                  className="stage-trigger"
+                  onClick={() => isComplete && onStageChange(index)}
+                  disabled={!isCurrent && !isComplete}
+                  aria-expanded={isCurrent}
+                  aria-current={isCurrent ? "step" : undefined}
+                >
+                  <span className="stage-number">{isComplete ? "✓" : index + 1}</span>
+                  <span className="stage-name">
+                    <b>{label}</b>
+                    <small>{isCurrent ? text.currentStep : isComplete ? text.completedStep : text.lockedStep}</small>
+                  </span>
+                  <span className="stage-chevron" aria-hidden="true">{isCurrent ? "−" : "+"}</span>
+                </button>
+
+                {isCurrent && (
+                  <LessonStagePanel
+                    key={stage}
+                    stage={stage}
+                    text={text}
+                    reviewScheduled={reviewScheduled}
+                    onAdvance={advance}
+                    onReviewAdded={onReviewAdded}
+                  />
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+    );
+  },
+);
+
+export default LessonAccordion;

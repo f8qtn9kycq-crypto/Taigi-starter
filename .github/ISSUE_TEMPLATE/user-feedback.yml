@@ -1,0 +1,33 @@
+name: User feedback
+description: Share structured feedback after trying the Taigi prototype
+title: "[Feedback]: "
+labels: ["feedback", "needs-triage"]
+body:
+  - type: dropdown
+    id: device
+    attributes:
+      label: Device
+      options: [iPhone, Android phone, Desktop, Tablet, Other]
+    validations:
+      required: true
+  - type: dropdown
+    id: task
+    attributes:
+      label: Could you finish the first phrase and begin a review?
+      options: [Yes, Partly, No]
+    validations:
+      required: true
+  - type: dropdown
+    id: blocker
+    attributes:
+      label: Biggest blocker
+      options: [Audio, Instructions, Navigation, Language, SRS review, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: improvement
+    attributes:
+      label: One improvement
+      description: What single change would help most?
+    validations:
+      required: true
