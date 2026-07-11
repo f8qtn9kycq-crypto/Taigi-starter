@@ -56,6 +56,7 @@ export type LessonCopy = {
   romanizationSystem: string;
   audioSourcePrefix: string;
   audioUnavailable: string;
+  continueWithoutAudio: string;
   record: string;
   recording: string;
   microphoneRequest: string;
@@ -160,6 +161,7 @@ export const copy: Record<Locale, LessonCopy> = {
     romanizationSystem: "羅馬字系統",
     audioSourcePrefix: "原音來源：",
     audioUnavailable: "音檔暫時無法播放，請檢查網路後再試一次。",
+    continueWithoutAudio: "音檔無法播放，先看文字",
     record: "開始錄音",
     recording: "錄音中，再按一次完成",
     microphoneRequest: "正在請求麥克風權限…",
@@ -262,6 +264,7 @@ export const copy: Record<Locale, LessonCopy> = {
     romanizationSystem: "Romanization system",
     audioSourcePrefix: "Original audio:",
     audioUnavailable: "The audio could not play. Check your connection and try again.",
+    continueWithoutAudio: "Audio unavailable, continue to the script",
     record: "Start recording",
     recording: "Recording, tap again to finish",
     microphoneRequest: "Requesting microphone access…",

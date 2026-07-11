@@ -25,6 +25,10 @@ export default function TaigiStartPage() {
   const dueCount = isReviewDue(progress.lessonOneReview) ? 1 : 0;
 
   useEffect(() => {
+    document.documentElement.lang = progress.locale === "zh" ? "zh-Hant-TW" : "en";
+  }, [progress.locale]);
+
+  useEffect(() => {
     if (!reviewOpen) return;
     const previousOverflow = document.body.style.overflow;
     const closeOnEscape = (event: KeyboardEvent) => {

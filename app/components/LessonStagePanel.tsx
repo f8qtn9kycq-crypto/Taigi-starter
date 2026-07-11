@@ -70,8 +70,8 @@ export default function LessonStagePanel({
               <span><b>{isPlaying ? text.listening : text.listen}</b><small>{text.listened(audioPlays)}</small></span>
             </button>
             {hasError && <p className="media-error" role="alert">{text.audioUnavailable}</p>}
-            <button type="button" className="action-button primary-action" onClick={onAdvance} disabled={audioPlays < 1}>
-              {text.nextSee}<span>→</span>
+            <button type="button" className="action-button primary-action" onClick={onAdvance} disabled={audioPlays < 1 && !hasError}>
+              {hasError ? text.continueWithoutAudio : text.nextSee}<span>→</span>
             </button>
           </>
         )}

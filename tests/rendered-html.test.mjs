@@ -20,6 +20,7 @@ test("ships the first-time Taigi landing content and production worker", async (
   assert.match(copy, /每天 3 分鐘，從聽懂到開口。/);
   assert.match(copy, /開始今日一句/);
   assert.match(copy, /先聽發音/);
+  assert.match(copy, /音檔無法播放，先看文字/);
   assert.match(copy, /聽 → 看 → 說 → 想 → 用/);
   assert.match(copy, /第 1 課 · 相借問/);
   assert.match(content, /教育部《臺灣台語常用詞辭典》/);
@@ -40,6 +41,7 @@ test("landing interaction and responsive contracts remain explicit", async () =>
 
   assert.match(page, /progress\.hasStarted && \([\s\S]*<BottomNav/);
   assert.match(page, /onStart=\{startLearning\}/);
+  assert.match(page, /document\.documentElement\.lang = progress\.locale === "zh" \? "zh-Hant-TW" : "en"/);
   assert.match(landing, /onClick=\{onAudioToggle\}/);
   assert.match(landing, /aria-pressed=\{isPlaying\}/);
   assert.match(audioHook, /let activeAudio: HTMLAudioElement \| null = null/);
@@ -48,10 +50,15 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(copy, /startPhrase: "Start Today’s Phrase"/);
   assert.match(copy, /listenFirst: "先聽發音"/);
   assert.match(copy, /listenFirst: "Listen First"/);
+  assert.match(copy, /continueWithoutAudio: "Audio unavailable, continue to the script"/);
   assert.doesNotMatch(copy, /台语|听|说|发音|学习|进度|复习/);
   assert.match(css, /overflow-x: clip/);
   assert.match(css, /\.hero-brush[\s\S]*pointer-events: none/);
   assert.match(css, /\.hero-primary-action,[\s\S]*min-height: 56px/);
+  assert.match(css, /\.brand \{[\s\S]*min-height: 44px/);
+  assert.match(css, /\.locale \{[\s\S]*min-height: 44px/);
+  assert.match(css, /\.script-tabs button \{[\s\S]*min-height: 44px/);
+  assert.match(css, /\.media-attribution a \{[\s\S]*min-height: 44px/);
   assert.match(css, /env\(safe-area-inset-bottom\)/);
   assert.equal(audio.subarray(0, 3).toString(), "ID3");
   assert.ok(audio.length > 10_000);
