@@ -604,7 +604,7 @@ a:focus-visible {
 
 .progress-line i {
   display: block;
-  width: 62%;
+  width: 100%;
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, var(--jade), #36a88e);

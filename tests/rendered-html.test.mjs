@@ -59,6 +59,8 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(css, /\.locale \{[\s\S]*min-height: 44px/);
   assert.match(css, /\.script-tabs button \{[\s\S]*min-height: 44px/);
   assert.match(css, /\.media-attribution a \{[\s\S]*min-height: 44px/);
+  assert.match(css, /\.progress-line i \{[\s\S]*width: 100%/);
+  assert.doesNotMatch(css, /\.progress-line i \{[\s\S]*width: 62%/);
   assert.match(css, /env\(safe-area-inset-bottom\)/);
   assert.equal(audio.subarray(0, 3).toString(), "ID3");
   assert.ok(audio.length > 10_000);
