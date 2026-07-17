@@ -7,12 +7,11 @@ import LandingHero from "./components/LandingHero";
 import FeedbackForm from "./FeedbackForm";
 import LessonAccordion from "./components/LessonAccordion";
 import ReviewModal from "./components/ReviewModal";
+import { prototypeLesson } from "./data/lessons";
 import { useAudioPlayer } from "./hooks/useAudioPlayer";
 import { useLearningProgress } from "./hooks/useLearningProgress";
 import { copy } from "./taigi-content";
 import { isReviewDue } from "./utils/srs";
-
-const LESSON_AUDIO = "/audio/li-tsiah-pa-bue.mp3";
 
 export default function TaigiStartPage() {
   const { progress, setLocale, setStage, setHasStarted, addReview, rateReview } = useLearningProgress();
@@ -21,9 +20,13 @@ export default function TaigiStartPage() {
   const [activeTab, setActiveTab] = useState<"learn" | "review" | "progress">("learn");
   const lessonRef = useRef<HTMLElement | null>(null);
   const pathRef = useRef<HTMLElement | null>(null);
-  const heroAudio = useAudioPlayer(LESSON_AUDIO);
+  const heroAudio = useAudioPlayer(prototypeLesson.phrases[0].audioUrl);
   const text = copy[progress.locale];
   const dueCount = isReviewDue(progress.lessonOneReview) ? 1 : 0;
+
+  useEffect(() => {
+    document.documentElement.lang = progress.locale === "zh" ? "zh-Hant-TW" : "en";
+  }, [progress.locale]);
 
   useEffect(() => {
     if (!reviewOpen) return;
@@ -83,6 +86,7 @@ export default function TaigiStartPage() {
       <div className="learning-column">
         <LessonAccordion
           ref={lessonRef}
+          lesson={prototypeLesson}
           text={text}
           stage={progress.stage}
           reviewScheduled={progress.lessonOneReview !== null}
@@ -118,6 +122,7 @@ export default function TaigiStartPage() {
       {reviewOpen && (
         <ReviewModal
           text={text}
+          phrase={prototypeLesson.phrases[0]}
           card={progress.lessonOneReview}
           isDue={dueCount > 0}
           locale={progress.locale}

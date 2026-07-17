@@ -3,6 +3,7 @@ import type { Locale } from "./types/learning";
 export type { Locale } from "./types/learning";
 
 export type LessonCopy = {
+  locale: Locale;
   homeLabel: string;
   switchLanguage: string;
   eyebrow: string;
@@ -30,9 +31,11 @@ export type LessonCopy = {
   day: string;
   streak: string;
   currentLesson: string;
+  lessonNumber: (number: number) => string;
   lesson: string;
   lessonSummary: string;
   lessonProgress: string;
+  phraseProgress: (current: number, total: number) => string;
   stageLabels: readonly string[];
   learningStages: string;
   currentStep: string;
@@ -48,14 +51,12 @@ export type LessonCopy = {
   nextSay: string;
   nextRecall: string;
   nextUse: string;
-  phrase: string;
-  meaning: string;
   tailoLabel: string;
   pojLabel: string;
   romanizationSystem: string;
   audioSourcePrefix: string;
-  audioSource: string;
   audioUnavailable: string;
+  continueWithoutAudio: string;
   record: string;
   recording: string;
   microphoneRequest: string;
@@ -67,7 +68,6 @@ export type LessonCopy = {
   yourRecording: string;
   recordingLocalOnly: string;
   showAnswer: string;
-  cultureText: string;
   addReview: string;
   reviewAdded: string;
   path: string;
@@ -90,10 +90,13 @@ export type LessonCopy = {
   navPath: string;
   navProgress: string;
   primaryNavigation: string;
+  availableNow: string;
+  planned: string;
 };
 
 export const copy: Record<Locale, LessonCopy> = {
   zh: {
+    locale: "zh",
     homeLabel: "台語起步首頁",
     switchLanguage: "切換為英文",
     eyebrow: "LÍ-HÓ · 你好",
@@ -113,7 +116,7 @@ export const copy: Record<Locale, LessonCopy> = {
     previewTitle: "聽 → 看 → 說 → 想 → 用",
     previewDuration: "約 3 分鐘",
     resumeLearning: "繼續學習",
-    currentProgress: "第 1 課 · 7 / 12 句",
+    currentProgress: "第 1 課 · 原型體驗",
     reviewPending: (count) => `${count} 張待複習`,
     reviewComplete: "今日複習完成",
     reviewStatus: (count) => `待複習 ${count}`,
@@ -121,9 +124,11 @@ export const copy: Record<Locale, LessonCopy> = {
     day: "第 3 天",
     streak: "連續學習",
     currentLesson: "目前課程",
+    lessonNumber: (number) => `第 ${number} 課`,
     lesson: "第 1 課 · 相借問",
     lessonSummary: "從日常招呼開始，把聲音、文字和開口練習連起來。",
-    lessonProgress: "7 / 12 句",
+    lessonProgress: "1 / 1 句可體驗",
+    phraseProgress: (current, total) => `${current} / ${total} 句可體驗`,
     stageLabels: ["聽", "看", "講", "記", "用"],
     learningStages: "學習步驟",
     currentStep: "目前步驟",
@@ -151,14 +156,12 @@ export const copy: Record<Locale, LessonCopy> = {
     nextSay: "下一步：跟著講",
     nextRecall: "下一步：想一想",
     nextUse: "下一步：生活用法",
-    phrase: "你食飽未？",
-    meaning: "你吃飽了嗎？／日常關心人的問候",
     tailoLabel: "台羅",
     pojLabel: "白話字",
     romanizationSystem: "羅馬字系統",
     audioSourcePrefix: "原音來源：",
-    audioSource: "教育部《臺灣台語常用詞辭典》",
     audioUnavailable: "音檔暫時無法播放，請檢查網路後再試一次。",
+    continueWithoutAudio: "音檔無法播放，先看文字",
     record: "開始錄音",
     recording: "錄音中，再按一次完成",
     microphoneRequest: "正在請求麥克風權限…",
@@ -170,11 +173,10 @@ export const copy: Record<Locale, LessonCopy> = {
     yourRecording: "你的錄音",
     recordingLocalOnly: "錄音只留在這個頁面，不會上傳或保存。",
     showAnswer: "顯示答案",
-    cultureText: "「你食飽未？」常是關心人的招呼，不一定真的在問用餐狀況。",
     addReview: "加入今日複習",
     reviewAdded: "已加入複習",
     path: "初學者路徑",
-    pathSummary: "15 課 · 約 6 週",
+    pathSummary: "1 課可體驗 · 2 課規劃中",
     cardsLeft: "張待複習",
     reviewPrompt: "看到這句，你會怎麼說？",
     rate: "這次記得多熟？",
@@ -193,8 +195,11 @@ export const copy: Record<Locale, LessonCopy> = {
     navPath: "課程",
     navProgress: "進度",
     primaryNavigation: "主要導覽",
+    availableNow: "可體驗",
+    planned: "規劃中",
   },
   en: {
+    locale: "en",
     homeLabel: "Tâi-gí Start home",
     switchLanguage: "Switch to Traditional Chinese",
     eyebrow: "TAIGI START",
@@ -214,7 +219,7 @@ export const copy: Record<Locale, LessonCopy> = {
     previewTitle: "Hear → See → Say → Recall → Use",
     previewDuration: "About 3 minutes",
     resumeLearning: "Resume learning",
-    currentProgress: "Lesson 1 · 7 / 12 phrases",
+    currentProgress: "Lesson 1 · Prototype",
     reviewPending: (count) => `${count} reviews pending`,
     reviewComplete: "Review complete",
     reviewStatus: (count) => `${count} reviews due`,
@@ -222,9 +227,11 @@ export const copy: Record<Locale, LessonCopy> = {
     day: "Day 3",
     streak: "learning streak",
     currentLesson: "CURRENT LESSON",
+    lessonNumber: (number) => `Lesson ${number}`,
     lesson: "Lesson 1 · Greetings",
     lessonSummary: "Connect the sound, script, and speaking practice of an everyday greeting.",
-    lessonProgress: "7 / 12 phrases",
+    lessonProgress: "1 / 1 phrase available",
+    phraseProgress: (current, total) => `${current} / ${total} phrase available`,
     stageLabels: ["Hear", "See", "Say", "Recall", "Use"],
     learningStages: "Learning stages",
     currentStep: "Current step",
@@ -252,14 +259,12 @@ export const copy: Record<Locale, LessonCopy> = {
     nextSay: "Next: say it",
     nextRecall: "Next: recall it",
     nextUse: "Next: use it",
-    phrase: "你食飽未？",
-    meaning: "Have you eaten? / A warm, caring greeting",
     tailoLabel: "Tâi-lô",
     pojLabel: "POJ",
     romanizationSystem: "Romanization system",
     audioSourcePrefix: "Original audio:",
-    audioSource: "MOE Dictionary of Frequently-Used Taiwan Taigi",
     audioUnavailable: "The audio could not play. Check your connection and try again.",
+    continueWithoutAudio: "Audio unavailable, continue to the script",
     record: "Start recording",
     recording: "Recording, tap again to finish",
     microphoneRequest: "Requesting microphone access…",
@@ -271,11 +276,10 @@ export const copy: Record<Locale, LessonCopy> = {
     yourRecording: "Your recording",
     recordingLocalOnly: "This recording stays on this page and is never uploaded or saved.",
     showAnswer: "Show answer",
-    cultureText: "“Lí tsia̍h-pá--buē?” is often a caring hello, not a literal question about your meal.",
     addReview: "Add to today’s review",
     reviewAdded: "Added to review",
     path: "Beginner path",
-    pathSummary: "15 lessons · about 6 weeks",
+    pathSummary: "1 lesson available · 2 planned",
     cardsLeft: "cards left",
     reviewPrompt: "How would you say this?",
     rate: "How well did you remember?",
@@ -294,12 +298,7 @@ export const copy: Record<Locale, LessonCopy> = {
     navPath: "Course",
     navProgress: "Progress",
     primaryNavigation: "Primary navigation",
+    availableNow: "Try now",
+    planned: "Planned",
   },
 };
-
-export const lessons = [
-  { id: 1, zh: "相借問", en: "Greetings" },
-  { id: 2, zh: "阮兜的人", en: "My family" },
-  { id: 3, zh: "一二三", en: "Numbers" },
-  { id: 4, zh: "食飯未？", en: "Food" },
-] as const;
