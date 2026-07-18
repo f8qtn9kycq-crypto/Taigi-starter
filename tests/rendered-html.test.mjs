@@ -15,6 +15,8 @@ test("ships the first-time Taigi landing content and production worker", async (
   assert.match(layout, /台語起步 Tâi-gí Start/);
   assert.match(layout, /og\.png/);
   assert.match(landing, /aria-pressed=\{isPlaying\}/);
+  assert.match(landing, /locale === "zh" \? "EN" : "繁"/);
+  assert.doesNotMatch(landing, /locale === "zh" \? "EN" : "中"/);
   assert.match(lesson, /stage-accordion/);
   assert.match(copy, /今仔日，講一句台語。/);
   assert.match(copy, /每天 3 分鐘，從聽懂到開口。/);
