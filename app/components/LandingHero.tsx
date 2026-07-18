@@ -43,7 +43,7 @@ export default function LandingHero({
             </span>
           )}
           <button type="button" className="locale" onClick={onLocaleChange} aria-label={text.switchLanguage}>
-            {locale === "zh" ? "EN" : "中"}
+            {locale === "zh" ? "EN" : "繁"}
           </button>
         </div>
       </header>
