@@ -34,6 +34,9 @@ export type LessonCopy = {
   lessonNumber: (number: number) => string;
   lesson: string;
   lessonSummary: string;
+  lessonRhythm: string;
+  lessonTime: string;
+  stageTime: (minutes: number) => string;
   lessonProgress: string;
   phraseProgress: (current: number, total: number) => string;
   stageLabels: readonly string[];
@@ -127,6 +130,9 @@ export const copy: Record<Locale, LessonCopy> = {
     lessonNumber: (number) => `第 ${number} 課`,
     lesson: "第 1 課 · 相借問",
     lessonSummary: "從日常招呼開始，把聲音、文字和開口練習連起來。",
+    lessonRhythm: "聽懂 → 跟讀 → 回想 → 放進生活",
+    lessonTime: "約 5 分鐘",
+    stageTime: (minutes) => `約 ${minutes} 分鐘`,
     lessonProgress: "1 / 1 句可體驗",
     phraseProgress: (current, total) => `${current} / ${total} 句可體驗`,
     stageLabels: ["聽", "看", "講", "記", "用"],
@@ -230,6 +236,9 @@ export const copy: Record<Locale, LessonCopy> = {
     lessonNumber: (number) => `Lesson ${number}`,
     lesson: "Lesson 1 · Greetings",
     lessonSummary: "Connect the sound, script, and speaking practice of an everyday greeting.",
+    lessonRhythm: "Hear → repeat → recall → use in life",
+    lessonTime: "About 5 minutes",
+    stageTime: (minutes) => `About ${minutes} minute${minutes === 1 ? "" : "s"}`,
     lessonProgress: "1 / 1 phrase available",
     phraseProgress: (current, total) => `${current} / ${total} phrase available`,
     stageLabels: ["Hear", "See", "Say", "Recall", "Use"],

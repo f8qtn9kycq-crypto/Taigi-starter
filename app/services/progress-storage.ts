@@ -3,6 +3,7 @@ import {
   type LearningProgress,
   type Locale,
 } from "../types/learning.ts";
+import { LESSON_STAGE_COUNT } from "../types/lesson.ts";
 import { createReviewCard } from "../utils/srs.ts";
 
 export const PROGRESS_STORAGE_KEY = "taigi-start-state";
@@ -19,7 +20,7 @@ function isLocale(value: unknown): value is Locale {
 }
 
 function isValidStage(value: unknown): value is number {
-  return typeof value === "number" && Number.isInteger(value) && value >= 0 && value <= 4;
+  return typeof value === "number" && Number.isInteger(value) && value >= 0 && value < LESSON_STAGE_COUNT;
 }
 
 export function parseStoredProgress(
