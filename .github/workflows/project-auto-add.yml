@@ -234,6 +234,9 @@ jobs:
           ensure_single_select_field "AI Owner" Codex Claude ChatGPT Gemini
           ensure_single_select_field Area Content Audio Lesson UX Accessibility i18n Progress Workflow
 
+          # Re-read fields and options created or extended above before item sync.
+          refresh_project_fields
+
           add_item() {
             local result
             set +e
