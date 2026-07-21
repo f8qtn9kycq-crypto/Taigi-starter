@@ -2,12 +2,12 @@
 
 import { forwardRef } from "react";
 import type { LessonCopy } from "../taigi-content";
-import type { Lesson } from "../types/lesson";
+import type { PlayableLesson } from "../types/lesson";
 import LessonStagePanel from "./LessonStagePanel";
 
 type LessonAccordionProps = {
   text: LessonCopy;
-  lesson: Lesson;
+  lesson: PlayableLesson;
   stage: number;
   reviewScheduled: boolean;
   onStageChange: (stage: number) => void;
@@ -39,12 +39,12 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
 
         <ol className="stage-accordion" aria-label={text.learningStages}>
           {lesson.stages.map((lessonStage, index) => {
-            const label = text.stageLabels[index];
+            const label = text.stageLabels[lessonStage.id];
             const isCurrent = index === stage;
             const isComplete = index < stage;
 
             return (
-              <li key={label} className={isCurrent ? "current" : isComplete ? "complete" : "locked"}>
+              <li key={lessonStage.id} className={isCurrent ? "current" : isComplete ? "complete" : "locked"}>
                 <button
                   type="button"
                   className="stage-trigger"
@@ -63,7 +63,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
 
                 {isCurrent && (
                   <LessonStagePanel
-                    key={stage}
+                    key={lessonStage.id}
                     stage={stage}
                     text={text}
                     lesson={lesson}

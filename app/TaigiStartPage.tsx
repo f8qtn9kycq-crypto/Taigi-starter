@@ -14,7 +14,9 @@ import { copy } from "./taigi-content";
 import { isReviewDue } from "./utils/srs";
 
 export default function TaigiStartPage() {
-  const { progress, setLocale, setStage, setHasStarted, addReview, rateReview } = useLearningProgress();
+  const { progress, setLocale, setStage, setHasStarted, addReview, rateReview } = useLearningProgress(
+    prototypeLesson.stages.length,
+  );
   const [reviewOpen, setReviewOpen] = useState(false);
   const [startPending, setStartPending] = useState(false);
   const [activeTab, setActiveTab] = useState<"learn" | "review" | "progress">("learn");
@@ -74,6 +76,7 @@ export default function TaigiStartPage() {
         hasStarted={progress.hasStarted}
         dueCount={dueCount}
         stage={progress.stage}
+        totalStages={prototypeLesson.stages.length}
         isPlaying={heroAudio.isPlaying}
         audioError={heroAudio.hasError}
         startPending={startPending}
