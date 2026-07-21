@@ -587,6 +587,49 @@ a:focus-visible {
   line-height: 1.7;
 }
 
+.lesson-rhythm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 10px 12px;
+  border: 1px solid rgb(8 127 109 / 0.16);
+  border-radius: 14px;
+  background: #f2f8f5;
+}
+
+.rhythm-mark {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--jade);
+  color: white;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.lesson-rhythm b,
+.lesson-rhythm small {
+  display: block;
+}
+
+.lesson-rhythm b {
+  color: var(--jade-dark);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.lesson-rhythm small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.4;
+}
+
 .progress-line {
   display: flex;
   align-items: center;
