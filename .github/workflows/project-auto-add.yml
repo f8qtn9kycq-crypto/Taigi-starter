@@ -145,6 +145,98 @@ jobs:
             exit 1
           fi
 
+          refresh_project_fields() {
+            project_json="$(gh api graphql -f query="$project_query" -f owner="$PROJECT_OWNER" -F number="$PROJECT_NUMBER")"
+            fields_json="$(jq -c '.data.owner.projectV2.fields.nodes // []' <<<"$project_json")"
+            echo "Project fields: $(jq -r '[.[] | .name] | join(", ")' <<<"$fields_json")"
+          }
+
+          refresh_project_fields
+
+          ensure_single_select_field() {
+            local field_name="$1"
+            shift
+            local existing_field_id desired_json existing_options merged_json options_input mutation result create_status
+
+            existing_field_id="$(jq -r --arg field "$field_name" --arg quoted "\"$field_name\"" '.[] | select(.name == $field or .name == $quoted) | .id' <<<"$fields_json" | head -n 1)"
+            desired_json="$(printf '%s\n' "$@" | jq -R . | jq -s .)"
+
+            if [[ -n "$existing_field_id" ]]; then
+              existing_options="$(jq -c --arg field "$field_name" --arg quoted "\"$field_name\"" '[.[] | select(.name == $field or .name == $quoted) | .options[]? | {id, name, description, color}] | unique_by(.name)' <<<"$fields_json")"
+            else
+              existing_options='[]'
+            fi
+
+            merged_json="$(jq -cn --argjson existing "$existing_options" --argjson desired "$desired_json" '
+              ($existing + ($desired | map({name: ., description: "", color: "GRAY"})))
+              | unique_by(.name)
+            ')"
+            options_input="$(jq -r '
+              map(
+                "{"
+                + (if .id then "id: \"" + .id + "\", " else "" end)
+                + "name: \"" + (.name | gsub("\""; "\\\"")) + "\", "
+                + "description: \"" + ((.description // "") | gsub("\""; "\\\"")) + "\", "
+                + "color: " + (.color // "GRAY")
+                + "}"
+              )
+              | join(", ")
+            ' <<<"$merged_json")"
+
+            if [[ -z "$existing_field_id" ]]; then
+              mutation="mutation(\$projectId: ID!, \$name: String!) { createProjectV2Field(input: { projectId: \$projectId, name: \$name, dataType: SINGLE_SELECT, singleSelectOptions: [$options_input] }) { projectV2Field { ... on ProjectV2SingleSelectField { id name } } } }"
+              set +e
+              result="$(gh api graphql -f query="$mutation" -f projectId="$project_id" -f name="$field_name" 2>&1)"
+              create_status=$?
+              set -e
+              if [[ $create_status -ne 0 ]]; then
+                if grep -q "Name has already been taken" <<<"$result"; then
+                  echo "Project field $field_name already exists; reloading fields."
+                  refresh_project_fields
+                  existing_field_id="$(jq -r --arg field "$field_name" --arg quoted "\"$field_name\"" '.[] | select(.name == $field or .name == $quoted) | .id' <<<"$fields_json" | head -n 1)"
+                else
+                  echo "$result"
+                  exit "$create_status"
+                fi
+              else
+                existing_field_id="$(jq -r '.data.createProjectV2Field.projectV2Field.id // empty' <<<"$result")"
+                echo "Created Project field: $field_name"
+              fi
+              if [[ -z "$existing_field_id" ]]; then
+                echo "::error::Unable to resolve Project field $field_name after create or reload."
+                exit 1
+              fi
+            fi
+
+            existing_options="$(jq -c --arg field "$field_name" --arg quoted "\"$field_name\"" '[.[] | select(.name == $field or .name == $quoted) | .options[]? | {id, name, description, color}] | unique_by(.name)' <<<"$fields_json")"
+            merged_json="$(jq -cn --argjson existing "$existing_options" --argjson desired "$desired_json" '
+              ($existing + ($desired | map({name: ., description: "", color: "GRAY"})))
+              | unique_by(.name)
+            ')"
+            options_input="$(jq -r '
+              map(
+                "{"
+                + (if .id then "id: \"" + .id + "\", " else "" end)
+                + "name: \"" + (.name | gsub("\""; "\\\"")) + "\", "
+                + "description: \"" + ((.description // "") | gsub("\""; "\\\"")) + "\", "
+                + "color: " + (.color // "GRAY")
+                + "}"
+              )
+              | join(", ")
+            ' <<<"$merged_json")"
+            mutation="mutation(\$fieldId: ID!, \$name: String!) { updateProjectV2Field(input: { fieldId: \$fieldId, name: \$name, singleSelectOptions: [$options_input] }) { projectV2Field { ... on ProjectV2SingleSelectField { id name options { id name } } } } }"
+            gh api graphql -f query="$mutation" -f fieldId="$existing_field_id" -f name="$field_name" >/dev/null
+            echo "Ensured Project field name and options: $field_name"
+          }
+
+          ensure_single_select_field Priority P0 P1 P2
+          ensure_single_select_field "Risk Tier" "Tier 0" "Tier 1" "Tier 2" "Tier 3"
+          ensure_single_select_field "AI Owner" Codex Claude ChatGPT Gemini
+          ensure_single_select_field Area Content Audio Lesson UX Accessibility i18n Progress Workflow
+
+          # Re-read fields and options created or extended above before item sync.
+          refresh_project_fields
+
           add_item() {
             local result
             set +e
@@ -231,12 +323,12 @@ jobs:
           [[ "$priority" =~ ^P[012]$ ]] || priority="$(printf '%s\n' "$content_title" "$content_body" | grep -Eo '(^|[^A-Za-z0-9])P[012]([^A-Za-z0-9]|$)' | grep -Eo 'P[012]' | head -n 1 || true)"
           [[ "$risk_tier" =~ ^Tier\ [0-3]$ ]] || risk_tier="$(printf '%s\n' "$content_title" "$content_body" | grep -Eio 'Tier[[:space:]]*[0-3]' | sed -E 's/[[:space:]]+/ /' | head -n 1 || true)"
           [[ "$ai_owner" =~ ^(Codex|Claude|ChatGPT|Gemini)$ ]] || ai_owner="$DEFAULT_AI_OWNER"
-          [[ "$area" =~ ^(Safety|i18n|Progress|UX|Workflow)$ ]] || area=""
+          [[ "$area" =~ ^(Content|Audio|Lesson|UX|Accessibility|i18n|Progress|Workflow)$ ]] || area=""
 
           if [[ "$content_author" == "dependabot[bot]" ]]; then
             [[ "$priority" =~ ^P[012]$ ]] || priority="$DEFAULT_DEPENDABOT_PRIORITY"
             [[ "$risk_tier" =~ ^Tier\ [0-3]$ ]] || risk_tier="$DEFAULT_DEPENDABOT_RISK_TIER"
-            [[ "$area" =~ ^(Safety|i18n|Progress|UX|Workflow)$ ]] || area="$DEFAULT_DEPENDABOT_AREA"
+            [[ "$area" =~ ^(Content|Audio|Lesson|UX|Accessibility|i18n|Progress|Workflow)$ ]] || area="$DEFAULT_DEPENDABOT_AREA"
           fi
 
           if [[ "$target_type" == "issue" ]]; then
