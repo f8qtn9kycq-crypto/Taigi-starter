@@ -1206,6 +1206,9 @@ footer {
 }
 
 footer a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
   color: var(--jade);
   font-weight: 750;
   text-decoration: none;
