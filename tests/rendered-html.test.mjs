@@ -3,12 +3,13 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("ships the first-time Taigi landing content and production worker", async () => {
-  const [layout, landing, lesson, stagePanel, recording, copy, content, worker] = await Promise.all([
+  const [layout, landing, lesson, stagePanel, recording, recorder, copy, content, worker] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonAccordion.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonStagePanel.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/RecordingPractice.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/hooks/useRecorder.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/taigi-content.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/data/lessons.ts", import.meta.url), "utf8"),
     readFile(new URL("../dist/server/index.js", import.meta.url), "utf8"),
@@ -40,7 +41,7 @@ test("ships the first-time Taigi landing content and production worker", async (
   assert.match(stagePanel, /lessonStage\.id === "recall" && showAnswer/);
   assert.match(stagePanel, /reviewScheduled/);
   assert.match(recording, /text\.recordingLocalOnly/);
-  assert.doesNotMatch(recording, /fetch\(|XMLHttpRequest|navigator\.sendBeacon/);
+  assert.doesNotMatch(`${recording}\n${recorder}`, /fetch\(|XMLHttpRequest|navigator\.sendBeacon/);
   assert.match(landing, /text\.stageCount\(stage, totalStages\)/);
   assert.doesNotMatch(copy, /stageCount: \(stage\) => .*\/ 5/);
   assert.match(content, /教育部《臺灣台語常用詞辭典》/);

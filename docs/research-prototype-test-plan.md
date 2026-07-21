@@ -7,7 +7,7 @@ the ChatGPT Taigi research report before it is merged to `main`.
 
 The report fixes the MVP boundary as a web-first, $0 learning experience for
 total beginners of all ages. It requires open and attributable content, the
-Hear → See → Say → Remember → Use loop, Tâi-lô-first romanization, simple SRS,
+Hear → See → Say → Recall → Use loop, Tâi-lô-first romanization, simple SRS,
 and culture context. It explicitly excludes paid services and AI speech
 scoring.
 
