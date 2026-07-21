@@ -286,8 +286,8 @@ jobs:
           option_exists() {
             local field_name="$1"
             local option_name="$2"
-            jq -e --arg field "$field_name" --arg option "$option_name" \
-              '.[] | select(.name == $field) | .options[]? | select(.name == $option)' <<<"$fields_json" >/dev/null
+            jq -e --arg field "$field_name" --arg quoted "\"$field_name\"" --arg option "$option_name" \
+              '.[] | select(.name == $field or .name == $quoted) | .options[]? | select(.name == $option)' <<<"$fields_json" >/dev/null
           }
 
           set_field() {
@@ -295,16 +295,38 @@ jobs:
             local option_name="$2"
             [[ -z "$option_name" ]] && return 0
             if ! option_exists "$field_name" "$option_name"; then
-              echo "Skipping $field_name=$option_name because the Project option is absent."
-              return 0
+              echo "::error::Project option is absent: $field_name=$option_name"
+              exit 1
             fi
             local field_id option_id
-            field_id="$(jq -r --arg field "$field_name" '.[] | select(.name == $field) | .id' <<<"$fields_json" | head -n 1)"
-            option_id="$(jq -r --arg field "$field_name" --arg option "$option_name" '.[] | select(.name == $field) | .options[]? | select(.name == $option) | .id' <<<"$fields_json" | head -n 1)"
+            field_id="$(jq -r --arg field "$field_name" --arg quoted "\"$field_name\"" '.[] | select(.name == $field or .name == $quoted) | .id' <<<"$fields_json" | head -n 1)"
+            option_id="$(jq -r --arg field "$field_name" --arg quoted "\"$field_name\"" --arg option "$option_name" '.[] | select(.name == $field or .name == $quoted) | .options[]? | select(.name == $option) | .id' <<<"$fields_json" | head -n 1)"
             gh api graphql \
               -f query='mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) { updateProjectV2ItemFieldValue(input: { projectId: $projectId, itemId: $itemId, fieldId: $fieldId, value: { singleSelectOptionId: $optionId } }) { projectV2Item { id } } }' \
               -f projectId="$project_id" -f itemId="$item_id" -f fieldId="$field_id" -f optionId="$option_id" >/dev/null
             echo "Set $field_name=$option_name"
+          }
+
+          readback_field() {
+            local field_name="$1"
+            jq -r --arg field "$field_name" '
+              .data.node.fieldValues.nodes[]?
+              | select(.field.name == $field)
+              | (.name // .text // empty)
+            ' <<<"$readback_json" | head -n 1
+          }
+
+          verify_field() {
+            local field_name="$1"
+            local expected="$2"
+            [[ -z "$expected" ]] && return 0
+            local actual
+            actual="$(readback_field "$field_name")"
+            if [[ "$actual" != "$expected" ]]; then
+              echo "::error::Project readback mismatch for $field_name: expected '$expected', got '${actual:-<empty>}'"
+              exit 1
+            fi
+            echo "Verified $field_name=$actual"
           }
 
           metadata_value() {
@@ -371,6 +393,14 @@ jobs:
           set_field "Risk Tier" "$risk_tier"
           set_field "AI Owner" "$ai_owner"
           set_field Area "$area"
+
+          readback_query='query($itemId: ID!) { node(id: $itemId) { ... on ProjectV2Item { fieldValues(first: 100) { nodes { ... on ProjectV2ItemFieldSingleSelectValue { name field { ... on ProjectV2SingleSelectField { name } } } ... on ProjectV2ItemFieldTextValue { text field { ... on ProjectV2Field { name } } } } } } } }'
+          readback_json="$(gh api graphql -f query="$readback_query" -f itemId="$item_id")"
+          verify_field Status "$status"
+          verify_field Priority "$priority"
+          verify_field "Risk Tier" "$risk_tier"
+          verify_field "AI Owner" "$ai_owner"
+          verify_field Area "$area"
           echo "Project automation completed for $content_url"
 
       # Dependabot PR runs cannot read repository secrets. Publish the result
