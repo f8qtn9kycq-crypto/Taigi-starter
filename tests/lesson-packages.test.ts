@@ -5,7 +5,7 @@ import { lessonPackages } from "../app/data/lesson-packages.ts";
 test("planned lesson packages are complete content records without runtime audio claims", () => {
   assert.deepEqual(
     lessonPackages.map((lesson) => lesson.number),
-    [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
   );
 
   const phraseIds = new Set<string>();
