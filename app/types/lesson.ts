@@ -30,16 +30,23 @@ export type LessonStage = {
   estimatedMinutes: number;
 };
 
-export const LESSON_STAGE_COUNT = LESSON_STAGE_IDS.length;
-
-export type Lesson = {
+type LessonBase = {
   id: string;
   number: number;
   title: LocalizedText;
   secondaryTitle: LocalizedText;
   summary: LocalizedText;
-  status: "prototype" | "planned";
-  durationMinutes: number;
-  stages: readonly LessonStage[];
   phrases: readonly LessonPhrase[];
 };
+
+export type PlayableLesson = LessonBase & {
+  status: "prototype";
+  durationMinutes: number;
+  stages: readonly LessonStage[];
+};
+
+export type PlannedLesson = LessonBase & {
+  status: "planned";
+};
+
+export type Lesson = PlayableLesson | PlannedLesson;

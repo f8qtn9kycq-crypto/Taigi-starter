@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import type { LessonCopy } from "../taigi-content";
-import type { LessonPhrase } from "../types/lesson";
+import type { LessonPhrase, LessonStageId } from "../types/lesson";
 
 type LessonStageContentProps = {
-  stage: number;
+  stage: LessonStageId;
   text: LessonCopy;
   phrase: LessonPhrase;
   showAnswer: boolean;
@@ -21,11 +21,11 @@ export default function LessonStageContent({
 }: LessonStageContentProps) {
   const [script, setScript] = useState<"tailo" | "poj">("tailo");
 
-  if (stage === 0) {
+  if (stage === "hear") {
     return <div className="sound-visual" aria-hidden="true"><i /><i /><i /><i /><i /><i /><i /></div>;
   }
 
-  if (stage === 1) {
+  if (stage === "see") {
     return (
       <div className="phrase-card">
         <span className="script-label">繁體中文</span>
@@ -44,7 +44,7 @@ export default function LessonStageContent({
     );
   }
 
-  if (stage === 2) {
+  if (stage === "say") {
     return (
       <div className="speaking-cue">
         <button type="button" onClick={onPlay} aria-label={text.listen}>▶</button>
@@ -53,7 +53,7 @@ export default function LessonStageContent({
     );
   }
 
-  if (stage === 3) {
+  if (stage === "recall") {
     return (
       <div className={showAnswer ? "recall-card revealed" : "recall-card"}>
         <span>{phrase.meaning[text.locale]}</span>

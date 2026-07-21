@@ -3,10 +3,11 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("ships the first-time Taigi landing content and production worker", async () => {
-  const [layout, landing, lesson, copy, content, worker] = await Promise.all([
+  const [layout, landing, lesson, stagePanel, copy, content, worker] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonAccordion.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/LessonStagePanel.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/taigi-content.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/data/lessons.ts", import.meta.url), "utf8"),
     readFile(new URL("../dist/server/index.js", import.meta.url), "utf8"),
@@ -25,10 +26,14 @@ test("ships the first-time Taigi landing content and production worker", async (
   assert.match(copy, /音檔無法播放，先看文字/);
   assert.match(copy, /聽 → 看 → 說 → 想 → 用/);
   assert.match(copy, /第 1 課 · 相借問/);
-  assert.match(copy, /lessonRhythm: "聽懂 → 跟讀 → 回想 → 放進生活"/);
+  assert.match(copy, /lessonRhythm: "先聽 → 看文字 → 開口講 → 回想 → 生活運用"/);
   assert.match(copy, /lessonTime: "約 5 分鐘"/);
   assert.match(lesson, /lesson-rhythm/);
   assert.match(lesson, /lesson.stages.map/);
+  assert.match(lesson, /text\.stageLabels\[lessonStage\.id\]/);
+  assert.match(stagePanel, /text\.stageCount\(stage, lesson\.stages\.length\)/);
+  assert.match(landing, /text\.stageCount\(stage, totalStages\)/);
+  assert.doesNotMatch(copy, /stageCount: \(stage\) => .*\/ 5/);
   assert.match(content, /教育部《臺灣台語常用詞辭典》/);
   assert.match(copy, /第 1 課可用版本 · 學習紀錄儲存在此裝置/);
   assert.match(worker, /api\/feedback/);
