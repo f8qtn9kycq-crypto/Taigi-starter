@@ -6,6 +6,7 @@ type LandingHeroProps = {
   hasStarted: boolean;
   dueCount: number;
   stage: number;
+  totalStages: number;
   isPlaying: boolean;
   audioError: boolean;
   startPending: boolean;
@@ -21,6 +22,7 @@ export default function LandingHero({
   hasStarted,
   dueCount,
   stage,
+  totalStages,
   isPlaying,
   audioError,
   startPending,
@@ -39,7 +41,7 @@ export default function LandingHero({
         <div className="header-actions">
           {hasStarted && (
             <span className="status-chip">
-              {dueCount > 0 ? text.reviewStatus(dueCount) : text.progressStatus(text.stageCount(stage))}
+              {dueCount > 0 ? text.reviewStatus(dueCount) : text.progressStatus(text.stageCount(stage, totalStages))}
             </span>
           )}
           <button type="button" className="locale" onClick={onLocaleChange} aria-label={text.switchLanguage}>

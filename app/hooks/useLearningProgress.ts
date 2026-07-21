@@ -14,18 +14,21 @@ import {
 } from "../types/learning";
 import { createReviewCard, scheduleReview } from "../utils/srs";
 
-export function useLearningProgress() {
+export function useLearningProgress(stageCount: number) {
   const [progress, setProgress] = useState<LearningProgress>(DEFAULT_PROGRESS);
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
     const hydrationTimer = window.setTimeout(() => {
-      setProgress(parseStoredProgress(window.localStorage.getItem(PROGRESS_STORAGE_KEY)));
+      setProgress(parseStoredProgress(
+        window.localStorage.getItem(PROGRESS_STORAGE_KEY),
+        { stageCount },
+      ));
       setIsHydrated(true);
     }, 0);
 
     return () => window.clearTimeout(hydrationTimer);
-  }, []);
+  }, [stageCount]);
 
   useEffect(() => {
     if (!isHydrated) return;

@@ -1,11 +1,15 @@
-import { LESSON_STAGE_IDS, type Lesson } from "../types/lesson.ts";
+import {
+  LESSON_STAGE_IDS,
+  type Lesson,
+  type PlayableLesson,
+} from "../types/lesson.ts";
 
 const lessonOneStages = LESSON_STAGE_IDS.map((id) => ({
   id,
   estimatedMinutes: 1,
 }));
 
-export const prototypeLesson: Lesson = {
+export const prototypeLesson: PlayableLesson = {
   id: "lesson-1-greetings",
   number: 1,
   title: { zh: "相借問", en: "Greetings" },

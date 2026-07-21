@@ -1,4 +1,5 @@
 import type { Locale } from "./types/learning";
+import type { LessonStageId } from "./types/lesson";
 
 export type { Locale } from "./types/learning";
 
@@ -39,14 +40,14 @@ export type LessonCopy = {
   stageTime: (minutes: number) => string;
   lessonProgress: string;
   phraseProgress: (current: number, total: number) => string;
-  stageLabels: readonly string[];
+  stageLabels: Record<LessonStageId, string>;
   learningStages: string;
   currentStep: string;
   completedStep: string;
   lockedStep: string;
-  stageCount: (stage: number) => string;
-  stageHeadings: readonly string[];
-  stageBodies: readonly string[];
+  stageCount: (stage: number, total: number) => string;
+  stageHeadings: Record<LessonStageId, string>;
+  stageBodies: Record<LessonStageId, string>;
   listen: string;
   listening: string;
   listened: (count: number) => string;
@@ -130,31 +131,37 @@ export const copy: Record<Locale, LessonCopy> = {
     lessonNumber: (number) => `第 ${number} 課`,
     lesson: "第 1 課 · 相借問",
     lessonSummary: "從日常招呼開始，把聲音、文字和開口練習連起來。",
-    lessonRhythm: "聽懂 → 跟讀 → 回想 → 放進生活",
+    lessonRhythm: "先聽 → 看文字 → 開口講 → 回想 → 生活運用",
     lessonTime: "約 5 分鐘",
     stageTime: (minutes) => `約 ${minutes} 分鐘`,
     lessonProgress: "1 / 1 句可體驗",
     phraseProgress: (current, total) => `${current} / ${total} 句可體驗`,
-    stageLabels: ["聽", "看", "講", "記", "用"],
+    stageLabels: {
+      hear: "聽",
+      see: "看",
+      say: "講",
+      recall: "記",
+      use: "用",
+    },
     learningStages: "學習步驟",
     currentStep: "目前步驟",
     completedStep: "已完成",
     lockedStep: "稍後開放",
-    stageCount: (stage) => `步驟 ${stage + 1} / 5`,
-    stageHeadings: [
-      "先用耳朵記住這句話",
-      "把聲音和文字連起來",
-      "換你講一次",
-      "先想一想，再看答案",
-      "把這句話用在生活裡",
-    ],
-    stageBodies: [
-      "毋免急著看文字，先聽兩遍。",
-      "先讀漢字，再讀台羅或白話字。",
-      "放慢速度，跟著剛才的節奏講。",
-      "看到中文意思時，試著在心裡講出台語。",
-      "記住語境，比逐字翻譯更自然。",
-    ],
+    stageCount: (stage, total) => `步驟 ${stage + 1} / ${total}`,
+    stageHeadings: {
+      hear: "先用耳朵記住這句話",
+      see: "把聲音和文字連起來",
+      say: "換你講一次",
+      recall: "先想一想，再看答案",
+      use: "把這句話用在生活裡",
+    },
+    stageBodies: {
+      hear: "毋免急著看文字，先聽兩遍。",
+      see: "先讀漢字，再讀台羅或白話字。",
+      say: "放慢速度，跟著剛才的節奏講。",
+      recall: "看到中文意思時，試著在心裡講出台語。",
+      use: "記住語境，比逐字翻譯更自然。",
+    },
     listen: "聽示範",
     listening: "播放中…",
     listened: (count) => `已聽 ${count} 次`,
@@ -236,31 +243,37 @@ export const copy: Record<Locale, LessonCopy> = {
     lessonNumber: (number) => `Lesson ${number}`,
     lesson: "Lesson 1 · Greetings",
     lessonSummary: "Connect the sound, script, and speaking practice of an everyday greeting.",
-    lessonRhythm: "Hear → repeat → recall → use in life",
+    lessonRhythm: "Hear → see → say → recall → use",
     lessonTime: "About 5 minutes",
     stageTime: (minutes) => `About ${minutes} minute${minutes === 1 ? "" : "s"}`,
     lessonProgress: "1 / 1 phrase available",
     phraseProgress: (current, total) => `${current} / ${total} phrase available`,
-    stageLabels: ["Hear", "See", "Say", "Recall", "Use"],
+    stageLabels: {
+      hear: "Hear",
+      see: "See",
+      say: "Say",
+      recall: "Recall",
+      use: "Use",
+    },
     learningStages: "Learning stages",
     currentStep: "Current step",
     completedStep: "Completed",
     lockedStep: "Up next",
-    stageCount: (stage) => `Step ${stage + 1} of 5`,
-    stageHeadings: [
-      "Let your ears learn it first",
-      "Connect the sound and script",
-      "Now say it once",
-      "Recall it before checking",
-      "Use it in real life",
-    ],
-    stageBodies: [
-      "Listen twice before looking at the words.",
-      "Read the Han characters, then the romanization.",
-      "Slow down and follow the rhythm you just heard.",
-      "See the meaning and try to say the phrase in your head.",
-      "Remembering the context is more natural than translating word by word.",
-    ],
+    stageCount: (stage, total) => `Step ${stage + 1} of ${total}`,
+    stageHeadings: {
+      hear: "Let your ears learn it first",
+      see: "Connect the sound and script",
+      say: "Now say it once",
+      recall: "Recall it before checking",
+      use: "Use it in real life",
+    },
+    stageBodies: {
+      hear: "Listen twice before looking at the words.",
+      see: "Read the Han characters, then the romanization.",
+      say: "Slow down and follow the rhythm you just heard.",
+      recall: "See the meaning and try to say the phrase in your head.",
+      use: "Remembering the context is more natural than translating word by word.",
+    },
     listen: "Listen",
     listening: "Playing…",
     listened: (count) => `Listened ${count} time${count === 1 ? "" : "s"}`,
