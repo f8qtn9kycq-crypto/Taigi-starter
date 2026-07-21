@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { prototypeLesson } from "../app/data/lessons.ts";
-import { parseStoredProgress, serializeProgress } from "../app/services/progress-storage.ts";
+import {
+  mergePendingProgress,
+  parseStoredProgress,
+  serializeProgress,
+} from "../app/services/progress-storage.ts";
 import { DEFAULT_PROGRESS } from "../app/types/learning.ts";
 
 const now = new Date("2026-07-11T00:00:00.000Z");
@@ -35,4 +39,13 @@ test("stored stage validation follows lesson metadata", () => {
 
   assert.equal(parseStoredProgress(stored, { stageCount: 3, now }).stage, DEFAULT_PROGRESS.stage);
   assert.equal(parseStoredProgress(stored, parseOptions).stage, 4);
+});
+
+test("hydration preserves progress updates made before storage is ready", () => {
+  const stored = { ...DEFAULT_PROGRESS };
+
+  assert.deepEqual(
+    mergePendingProgress(stored, { hasStarted: true, stage: 1 }),
+    { ...stored, hasStarted: true, stage: 1 },
+  );
 });

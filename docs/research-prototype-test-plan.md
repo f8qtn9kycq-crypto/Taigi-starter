@@ -93,7 +93,8 @@ For B01–B07, automated evidence is required. B08 is a human usability check;
 its observation sheet must record: start time, stage where help was needed,
 completion time, wording the learner expected for the next action, and any
 confusion about unavailable AI/audio capability. Do not convert an unmeasured
-signal into a green metric.
+signal into a green metric. The current recorded evidence is a Codex-moderated
+proxy run, labeled as such rather than presented as external learner research.
 
 ## Automated evidence mapping
 

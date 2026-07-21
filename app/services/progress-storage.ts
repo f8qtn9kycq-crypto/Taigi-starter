@@ -7,6 +7,8 @@ import { createReviewCard } from "../utils/srs.ts";
 
 export const PROGRESS_STORAGE_KEY = "taigi-start-state";
 
+export type PendingProgressUpdates = Partial<Omit<LearningProgress, "version">>;
+
 type LegacyProgress = {
   locale?: unknown;
   dueCount?: unknown;
@@ -69,4 +71,11 @@ export function parseStoredProgress(
 
 export function serializeProgress(progress: LearningProgress): string {
   return JSON.stringify(progress);
+}
+
+export function mergePendingProgress(
+  stored: LearningProgress,
+  pending: PendingProgressUpdates,
+): LearningProgress {
+  return { ...stored, ...pending };
 }
