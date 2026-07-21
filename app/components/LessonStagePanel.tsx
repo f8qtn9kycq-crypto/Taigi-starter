@@ -27,6 +27,7 @@ export default function LessonStagePanel({
   const [audioPlays, setAudioPlays] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
   const phrase = lesson.phrases[0];
+  const lessonStage = lesson.stages[stage];
   const { isPlaying, hasError, toggle } = useAudioPlayer(phrase.audioUrl);
 
   const playAudio = async () => {
@@ -37,7 +38,7 @@ export default function LessonStagePanel({
   return (
     <div className="stage-panel" aria-live="polite">
       <div className="stage-copy">
-        <span>{text.stageCount(stage)}</span>
+        <span>{text.stageCount(stage)} · {text.stageTime(lessonStage.estimatedMinutes)}</span>
         <h3>{text.stageHeadings[stage]}</h3>
         <p>{text.stageBodies[stage]}</p>
       </div>

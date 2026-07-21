@@ -19,7 +19,8 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
     { text, lesson, stage, reviewScheduled, onStageChange, onReviewAdded },
     ref,
   ) {
-    const advance = () => onStageChange(Math.min(stage + 1, 4));
+    const lastStage = lesson.stages.length - 1;
+    const advance = () => onStageChange(Math.min(stage + 1, lastStage));
 
     return (
       <section className="lesson-card" aria-labelledby="lesson-title" ref={ref}>
@@ -27,13 +28,18 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
           <span className="section-label">{text.currentLesson}</span>
           <h2 id="lesson-title">{text.lessonNumber(lesson.number)} · {lesson.title[text.locale]}</h2>
           <p>{lesson.summary[text.locale]}</p>
+          <div className="lesson-rhythm" aria-label={text.lessonTime}>
+            <span className="rhythm-mark" aria-hidden="true">{lesson.durationMinutes}′</span>
+            <span><b>{text.lessonTime}</b><small>{text.lessonRhythm}</small></span>
+          </div>
           <div className="progress-line" aria-label={text.phraseProgress(1, lesson.phrases.length)}>
             <span><i /></span><b>{text.phraseProgress(1, lesson.phrases.length)}</b>
           </div>
         </div>
 
         <ol className="stage-accordion" aria-label={text.learningStages}>
-          {text.stageLabels.map((label, index) => {
+          {lesson.stages.map((lessonStage, index) => {
+            const label = text.stageLabels[index];
             const isCurrent = index === stage;
             const isComplete = index < stage;
 

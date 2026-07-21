@@ -1,4 +1,9 @@
-import type { Lesson } from "../types/lesson";
+import { LESSON_STAGE_IDS, type Lesson } from "../types/lesson.ts";
+
+const lessonOneStages = LESSON_STAGE_IDS.map((id) => ({
+  id,
+  estimatedMinutes: 1,
+}));
 
 export const prototypeLesson: Lesson = {
   id: "lesson-1-greetings",
@@ -10,6 +15,8 @@ export const prototypeLesson: Lesson = {
     en: "Connect sound, script, and speaking through one caring everyday greeting.",
   },
   status: "prototype",
+  durationMinutes: 5,
+  stages: lessonOneStages,
   phrases: [
     {
       id: "li-tsiah-pa-bue",

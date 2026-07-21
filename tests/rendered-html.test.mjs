@@ -25,6 +25,10 @@ test("ships the first-time Taigi landing content and production worker", async (
   assert.match(copy, /音檔無法播放，先看文字/);
   assert.match(copy, /聽 → 看 → 說 → 想 → 用/);
   assert.match(copy, /第 1 課 · 相借問/);
+  assert.match(copy, /lessonRhythm: "聽懂 → 跟讀 → 回想 → 放進生活"/);
+  assert.match(copy, /lessonTime: "約 5 分鐘"/);
+  assert.match(lesson, /lesson-rhythm/);
+  assert.match(lesson, /lesson.stages.map/);
   assert.match(content, /教育部《臺灣台語常用詞辭典》/);
   assert.match(copy, /第 1 課可用版本 · 學習紀錄儲存在此裝置/);
   assert.match(worker, /api\/feedback/);

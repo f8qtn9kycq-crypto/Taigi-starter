@@ -21,6 +21,17 @@ export type LessonPhrase = {
   source: LessonSource;
 };
 
+export const LESSON_STAGE_IDS = ["hear", "see", "say", "recall", "use"] as const;
+
+export type LessonStageId = (typeof LESSON_STAGE_IDS)[number];
+
+export type LessonStage = {
+  id: LessonStageId;
+  estimatedMinutes: number;
+};
+
+export const LESSON_STAGE_COUNT = LESSON_STAGE_IDS.length;
+
 export type Lesson = {
   id: string;
   number: number;
@@ -28,5 +39,7 @@ export type Lesson = {
   secondaryTitle: LocalizedText;
   summary: LocalizedText;
   status: "prototype" | "planned";
+  durationMinutes: number;
+  stages: readonly LessonStage[];
   phrases: readonly LessonPhrase[];
 };
