@@ -232,7 +232,7 @@ jobs:
           ensure_single_select_field Priority P0 P1 P2
           ensure_single_select_field "Risk Tier" "Tier 0" "Tier 1" "Tier 2" "Tier 3"
           ensure_single_select_field "AI Owner" Codex Claude ChatGPT Gemini
-          ensure_single_select_field Area Safety i18n Progress UX Workflow
+          ensure_single_select_field Area Content Audio Lesson UX Accessibility i18n Progress Workflow
 
           add_item() {
             local result
@@ -320,12 +320,12 @@ jobs:
           [[ "$priority" =~ ^P[012]$ ]] || priority="$(printf '%s\n' "$content_title" "$content_body" | grep -Eo '(^|[^A-Za-z0-9])P[012]([^A-Za-z0-9]|$)' | grep -Eo 'P[012]' | head -n 1 || true)"
           [[ "$risk_tier" =~ ^Tier\ [0-3]$ ]] || risk_tier="$(printf '%s\n' "$content_title" "$content_body" | grep -Eio 'Tier[[:space:]]*[0-3]' | sed -E 's/[[:space:]]+/ /' | head -n 1 || true)"
           [[ "$ai_owner" =~ ^(Codex|Claude|ChatGPT|Gemini)$ ]] || ai_owner="$DEFAULT_AI_OWNER"
-          [[ "$area" =~ ^(Safety|i18n|Progress|UX|Workflow)$ ]] || area=""
+          [[ "$area" =~ ^(Content|Audio|Lesson|UX|Accessibility|i18n|Progress|Workflow)$ ]] || area=""
 
           if [[ "$content_author" == "dependabot[bot]" ]]; then
             [[ "$priority" =~ ^P[012]$ ]] || priority="$DEFAULT_DEPENDABOT_PRIORITY"
             [[ "$risk_tier" =~ ^Tier\ [0-3]$ ]] || risk_tier="$DEFAULT_DEPENDABOT_RISK_TIER"
-            [[ "$area" =~ ^(Safety|i18n|Progress|UX|Workflow)$ ]] || area="$DEFAULT_DEPENDABOT_AREA"
+            [[ "$area" =~ ^(Content|Audio|Lesson|UX|Accessibility|i18n|Progress|Workflow)$ ]] || area="$DEFAULT_DEPENDABOT_AREA"
           fi
 
           if [[ "$target_type" == "issue" ]]; then
