@@ -156,13 +156,13 @@ jobs:
           ensure_single_select_field() {
             local field_name="$1"
             shift
-            local existing_field_id desired_json existing_options merged_json options_input gql_name mutation result create_status
+            local existing_field_id desired_json existing_options merged_json options_input mutation result create_status
 
-            existing_field_id="$(jq -r --arg field "$field_name" '.[] | select(.name == $field) | .id' <<<"$fields_json" | head -n 1)"
+            existing_field_id="$(jq -r --arg field "$field_name" --arg quoted "\"$field_name\"" '.[] | select(.name == $field or .name == $quoted) | .id' <<<"$fields_json" | head -n 1)"
             desired_json="$(printf '%s\n' "$@" | jq -R . | jq -s .)"
 
             if [[ -n "$existing_field_id" ]]; then
-              existing_options="$(jq -c --arg field "$field_name" '[.[] | select(.name == $field) | .options[]? | {id, name, description, color}] | unique_by(.name)' <<<"$fields_json")"
+              existing_options="$(jq -c --arg field "$field_name" --arg quoted "\"$field_name\"" '[.[] | select(.name == $field or .name == $quoted) | .options[]? | {id, name, description, color}] | unique_by(.name)' <<<"$fields_json")"
             else
               existing_options='[]'
             fi
@@ -182,19 +182,18 @@ jobs:
               )
               | join(", ")
             ' <<<"$merged_json")"
-            gql_name="$(jq -Rn --arg value "$field_name" '$value | tojson')"
 
             if [[ -z "$existing_field_id" ]]; then
-              mutation="mutation(\$projectId: ID!) { createProjectV2Field(input: { projectId: \$projectId, name: $gql_name, dataType: SINGLE_SELECT, singleSelectOptions: [$options_input] }) { projectV2Field { ... on ProjectV2SingleSelectField { id name } } } }"
+              mutation="mutation(\$projectId: ID!, \$name: String!) { createProjectV2Field(input: { projectId: \$projectId, name: \$name, dataType: SINGLE_SELECT, singleSelectOptions: [$options_input] }) { projectV2Field { ... on ProjectV2SingleSelectField { id name } } } }"
               set +e
-              result="$(gh api graphql -f query="$mutation" -f projectId="$project_id" 2>&1)"
+              result="$(gh api graphql -f query="$mutation" -f projectId="$project_id" -f name="$field_name" 2>&1)"
               create_status=$?
               set -e
               if [[ $create_status -ne 0 ]]; then
                 if grep -q "Name has already been taken" <<<"$result"; then
                   echo "Project field $field_name already exists; reloading fields."
                   refresh_project_fields
-                  existing_field_id="$(jq -r --arg field "$field_name" '.[] | select(.name == $field) | .id' <<<"$fields_json" | head -n 1)"
+                  existing_field_id="$(jq -r --arg field "$field_name" --arg quoted "\"$field_name\"" '.[] | select(.name == $field or .name == $quoted) | .id' <<<"$fields_json" | head -n 1)"
                 else
                   echo "$result"
                   exit "$create_status"
@@ -209,7 +208,7 @@ jobs:
               fi
             fi
 
-            existing_options="$(jq -c --arg field "$field_name" '[.[] | select(.name == $field) | .options[]? | {id, name, description, color}] | unique_by(.name)' <<<"$fields_json")"
+            existing_options="$(jq -c --arg field "$field_name" --arg quoted "\"$field_name\"" '[.[] | select(.name == $field or .name == $quoted) | .options[]? | {id, name, description, color}] | unique_by(.name)' <<<"$fields_json")"
             merged_json="$(jq -cn --argjson existing "$existing_options" --argjson desired "$desired_json" '
               ($existing + ($desired | map({name: ., description: "", color: "GRAY"})))
               | unique_by(.name)
@@ -225,9 +224,9 @@ jobs:
               )
               | join(", ")
             ' <<<"$merged_json")"
-            mutation="mutation(\$fieldId: ID!) { updateProjectV2Field(input: { fieldId: \$fieldId, singleSelectOptions: [$options_input] }) { projectV2Field { ... on ProjectV2SingleSelectField { id name options { id name } } } } }"
-            gh api graphql -f query="$mutation" -f fieldId="$existing_field_id" >/dev/null
-            echo "Ensured Project field options: $field_name"
+            mutation="mutation(\$fieldId: ID!, \$name: String!) { updateProjectV2Field(input: { fieldId: \$fieldId, name: \$name, singleSelectOptions: [$options_input] }) { projectV2Field { ... on ProjectV2SingleSelectField { id name options { id name } } } } }"
+            gh api graphql -f query="$mutation" -f fieldId="$existing_field_id" -f name="$field_name" >/dev/null
+            echo "Ensured Project field name and options: $field_name"
           }
 
           ensure_single_select_field Priority P0 P1 P2
