@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   PROGRESS_STORAGE_KEY,
+  mergePendingProgress,
   parseStoredProgress,
   serializeProgress,
 } from "../services/progress-storage";
@@ -17,13 +18,16 @@ import { createReviewCard, scheduleReview } from "../utils/srs";
 export function useLearningProgress(stageCount: number) {
   const [progress, setProgress] = useState<LearningProgress>(DEFAULT_PROGRESS);
   const [isHydrated, setIsHydrated] = useState(false);
+  const pendingUpdatesRef = useRef<Partial<Omit<LearningProgress, "version">>>({});
 
   useEffect(() => {
     const hydrationTimer = window.setTimeout(() => {
-      setProgress(parseStoredProgress(
+      const storedProgress = parseStoredProgress(
         window.localStorage.getItem(PROGRESS_STORAGE_KEY),
         { stageCount },
-      ));
+      );
+      setProgress(mergePendingProgress(storedProgress, pendingUpdatesRef.current));
+      pendingUpdatesRef.current = {};
       setIsHydrated(true);
     }, 0);
 
@@ -36,6 +40,9 @@ export function useLearningProgress(stageCount: number) {
   }, [isHydrated, progress]);
 
   const update = (changes: Partial<Omit<LearningProgress, "version">>) => {
+    if (!isHydrated) {
+      pendingUpdatesRef.current = { ...pendingUpdatesRef.current, ...changes };
+    }
     setProgress((current) => ({ ...current, ...changes }));
   };
 
