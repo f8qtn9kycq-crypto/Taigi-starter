@@ -30,6 +30,17 @@ test("validator rejects missing stages, sources, review, and pending audio", () 
   assert.ok(paths.includes("packages[0].phrases[0].audio.status"));
 });
 
+test("validator reports empty teacher review checks once", () => {
+  const invalid = clonePackages();
+  const review = invalid[0].teacherReview as Record<string, unknown>;
+  review.checks = [];
+
+  const issues = validateLessonPackages(invalid).filter(
+    (issue) => issue.path === "packages[0].teacherReview.checks",
+  );
+  assert.deepEqual(issues.map((issue) => issue.message), ["must be a non-empty array"]);
+});
+
 test("validator rejects approval without traceable reviewer evidence", () => {
   const invalid = clonePackages();
   const review = invalid[0].teacherReview as Record<string, unknown>;

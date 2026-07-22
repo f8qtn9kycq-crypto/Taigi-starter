@@ -15,6 +15,7 @@ test("planned lesson packages are complete content records without runtime audio
     assert.equal(lesson.teacherReview.status, "required");
     assert.equal(lesson.teacherReview.reviewer, null);
     assert.equal(lesson.teacherReview.reviewedAt, null);
+    // Preserve the review checklist order used by teacher-facing review flows.
     assert.deepEqual(
       lesson.teacherReview.checks.map((check) => check.id),
       TEACHER_REVIEW_CHECK_IDS,

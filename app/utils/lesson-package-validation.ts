@@ -206,7 +206,10 @@ const validateTeacherReview = (
     addIssue(issues, `${path}.checks`, "must be a non-empty array");
     return;
   }
-  if (value.checks.length === 0) addIssue(issues, `${path}.checks`, "must be a non-empty array");
+  if (value.checks.length === 0) {
+    addIssue(issues, `${path}.checks`, "must be a non-empty array");
+    return;
+  }
 
   const seenCheckIds = new Set<TeacherReviewCheckId>();
   const checkStatuses: TeacherReviewCheckStatus[] = [];

@@ -3,7 +3,7 @@ import type {
   LessonPackagePhrase,
   TeacherReview,
   TeacherReviewCheck,
-} from "../types/lesson-package";
+} from "../types/lesson-package.ts";
 import type { LessonSource, LocalizedText } from "../types/lesson";
 
 const moeSource = (canonicalUrl: string): LessonSource => ({
