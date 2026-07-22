@@ -34,9 +34,19 @@ const isNonEmptyString = (value: unknown): value is string => (
   typeof value === "string" && value.trim().length > 0
 );
 
-const isIsoTimestamp = (value: unknown): value is string => (
-  isNonEmptyString(value) && !Number.isNaN(Date.parse(value))
-);
+const ISO_TIMESTAMP = /^(\d{4})-(\d{2})-(\d{2})T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
+
+const isIsoTimestamp = (value: unknown): value is string => {
+  if (!isNonEmptyString(value)) return false;
+
+  const match = ISO_TIMESTAMP.exec(value);
+  if (!match || Number.isNaN(Date.parse(value))) return false;
+
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const daysInMonth = new Date(Date.UTC(Number(match[1]), month, 0)).getUTCDate();
+  return month >= 1 && month <= 12 && day >= 1 && day <= daysInMonth;
+};
 
 const isTeacherReviewStatus = (value: unknown): value is TeacherReviewStatus => (
   value === "required" || value === "approved" || value === "changes-requested"

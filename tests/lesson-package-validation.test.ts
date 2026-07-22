@@ -60,6 +60,22 @@ test("validator accepts traceable approval while keeping the package planned", (
   assert.equal(approved[0].status, "planned");
 });
 
+test("validator rejects non-ISO teacher review timestamps", () => {
+  for (const reviewedAt of ["July 22, 2026", "2026-07-22", "2026-02-30T00:00:00.000Z"]) {
+    const invalid = clonePackages();
+    const review = invalid[0].teacherReview as Record<string, unknown>;
+    const checks = review.checks as Record<string, unknown>[];
+
+    review.status = "approved";
+    review.reviewer = "teacher@example.test";
+    review.reviewedAt = reviewedAt;
+    for (const check of checks) check.status = "passed";
+
+    const paths = validateLessonPackages(invalid).map((issue) => issue.path);
+    assert.ok(paths.includes("packages[0].teacherReview.reviewedAt"), reviewedAt);
+  }
+});
+
 test("validator rejects duplicate lesson and phrase identities", () => {
   const invalid = clonePackages();
   const first = invalid[0];
