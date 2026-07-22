@@ -20,7 +20,7 @@ test("validator rejects missing stages, sources, review, and pending audio", () 
 
   (first.stagePlan as unknown[]).pop();
   source.canonicalUrl = "https://example.com/lesson";
-  first.teacherReview = { status: "approved", checks: [] };
+  first.teacherReview = { status: "unknown", reviewer: null, reviewedAt: null, checks: [] };
   audio.status = "available";
 
   const paths = validateLessonPackages(invalid).map((issue) => issue.path);
@@ -28,6 +28,36 @@ test("validator rejects missing stages, sources, review, and pending audio", () 
   assert.ok(paths.includes("packages[0].phrases[0].source.canonicalUrl"));
   assert.ok(paths.includes("packages[0].teacherReview.status"));
   assert.ok(paths.includes("packages[0].phrases[0].audio.status"));
+});
+
+test("validator rejects approval without traceable reviewer evidence", () => {
+  const invalid = clonePackages();
+  const review = invalid[0].teacherReview as Record<string, unknown>;
+  const checks = review.checks as Record<string, unknown>[];
+
+  review.status = "approved";
+  review.reviewer = null;
+  review.reviewedAt = null;
+  checks[0].status = "passed";
+
+  const paths = validateLessonPackages(invalid).map((issue) => issue.path);
+  assert.ok(paths.includes("packages[0].teacherReview.reviewer"));
+  assert.ok(paths.includes("packages[0].teacherReview.reviewedAt"));
+  assert.ok(paths.includes("packages[0].teacherReview.checks"));
+});
+
+test("validator accepts traceable approval while keeping the package planned", () => {
+  const approved = clonePackages();
+  const review = approved[0].teacherReview as Record<string, unknown>;
+  const checks = review.checks as Record<string, unknown>[];
+
+  review.status = "approved";
+  review.reviewer = "teacher@example.test";
+  review.reviewedAt = "2026-07-22T00:00:00.000Z";
+  for (const check of checks) check.status = "passed";
+
+  assert.deepEqual(validateLessonPackages(approved), []);
+  assert.equal(approved[0].status, "planned");
 });
 
 test("validator rejects duplicate lesson and phrase identities", () => {
