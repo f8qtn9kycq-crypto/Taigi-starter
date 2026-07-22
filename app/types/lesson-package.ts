@@ -1,5 +1,29 @@
 import type { LessonSource, LocalizedText } from "./lesson";
 
+export const TEACHER_REVIEW_CHECK_IDS = [
+  "orthography",
+  "pronunciation",
+  "context",
+  "audio",
+] as const;
+
+export type TeacherReviewCheckId = (typeof TEACHER_REVIEW_CHECK_IDS)[number];
+export type TeacherReviewStatus = "required" | "approved" | "changes-requested";
+export type TeacherReviewCheckStatus = "pending" | "passed" | "needs-changes";
+
+export type TeacherReviewCheck = {
+  id: TeacherReviewCheckId;
+  label: LocalizedText;
+  status: TeacherReviewCheckStatus;
+};
+
+export type TeacherReview = {
+  status: TeacherReviewStatus;
+  reviewer: string | null;
+  reviewedAt: string | null;
+  checks: readonly TeacherReviewCheck[];
+};
+
 export type LessonPackagePhrase = {
   id: string;
   hanji: string;
@@ -24,8 +48,5 @@ export type LessonPackage = {
   status: "planned";
   stagePlan: readonly LocalizedText[];
   phrases: readonly LessonPackagePhrase[];
-  teacherReview: {
-    status: "required";
-    checks: readonly LocalizedText[];
-  };
+  teacherReview: TeacherReview;
 };

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { lessonPackages } from "../app/data/lesson-packages.ts";
+import { TEACHER_REVIEW_CHECK_IDS } from "../app/types/lesson-package.ts";
 
 test("planned lesson packages are complete content records without runtime audio claims", () => {
   assert.deepEqual(
@@ -12,7 +13,20 @@ test("planned lesson packages are complete content records without runtime audio
   for (const lesson of lessonPackages) {
     assert.equal(lesson.status, "planned");
     assert.equal(lesson.teacherReview.status, "required");
+    assert.equal(lesson.teacherReview.reviewer, null);
+    assert.equal(lesson.teacherReview.reviewedAt, null);
+    // Preserve the review checklist order used by teacher-facing review flows.
+    assert.deepEqual(
+      lesson.teacherReview.checks.map((check) => check.id),
+      TEACHER_REVIEW_CHECK_IDS,
+    );
     assert.ok(lesson.phrases.length > 0);
+
+    for (const check of lesson.teacherReview.checks) {
+      assert.equal(check.status, "pending");
+      assert.ok(check.label.zh.trim());
+      assert.ok(check.label.en.trim());
+    }
 
     for (const phrase of lesson.phrases) {
       assert.equal(phraseIds.has(phrase.id), false, `duplicate phrase id: ${phrase.id}`);

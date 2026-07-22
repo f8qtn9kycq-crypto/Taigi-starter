@@ -1,3 +1,10 @@
+import {
+  TEACHER_REVIEW_CHECK_IDS,
+  type TeacherReviewCheckId,
+  type TeacherReviewCheckStatus,
+  type TeacherReviewStatus,
+} from "../types/lesson-package.ts";
+
 export const LESSON_PACKAGE_STAGE_COUNT = 5;
 
 const EXPECTED_STAGE_PREFIXES = [
@@ -25,6 +32,32 @@ const isRecord = (value: unknown): value is UnknownRecord => (
 
 const isNonEmptyString = (value: unknown): value is string => (
   typeof value === "string" && value.trim().length > 0
+);
+
+const ISO_TIMESTAMP = /^(\d{4})-(\d{2})-(\d{2})T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
+
+const isIsoTimestamp = (value: unknown): value is string => {
+  if (!isNonEmptyString(value)) return false;
+
+  const match = ISO_TIMESTAMP.exec(value);
+  if (!match || Number.isNaN(Date.parse(value))) return false;
+
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const daysInMonth = new Date(Date.UTC(Number(match[1]), month, 0)).getUTCDate();
+  return month >= 1 && month <= 12 && day >= 1 && day <= daysInMonth;
+};
+
+const isTeacherReviewStatus = (value: unknown): value is TeacherReviewStatus => (
+  value === "required" || value === "approved" || value === "changes-requested"
+);
+
+const isTeacherReviewCheckId = (value: unknown): value is TeacherReviewCheckId => (
+  TEACHER_REVIEW_CHECK_IDS.some((id) => id === value)
+);
+
+const isTeacherReviewCheckStatus = (value: unknown): value is TeacherReviewCheckStatus => (
+  value === "pending" || value === "passed" || value === "needs-changes"
 );
 
 const addIssue = (
@@ -157,14 +190,64 @@ const validateTeacherReview = (
     return;
   }
 
-  if (value.status !== "required") addIssue(issues, `${path}.status`, "must remain required");
+  if (!isTeacherReviewStatus(value.status)) {
+    addIssue(issues, `${path}.status`, "must be required, approved, or changes-requested");
+  }
+
+  if (value.status === "required") {
+    if (value.reviewer !== null) addIssue(issues, `${path}.reviewer`, "must be null before review");
+    if (value.reviewedAt !== null) addIssue(issues, `${path}.reviewedAt`, "must be null before review");
+  } else {
+    if (!isNonEmptyString(value.reviewer)) addIssue(issues, `${path}.reviewer`, "must identify the reviewer");
+    if (!isIsoTimestamp(value.reviewedAt)) addIssue(issues, `${path}.reviewedAt`, "must be an ISO timestamp");
+  }
+
   if (!Array.isArray(value.checks)) {
     addIssue(issues, `${path}.checks`, "must be a non-empty array");
     return;
   }
-  if (value.checks.length === 0) addIssue(issues, `${path}.checks`, "must be a non-empty array");
+  if (value.checks.length === 0) {
+    addIssue(issues, `${path}.checks`, "must be a non-empty array");
+    return;
+  }
+
+  const seenCheckIds = new Set<TeacherReviewCheckId>();
+  const checkStatuses: TeacherReviewCheckStatus[] = [];
   for (const [index, check] of value.checks.entries()) {
-    validateLocalizedText(check, `${path}.checks[${index}]`, issues);
+    const checkPath = `${path}.checks[${index}]`;
+    if (!isRecord(check)) {
+      addIssue(issues, checkPath, "must include id, label, and status");
+      continue;
+    }
+
+    if (!isTeacherReviewCheckId(check.id)) {
+      addIssue(issues, `${checkPath}.id`, "must be a known teacher review check");
+    } else if (seenCheckIds.has(check.id)) {
+      addIssue(issues, `${checkPath}.id`, "must be unique");
+    } else {
+      seenCheckIds.add(check.id);
+    }
+
+    validateLocalizedText(check.label, `${checkPath}.label`, issues);
+    if (!isTeacherReviewCheckStatus(check.status)) {
+      addIssue(issues, `${checkPath}.status`, "must be pending, passed, or needs-changes");
+    } else {
+      checkStatuses.push(check.status);
+    }
+  }
+
+  for (const checkId of TEACHER_REVIEW_CHECK_IDS) {
+    if (!seenCheckIds.has(checkId)) addIssue(issues, `${path}.checks`, `must include ${checkId}`);
+  }
+
+  if (value.status === "required" && checkStatuses.some((status) => status !== "pending")) {
+    addIssue(issues, `${path}.checks`, "must remain pending before teacher review");
+  }
+  if (value.status === "approved" && checkStatuses.some((status) => status !== "passed")) {
+    addIssue(issues, `${path}.checks`, "must all be passed before approval");
+  }
+  if (value.status === "changes-requested" && !checkStatuses.includes("needs-changes")) {
+    addIssue(issues, `${path}.checks`, "must include a needs-changes item");
   }
 };
 

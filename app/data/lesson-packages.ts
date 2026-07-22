@@ -1,4 +1,9 @@
-import type { LessonPackage, LessonPackagePhrase } from "../types/lesson-package";
+import type {
+  LessonPackage,
+  LessonPackagePhrase,
+  TeacherReview,
+  TeacherReviewCheck,
+} from "../types/lesson-package.ts";
 import type { LessonSource, LocalizedText } from "../types/lesson";
 
 const moeSource = (canonicalUrl: string): LessonSource => ({
@@ -32,11 +37,35 @@ const stagePlan: readonly LocalizedText[] = [
   { zh: "用：放進自己的生活情境", en: "Use: place it in an everyday context" },
 ];
 
-const teacherChecks: readonly LocalizedText[] = [
-  { zh: "確認漢字、台羅與可接受讀音變體", en: "Confirm Han characters, Tâi-lô, and acceptable pronunciation variants" },
-  { zh: "確認初學者語境自然，避免只背孤立字詞", en: "Confirm the beginner context is natural rather than isolated memorization" },
-  { zh: "確認音檔為未修改原檔，並保留完整 attribution", en: "Confirm audio remains an unmodified original with complete attribution" },
+const teacherChecks: readonly TeacherReviewCheck[] = [
+  {
+    id: "orthography",
+    label: { zh: "確認漢字、台羅與可接受讀音變體", en: "Confirm Han characters, Tâi-lô, and acceptable pronunciation variants" },
+    status: "pending",
+  },
+  {
+    id: "pronunciation",
+    label: { zh: "確認示範音與地區讀音呈現順序", en: "Confirm the model pronunciation and regional variant order" },
+    status: "pending",
+  },
+  {
+    id: "context",
+    label: { zh: "確認初學者語境自然，避免只背孤立字詞", en: "Confirm the beginner context is natural rather than isolated memorization" },
+    status: "pending",
+  },
+  {
+    id: "audio",
+    label: { zh: "確認音檔為未修改原檔，並保留完整 attribution", en: "Confirm audio remains an unmodified original with complete attribution" },
+    status: "pending",
+  },
 ];
+
+const requiredTeacherReview: TeacherReview = {
+  status: "required",
+  reviewer: null,
+  reviewedAt: null,
+  checks: teacherChecks,
+};
 
 export const lessonPackages: readonly LessonPackage[] = [
   {
@@ -95,7 +124,7 @@ export const lessonPackages: readonly LessonPackage[] = [
         audio: audioPending,
       },
     ],
-    teacherReview: { status: "required", checks: teacherChecks },
+    teacherReview: requiredTeacherReview,
   },
   {
     id: "lesson-3-numbers-package",
@@ -153,7 +182,7 @@ export const lessonPackages: readonly LessonPackage[] = [
         audio: audioPending,
       },
     ],
-    teacherReview: { status: "required", checks: teacherChecks },
+    teacherReview: requiredTeacherReview,
   },
   {
     id: "lesson-4-food-and-drink-package",
@@ -211,7 +240,7 @@ export const lessonPackages: readonly LessonPackage[] = [
         audio: audioPending,
       },
     ],
-    teacherReview: { status: "required", checks: teacherChecks },
+    teacherReview: requiredTeacherReview,
   },
   {
     id: "lesson-5-daily-routine-package",
@@ -269,7 +298,7 @@ export const lessonPackages: readonly LessonPackage[] = [
         audio: audioPending,
       },
     ],
-    teacherReview: { status: "required", checks: teacherChecks },
+    teacherReview: requiredTeacherReview,
   },
   {
     id: "lesson-6-weather-and-feelings-package",
@@ -324,7 +353,7 @@ export const lessonPackages: readonly LessonPackage[] = [
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/2874/"),
       }),
     ],
-    teacherReview: { status: "required", checks: teacherChecks },
+    teacherReview: requiredTeacherReview,
   },
   {
     id: "lesson-7-directions-package",
@@ -379,7 +408,7 @@ export const lessonPackages: readonly LessonPackage[] = [
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/10136/"),
       }),
     ],
-    teacherReview: { status: "required", checks: teacherChecks },
+    teacherReview: requiredTeacherReview,
   },
   {
     id: "lesson-8-shopping-package",
@@ -434,7 +463,7 @@ export const lessonPackages: readonly LessonPackage[] = [
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/11988/"),
       }),
     ],
-    teacherReview: { status: "required", checks: teacherChecks },
+    teacherReview: requiredTeacherReview,
   },
   {
     id: "lesson-9-community-package",
@@ -489,7 +518,7 @@ export const lessonPackages: readonly LessonPackage[] = [
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/4199/"),
       }),
     ],
-    teacherReview: { status: "required", checks: teacherChecks },
+    teacherReview: requiredTeacherReview,
   },
   {
     id: "lesson-10-invitations-package",
@@ -544,7 +573,7 @@ export const lessonPackages: readonly LessonPackage[] = [
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/3538/"),
       }),
     ],
-    teacherReview: { status: "required", checks: teacherChecks },
+    teacherReview: requiredTeacherReview,
   },
   {
     id: "lesson-11-time-and-plans-package",
@@ -599,7 +628,7 @@ export const lessonPackages: readonly LessonPackage[] = [
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/4208/"),
       }),
     ],
-    teacherReview: { status: "required", checks: teacherChecks },
+    teacherReview: requiredTeacherReview,
   },
   {
     id: "lesson-12-life-conversation-package",
@@ -654,7 +683,7 @@ export const lessonPackages: readonly LessonPackage[] = [
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/629/"),
       }),
     ],
-    teacherReview: { status: "required", checks: teacherChecks },
+    teacherReview: requiredTeacherReview,
   },
   {
     id: "lesson-13-self-introduction-package",
@@ -709,7 +738,7 @@ export const lessonPackages: readonly LessonPackage[] = [
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/4997/"),
       }),
     ],
-    teacherReview: { status: "required", checks: teacherChecks },
+    teacherReview: requiredTeacherReview,
   },
   {
     id: "lesson-14-school-and-work-package",
@@ -764,7 +793,7 @@ export const lessonPackages: readonly LessonPackage[] = [
         source: moeSource("https://sutian.moe.edu.tw/und-hani/su/12076/"),
       }),
     ],
-    teacherReview: { status: "required", checks: teacherChecks },
+    teacherReview: requiredTeacherReview,
   },
   {
     id: "lesson-15-body-and-health-package",
@@ -819,6 +848,6 @@ export const lessonPackages: readonly LessonPackage[] = [
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/12843/"),
       }),
     ],
-    teacherReview: { status: "required", checks: teacherChecks },
+    teacherReview: requiredTeacherReview,
   },
 ] as const;
