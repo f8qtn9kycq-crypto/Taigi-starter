@@ -57,7 +57,16 @@ export default function LessonStageContent({
     return (
       <div className={showAnswer ? "recall-card revealed" : "recall-card"}>
         <span>{phrase.meaning[text.locale]}</span>
-        {showAnswer && <div><strong>{phrase.hanji}</strong><p>{phrase.tailo}</p></div>}
+        {showAnswer && (
+          <div>
+            <strong>{phrase.hanji}</strong>
+            <div className="script-tabs" role="group" aria-label={text.romanizationSystem}>
+              <button type="button" className={script === "tailo" ? "active" : ""} onClick={() => setScript("tailo")}>{text.tailoLabel}</button>
+              <button type="button" className={script === "poj" ? "active" : ""} onClick={() => setScript("poj")}>{text.pojLabel}</button>
+            </div>
+            <p className="romanization">{script === "tailo" ? phrase.tailo : phrase.poj}</p>
+          </div>
+        )}
       </div>
     );
   }
