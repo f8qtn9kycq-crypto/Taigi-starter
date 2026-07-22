@@ -43,6 +43,9 @@ jobs:
       PROJECT_NUMBER: "6"
       DEFAULT_ISSUE_STATUS: Backlog
       DEFAULT_AI_OWNER: Codex
+      DEFAULT_PRIORITY: P2
+      DEFAULT_RISK_TIER: Tier 1
+      DEFAULT_AREA: Workflow
       DEFAULT_DEPENDABOT_PRIORITY: P2
       DEFAULT_DEPENDABOT_RISK_TIER: Tier 1
       DEFAULT_DEPENDABOT_AREA: Workflow
@@ -344,8 +347,10 @@ jobs:
 
           [[ "$priority" =~ ^P[012]$ ]] || priority="$(printf '%s\n' "$content_title" "$content_body" | grep -Eo '(^|[^A-Za-z0-9])P[012]([^A-Za-z0-9]|$)' | grep -Eo 'P[012]' | head -n 1 || true)"
           [[ "$risk_tier" =~ ^Tier\ [0-3]$ ]] || risk_tier="$(printf '%s\n' "$content_title" "$content_body" | grep -Eio 'Tier[[:space:]]*[0-3]' | sed -E 's/[[:space:]]+/ /' | head -n 1 || true)"
+          [[ "$priority" =~ ^P[012]$ ]] || priority="$DEFAULT_PRIORITY"
+          [[ "$risk_tier" =~ ^Tier\ [0-3]$ ]] || risk_tier="$DEFAULT_RISK_TIER"
           [[ "$ai_owner" =~ ^(Codex|Claude|ChatGPT|Gemini)$ ]] || ai_owner="$DEFAULT_AI_OWNER"
-          [[ "$area" =~ ^(Content|Audio|Lesson|UX|Accessibility|i18n|Progress|Workflow)$ ]] || area=""
+          [[ "$area" =~ ^(Content|Audio|Lesson|UX|Accessibility|i18n|Progress|Workflow)$ ]] || area="$DEFAULT_AREA"
 
           if [[ "$content_author" == "dependabot[bot]" ]]; then
             [[ "$priority" =~ ^P[012]$ ]] || priority="$DEFAULT_DEPENDABOT_PRIORITY"
