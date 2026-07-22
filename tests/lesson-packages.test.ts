@@ -6,7 +6,7 @@ import { TEACHER_REVIEW_CHECK_IDS } from "../app/types/lesson-package.ts";
 test("planned lesson packages are complete content records without runtime audio claims", () => {
   assert.deepEqual(
     lessonPackages.map((lesson) => lesson.number),
-    [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+    [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
   );
 
   const phraseIds = new Set<string>();
@@ -42,4 +42,20 @@ test("planned lesson packages are complete content records without runtime audio
       assert.equal("audioUrl" in phrase, false);
     }
   }
+});
+
+test("M2.3 packages keep the source-verified lesson scope", () => {
+  const m23Packages = lessonPackages.filter((lesson) => lesson.number >= 16);
+
+  assert.deepEqual(
+    m23Packages.map((lesson) => lesson.title.zh),
+    ["出門坐車", "餐廳點菜", "買物件佮問價"],
+  );
+  assert.deepEqual(
+    m23Packages.flatMap((lesson) => lesson.phrases.map((phrase) => phrase.hanji)),
+    ["出門", "坐車", "車站", "食餐廳", "欲", "菜", "買", "物件", "偌濟", "價錢"],
+  );
+  assert.ok(m23Packages.every((lesson) => lesson.status === "planned"));
+  assert.ok(m23Packages.every((lesson) => lesson.teacherReview.status === "required"));
+  assert.ok(m23Packages.every((lesson) => lesson.phrases.every((phrase) => phrase.audio.status === "not-yet-added")));
 });
