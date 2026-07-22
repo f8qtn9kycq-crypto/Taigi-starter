@@ -84,7 +84,7 @@ as proof of learning behavior.
 | B02 | P0 | Start with cleared local storage and try each future stage control. | Future stages are disabled; only the current stage or an already completed stage can be opened. |
 | B03 | P0 | Exercise the Hear transition with working and failing audio. | Working audio must start before See unlocks; a failure gives a labelled no-audio path and never reports a successful listen. |
 | B04 | P0 | Move through See and Say. | See connects Hanji, meaning, Tâi-lô/POJ and audio; Say supports an actual speak-aloud attempt or an honest fallback without speech scoring. |
-| B05 | P0 | Enter Recall without looking at the answer. | The answer is hidden at entry, and the Use transition is unavailable until the learner explicitly reveals it. |
+| B05 | P0 | Enter Recall without looking at the answer. | The answer is hidden at entry; after reveal, Hanji and both Tâi-lô/POJ options are available, and the Use transition remains unavailable until the learner explicitly reveals the answer. |
 | B06 | P1 | Finish Use and open Review. | The phrase can be added once, is due immediately, and rating it schedules the documented interval. |
 | B07 | P1 | Refresh at each completed stage and reopen the page. | The saved stage is restored and never exceeds the lesson metadata stage count. |
 | B08 | P1 | Observe a first-time learner at 390×844. | The learner can explain the next action without coaching and completes the flow without horizontal scrolling or a fixed-nav collision. |

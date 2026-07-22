@@ -3,11 +3,12 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("ships the first-time Taigi landing content and production worker", async () => {
-  const [layout, landing, lesson, stagePanel, recording, recorder, copy, content, worker] = await Promise.all([
+  const [layout, landing, lesson, stagePanel, stageContent, recording, recorder, copy, content, worker] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonAccordion.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonStagePanel.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/LessonStageContent.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/RecordingPractice.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/hooks/useRecorder.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/taigi-content.ts", import.meta.url), "utf8"),
@@ -40,6 +41,11 @@ test("ships the first-time Taigi landing content and production worker", async (
   assert.match(stagePanel, /lessonStage\.id === "recall" && !showAnswer/);
   assert.match(stagePanel, /lessonStage\.id === "recall" && showAnswer/);
   assert.match(stagePanel, /reviewScheduled/);
+  assert.match(stageContent, /stage === "recall"/);
+  assert.match(stageContent, /showAnswer &&/);
+  assert.match(stageContent, /text\.tailoLabel/);
+  assert.match(stageContent, /text\.pojLabel/);
+  assert.match(stageContent, /script === "tailo" \? phrase\.tailo : phrase\.poj/);
   assert.match(recording, /text\.recordingLocalOnly/);
   assert.doesNotMatch(`${recording}\n${recorder}`, /fetch\(|XMLHttpRequest|navigator\.sendBeacon/);
   assert.match(landing, /text\.stageCount\(stage, totalStages\)/);
