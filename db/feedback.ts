@@ -29,6 +29,9 @@ export async function ensureFeedbackTable() {
     db.prepare(
       "CREATE INDEX IF NOT EXISTS feedback_created_at_idx ON feedback (created_at DESC)",
     ),
+    db.prepare(
+      "CREATE INDEX IF NOT EXISTS feedback_rate_limits_window_idx ON feedback_rate_limits (window_started_at)",
+    ),
   ]);
   return db;
 }

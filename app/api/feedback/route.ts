@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { ensureFeedbackTable } from "../../../db/feedback";
 import {
   FEEDBACK_RATE_LIMIT_MAX_SUBMISSIONS,
+  FEEDBACK_RATE_LIMIT_WINDOW_MS,
   isContentLengthTooLarge,
   isRateLimitAllowed,
   isSameOriginRequest,
@@ -69,6 +70,10 @@ async function hashSource(request: Request): Promise<string> {
 async function consumeRateLimit(db: D1Database, request: Request): Promise<boolean> {
   const windowStart = rateLimitWindowStart(Date.now());
   const sourceHash = await hashSource(request);
+  await db
+    .prepare("DELETE FROM feedback_rate_limits WHERE window_started_at < ?")
+    .bind(windowStart - FEEDBACK_RATE_LIMIT_WINDOW_MS * 2)
+    .run();
   const result = await db
     .prepare(
       `INSERT INTO feedback_rate_limits (source_hash, window_started_at, submission_count)
