@@ -74,3 +74,6 @@ AI 協作規範請見 [AGENTS.md](./AGENTS.md)，審查順序請見
 
 本專案使用 OpenAI Sites，並以 `.openai/hosting.json` 宣告 D1 綁定。請勿建立
 第二個 Sites 專案或更換既有 `project_id`。
+
+回饋 API 的 deployment boundary 與最小發佈前確認，請見
+[回饋安全部署邊界](./docs/feedback-security-deployment.md)。
