@@ -11,7 +11,7 @@
   來源、未修改音檔與授權 attribution。
 - `planned` lesson package 不得被 runtime catalog 當成 playable lesson。
 - Sites saved version 的 `source.commit_sha` 必須等於已驗證並推送的 release
-  commit；目前 live v5 的來源不可直接視為這個 release 的 provenance。
+  commit；目前 live version 7 已對應到 exact release head `12611c6`。
 
 ## Required gates
 
@@ -37,6 +37,8 @@ git diff --check github/main...HEAD
 - Recall 答案在 reveal 前不可見，Use 不能繞過 reveal。
 - feedback public POST 的 same-origin、body limit、rate limit 與 owner-only
   export；正式 D1 不寫入測試資料。
+- 若設定 `FEEDBACK_EXTERNAL_FORM_URL`，必須是 owner 提供的 HTTPS 私有表單；
+  未設定或無效時維持私有 D1 fallback，不得改接公開 GitHub Issue Form。
 
 手動證據要填回 `docs/research-prototype-test-plan.md` 的 Manual evidence
 record，不能只寫「已檢查」。
@@ -51,7 +53,8 @@ record，不能只寫「已檢查」。
 - production 唯一入口沒有可繞過可信 edge 的 alternate Worker route。
 - `cf-connecting-ip` 是可信 edge 注入的原始 requester source。
 - `oai-authenticated-user-email` 只能在可信 platform boundary 後被信任。
-- Worker logs、D1 backup/restore、rate limiting 與 rollback 方法已實測。
+- Worker logs、rate limiting 與 rollback 方法已實測；D1 backup/restore
+  仍須平台管理員提供證據。
 
 若 Sites 無法提供 isolated staging/preview 或上述 runtime evidence，不要建立
 第二個 Sites project；把 Cloudflare Workers + D1 migration 留作明確的
