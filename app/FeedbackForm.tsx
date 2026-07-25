@@ -22,6 +22,10 @@ const labels = {
     sending: "送出中…",
     thanks: "收到，謝謝你幫忙讓台語更好學。",
     error: "目前無法送出，請稍後再試。",
+    externalIntro: "回饋會在安全的外部表單中提交，不會寫入本網站。",
+    openExternal: "開啟外部回饋表單",
+    externalPrivacy: "請不要填寫姓名、聯絡方式或其他敏感個人資料。",
+    loading: "回饋表單載入中…",
     close: "關閉",
   },
   en: {
@@ -41,6 +45,10 @@ const labels = {
     sending: "Sending…",
     thanks: "Thank you — your feedback will make Tâi-gí easier to learn.",
     error: "Feedback could not be sent. Please try again later.",
+    externalIntro: "Your feedback will be submitted through a secure external form and will not be stored here.",
+    openExternal: "Open external feedback form",
+    externalPrivacy: "Please do not include your name, contact details, or other sensitive personal data.",
+    loading: "Loading feedback form…",
     close: "Close",
   },
 } as const;
@@ -53,7 +61,30 @@ export default function FeedbackForm({ locale, learningStage }: Props) {
   const [usefulness, setUsefulness] = useState(0);
   const [completedTask, setCompletedTask] = useState("");
   const [blocker, setBlocker] = useState("");
+  const [externalFormUrl, setExternalFormUrl] = useState<string | null>(null);
+  const [feedbackDestinationReady, setFeedbackDestinationReady] = useState(false);
   const text = labels[locale];
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/feedback-config")
+      .then(async (response) => {
+        if (!response.ok) return null;
+        const data = (await response.json()) as { externalFormUrl?: unknown };
+        return typeof data.externalFormUrl === "string" && data.externalFormUrl.startsWith("https://")
+          ? data.externalFormUrl
+          : null;
+      })
+      .then((url) => {
+        if (!active) return;
+        setExternalFormUrl(url);
+        setFeedbackDestinationReady(true);
+      })
+      .catch(() => {
+        if (active) setFeedbackDestinationReady(true);
+      });
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -106,6 +137,18 @@ export default function FeedbackForm({ locale, learningStage }: Props) {
             <button type="button" className="modal-close" onClick={() => setOpen(false)} aria-label={text.close}>×</button>
             {status === "sent" ? (
               <div className="feedback-success"><span>✓</span><h2>{text.thanks}</h2><button type="button" className="primary" onClick={() => setOpen(false)}>{text.close}</button></div>
+            ) : !feedbackDestinationReady ? (
+              <div className="feedback-external"><h2 id="feedback-title">{text.title}</h2><p className="feedback-intro">{text.loading}</p></div>
+            ) : externalFormUrl ? (
+              <div className="feedback-external">
+                <span className="section-label">FEEDBACK</span>
+                <h2 id="feedback-title">{text.title}</h2>
+                <p className="feedback-intro">{text.externalIntro}</p>
+                <a className="primary feedback-submit" href={externalFormUrl} target="_blank" rel="noreferrer">
+                  {text.openExternal}<span>↗</span>
+                </a>
+                <p className="feedback-privacy">{text.externalPrivacy}</p>
+              </div>
             ) : (
               <form onSubmit={submit}>
                 <span className="section-label">FEEDBACK</span>
