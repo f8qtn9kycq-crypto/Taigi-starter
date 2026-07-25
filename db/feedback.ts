@@ -14,11 +14,18 @@ const createTableSql = `CREATE TABLE IF NOT EXISTS feedback (
   comment TEXT NOT NULL
 )`;
 
+const createRateLimitTableSql = `CREATE TABLE IF NOT EXISTS feedback_rate_limits (
+  source_hash TEXT PRIMARY KEY NOT NULL,
+  window_started_at INTEGER NOT NULL,
+  submission_count INTEGER NOT NULL
+)`;
+
 export async function ensureFeedbackTable() {
   const db = env.DB;
   if (!db) throw new Error("Feedback database is unavailable");
   await db.batch([
     db.prepare(createTableSql),
+    db.prepare(createRateLimitTableSql),
     db.prepare(
       "CREATE INDEX IF NOT EXISTS feedback_created_at_idx ON feedback (created_at DESC)",
     ),

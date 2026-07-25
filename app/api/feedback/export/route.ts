@@ -2,8 +2,7 @@ import { env } from "cloudflare:workers";
 import { NextResponse } from "next/server";
 import { ensureFeedbackTable, FeedbackRow } from "../../../../db/feedback";
 import { getChatGPTUser } from "../../../chatgpt-auth";
-
-function csvCell(value: unknown) { return `"${String(value ?? "").replaceAll('"', '""')}"`; }
+import { csvCell } from "../../../utils/feedback-security";
 
 export async function GET() {
   const user = await getChatGPTUser();
@@ -12,5 +11,12 @@ export async function GET() {
   const result = await db.prepare("SELECT * FROM feedback ORDER BY created_at DESC").all<FeedbackRow>();
   const headers = ["created_at","locale","learning_stage","screen_width","usefulness","completed_task","blocker","comment"];
   const csv = [headers.join(","), ...(result.results ?? []).map((row) => headers.map((key) => csvCell(row[key as keyof FeedbackRow])).join(","))].join("\n");
-  return new Response(csv, { headers: { "content-type": "text/csv; charset=utf-8", "content-disposition": 'attachment; filename="taigi-feedback.csv"' } });
+  return new Response(csv, {
+    headers: {
+      "cache-control": "no-store",
+      "content-disposition": 'attachment; filename="taigi-feedback.csv"',
+      "content-type": "text/csv; charset=utf-8",
+      "x-content-type-options": "nosniff",
+    },
+  });
 }
