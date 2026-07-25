@@ -47,7 +47,8 @@ test("ships the first-time Taigi landing content and production worker", async (
   assert.match(stageContent, /showAnswer &&/);
   assert.match(stageContent, /text\.tailoLabel/);
   assert.match(stageContent, /text\.pojLabel/);
-  assert.match(stageContent, /script === "tailo" \? phrase\.tailo : phrase\.poj/);
+  assert.match(stageContent, /phrase\.poj !== null/);
+  assert.match(stageContent, /script === "poj" && phrase\.poj \? phrase\.poj : phrase\.tailo/);
   assert.match(recording, /text\.recordingLocalOnly/);
   assert.doesNotMatch(`${recording}\n${recorder}`, /fetch\(|XMLHttpRequest|navigator\.sendBeacon/);
   assert.match(landing, /text\.stageCount\(stage, totalStages\)/);
