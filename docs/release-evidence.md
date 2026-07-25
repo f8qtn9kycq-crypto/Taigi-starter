@@ -33,10 +33,10 @@
 | Feedback cross-origin | Pass | Live evil Origin returned 403; unsupported content type returned 415 |
 | Worker ingress evidence | Pass | Worker logs show Cloudflare-injected `cf-connecting-ip`; no error-level events in the smoke window |
 | Keyboard traversal | Pending | Browser backend did not produce reliable Tab focus evidence |
-| Audio failure fallback | Pending | Not yet recorded in browser |
+| Audio failure fallback | Pass (isolated QA) | Clean exact-source local QA with a forced missing MP3 showed the labelled failure alert and enabled the continue-without-audio path; production network interception was unavailable |
 | Microphone denied | Pass | Clean exact-source browser origin showed the denial alert and kept the next Say action usable |
-| Microphone unsupported | Pending | Not separately recorded |
-| Staging feedback POST/export | Pending | Must use isolated D1; no production test data submitted |
+| Microphone unsupported | Pass (isolated QA) | Clean exact-source local QA with an unsupported-capability override disabled recording and showed the unsupported-browser alert |
+| Staging feedback POST/export | Pending | Must use isolated D1 or the selected private external form; no production test data submitted |
 | Sites owner/auth attestation | Pass | Owner deployment attestation recorded in PR #28 comment `5078972911`; it covers the live ingress, trusted forwarded source, platform auth boundary, and explicit acceptance |
 | D1 backup/restore | Pending | Sites connector exposes no backup/restore operation; platform evidence not yet demonstrated |
 
