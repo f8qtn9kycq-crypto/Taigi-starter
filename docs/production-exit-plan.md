@@ -11,7 +11,7 @@
   來源、未修改音檔與授權 attribution。
 - `planned` lesson package 不得被 runtime catalog 當成 playable lesson。
 - Sites saved version 的 `source.commit_sha` 必須等於已驗證並推送的 release
-  commit；目前 live version 7 已對應到 exact release head `12611c6`。
+  commit；目前 live version 11 已對應到 exact release head `54401cd`。
 
 ## Required gates
 
@@ -38,7 +38,11 @@ git diff --check github/main...HEAD
 - feedback public POST 的 same-origin、body limit、rate limit 與 owner-only
   export；正式 D1 不寫入測試資料。
 - 若設定 `FEEDBACK_EXTERNAL_FORM_URL`，必須是 owner 提供的 HTTPS 私有表單；
-  未設定或無效時維持私有 D1 fallback，不得改接公開 GitHub Issue Form。
+  必須先以未登入狀態確認一般使用者能填寫；未設定、無效或要求登入時維持
+  私有 D1 fallback，不得改接公開 GitHub Issue Form。
+- Feedback 與 review modal 必須將焦點帶入 Close control、以 Tab/Shift+Tab
+  留在 dialog 內，Escape 關閉並把焦點還給觸發按鈕；若瀏覽器工具無法送出
+  Tab，必須保留程式碼與實際 focus/Escape 證據為 partial，不能宣稱完整 pass。
 
 手動證據要填回 `docs/research-prototype-test-plan.md` 的 Manual evidence
 record，不能只寫「已檢查」。
