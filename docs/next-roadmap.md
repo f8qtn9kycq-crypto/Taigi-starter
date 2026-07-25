@@ -27,7 +27,7 @@ Only then: playable lesson integration
 
 ## 目前基線
 
-以 2026-07-26 GitHub `main`（`fc864fb`）為基準：
+以 2026-07-26 GitHub `main`（`08732a4`）為基準：
 
 - 第 1 課是唯一可體驗的完整 lesson。
 - 第 2–15 課已在 `app/data/lesson-packages.ts` 建立 typed package，全部
