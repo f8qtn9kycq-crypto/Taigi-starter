@@ -8,6 +8,7 @@
 - Sites saved source: `c52077d83a476d51fb1b64cf79c0d00373cc4cfe`
 - Production URL: https://taigi-start.alexcy2025.chatgpt.site
 - Version 13 deployment: `appgdep_6a64eae0f2dc8191be8eece6d321951e`, succeeded
+- Latest runtime-config deployment: `appgdep_6a64ecd7f7648191b1467cd0c1c03f25`, succeeded; Sites environment revision `5`
 - Previous rollback restore deployment: `appgdep_6a64b32624908191b2bddfb337d15aa6`, succeeded
 - Date: 2026-07-26
 - Scope: Codex-assisted verification; not external learner research
@@ -37,9 +38,9 @@
 | Microphone denied | Pass | Clean exact-source browser origin showed the denial alert and kept the next Say action usable |
 | Microphone unsupported | Pass (isolated QA) | Clean exact-source local QA with an unsupported-capability override disabled recording and showed the unsupported-browser alert |
 | Staging feedback POST/export | Pass (isolated D1) | Local exact-source staging POST returned 200 and inserted a test row in the isolated Miniflare D1; unauthenticated export returned 403; no production data submitted |
-| External feedback configuration | Pass (fallback active) | Live `/api/feedback-config` returned `{"externalFormUrl":null}`; the live UI showed the private D1 form; no external provider URL was set |
-| Google Form readiness | Pending | The owner-provided preview URL opened, but unauthenticated controls were disabled behind Google sign-in; it is not activated until the form permits anonymous responses |
-| Live API security smoke | Pass | Current live config returned null with `no-store`; export returned 403, evil Origin returned 403, and unsupported content type returned 415 |
+| External feedback configuration | Pass | Live `/api/feedback-config` returned the owner-provided Google Form HTTPS URL with `cache-control: no-store`; the production dialog exposed the external-form link |
+| Google Form readiness | Pass | Unauthenticated preview exposed enabled radio, checkbox, textbox, and Submit controls; no response was submitted by Codex; the URL is now active in production |
+| Live API security smoke | Pass | Current live config returned the external URL with `no-store`; export returned 403, evil Origin returned 403, and same-origin unsupported content type returned 415 |
 | Sites owner/auth attestation | Pass | Owner deployment attestation recorded in PR #28 comment `5078972911`; it covers the live ingress, trusted forwarded source, platform auth boundary, and explicit acceptance |
 | D1 backup/restore | Pending | Sites connector exposes no backup/restore operation; platform evidence not yet demonstrated |
 
