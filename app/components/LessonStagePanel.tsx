@@ -54,11 +54,11 @@ export default function LessonStagePanel({
       {lessonStage.id === "hear" && (
         <p className="media-attribution">
           {text.audioSourcePrefix}{" "}
-          <a href={phrase.source.canonicalUrl} target="_blank" rel="noreferrer">
+          <a href={phrase.audioAttribution.sourceUrl} target="_blank" rel="noreferrer">
             {phrase.source.title[text.locale]}
           </a>{" · "}
-          <a href={phrase.source.licenseUrl} target="_blank" rel="noreferrer">
-            {phrase.source.license}
+          <a href={phrase.audioAttribution.licenseUrl} target="_blank" rel="noreferrer">
+            {phrase.audioAttribution.license}
           </a>
         </p>
       )}

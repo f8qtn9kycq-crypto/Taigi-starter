@@ -10,15 +10,25 @@ export type LessonSource = {
   speaker: string | null;
 };
 
+export type LessonAudioAttribution = {
+  audioUrl: string;
+  sourceUrl: string;
+  license: string;
+  licenseUrl: string;
+  speaker: string | null;
+  isUnmodifiedOriginal: true;
+};
+
 export type LessonPhrase = {
   id: string;
   hanji: string;
   tailo: string;
-  poj: string;
+  poj: string | null;
   meaning: LocalizedText;
   cultureNote: LocalizedText;
   audioUrl: string;
   source: LessonSource;
+  audioAttribution: LessonAudioAttribution;
 };
 
 export const LESSON_STAGE_IDS = ["hear", "see", "say", "recall", "use"] as const;
