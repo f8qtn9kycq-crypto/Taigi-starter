@@ -11,7 +11,8 @@
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
     "test": "npm run build && node --experimental-strip-types --test tests/*.test.*",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern .worktrees --ignore-pattern node_modules.broken",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "production:preflight": "bash scripts/production-preflight.sh"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",

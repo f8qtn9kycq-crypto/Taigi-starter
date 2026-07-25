@@ -77,3 +77,6 @@ AI 協作規範請見 [AGENTS.md](./AGENTS.md)，審查順序請見
 
 回饋 API 的 deployment boundary 與最小發佈前確認，請見
 [回饋安全部署邊界](./docs/feedback-security-deployment.md)。
+
+完整 production exit gate 與可執行 preflight 請見
+[Production exit plan](./docs/production-exit-plan.md)。
