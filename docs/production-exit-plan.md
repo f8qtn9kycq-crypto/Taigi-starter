@@ -11,7 +11,7 @@
   來源、未修改音檔與授權 attribution。
 - `planned` lesson package 不得被 runtime catalog 當成 playable lesson。
 - Sites saved version 的 `source.commit_sha` 必須等於已驗證並推送的 release
-  commit；目前 live version 11 已對應到 exact release head `54401cd`。
+  commit；目前 live version 13 已對應到 exact release head `c52077d`。
 
 ## Required gates
 
