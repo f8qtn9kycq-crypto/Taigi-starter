@@ -123,12 +123,12 @@ This is Codex-moderated verification, not external learner research.
 | zh-TW / English | Pass | Live toggle rendered both complete states and returned correctly |
 | Keyboard | Pending | Browser backend did not produce reliable Tab focus traversal evidence |
 | Audio success | Pass | Live MP3 changed `已聽 0 次` to `已聽 1 次` and unlocked See |
-| Audio failure fallback | Pending | Network interception was unavailable in the browser QA surface |
+| Audio failure fallback | Pass (isolated QA) | Clean exact-source local QA with a forced missing MP3 showed the labelled failure alert and enabled the continue-without-audio path; production network interception was unavailable |
 | Microphone denied | Pass | Clean exact-source origin showed the denial alert and kept the next Say action usable |
-| Microphone unsupported | Pending | Not separately recorded |
+| Microphone unsupported | Pass (isolated QA) | Clean exact-source local QA with an unsupported-capability override disabled recording and showed the unsupported-browser alert |
 | Privacy / AI boundary | Pass | No speech scoring or upload claim; live export 403, evil Origin 403, unsupported JSON 415; owner trust attestation recorded in PR #28 comment `5078972911` |
 | Recall / Use gate | Pass | Live path kept the answer hidden until reveal and then exposed Use |
-| Busuu-style lesson contract | Pass with B03/keyboard pending | B01, B02, B04–B07 automated/live evidence pass; B03 failure-audio branch and T11 keyboard evidence remain pending |
+| Busuu-style lesson contract | Pass with keyboard/production failure-path pending | B01–B07 automated/live evidence pass; keyboard evidence, production network failure injection, and staging feedback evidence remain pending |
 | Production rollback | Pass | Version 5 deployment reverted live to `7 / 12`; version 6 restored `1 / 1` |
 | Branch hygiene | Pass | Exact source archive, locked Sites manifest, no production data or credentials in release evidence |
 | D1 backup / restore | Pending | Sites connector exposes no backup/restore operation; platform evidence required |
