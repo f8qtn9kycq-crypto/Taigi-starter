@@ -52,6 +52,9 @@ record，不能只寫「已檢查」。
 在 Sites project `appgprj_6a50ce9195588191975740438c4a8f0e` 驗證：
 
 - `DB` binding 指向預期 D1。
+- `FEEDBACK_EXTERNAL_FORM_URL` 已設定為 owner 提供的 Google Form；未登入預覽
+  已確認 radio、checkbox、textbox 與 Submit controls 可用，Sites runtime
+  environment revision 為 `5`。
 - `FEEDBACK_OWNER_EMAIL` 已設定非空值，且 owner `/feedback` 與 CSV export
   的登入邊界實際可用。
 - production 唯一入口沒有可繞過可信 edge 的 alternate Worker route。
