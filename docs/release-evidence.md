@@ -37,7 +37,7 @@
 | Microphone denied | Pass | Clean exact-source browser origin showed the denial alert and kept the next Say action usable |
 | Microphone unsupported | Pending | Not separately recorded |
 | Staging feedback POST/export | Pending | Must use isolated D1; no production test data submitted |
-| Sites owner/auth attestation | Pending | Owner must accept the documented platform trust boundary in PR #28 |
+| Sites owner/auth attestation | Pass | Owner deployment attestation recorded in PR #28 comment `5078972911`; it covers the live ingress, trusted forwarded source, platform auth boundary, and explicit acceptance |
 | D1 backup/restore | Pending | Sites connector exposes no backup/restore operation; platform evidence not yet demonstrated |
 
 This file records evidence only. It does not set the production preflight

@@ -126,7 +126,7 @@ This is Codex-moderated verification, not external learner research.
 | Audio failure fallback | Pending | Network interception was unavailable in the browser QA surface |
 | Microphone denied | Pass | Clean exact-source origin showed the denial alert and kept the next Say action usable |
 | Microphone unsupported | Pending | Not separately recorded |
-| Privacy / AI boundary | Pass with platform pending | No speech scoring or upload claim; live export 403, evil Origin 403, unsupported JSON 415; owner trust attestation remains pending |
+| Privacy / AI boundary | Pass | No speech scoring or upload claim; live export 403, evil Origin 403, unsupported JSON 415; owner trust attestation recorded in PR #28 comment `5078972911` |
 | Recall / Use gate | Pass | Live path kept the answer hidden until reveal and then exposed Use |
 | Busuu-style lesson contract | Pass with B03/keyboard pending | B01, B02, B04–B07 automated/live evidence pass; B03 failure-audio branch and T11 keyboard evidence remain pending |
 | Production rollback | Pass | Version 5 deployment reverted live to `7 / 12`; version 6 restored `1 / 1` |
