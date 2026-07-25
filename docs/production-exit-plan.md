@@ -76,15 +76,20 @@ conditional fallback。
 npm run production:preflight
 ```
 
-一般 source gate 通過但尚未完成 production evidence 時，命令會保持失敗。
-只有在下列三項證據已經真實完成後，才可執行最後的 release gate：
+一般 source gate 通過但尚未完成全部 production evidence 時，命令會保持失敗。
+只有下列每一項證據都已經真實完成，才可執行最後的 release gate：
 
 ```bash
-MANUAL_QA_STATUS=pass \
+KEYBOARD_QA_STATUS=pass \
+AUDIO_FAILURE_STATUS=pass \
+MICROPHONE_DENIED_STATUS=pass \
+MICROPHONE_UNSUPPORTED_STATUS=pass \
+STAGING_FEEDBACK_STATUS=pass \
 OWNER_ATTESTATION_STATUS=pass \
+D1_BACKUP_STATUS=pass \
 ROLLBACK_STATUS=pass \
 npm run production:preflight
 ```
 
-這些環境變數是 evidence assertions，不是用來繞過檢查的 flags；PR 或 release
-記錄必須同時附上對應證據位置。
+每個環境變數都是獨立 evidence assertion，不是用來繞過檢查的 aggregate flag；
+PR 或 release 記錄必須同時附上每一項對應證據位置。
