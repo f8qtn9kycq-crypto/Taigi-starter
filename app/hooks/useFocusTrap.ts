@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useRef } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 
 const focusableSelector = [
   "a[href]",
@@ -15,6 +15,12 @@ type FocusTrapOptions = {
   open: boolean;
   returnFocus?: RefObject<HTMLElement | null>;
 };
+
+export function getFocusTrapIndex(currentIndex: number, length: number, reverse: boolean): number {
+  if (length <= 0) return -1;
+  if (reverse) return currentIndex <= 0 || currentIndex >= length ? length - 1 : currentIndex - 1;
+  return currentIndex < 0 || currentIndex >= length - 1 ? 0 : currentIndex + 1;
+}
 
 function focusableElements(container: HTMLElement): HTMLElement[] {
   return Array.from(container.querySelectorAll<HTMLElement>(focusableSelector)).filter(
@@ -63,12 +69,12 @@ export function useFocusTrap({
       }
 
       const currentIndex = elements.indexOf(document.activeElement as HTMLElement);
-      if (event.shiftKey && (currentIndex <= 0 || currentIndex === -1)) {
+      const isBoundary = event.shiftKey
+        ? currentIndex <= 0 || currentIndex >= elements.length
+        : currentIndex < 0 || currentIndex === elements.length - 1;
+      if (isBoundary) {
         event.preventDefault();
-        elements[elements.length - 1].focus();
-      } else if (!event.shiftKey && (currentIndex === elements.length - 1 || currentIndex === -1)) {
-        event.preventDefault();
-        elements[0].focus();
+        elements[getFocusTrapIndex(currentIndex, elements.length, event.shiftKey)].focus();
       }
     };
 
