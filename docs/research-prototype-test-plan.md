@@ -126,9 +126,10 @@ This is Codex-moderated verification, not external learner research.
 | Audio failure fallback | Pass (isolated QA) | Clean exact-source local QA with a forced missing MP3 showed the labelled failure alert and enabled the continue-without-audio path; production network interception was unavailable |
 | Microphone denied | Pass | Clean exact-source origin showed the denial alert and kept the next Say action usable |
 | Microphone unsupported | Pass (isolated QA) | Clean exact-source local QA with an unsupported-capability override disabled recording and showed the unsupported-browser alert |
+| Staging feedback POST/export | Pass (isolated D1) | Local exact-source staging POST inserted a test row in isolated Miniflare D1; unauthenticated export returned 403; no production data submitted |
 | Privacy / AI boundary | Pass | No speech scoring or upload claim; live export 403, evil Origin 403, unsupported JSON 415; owner trust attestation recorded in PR #28 comment `5078972911` |
 | Recall / Use gate | Pass | Live path kept the answer hidden until reveal and then exposed Use |
-| Busuu-style lesson contract | Pass with keyboard/production failure-path pending | B01–B07 automated/live evidence pass; keyboard evidence, production network failure injection, and staging feedback evidence remain pending |
+| Busuu-style lesson contract | Pass with keyboard/production failure-path pending | B01–B07 automated/live evidence pass; keyboard evidence and production network failure injection remain pending; isolated D1 staging feedback evidence passes |
 | Production rollback | Pass | Version 5 deployment reverted live to `7 / 12`; version 6 restored `1 / 1` |
 | Branch hygiene | Pass | Exact source archive, locked Sites manifest, no production data or credentials in release evidence |
 | D1 backup / restore | Pending | Sites connector exposes no backup/restore operation; platform evidence required |
