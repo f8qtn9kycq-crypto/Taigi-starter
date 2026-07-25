@@ -110,16 +110,25 @@ proxy run, labeled as such rather than presented as external learner research.
 
 ## Manual evidence record
 
-Complete this table in the PR description after executing the plan.
+Updated 2026-07-25 from the exact production release and live smoke evidence.
+This is Codex-moderated verification, not external learner research.
 
 | Area | Verdict | Evidence |
 | --- | --- | --- |
-| Automated suite | Pending | `npm test` |
-| Lint | Pending | `npm run lint` |
-| 320 px mobile | Pending | T01–T05, T10–T12 |
-| 412 px mobile | Pending | T01–T05, T10–T12 |
-| zh-TW / English | Pending | T02 |
-| Keyboard | Pending | T11 |
-| Privacy / AI boundary | Pending | T06, T07, T13 |
-| Busuu-style lesson contract | Pending | B01–B08 |
-| Branch hygiene | Pending | diff and secret/data inspection |
+| Automated suite | Pass | `npm test`, 29/29; production build included |
+| Lint | Pass | `npm run lint` |
+| 320 px mobile | Pass | No horizontal overflow; visible controls met 44px in the live/release QA matrix |
+| 390 px mobile | Pass | No horizontal overflow; live five-stage proxy completed without collision |
+| 412 px mobile | Pass | No horizontal overflow; visible controls met 44px in the live/release QA matrix |
+| zh-TW / English | Pass | Live toggle rendered both complete states and returned correctly |
+| Keyboard | Pending | Browser backend did not produce reliable Tab focus traversal evidence |
+| Audio success | Pass | Live MP3 changed `已聽 0 次` to `已聽 1 次` and unlocked See |
+| Audio failure fallback | Pending | Network interception was unavailable in the browser QA surface |
+| Microphone denied | Pass | Clean exact-source origin showed the denial alert and kept the next Say action usable |
+| Microphone unsupported | Pending | Not separately recorded |
+| Privacy / AI boundary | Pass with platform pending | No speech scoring or upload claim; live export 403, evil Origin 403, unsupported JSON 415; owner trust attestation remains pending |
+| Recall / Use gate | Pass | Live path kept the answer hidden until reveal and then exposed Use |
+| Busuu-style lesson contract | Pass with B03/keyboard pending | B01, B02, B04–B07 automated/live evidence pass; B03 failure-audio branch and T11 keyboard evidence remain pending |
+| Production rollback | Pass | Version 5 deployment reverted live to `7 / 12`; version 6 restored `1 / 1` |
+| Branch hygiene | Pass | Exact source archive, locked Sites manifest, no production data or credentials in release evidence |
+| D1 backup / restore | Pending | Sites connector exposes no backup/restore operation; platform evidence required |
