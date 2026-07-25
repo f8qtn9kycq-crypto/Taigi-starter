@@ -8,6 +8,7 @@ import {
   isSameOriginRequest,
   isSupportedJsonContentType,
   MAX_FEEDBACK_BODY_BYTES,
+  normalizeRateLimitSource,
   rateLimitWindowStart,
 } from "../app/utils/feedback-security.ts";
 
@@ -15,9 +16,15 @@ test("rejects cross-origin or malformed feedback requests", () => {
   assert.equal(isSameOriginRequest("https://taigi.example/api/feedback", "https://evil.example"), false);
   assert.equal(isSameOriginRequest("https://taigi.example/api/feedback", "not a URL"), false);
   assert.equal(isSameOriginRequest("https://taigi.example/api/feedback", "https://taigi.example"), true);
-  assert.equal(isSameOriginRequest("https://taigi.example/api/feedback", null), true);
+  assert.equal(isSameOriginRequest("https://taigi.example/api/feedback", null), false);
   assert.equal(isSupportedJsonContentType("application/json; charset=utf-8"), true);
   assert.equal(isSupportedJsonContentType("text/plain"), false);
+});
+
+test("requires a non-empty platform-provided rate-limit source", () => {
+  assert.equal(normalizeRateLimitSource(null), null);
+  assert.equal(normalizeRateLimitSource("   "), null);
+  assert.equal(normalizeRateLimitSource(" 203.0.113.10 "), "203.0.113.10");
 });
 
 test("bounds feedback body before JSON parsing", () => {

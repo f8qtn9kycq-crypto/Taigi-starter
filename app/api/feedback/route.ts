@@ -8,6 +8,7 @@ import {
   isSameOriginRequest,
   isSupportedJsonContentType,
   MAX_FEEDBACK_BODY_BYTES,
+  normalizeRateLimitSource,
   rateLimitWindowStart,
 } from "../../utils/feedback-security";
 
@@ -58,8 +59,7 @@ async function readBoundedBody(request: Request): Promise<string | null> {
   return new TextDecoder().decode(body);
 }
 
-async function hashSource(request: Request): Promise<string> {
-  const source = request.headers.get("cf-connecting-ip")?.trim() || "unknown";
+async function hashSource(source: string): Promise<string> {
   const digest = await crypto.subtle.digest(
     "SHA-256",
     new TextEncoder().encode(`taigi-feedback-rate-v1:${source}`),
@@ -67,9 +67,9 @@ async function hashSource(request: Request): Promise<string> {
   return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
-async function consumeRateLimit(db: D1Database, request: Request): Promise<boolean> {
+async function consumeRateLimit(db: D1Database, source: string): Promise<boolean> {
   const windowStart = rateLimitWindowStart(Date.now());
-  const sourceHash = await hashSource(request);
+  const sourceHash = await hashSource(source);
   await db
     .prepare("DELETE FROM feedback_rate_limits WHERE window_started_at < ?")
     .bind(windowStart - FEEDBACK_RATE_LIMIT_WINDOW_MS * 2)
@@ -101,6 +101,10 @@ export async function POST(request: Request) {
   }
   if (!isSupportedJsonContentType(request.headers.get("content-type"))) {
     return NextResponse.json({ ok: false, error: "unsupported_content_type" }, { status: 415 });
+  }
+  const rateLimitSource = normalizeRateLimitSource(request.headers.get("cf-connecting-ip"));
+  if (!rateLimitSource) {
+    return NextResponse.json({ ok: false, error: "rate_limit_unavailable" }, { status: 503 });
   }
 
   const body = await readBoundedBody(request);
@@ -142,7 +146,7 @@ export async function POST(request: Request) {
   }
 
   const db = await ensureFeedbackTable();
-  if (!(await consumeRateLimit(db, request))) {
+  if (!(await consumeRateLimit(db, rateLimitSource))) {
     return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
   }
   await db

@@ -3,13 +3,18 @@ export const FEEDBACK_RATE_LIMIT_WINDOW_MS = 60 * 1000;
 export const FEEDBACK_RATE_LIMIT_MAX_SUBMISSIONS = 5;
 
 export function isSameOriginRequest(requestUrl: string, origin: string | null): boolean {
-  if (!origin) return true;
+  if (!origin) return false;
 
   try {
     return new URL(origin).origin === new URL(requestUrl).origin;
   } catch {
     return false;
   }
+}
+
+export function normalizeRateLimitSource(source: string | null): string | null {
+  const normalized = source?.trim();
+  return normalized || null;
 }
 
 export function isSupportedJsonContentType(contentType: string | null): boolean {
