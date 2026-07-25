@@ -27,7 +27,7 @@ Only then: playable lesson integration
 
 ## 目前基線
 
-以 2026-07-22 的 GitHub `main` 為基準：
+以 2026-07-26 GitHub `main`（`fc864fb`）為基準：
 
 - 第 1 課是唯一可體驗的完整 lesson。
 - 第 2–15 課已在 `app/data/lesson-packages.ts` 建立 typed package，全部
@@ -38,6 +38,22 @@ Only then: playable lesson integration
   planned package 已接入 React。
 - GitHub Project #6 已是現有 issue／PR 流程的一部分，後續內容工作應維持
   一個明確 issue 對應一個可審核 PR。
+
+## M2 目前交付狀態
+
+M2.1–M2.4 的實作邊界已進入 `main`；這不等於已經有真實的 approved handoff
+或第二課 playable content：
+
+| 工作包 | main 狀態 | Truthful product state |
+| --- | --- | --- |
+| M2.1 Package validator | 已合併 | validator 與測試可拒絕不完整 package |
+| M2.2 Teacher review contract | 已合併 | 未完成審核仍只能是 `planned` |
+| M2.3 內容 16–18 | 已合併 | package 已建立，但仍 `planned`，audio `not-yet-added` |
+| M2.4 Package-to-lesson handoff | 已合併 | integration boundary 已建立；尚無真實 approved handoff artifact |
+| M2.5 Beginner pilot | 計畫已合併 | `planned`／`not-run`，沒有研究結果可宣稱 |
+
+目前沒有 open PR 或 open Issue。下一個工作不應重新宣告 M2.1，而應在前置
+條件齊備後執行 M2.5 pilot readiness／execution。
 
 ## 研究轉成的產品原則
 
@@ -62,13 +78,11 @@ Only then: playable lesson integration
 
 每個工作包都維持一個 issue、一個 branch、一個 PR，依序處理：
 
-1. 先做 M2.1 validator；它不改 React，也不改現有 package 內容。
-2. validator 綠燈後，再做 M2.2 review contract；保留所有 planned 課程的
-   誠實狀態。
-3. 接著才做 M2.3 第 16–18 課 package；每一課逐詞核對教育部 canonical URL、
-   台羅與可接受變體，再跑完整測試。
-4. M2.4 是獨立的 integration gate，不得因 package 已建立就自動接入畫面。
-5. M2.5 只做匿名、低風險的學習驗證；錄音仍是瀏覽器暫存，不上傳、不持久化。
+1. M2.1 validator、M2.2 review contract、M2.3 package、M2.4 handoff gate 均已交付；保留所有 planned 課程的誠實狀態。
+2. M2.5 先完成 readiness gate：確認真實 teacher approval、音檔 attribution、390×844 mobile evidence、測試 commit 與 facilitator 規則。
+3. readiness gate 通過後，才招募 10–20 位初學者並執行短期 pilot。
+4. pilot 只提交去識別化 aggregate summary；完成前所有結果維持 `not-run`。
+5. 只有 aggregate summary、privacy review 與 mobile evidence 完成後，才決定下一個 lesson integration PR。
 
 ## M2 不做的事情
 
@@ -90,5 +104,6 @@ M2 只有在以下條件全部成立時，才可稱為完成：
   與手機尺寸驗證。
 - 學習者測試結果能回答「初學者是否完成並記得」，而不只是證明畫面能渲染。
 
-下一個最小實作單位是 **M2.1：Package validator**。在它完成前，不再擴大
-課程數量，避免內容產量超過審核與驗證能力。
+目前 M2 尚未宣稱完成；缺口是 M2.5 的真實 participant evidence，而不是再增加
+planned package。下一個最小實作單位是 **M2.5 pilot readiness／execution**，其
+前置條件與資料界線詳見 `docs/beginner-pilot-plan.md`。
