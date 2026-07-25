@@ -50,3 +50,25 @@ export type LessonPackage = {
   phrases: readonly LessonPackagePhrase[];
   teacherReview: TeacherReview;
 };
+
+export type LessonPackageAudioAttribution = {
+  phraseId: string;
+  audioUrl: string;
+  sourceUrl: string;
+  license: string;
+  licenseUrl: string;
+  speaker: string | null;
+  isUnmodifiedOriginal: true;
+};
+
+export type LessonPackageMobileFlowEvidence = {
+  viewport: string;
+  checkedAt: string;
+  evidenceRef: string;
+};
+
+export type LessonPackageHandoff = {
+  package: LessonPackage;
+  audioAttribution: readonly LessonPackageAudioAttribution[];
+  mobileFlowEvidence: readonly LessonPackageMobileFlowEvidence[];
+};

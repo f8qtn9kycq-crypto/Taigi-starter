@@ -36,7 +36,7 @@ const isNonEmptyString = (value: unknown): value is string => (
 
 const ISO_TIMESTAMP = /^(\d{4})-(\d{2})-(\d{2})T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
 
-const isIsoTimestamp = (value: unknown): value is string => {
+export const isValidIsoTimestamp = (value: unknown): value is string => {
   if (!isNonEmptyString(value)) return false;
 
   const match = ISO_TIMESTAMP.exec(value);
@@ -199,7 +199,7 @@ const validateTeacherReview = (
     if (value.reviewedAt !== null) addIssue(issues, `${path}.reviewedAt`, "must be null before review");
   } else {
     if (!isNonEmptyString(value.reviewer)) addIssue(issues, `${path}.reviewer`, "must identify the reviewer");
-    if (!isIsoTimestamp(value.reviewedAt)) addIssue(issues, `${path}.reviewedAt`, "must be an ISO timestamp");
+    if (!isValidIsoTimestamp(value.reviewedAt)) addIssue(issues, `${path}.reviewedAt`, "must be an ISO timestamp");
   }
 
   if (!Array.isArray(value.checks)) {
