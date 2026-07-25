@@ -60,7 +60,16 @@ if ! npm --prefix "${project_root}" run lint; then
   fail "npm run lint failed"
 fi
 
-for evidence_name in MANUAL_QA_STATUS OWNER_ATTESTATION_STATUS ROLLBACK_STATUS; do
+for evidence_name in \
+  KEYBOARD_QA_STATUS \
+  AUDIO_FAILURE_STATUS \
+  MICROPHONE_DENIED_STATUS \
+  MICROPHONE_UNSUPPORTED_STATUS \
+  STAGING_FEEDBACK_STATUS \
+  OWNER_ATTESTATION_STATUS \
+  D1_BACKUP_STATUS \
+  ROLLBACK_STATUS
+do
   evidence_value="${!evidence_name:-}"
   if [[ "${evidence_value}" != "pass" ]]; then
     fail "${evidence_name}=pass evidence is required"
