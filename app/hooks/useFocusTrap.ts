@@ -40,10 +40,13 @@ export function useFocusTrap({
 
     const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const returnTarget = returnFocus?.current ?? previousFocus;
-    const focusInitial = window.requestAnimationFrame(() => {
+    const focusInitial = () => {
       const first = initialFocus.current ?? focusableElements(dialogRef.current ?? document.body)[0];
       first?.focus();
-    });
+    };
+    focusInitial();
+    const focusFrame = window.requestAnimationFrame(focusInitial);
+    const focusTimer = window.setTimeout(focusInitial, 0);
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -71,7 +74,8 @@ export function useFocusTrap({
 
     document.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.cancelAnimationFrame(focusInitial);
+      window.cancelAnimationFrame(focusFrame);
+      window.clearTimeout(focusTimer);
       document.removeEventListener("keydown", handleKeyDown);
       if (returnTarget?.isConnected) returnTarget.focus();
     };
