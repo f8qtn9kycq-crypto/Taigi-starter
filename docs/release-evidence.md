@@ -34,7 +34,8 @@
 | Worker ingress evidence | Pass | Worker logs show Cloudflare-injected `cf-connecting-ip`; no error-level events in the smoke window |
 | Keyboard traversal | Pending | Browser backend did not produce reliable Tab focus evidence |
 | Audio failure fallback | Pending | Not yet recorded in browser |
-| Microphone denied/unsupported | Pending | Not yet recorded in browser |
+| Microphone denied | Pass | Clean exact-source browser origin showed the denial alert and kept the next Say action usable |
+| Microphone unsupported | Pending | Not separately recorded |
 | Staging feedback POST/export | Pending | Must use isolated D1; no production test data submitted |
 | Sites owner/auth attestation | Pending | Owner must accept the documented platform trust boundary in PR #28 |
 | D1 backup/restore | Pending | Sites connector exposes no backup/restore operation; platform evidence not yet demonstrated |
