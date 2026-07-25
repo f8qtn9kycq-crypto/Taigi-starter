@@ -110,27 +110,29 @@ proxy run, labeled as such rather than presented as external learner research.
 
 ## Manual evidence record
 
-Updated 2026-07-25 from the exact production release and live smoke evidence.
+Updated 2026-07-26 from the exact production release and live smoke evidence.
 This is Codex-moderated verification, not external learner research.
 
 | Area | Verdict | Evidence |
 | --- | --- | --- |
-| Automated suite | Pass | `npm test`, 29/29; production build included |
+| Automated suite | Pass | `npm test`, 36/36; production build included |
 | Lint | Pass | `npm run lint` |
 | 320 px mobile | Pass | No horizontal overflow; visible controls met 44px in the live/release QA matrix |
 | 390 px mobile | Pass | No horizontal overflow; live five-stage proxy completed without collision |
 | 412 px mobile | Pass | No horizontal overflow; visible controls met 44px in the live/release QA matrix |
 | zh-TW / English | Pass | Live toggle rendered both complete states and returned correctly |
-| Keyboard | Pending | Browser backend did not produce reliable Tab focus traversal evidence |
+| Keyboard | Partial / pending | Production v11 focuses Close on dialog open and returns focus to the feedback trigger after Escape; the shared focus trap implements Tab/Shift+Tab boundaries, but the browser backend did not deliver a reliable Tab key event for end-to-end traversal |
 | Audio success | Pass | Live MP3 changed `已聽 0 次` to `已聽 1 次` and unlocked See |
 | Audio failure fallback | Pass (isolated QA) | Clean exact-source local QA with a forced missing MP3 showed the labelled failure alert and enabled the continue-without-audio path; production network interception was unavailable |
 | Microphone denied | Pass | Clean exact-source origin showed the denial alert and kept the next Say action usable |
 | Microphone unsupported | Pass (isolated QA) | Clean exact-source local QA with an unsupported-capability override disabled recording and showed the unsupported-browser alert |
 | Staging feedback POST/export | Pass (isolated D1) | Local exact-source staging POST inserted a test row in isolated Miniflare D1; unauthenticated export returned 403; no production data submitted |
 | External feedback configuration | Pass (fallback active) | Live `/api/feedback-config` returned `{"externalFormUrl":null}` and the live UI retained the private D1 form; no external provider URL was set |
+| Google Form readiness | Pending | The owner-provided preview rendered the bilingual seven-question form, but unauthenticated controls were disabled and Google sign-in was required; no URL was activated in production |
+| Live API security smoke | Pass | Current live config was null with `no-store`; export 403, evil Origin 403, and unsupported content type 415 |
 | Privacy / AI boundary | Pass | No speech scoring or upload claim; live export 403, evil Origin 403, unsupported JSON 415; owner trust attestation recorded in PR #28 comment `5078972911` |
 | Recall / Use gate | Pass | Live path kept the answer hidden until reveal and then exposed Use |
 | Busuu-style lesson contract | Pass with keyboard/production failure-path pending | B01–B07 automated/live evidence pass; keyboard evidence and production network failure injection remain pending; isolated D1 staging feedback evidence passes |
-| Production rollback | Pass | Version 5 deployment reverted live to `7 / 12`; version 6 restored `1 / 1`; version 7 then deployed successfully |
+| Production rollback | Pass | Historical version 5 reverted live to `7 / 12`; version 6 restored `1 / 1`; version 7 then deployed successfully; current version 11 is the exact merged-main release |
 | Branch hygiene | Pass | Exact source archive, locked Sites manifest, no production data or credentials in release evidence |
 | D1 backup / restore | Pending | Sites connector exposes no backup/restore operation; platform evidence required |

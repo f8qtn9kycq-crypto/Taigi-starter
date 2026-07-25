@@ -3,24 +3,24 @@
 ## Exact production release
 
 - Source: GitHub `main` mirrored to the locked Sites source repository
-- Release source commit: `12611c66957f8f432f9302726af7b450d15ec7c8`
-- Sites saved version: `7`
-- Sites saved source: `12611c66957f8f432f9302726af7b450d15ec7c8`
+- Release source commit: `54401cd8fecb28c020c356541a48956818be558f`
+- Sites saved version: `11`
+- Sites saved source: `54401cd8fecb28c020c356541a48956818be558f`
 - Production URL: https://taigi-start.alexcy2025.chatgpt.site
-- Version 7 deployment: `appgdep_6a64d9ef3be48191a6de66ab54792bfc`, succeeded
+- Version 11 deployment: `appgdep_6a64e79e68988191bb25ddcb12ab1e9b`, succeeded
 - Previous rollback restore deployment: `appgdep_6a64b32624908191b2bddfb337d15aa6`, succeeded
-- Date: 2026-07-25
+- Date: 2026-07-26
 - Scope: Codex-assisted verification; not external learner research
 
 ## Evidence recorded
 
 | Area | Status | Evidence |
 | --- | --- | --- |
-| Automated suite | Pass | `npm test`, 29/29 including production build |
+| Automated suite | Pass | `npm test`, 36/36 including production build |
 | Lint | Pass | `npm run lint` |
 | Archive | Pass | Sites archive contains `dist/server/index.js` and locked `.openai/hosting.json` |
-| Sites provenance | Pass | Saved version 7 source equals the exact validated release commit |
-| Production publish | Pass | Version 7 publish returned `succeeded`; final live URL is the Sites production URL |
+| Sites provenance | Pass | Saved version 11 source equals the exact validated release commit |
+| Production publish | Pass | Version 11 publish returned `succeeded`; final live URL is the Sites production URL |
 | Rollback drill | Pass | Version 5 deployment succeeded, live reverted to the old `7 / 12` UI, version 6 restored `1 / 1`, and version 7 then deployed successfully |
 | Live scope | Pass | Browser snapshot shows `1 / 1` phrase, `2` planned lessons, and no `7 / 12` |
 | Live Hear gate | Pass | Real production MP3 playback changed `已聽 0 次` to `已聽 1 次` and enabled See |
@@ -32,12 +32,14 @@
 | Feedback anonymous export | Pass | Live `GET /api/feedback/export` returned 403 |
 | Feedback cross-origin | Pass | Live evil Origin returned 403; unsupported content type returned 415 |
 | Worker ingress evidence | Pass | Worker logs show Cloudflare-injected `cf-connecting-ip`; no error-level events in the smoke window |
-| Keyboard traversal | Pending | Browser backend did not produce reliable Tab focus evidence |
+| Keyboard traversal | Partial / pending | Production v11 focuses the dialog Close control on open and returns focus to the feedback trigger after Escape; the shared hook traps Tab/Shift+Tab, but this browser backend did not deliver a reliable Tab key event for end-to-end traversal evidence |
 | Audio failure fallback | Pass (isolated QA) | Clean exact-source local QA with a forced missing MP3 showed the labelled failure alert and enabled the continue-without-audio path; production network interception was unavailable |
 | Microphone denied | Pass | Clean exact-source browser origin showed the denial alert and kept the next Say action usable |
 | Microphone unsupported | Pass (isolated QA) | Clean exact-source local QA with an unsupported-capability override disabled recording and showed the unsupported-browser alert |
 | Staging feedback POST/export | Pass (isolated D1) | Local exact-source staging POST returned 200 and inserted a test row in the isolated Miniflare D1; unauthenticated export returned 403; no production data submitted |
 | External feedback configuration | Pass (fallback active) | Live `/api/feedback-config` returned `{"externalFormUrl":null}`; the live UI showed the private D1 form; no external provider URL was set |
+| Google Form readiness | Pending | The owner-provided preview URL opened, but unauthenticated controls were disabled behind Google sign-in; it is not activated until the form permits anonymous responses |
+| Live API security smoke | Pass | Current live config returned null with `no-store`; export returned 403, evil Origin returned 403, and unsupported content type returned 415 |
 | Sites owner/auth attestation | Pass | Owner deployment attestation recorded in PR #28 comment `5078972911`; it covers the live ingress, trusted forwarded source, platform auth boundary, and explicit acceptance |
 | D1 backup/restore | Pending | Sites connector exposes no backup/restore operation; platform evidence not yet demonstrated |
 
