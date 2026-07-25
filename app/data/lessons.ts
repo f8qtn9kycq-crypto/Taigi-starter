@@ -2,7 +2,9 @@ import {
   LESSON_STAGE_IDS,
   type Lesson,
   type PlayableLesson,
+  type PlannedLesson,
 } from "../types/lesson.ts";
+import { lessonPackageHandoffToPlayableLesson } from "../utils/lesson-package-handoff.ts";
 
 const lessonOneStages = LESSON_STAGE_IDS.map((id) => ({
   id,
@@ -46,12 +48,19 @@ export const prototypeLesson: PlayableLesson = {
         licenseUrl: "https://creativecommons.org/licenses/by-nd/3.0/tw/",
         speaker: null,
       },
+      audioAttribution: {
+        audioUrl: "/audio/li-tsiah-pa-bue.mp3",
+        sourceUrl: "https://sutian.moe.edu.tw/und-hani/su/1653/",
+        license: "CC BY-ND 3.0 TW",
+        licenseUrl: "https://creativecommons.org/licenses/by-nd/3.0/tw/",
+        speaker: null,
+        isUnmodifiedOriginal: true,
+      },
     },
   ],
 };
 
-export const lessonCatalog: readonly Lesson[] = [
-  prototypeLesson,
+const plannedLessonPlaceholders: readonly PlannedLesson[] = [
   {
     id: "lesson-2-family",
     number: 2,
@@ -71,3 +80,21 @@ export const lessonCatalog: readonly Lesson[] = [
     phrases: [],
   },
 ] as const;
+
+export const createLessonCatalog = (
+  handoffs: readonly unknown[] = [],
+): readonly Lesson[] => {
+  const lessonsByNumber = new Map<number, Lesson>([
+    [prototypeLesson.number, prototypeLesson],
+    ...plannedLessonPlaceholders.map((lesson) => [lesson.number, lesson]),
+  ]);
+
+  for (const handoff of handoffs) {
+    const playableLesson = lessonPackageHandoffToPlayableLesson(handoff);
+    if (playableLesson) lessonsByNumber.set(playableLesson.number, playableLesson);
+  }
+
+  return [...lessonsByNumber.values()].sort((left, right) => left.number - right.number);
+};
+
+export const lessonCatalog: readonly Lesson[] = createLessonCatalog();

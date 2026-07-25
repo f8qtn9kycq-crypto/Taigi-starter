@@ -20,6 +20,8 @@ export default function LessonStageContent({
   onPlay,
 }: LessonStageContentProps) {
   const [script, setScript] = useState<"tailo" | "poj">("tailo");
+  const hasPoj = phrase.poj !== null;
+  const romanization = script === "poj" && phrase.poj ? phrase.poj : phrase.tailo;
 
   if (stage === "hear") {
     return <div className="sound-visual" aria-hidden="true"><i /><i /><i /><i /><i /><i /><i /></div>;
@@ -36,10 +38,10 @@ export default function LessonStageContent({
         <p className="meaning">{phrase.meaning[text.locale]}</p>
         <div className="script-tabs" role="group" aria-label={text.romanizationSystem}>
           <button type="button" className={script === "tailo" ? "active" : ""} onClick={() => setScript("tailo")}>{text.tailoLabel}</button>
-          <button type="button" className={script === "poj" ? "active" : ""} onClick={() => setScript("poj")}>{text.pojLabel}</button>
+          {hasPoj && <button type="button" className={script === "poj" ? "active" : ""} onClick={() => setScript("poj")}>{text.pojLabel}</button>}
         </div>
         <span className="script-label roman-label">ROMANIZATION</span>
-        <p className="romanization">{script === "tailo" ? phrase.tailo : phrase.poj}</p>
+        <p className="romanization">{romanization}</p>
       </div>
     );
   }
@@ -62,9 +64,9 @@ export default function LessonStageContent({
             <strong>{phrase.hanji}</strong>
             <div className="script-tabs" role="group" aria-label={text.romanizationSystem}>
               <button type="button" className={script === "tailo" ? "active" : ""} onClick={() => setScript("tailo")}>{text.tailoLabel}</button>
-              <button type="button" className={script === "poj" ? "active" : ""} onClick={() => setScript("poj")}>{text.pojLabel}</button>
+              {hasPoj && <button type="button" className={script === "poj" ? "active" : ""} onClick={() => setScript("poj")}>{text.pojLabel}</button>}
             </div>
-            <p className="romanization">{script === "tailo" ? phrase.tailo : phrase.poj}</p>
+            <p className="romanization">{romanization}</p>
           </div>
         )}
       </div>
