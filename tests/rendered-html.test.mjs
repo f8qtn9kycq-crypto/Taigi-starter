@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("ships the first-time Taigi landing content and production worker", async () => {
-  const [layout, landing, lesson, stagePanel, stageContent, recording, recorder, copy, content, worker] = await Promise.all([
+  const [layout, landing, lesson, stagePanel, stageContent, recording, recorder, copy, content, worker, feedbackConfig, feedbackForm] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonAccordion.tsx", import.meta.url), "utf8"),
@@ -14,6 +14,8 @@ test("ships the first-time Taigi landing content and production worker", async (
     readFile(new URL("../app/taigi-content.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/data/lessons.ts", import.meta.url), "utf8"),
     readFile(new URL("../dist/server/index.js", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/feedback-config/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/FeedbackForm.tsx", import.meta.url), "utf8"),
   ]);
 
   assert.match(layout, /台語起步 Tâi-gí Start/);
@@ -53,6 +55,10 @@ test("ships the first-time Taigi landing content and production worker", async (
   assert.match(content, /教育部《臺灣台語常用詞辭典》/);
   assert.match(copy, /第 1 課可用版本 · 學習紀錄儲存在此裝置/);
   assert.match(worker, /api\/feedback/);
+  assert.match(worker, /api\/feedback-config/);
+  assert.match(feedbackConfig, /url\.protocol === "https:"/);
+  assert.match(feedbackForm, /api\/feedback-config/);
+  assert.match(feedbackForm, /target="_blank"/);
   assert.doesNotMatch(worker, /codex-preview|_sites-preview|react-loading-skeleton/);
 });
 

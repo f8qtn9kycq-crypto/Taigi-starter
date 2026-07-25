@@ -24,6 +24,9 @@
 - 原始回饋儲存在 Sites D1，只能由設定的擁有者透過 `/feedback` 查看。
 - `/api/feedback/export` 會輸出可供 Google Sheets 使用的 CSV，且同樣需要
   擁有者身分。
+- 若 Sites 設定非秘密的 `FEEDBACK_EXTERNAL_FORM_URL`（必須是 HTTPS），產品會
+  改顯示外部回饋表單連結，不再把一般學習者回饋寫入 D1；未設定時維持上述
+  私有 D1 fallback。不得使用公開 GitHub Issue Form 取代私有回饋。
 - 不得提交回饋匯出檔、憑證或測試者個人資料。
 
 ## 本機開發
