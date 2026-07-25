@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { useFocusTrap } from "./hooks/useFocusTrap";
 
 type Props = { locale: "zh" | "en"; learningStage: number };
 
@@ -63,6 +64,8 @@ export default function FeedbackForm({ locale, learningStage }: Props) {
   const [blocker, setBlocker] = useState("");
   const [externalFormUrl, setExternalFormUrl] = useState<string | null>(null);
   const [feedbackDestinationReady, setFeedbackDestinationReady] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const closeRef = useRef<HTMLButtonElement | null>(null);
   const text = labels[locale];
 
   useEffect(() => {
@@ -86,12 +89,12 @@ export default function FeedbackForm({ locale, learningStage }: Props) {
     return () => { active = false; };
   }, []);
 
-  useEffect(() => {
-    if (!open) return;
-    const close = (event: KeyboardEvent) => event.key === "Escape" && setOpen(false);
-    window.addEventListener("keydown", close);
-    return () => window.removeEventListener("keydown", close);
-  }, [open]);
+  const dialogRef = useFocusTrap({
+    initialFocus: closeRef,
+    onClose: () => setOpen(false),
+    open,
+    returnFocus: triggerRef,
+  });
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -128,13 +131,13 @@ export default function FeedbackForm({ locale, learningStage }: Props) {
 
   return (
     <>
-      <button type="button" className="feedback-fab" onClick={() => setOpen(true)}>
+      <button ref={triggerRef} type="button" className="feedback-fab" onClick={() => setOpen(true)}>
         <span>✦</span>{text.button}
       </button>
       {open && (
         <div className="feedback-backdrop" onMouseDown={(event) => event.target === event.currentTarget && setOpen(false)}>
-          <section className="feedback-modal" role="dialog" aria-modal="true" aria-labelledby="feedback-title">
-            <button type="button" className="modal-close" onClick={() => setOpen(false)} aria-label={text.close}>×</button>
+          <section ref={dialogRef} className="feedback-modal" role="dialog" aria-modal="true" aria-labelledby="feedback-title">
+            <button ref={closeRef} autoFocus type="button" className="modal-close" onClick={() => setOpen(false)} aria-label={text.close}>×</button>
             {status === "sent" ? (
               <div className="feedback-success"><span>✓</span><h2>{text.thanks}</h2><button type="button" className="primary" onClick={() => setOpen(false)}>{text.close}</button></div>
             ) : !feedbackDestinationReady ? (

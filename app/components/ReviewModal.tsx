@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { useFocusTrap } from "../hooks/useFocusTrap";
 import type { LessonCopy, Locale } from "../taigi-content";
 import type { ReviewCard, ReviewRating } from "../types/learning";
 import type { LessonPhrase } from "../types/lesson";
@@ -26,6 +27,11 @@ export default function ReviewModal({
 }: ReviewModalProps) {
   const [showAnswer, setShowAnswer] = useState(false);
   const closeRef = useRef<HTMLButtonElement | null>(null);
+  const dialogRef = useFocusTrap({
+    initialFocus: closeRef,
+    onClose,
+    open: true,
+  });
   const nextReview = card
     ? new Intl.DateTimeFormat(locale === "zh" ? "zh-TW" : "en", {
         dateStyle: "medium",
@@ -33,13 +39,11 @@ export default function ReviewModal({
       }).format(new Date(card.dueAt))
     : null;
 
-  useEffect(() => closeRef.current?.focus(), []);
-
   return (
     <div className="modal-backdrop" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
-      <section className="review-modal" role="dialog" aria-modal="true" aria-label={text.navReview}>
+      <section ref={dialogRef} className="review-modal" role="dialog" aria-modal="true" aria-label={text.navReview}>
         <div className="modal-handle" aria-hidden="true" />
-        <button ref={closeRef} type="button" className="modal-close" onClick={onClose} aria-label={text.close}>×</button>
+        <button ref={closeRef} autoFocus type="button" className="modal-close" onClick={onClose} aria-label={text.close}>×</button>
         <span className="section-label">SRS · {text.navReview}</span>
 
         {card && isDue ? (
