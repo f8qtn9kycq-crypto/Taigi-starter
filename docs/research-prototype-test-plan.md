@@ -127,9 +127,9 @@ This is Codex-moderated verification, not external learner research.
 | Microphone denied | Pass | Clean exact-source origin showed the denial alert and kept the next Say action usable |
 | Microphone unsupported | Pass (isolated QA) | Clean exact-source local QA with an unsupported-capability override disabled recording and showed the unsupported-browser alert |
 | Staging feedback POST/export | Pass (isolated D1) | Local exact-source staging POST inserted a test row in isolated Miniflare D1; unauthenticated export returned 403; no production data submitted |
-| External feedback configuration | Pass (fallback active) | Live `/api/feedback-config` returned `{"externalFormUrl":null}` and the live UI retained the private D1 form; no external provider URL was set |
-| Google Form readiness | Pending | The owner-provided preview rendered the bilingual seven-question form, but unauthenticated controls were disabled and Google sign-in was required; no URL was activated in production |
-| Live API security smoke | Pass | Current live config was null with `no-store`; export 403, evil Origin 403, and unsupported content type 415 |
+| External feedback configuration | Pass | Live `/api/feedback-config` returned the owner-provided Google Form HTTPS URL with `no-store`; the production dialog exposed the external-form link |
+| Google Form readiness | Pass | Unauthenticated preview exposed enabled radio, checkbox, textbox, and Submit controls; no response was submitted by Codex; the URL is active in production |
+| Live API security smoke | Pass | Current live config returned the external URL with `no-store`; export 403, evil Origin 403, and same-origin unsupported content type 415 |
 | Privacy / AI boundary | Pass | No speech scoring or upload claim; live export 403, evil Origin 403, unsupported JSON 415; owner trust attestation recorded in PR #28 comment `5078972911` |
 | Recall / Use gate | Pass | Live path kept the answer hidden until reveal and then exposed Use |
 | Busuu-style lesson contract | Pass with keyboard/production failure-path pending | B01–B07 automated/live evidence pass; keyboard evidence and production network failure injection remain pending; isolated D1 staging feedback evidence passes |
