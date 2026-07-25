@@ -115,13 +115,13 @@ This is Codex-moderated verification, not external learner research.
 
 | Area | Verdict | Evidence |
 | --- | --- | --- |
-| Automated suite | Pass | `npm test`, 36/36; production build included |
+| Automated suite | Pass | `npm test`, 41/41; production build and focus-boundary tests included |
 | Lint | Pass | `npm run lint` |
 | 320 px mobile | Pass | No horizontal overflow; visible controls met 44px in the live/release QA matrix |
 | 390 px mobile | Pass | No horizontal overflow; live five-stage proxy completed without collision |
 | 412 px mobile | Pass | No horizontal overflow; visible controls met 44px in the live/release QA matrix |
 | zh-TW / English | Pass | Live toggle rendered both complete states and returned correctly |
-| Keyboard | Partial / pending | Production v11 focuses Close on dialog open and returns focus to the feedback trigger after Escape; the shared focus trap implements Tab/Shift+Tab boundaries, but the browser backend did not deliver a reliable Tab key event for end-to-end traversal |
+| Keyboard | Partial / pending | Production v13 focuses Close on dialog open and returns focus to the feedback trigger after Escape; `focus-trap.test.ts` verifies forward/backward boundary logic and dialog wiring, but the browser backend did not deliver a reliable Tab key event for end-to-end traversal |
 | Audio success | Pass | Live MP3 changed `已聽 0 次` to `已聽 1 次` and unlocked See |
 | Audio failure fallback | Pass (isolated QA) | Clean exact-source local QA with a forced missing MP3 showed the labelled failure alert and enabled the continue-without-audio path; production network interception was unavailable |
 | Microphone denied | Pass | Clean exact-source origin showed the denial alert and kept the next Say action usable |
@@ -133,6 +133,6 @@ This is Codex-moderated verification, not external learner research.
 | Privacy / AI boundary | Pass | No speech scoring or upload claim; live export 403, evil Origin 403, unsupported JSON 415; owner trust attestation recorded in PR #28 comment `5078972911` |
 | Recall / Use gate | Pass | Live path kept the answer hidden until reveal and then exposed Use |
 | Busuu-style lesson contract | Pass with keyboard/production failure-path pending | B01–B07 automated/live evidence pass; keyboard evidence and production network failure injection remain pending; isolated D1 staging feedback evidence passes |
-| Production rollback | Pass | Historical version 5 reverted live to `7 / 12`; version 6 restored `1 / 1`; version 7 then deployed successfully; current version 11 is the exact merged-main release |
+| Production rollback | Pass | Historical version 5 reverted live to `7 / 12`; version 6 restored `1 / 1`; version 7 then deployed successfully; current version 13 is the exact merged-main release |
 | Branch hygiene | Pass | Exact source archive, locked Sites manifest, no production data or credentials in release evidence |
 | D1 backup / restore | Pending | Sites connector exposes no backup/restore operation; platform evidence required |

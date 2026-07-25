@@ -3,11 +3,11 @@
 ## Exact production release
 
 - Source: GitHub `main` mirrored to the locked Sites source repository
-- Release source commit: `54401cd8fecb28c020c356541a48956818be558f`
-- Sites saved version: `11`
-- Sites saved source: `54401cd8fecb28c020c356541a48956818be558f`
+- Release source commit: `c52077d83a476d51fb1b64cf79c0d00373cc4cfe`
+- Sites saved version: `13`
+- Sites saved source: `c52077d83a476d51fb1b64cf79c0d00373cc4cfe`
 - Production URL: https://taigi-start.alexcy2025.chatgpt.site
-- Version 11 deployment: `appgdep_6a64e79e68988191bb25ddcb12ab1e9b`, succeeded
+- Version 13 deployment: `appgdep_6a64eae0f2dc8191be8eece6d321951e`, succeeded
 - Previous rollback restore deployment: `appgdep_6a64b32624908191b2bddfb337d15aa6`, succeeded
 - Date: 2026-07-26
 - Scope: Codex-assisted verification; not external learner research
@@ -16,11 +16,11 @@
 
 | Area | Status | Evidence |
 | --- | --- | --- |
-| Automated suite | Pass | `npm test`, 36/36 including production build |
+| Automated suite | Pass | `npm test`, 41/41 including production build and focus-boundary tests |
 | Lint | Pass | `npm run lint` |
 | Archive | Pass | Sites archive contains `dist/server/index.js` and locked `.openai/hosting.json` |
-| Sites provenance | Pass | Saved version 11 source equals the exact validated release commit |
-| Production publish | Pass | Version 11 publish returned `succeeded`; final live URL is the Sites production URL |
+| Sites provenance | Pass | Saved version 13 source equals the exact validated release commit |
+| Production publish | Pass | Version 13 publish returned `succeeded`; final live URL is the Sites production URL |
 | Rollback drill | Pass | Version 5 deployment succeeded, live reverted to the old `7 / 12` UI, version 6 restored `1 / 1`, and version 7 then deployed successfully |
 | Live scope | Pass | Browser snapshot shows `1 / 1` phrase, `2` planned lessons, and no `7 / 12` |
 | Live Hear gate | Pass | Real production MP3 playback changed `已聽 0 次` to `已聽 1 次` and enabled See |
@@ -32,7 +32,7 @@
 | Feedback anonymous export | Pass | Live `GET /api/feedback/export` returned 403 |
 | Feedback cross-origin | Pass | Live evil Origin returned 403; unsupported content type returned 415 |
 | Worker ingress evidence | Pass | Worker logs show Cloudflare-injected `cf-connecting-ip`; no error-level events in the smoke window |
-| Keyboard traversal | Partial / pending | Production v11 focuses the dialog Close control on open and returns focus to the feedback trigger after Escape; the shared hook traps Tab/Shift+Tab, but this browser backend did not deliver a reliable Tab key event for end-to-end traversal evidence |
+| Keyboard traversal | Partial / pending | Production v13 focuses the dialog Close control on open and returns focus to the feedback trigger after Escape; `focus-trap.test.ts` verifies forward/backward boundary logic and dialog wiring, but this browser backend did not deliver a reliable Tab key event for full end-to-end traversal evidence |
 | Audio failure fallback | Pass (isolated QA) | Clean exact-source local QA with a forced missing MP3 showed the labelled failure alert and enabled the continue-without-audio path; production network interception was unavailable |
 | Microphone denied | Pass | Clean exact-source browser origin showed the denial alert and kept the next Say action usable |
 | Microphone unsupported | Pass (isolated QA) | Clean exact-source local QA with an unsupported-capability override disabled recording and showed the unsupported-browser alert |
