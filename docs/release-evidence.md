@@ -3,33 +3,32 @@
 ## Exact production release
 
 - Source: GitHub `main` mirrored to the locked Sites source repository
-- Release source commit: `32a24ec81c7c594ddcf7eadf9c0f86e2270fdd0c`
-- Sites saved version: `19`
-- Sites saved source: `32a24ec81c7c594ddcf7eadf9c0f86e2270fdd0c`
+- Release source commit: `e907fba1153bf2e58c3538660db96bf3ec250d9f`
+- Sites saved version: `21`
+- Sites saved source: `e907fba1153bf2e58c3538660db96bf3ec250d9f`
 - Production URL: https://taigi-start.alexcy2025.chatgpt.site
-- Version 19 deployment: `appgdep_6a656d1533b081919dc015a02d514504`, succeeded; env revision `5`
+- Version 21 deployment: `appgdep_6a657412622081918b239584ee56d46f`, succeeded; env revision `5`
 - Latest runtime-config deployment: `appgdep_6a64ecd7f7648191b1467cd0c1c03f25`, succeeded; Sites environment revision `5`
 - Previous rollback restore deployment: `appgdep_6a64b32624908191b2bddfb337d15aa6`, succeeded
 - Date: 2026-07-26
-- Scope: Lessons 2–18 production release with Codex-assisted verification; not external learner research
+- Scope: Lessons 2–18 production release with a learner-facing practical path order, POJ/audio provenance completion, and Codex-assisted verification; not external learner research
 
 ## Evidence recorded
 
 | Area | Status | Evidence |
 | --- | --- | --- |
-| Automated suite | Pass | `npm test`, 46/46 including production build, handoff validation, and local audio file checks |
+| Automated suite | Pass | `npm test`, 48/48 including production build, handoff validation, path-order checks, and local audio file checks |
 | Lint | Pass | `npm run lint` |
-| Archive | Pass | Sites archive contains `dist/server/index.js` and locked `.openai/hosting.json` |
-| Sites provenance | Pass | Saved version 13 source equals the exact validated release commit |
-| Production publish | Pass | Version 19 publish returned `succeeded`; final live URL is the Sites production URL |
+| Sites source provenance | Pass | Saved version 21 source equals the exact validated release commit; Sites built from the pushed source repository state |
+| Production publish | Pass | Version 21 publish returned `succeeded`; final live URL is the Sites production URL |
 | Rollback drill | Pass | Version 5 deployment succeeded, live reverted to the old `7 / 12` UI, version 6 restored `1 / 1`, and version 7 then deployed successfully |
-| Live scope | Pass | Production browser shows `18 課可體驗`, 18 selectable course rows, and Lesson 18 renders as playable |
+| Live scope | Pass | Production browser shows 18 selectable course rows; cache-busted read-back shows the practical learner path from Lesson 1 greetings through Lesson 18 integrated conversation, and Lesson 18 renders as playable |
 | Live attribution | Pass | Production Lesson 18 exposes the canonical MOE phrase page and CC BY-ND 3.0 TW licence link; release handoffs cover all 52 phrase audio files |
 | Live Hear gate | Pass | Real production MP3 playback changed `已聽 0 次` to `已聽 1 次` and enabled See on Lesson 18 |
 | Five-stage path | Pass (release QA) | Exact release QA completed Lesson 18 Hear → See → Say → Recall → Use; Recall answer stayed hidden until reveal, Use added review, and the next phrase advanced to `2 / 4` |
 | Live zh-TW / English | Pass | Both language states rendered and returned correctly |
 | 320×700 | Pass | No horizontal overflow; visible controls met the 44px minimum |
-| 390×844 | Pass | Release QA selected Lessons 2–18, completed the Lesson 18 flow, and confirmed no horizontal overflow in the mobile viewport |
+| 390×844 | Pass | Existing release QA selected Lessons 2–18, completed the Lesson 18 flow, and confirmed no horizontal overflow in the mobile viewport; the path-order change does not alter the mobile interaction contract |
 | 412×915 | Pass | No horizontal overflow; visible controls met the 44px minimum |
 | Feedback anonymous export | Pass | Live `GET /api/feedback/export` returned 403 |
 | Feedback cross-origin | Pass | Live evil Origin returned 403; unsupported content type returned 415 |
