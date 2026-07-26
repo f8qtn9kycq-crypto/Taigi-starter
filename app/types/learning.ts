@@ -15,14 +15,16 @@ export type LearningProgress = {
   version: 3;
   locale: Locale;
   stage: number;
+  phraseIndex: number;
   hasStarted: boolean;
-  reviewCards: Record<string, ReviewCard>;
+  reviewCard: ReviewCard | null;
 };
 
 export const DEFAULT_PROGRESS: LearningProgress = {
   version: 3,
   locale: "zh",
   stage: 0,
+  phraseIndex: 0,
   hasStarted: false,
-  reviewCards: {},
+  reviewCard: null,
 };

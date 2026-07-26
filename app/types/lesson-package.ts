@@ -33,7 +33,12 @@ export type LessonPackagePhrase = {
   cultureNote: LocalizedText;
   source: LessonSource;
   audio: {
-    status: "not-yet-added";
+    status: "added";
+    audioUrl: string;
+    originalUrl: string;
+    license: string;
+    licenseUrl: string;
+    isUnmodifiedOriginal: true;
     note: LocalizedText;
   };
 };
@@ -41,10 +46,12 @@ export type LessonPackagePhrase = {
 export type LessonPackage = {
   id: string;
   number: number;
+  pathOrder: number;
   title: LocalizedText;
   secondaryTitle: LocalizedText;
   summary: LocalizedText;
   objective: LocalizedText;
+  mission: LocalizedText;
   status: "planned";
   stagePlan: readonly LocalizedText[];
   phrases: readonly LessonPackagePhrase[];
@@ -55,6 +62,7 @@ export type LessonPackageAudioAttribution = {
   phraseId: string;
   audioUrl: string;
   sourceUrl: string;
+  originalUrl: string;
   license: string;
   licenseUrl: string;
   speaker: string | null;
@@ -67,8 +75,15 @@ export type LessonPackageMobileFlowEvidence = {
   evidenceRef: string;
 };
 
+export type LessonPackageOwnerRiskAcceptance = {
+  acceptedBy: string;
+  acceptedAt: string;
+  reason: LocalizedText;
+};
+
 export type LessonPackageHandoff = {
   package: LessonPackage;
   audioAttribution: readonly LessonPackageAudioAttribution[];
   mobileFlowEvidence: readonly LessonPackageMobileFlowEvidence[];
+  ownerRiskAcceptance: LessonPackageOwnerRiskAcceptance;
 };

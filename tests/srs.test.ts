@@ -5,13 +5,13 @@ import { createReviewCard, isReviewDue, scheduleReview } from "../app/utils/srs.
 const now = new Date("2026-07-11T00:00:00.000Z");
 
 test("new lesson cards are due immediately", () => {
-  const card = createReviewCard(now);
+  const card = createReviewCard("test-phrase", now);
   assert.equal(isReviewDue(card, now), true);
   assert.equal(card.repetitions, 0);
 });
 
 test("review ratings produce distinct and explainable intervals", () => {
-  const card = createReviewCard(now);
+  const card = createReviewCard("test-phrase", now);
   const again = scheduleReview(card, "again", now);
   const hard = scheduleReview(card, "hard", now);
   const easy = scheduleReview(card, "easy", now);
@@ -25,7 +25,7 @@ test("review ratings produce distinct and explainable intervals", () => {
 });
 
 test("later easy reviews expand from the current interval", () => {
-  const first = scheduleReview(createReviewCard(now), "easy", now);
+  const first = scheduleReview(createReviewCard("test-phrase", now), "easy", now);
   const next = scheduleReview(first, "easy", new Date(first.dueAt));
   assert.equal(next.intervalDays, 10);
   assert.equal(next.repetitions, 2);

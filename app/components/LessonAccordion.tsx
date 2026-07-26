@@ -9,49 +9,48 @@ type LessonAccordionProps = {
   text: LessonCopy;
   lesson: PlayableLesson;
   stage: number;
-  activePhraseId: string;
-  reviewedPhraseId: string | null;
+  phraseIndex: number;
+  reviewScheduled: boolean;
   onStageChange: (stage: number) => void;
-  onPhraseChange: (phraseId: string) => void;
   onReviewAdded: (phraseId: string) => void;
+  onPhraseAdvance: () => void;
 };
 
 const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
   function LessonAccordion(
-    { text, lesson, stage, activePhraseId, reviewedPhraseId, onStageChange, onPhraseChange, onReviewAdded },
+    { text, lesson, stage, phraseIndex, reviewScheduled, onStageChange, onReviewAdded, onPhraseAdvance },
     ref,
   ) {
     const lastStage = lesson.stages.length - 1;
-    const activePhraseIndex = Math.max(0, lesson.phrases.findIndex((phrase) => phrase.id === activePhraseId));
-    const activePhrase = lesson.phrases[activePhraseIndex];
     const advance = () => onStageChange(Math.min(stage + 1, lastStage));
-    const selectPhrase = (phraseId: string) => {
-      onPhraseChange(phraseId);
-      onStageChange(0);
-    };
 
     return (
       <section className="lesson-card" aria-labelledby="lesson-title" ref={ref}>
         <div className="lesson-heading">
           <span className="section-label">{text.currentLesson}</span>
-          <h2 id="lesson-title">{text.lessonNumber(lesson.number)} · {lesson.title[text.locale]}</h2>
+          <h2 id="lesson-title">{text.lessonNumber(lesson.pathOrder)} · {lesson.title[text.locale]}</h2>
           <p>{lesson.summary[text.locale]}</p>
-          <p className="lesson-goal"><b>{text.lessonGoalLabel}</b> {lesson.goal[text.locale]}</p>
-          <ul className="lesson-target-phrases" aria-label={text.targetPhrasesLabel}>
-            {lesson.phrases.map((phrase, index) => (
-              <li key={phrase.id}>
-                <button type="button" className={index === activePhraseIndex ? "active" : ""} onClick={() => selectPhrase(phrase.id)} aria-current={index === activePhraseIndex ? "true" : undefined}>
-                  <b>{phrase.hanji}</b><span>{phrase.tailo}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
+          <div className="lesson-mission">
+            <span>{text.lessonMission}</span>
+            <p>{lesson.mission[text.locale]}</p>
+          </div>
+          <div className="lesson-targets">
+            <span>{text.lessonTargets}</span>
+            <ul>
+              {lesson.phrases.map((phrase) => (
+                <li key={phrase.id}>
+                  <b>{phrase.hanji}</b>
+                  <small>{phrase.tailo}</small>
+                </li>
+              ))}
+            </ul>
+          </div>
           <div className="lesson-rhythm" aria-label={text.lessonTime}>
             <span className="rhythm-mark" aria-hidden="true">{lesson.durationMinutes}′</span>
             <span><b>{text.lessonTime}</b><small>{text.lessonRhythm}</small></span>
           </div>
-          <div className="progress-line" aria-label={text.phraseProgress(1, lesson.phrases.length)}>
-            <span><i data-total={lesson.phrases.length} data-index={activePhraseIndex + 1} /></span><b>{text.phraseProgress(activePhraseIndex + 1, lesson.phrases.length)}</b>
+          <div className="progress-line" aria-label={text.phraseProgress(phraseIndex + 1, lesson.phrases.length)}>
+            <span><i className={`progress-fill progress-fill-${lesson.phrases.length}-${phraseIndex + 1}`} /></span><b>{text.phraseProgress(phraseIndex + 1, lesson.phrases.length)}</b>
           </div>
         </div>
 
@@ -81,14 +80,15 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
 
                 {isCurrent && (
                   <LessonStagePanel
-                    key={lessonStage.id}
+                    key={`${lesson.id}-${phraseIndex}-${lessonStage.id}`}
                     stage={stage}
                     text={text}
                     lesson={lesson}
-                    phraseIndex={activePhraseIndex}
-                    reviewScheduled={reviewedPhraseId === activePhrase?.id}
+                    phraseIndex={phraseIndex}
+                    reviewScheduled={reviewScheduled}
                     onAdvance={advance}
                     onReviewAdded={onReviewAdded}
+                    onPhraseAdvance={onPhraseAdvance}
                   />
                 )}
               </li>

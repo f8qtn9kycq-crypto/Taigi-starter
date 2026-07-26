@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
   PROGRESS_STORAGE_KEY,
-  mergePendingProgress,
   parseStoredProgress,
   serializeProgress,
 } from "../services/progress-storage";
@@ -15,7 +14,11 @@ import {
 } from "../types/learning";
 import { createReviewCard, scheduleReview } from "../utils/srs";
 
-export function useLearningProgress(stageCount: number) {
+export function useLearningProgress(
+  lessonId: string,
+  phraseIds: readonly string[],
+  stageCount: number,
+) {
   const [progress, setProgress] = useState<LearningProgress>(DEFAULT_PROGRESS);
   const [isHydrated, setIsHydrated] = useState(false);
   const pendingUpdatesRef = useRef<Partial<Omit<LearningProgress, "version">>>({});
@@ -24,15 +27,22 @@ export function useLearningProgress(stageCount: number) {
     const hydrationTimer = window.setTimeout(() => {
       const storedProgress = parseStoredProgress(
         window.localStorage.getItem(PROGRESS_STORAGE_KEY),
-        { stageCount },
+        { stageCount, phraseCount: phraseIds.length },
       );
-      setProgress(mergePendingProgress(storedProgress, pendingUpdatesRef.current));
+      const isCurrentLesson = storedProgress.reviewCard === null || phraseIds.includes(storedProgress.reviewCard.id);
+      setProgress({
+        ...storedProgress,
+        stage: isCurrentLesson ? storedProgress.stage : 0,
+        phraseIndex: isCurrentLesson ? storedProgress.phraseIndex : 0,
+        reviewCard: isCurrentLesson ? storedProgress.reviewCard : null,
+        ...pendingUpdatesRef.current,
+      });
       pendingUpdatesRef.current = {};
       setIsHydrated(true);
     }, 0);
 
     return () => window.clearTimeout(hydrationTimer);
-  }, [stageCount]);
+  }, [lessonId, phraseIds, stageCount]);
 
   useEffect(() => {
     if (!isHydrated) return;
@@ -50,24 +60,16 @@ export function useLearningProgress(stageCount: number) {
     progress,
     setLocale: (locale: Locale) => update({ locale }),
     setStage: (stage: number) => update({ stage }),
+    setPhraseIndex: (phraseIndex: number) => update({ phraseIndex, stage: 0 }),
     setHasStarted: (hasStarted: boolean) => update({ hasStarted }),
-    addReview: (phraseId = "lesson-1-greeting") => {
-      const card = createReviewCard(phraseId);
-      if (!isHydrated) {
-        pendingUpdatesRef.current = {
-          ...pendingUpdatesRef.current,
-          reviewCards: { ...pendingUpdatesRef.current.reviewCards, [phraseId]: card },
-        };
-      }
-      setProgress((current) => ({ ...current, reviewCards: { ...current.reviewCards, [phraseId]: card } }));
-    },
-    rateReview: (phraseId: string, rating: ReviewRating) => {
-      setProgress((current) => {
-        const card = current.reviewCards[phraseId];
-        return card
-          ? { ...current, reviewCards: { ...current.reviewCards, [phraseId]: scheduleReview(card, rating) } }
-          : current;
-      });
+    addReview: (phraseId: string) => update({ reviewCard: createReviewCard(phraseId) }),
+    rateReview: (rating: ReviewRating) => {
+      setProgress((current) => ({
+        ...current,
+        reviewCard: current.reviewCard
+          ? scheduleReview(current.reviewCard, rating)
+          : null,
+      }));
     },
   };
 }

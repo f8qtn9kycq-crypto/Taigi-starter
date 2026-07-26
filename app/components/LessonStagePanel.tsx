@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import type { LessonCopy } from "../taigi-content";
-import type { LessonStageId, PlayableLesson } from "../types/lesson";
+import type { PlayableLesson } from "../types/lesson";
 import LessonStageContent from "./LessonStageContent";
 import RecordingPractice from "./RecordingPractice";
 
@@ -15,14 +15,7 @@ type LessonStagePanelProps = {
   reviewScheduled: boolean;
   onAdvance: () => void;
   onReviewAdded: (phraseId: string) => void;
-};
-
-const factoryStepTypeByStage: Record<LessonStageId, string> = {
-  hear: "listen",
-  see: "input",
-  say: "repeat",
-  recall: "review",
-  use: "completion",
+  onPhraseAdvance: () => void;
 };
 
 export default function LessonStagePanel({
@@ -33,12 +26,12 @@ export default function LessonStagePanel({
   reviewScheduled,
   onAdvance,
   onReviewAdded,
+  onPhraseAdvance,
 }: LessonStagePanelProps) {
   const [audioPlays, setAudioPlays] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
   const phrase = lesson.phrases[phraseIndex];
   const lessonStage = lesson.stages[stage];
-  const factoryStep = lesson.factorySteps?.find((step) => step.type === factoryStepTypeByStage[lessonStage.id]);
   const { isPlaying, hasError, toggle } = useAudioPlayer(phrase.audioUrl);
 
   const playAudio = async () => {
@@ -50,14 +43,15 @@ export default function LessonStagePanel({
     <div className="stage-panel" aria-live="polite">
       <div className="stage-copy">
         <span>{text.stageCount(stage, lesson.stages.length)} · {text.stageTime(lessonStage.estimatedMinutes)}</span>
-        <h3>{factoryStep?.title[text.locale] ?? text.stageHeadings[lessonStage.id]}</h3>
-        <p>{factoryStep?.prompt[text.locale] ?? text.stageBodies[lessonStage.id]}</p>
+        <h3>{text.stageHeadings[lessonStage.id]}</h3>
+        <p>{text.stageBodies[lessonStage.id]}</p>
       </div>
 
       <LessonStageContent
         stage={lessonStage.id}
         text={text}
         phrase={phrase}
+        mission={lesson.mission}
         showAnswer={showAnswer}
         onPlay={() => void playAudio()}
       />
@@ -97,13 +91,17 @@ export default function LessonStagePanel({
         {lessonStage.id === "recall" && !showAnswer && <button type="button" className="action-button primary-action" onClick={() => setShowAnswer(true)}>{text.showAnswer}<span>↓</span></button>}
         {lessonStage.id === "recall" && showAnswer && <button type="button" className="action-button primary-action" onClick={onAdvance}>{text.nextUse}<span>→</span></button>}
         {lessonStage.id === "use" && (
-          <>
-            <p className="speaking-task">{text.speakingTask}</p>
-            <RecordingPractice text={text} />
-            <button type="button" className="action-button primary-action" onClick={() => onReviewAdded(phrase.id)} disabled={reviewScheduled}>
-              {reviewScheduled ? text.reviewAdded : text.addReview}<span>{reviewScheduled ? "✓" : "+"}</span>
+          reviewScheduled ? (
+            phraseIndex < lesson.phrases.length - 1 ? (
+              <button type="button" className="action-button primary-action" onClick={onPhraseAdvance}>
+                {text.nextPhrase}<span>→</span>
+              </button>
+            ) : <p className="lesson-complete" role="status">✓ {text.lessonComplete}</p>
+          ) : (
+            <button type="button" className="action-button primary-action" onClick={() => onReviewAdded(phrase.id)}>
+              {text.addReview}<span>+</span>
             </button>
-          </>
+          )
         )}
       </div>
     </div>

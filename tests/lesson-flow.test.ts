@@ -30,3 +30,26 @@ test("planned lessons remain truthful content placeholders", () => {
     assert.equal("stages" in lesson, false);
   }
 });
+
+test("every package lesson is playable only through a complete source-backed handoff", () => {
+  const playableNumbers = lessonCatalog
+    .filter((lesson) => lesson.status === "prototype")
+    .map((lesson) => lesson.number)
+    .sort((left, right) => left - right);
+
+  assert.deepEqual(playableNumbers, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
+  assert.deepEqual(
+    lessonCatalog.map((lesson) => lesson.pathOrder),
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+  );
+
+  for (const lesson of lessonCatalog.filter((item) => item.number >= 2 && item.number <= 20)) {
+    assert.equal(lesson.status, "prototype");
+    assert.ok(lesson.phrases.length >= 3);
+    assert.ok(lesson.mission.zh.length > 0);
+    assert.ok(lesson.phrases.every((phrase) => phrase.audioAttribution?.isUnmodifiedOriginal));
+    assert.ok(lesson.phrases.every((phrase) => phrase.audioAttribution?.license === "CC BY-ND 3.0 TW"));
+    assert.ok(lesson.phrases.every((phrase) => phrase.audioAttribution?.originalUrl.startsWith("https://sutian.moe.edu.tw/")));
+  }
+
+});

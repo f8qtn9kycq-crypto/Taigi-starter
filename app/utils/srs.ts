@@ -3,9 +3,7 @@ import type { ReviewCard, ReviewRating } from "../types/learning.ts";
 const MINUTE_MS = 60_000;
 const DAY_MS = 86_400_000;
 
-export function createReviewCard(idOrNow: string | Date = "lesson-1-greeting", maybeNow = new Date()): ReviewCard {
-  const id = idOrNow instanceof Date ? "lesson-1-greeting" : idOrNow;
-  const now = idOrNow instanceof Date ? idOrNow : maybeNow;
+export function createReviewCard(id: string, now = new Date()): ReviewCard {
   return {
     id,
     dueAt: now.toISOString(),

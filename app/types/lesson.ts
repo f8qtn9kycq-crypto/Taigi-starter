@@ -1,5 +1,4 @@
 import type { Locale } from "./learning";
-import type { GeneratedContentStatus } from "./generated-lesson";
 
 export type LocalizedText = Record<Locale, string>;
 
@@ -14,6 +13,7 @@ export type LessonSource = {
 export type LessonAudioAttribution = {
   audioUrl: string;
   sourceUrl: string;
+  originalUrl: string;
   license: string;
   licenseUrl: string;
   speaker: string | null;
@@ -41,21 +41,14 @@ export type LessonStage = {
   estimatedMinutes: number;
 };
 
-export type LessonFactoryStep = {
-  type: string;
-  title: LocalizedText;
-  prompt: LocalizedText;
-};
-
 type LessonBase = {
   id: string;
   number: number;
+  pathOrder: number;
   title: LocalizedText;
   secondaryTitle: LocalizedText;
   summary: LocalizedText;
-  goal: LocalizedText;
-  contentStatus: GeneratedContentStatus;
-  factorySteps?: readonly LessonFactoryStep[];
+  mission: LocalizedText;
   phrases: readonly LessonPhrase[];
 };
 

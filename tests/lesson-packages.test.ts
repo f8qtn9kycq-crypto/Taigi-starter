@@ -1,12 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { lessonPackages } from "../app/data/lesson-packages.ts";
+import { prototypeLesson } from "../app/data/lessons.ts";
 import { TEACHER_REVIEW_CHECK_IDS } from "../app/types/lesson-package.ts";
 
-test("planned lesson packages are complete content records without runtime audio claims", () => {
+test("planned lesson packages carry complete POJ and original-audio metadata", () => {
   assert.deepEqual(
     lessonPackages.map((lesson) => lesson.number),
-    [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+    [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
   );
 
   const phraseIds = new Set<string>();
@@ -20,7 +21,9 @@ test("planned lesson packages are complete content records without runtime audio
       lesson.teacherReview.checks.map((check) => check.id),
       TEACHER_REVIEW_CHECK_IDS,
     );
-    assert.ok(lesson.phrases.length > 0);
+    assert.ok(lesson.phrases.length >= 3);
+    assert.ok(lesson.mission.zh.trim());
+    assert.ok(lesson.mission.en.trim());
 
     for (const check of lesson.teacherReview.checks) {
       assert.equal(check.status, "pending");
@@ -33,20 +36,24 @@ test("planned lesson packages are complete content records without runtime audio
       phraseIds.add(phrase.id);
       assert.ok(phrase.hanji.trim());
       assert.ok(phrase.tailo.trim());
+      assert.ok(phrase.poj?.trim());
       assert.ok(phrase.meaning.zh.trim());
       assert.ok(phrase.meaning.en.trim());
       assert.ok(phrase.cultureNote.zh.trim());
       assert.ok(phrase.cultureNote.en.trim());
       assert.match(phrase.source.canonicalUrl, /^https:\/\/sutian\.moe\.edu\.tw\//);
       assert.equal(phrase.source.license, "CC BY-ND 3.0 TW");
-      assert.equal(phrase.audio.status, "not-yet-added");
-      assert.equal("audioUrl" in phrase, false);
+      assert.equal(phrase.audio.status, "added");
+      assert.match(phrase.audio.audioUrl, /^\/audio\//);
+      assert.match(phrase.audio.originalUrl, /^https:\/\/sutian\.moe\.edu\.tw\/media\//);
+      assert.equal(phrase.audio.license, "CC BY-ND 3.0 TW");
+      assert.equal(phrase.audio.isUnmodifiedOriginal, true);
     }
   }
 });
 
 test("M2.3 packages keep the source-verified lesson scope", () => {
-  const m23Packages = lessonPackages.filter((lesson) => lesson.number >= 16);
+  const m23Packages = lessonPackages.filter((lesson) => lesson.number >= 16 && lesson.number <= 18);
 
   assert.deepEqual(
     m23Packages.map((lesson) => lesson.title.zh),
@@ -58,5 +65,16 @@ test("M2.3 packages keep the source-verified lesson scope", () => {
   );
   assert.ok(m23Packages.every((lesson) => lesson.status === "planned"));
   assert.ok(m23Packages.every((lesson) => lesson.teacherReview.status === "required"));
-  assert.ok(m23Packages.every((lesson) => lesson.phrases.every((phrase) => phrase.audio.status === "not-yet-added")));
+  assert.ok(m23Packages.every((lesson) => lesson.phrases.every((phrase) => phrase.audio.status === "added")));
+});
+
+test("Lesson 12 does not duplicate Lesson 1's complete greeting phrase", () => {
+  const lessonTwelve = lessonPackages.find((lesson) => lesson.number === 12);
+  assert.ok(lessonTwelve);
+
+  const lessonOneKeys = new Set(prototypeLesson.phrases.map((phrase) => `${phrase.hanji}\t${phrase.tailo}`));
+  assert.equal(
+    lessonTwelve.phrases.some((phrase) => lessonOneKeys.has(`${phrase.hanji}\t${phrase.tailo}`)),
+    false,
+  );
 });

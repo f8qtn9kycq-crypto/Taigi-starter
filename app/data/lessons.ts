@@ -4,8 +4,8 @@ import {
   type PlayableLesson,
   type PlannedLesson,
 } from "../types/lesson.ts";
+import { lessonPackageHandoffs } from "./lesson-package-handoffs.ts";
 import { lessonPackageHandoffToPlayableLesson } from "../utils/lesson-package-handoff.ts";
-import { generatedLessons } from "./generated-lessons.ts";
 
 const lessonOneStages = LESSON_STAGE_IDS.map((id) => ({
   id,
@@ -15,17 +15,17 @@ const lessonOneStages = LESSON_STAGE_IDS.map((id) => ({
 export const prototypeLesson: PlayableLesson = {
   id: "lesson-1-greetings",
   number: 1,
+  pathOrder: 1,
   title: { zh: "相借問", en: "Greetings" },
   secondaryTitle: { zh: "Greetings", en: "相借問" },
   summary: {
     zh: "從一句日常關心開始，把聲音、文字和開口練習連起來。",
     en: "Connect sound, script, and speaking through one caring everyday greeting.",
   },
-  goal: {
-    zh: "用一句日常問候關心身邊的人。",
-    en: "Use one everyday greeting to show care for someone around you.",
+  mission: {
+    zh: "完成一輪自然問候：先聽懂，再用這句話關心對方。",
+    en: "Complete one natural greeting: understand it first, then use it to show care.",
   },
-  contentStatus: "verified",
   status: "prototype",
   durationMinutes: 5,
   stages: lessonOneStages,
@@ -57,6 +57,7 @@ export const prototypeLesson: PlayableLesson = {
       audioAttribution: {
         audioUrl: "/audio/li-tsiah-pa-bue.mp3",
         sourceUrl: "https://sutian.moe.edu.tw/und-hani/su/1653/",
+        originalUrl: "https://sutian.moe.edu.tw/media/senn/mp3/imtong/subak/1/1653.mp3",
         license: "CC BY-ND 3.0 TW",
         licenseUrl: "https://creativecommons.org/licenses/by-nd/3.0/tw/",
         speaker: null,
@@ -70,22 +71,22 @@ const plannedLessonPlaceholders: readonly PlannedLesson[] = [
   {
     id: "lesson-2-family",
     number: 2,
+    pathOrder: 13,
     title: { zh: "阮兜的人", en: "My family" },
     secondaryTitle: { zh: "My family", en: "阮兜的人" },
     summary: { zh: "規劃中", en: "Planned" },
-    goal: { zh: "規劃中", en: "Planned" },
-    contentStatus: "provisional",
+    mission: { zh: "介紹家裡的人：指出自己的家、媽媽和爸爸。", en: "Talk about home: identify your home, mother, and father." },
     status: "planned",
     phrases: [],
   },
   {
     id: "lesson-3-numbers",
     number: 3,
+    pathOrder: 3,
     title: { zh: "一二三", en: "Numbers" },
     secondaryTitle: { zh: "Numbers", en: "一二三" },
     summary: { zh: "規劃中", en: "Planned" },
-    goal: { zh: "規劃中", en: "Planned" },
-    contentStatus: "provisional",
+    mission: { zh: "數身邊三樣物件，聽到數字時指出正確數量。", en: "Count three everyday objects and point to the right quantity when you hear each number." },
     status: "planned",
     phrases: [],
   },
@@ -96,8 +97,7 @@ export const createLessonCatalog = (
 ): readonly Lesson[] => {
   const lessonsByNumber = new Map<number, Lesson>([
     [prototypeLesson.number, prototypeLesson],
-    ...plannedLessonPlaceholders.map((lesson) => [lesson.number, lesson]),
-    ...generatedLessons.map((lesson) => [lesson.number, lesson]),
+    ...plannedLessonPlaceholders.map((lesson) => [lesson.number, lesson] as const),
   ]);
 
   for (const handoff of handoffs) {
@@ -105,7 +105,7 @@ export const createLessonCatalog = (
     if (playableLesson) lessonsByNumber.set(playableLesson.number, playableLesson);
   }
 
-  return [...lessonsByNumber.values()].sort((left, right) => left.number - right.number);
+  return [...lessonsByNumber.values()].sort((left, right) => left.pathOrder - right.pathOrder);
 };
 
-export const lessonCatalog: readonly Lesson[] = createLessonCatalog();
+export const lessonCatalog: readonly Lesson[] = createLessonCatalog(lessonPackageHandoffs);
