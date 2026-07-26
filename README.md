@@ -21,14 +21,9 @@ playable 五段流程。第 2–18 課仍保留
 
 ## 回饋流程與隱私
 
-- 一般學習者可使用產品內的 60 秒回饋表單。
+- 一般學習者使用 owner 提供的 Google Form，不在本網站儲存回饋。
 - 技術測試者可使用 `.github/ISSUE_TEMPLATE` 的 GitHub Issue Forms。
-- 原始回饋儲存在 Sites D1，只能由設定的擁有者透過 `/feedback` 查看。
-- `/api/feedback/export` 會輸出可供 Google Sheets 使用的 CSV，且同樣需要
-  擁有者身分。
-- 若 Sites 設定非秘密的 `FEEDBACK_EXTERNAL_FORM_URL`（必須是 HTTPS），產品會
-  改顯示外部回饋表單連結，不再把一般學習者回饋寫入 D1；未設定時維持上述
-  私有 D1 fallback。不得使用公開 GitHub Issue Form 取代私有回饋。
+- `FEEDBACK_EXTERNAL_FORM_URL` 必須是 HTTPS；網站只顯示外部表單連結。
 - 不得提交回饋匯出檔、憑證或測試者個人資料。
 
 ## 本機開發
@@ -59,8 +54,7 @@ POJ、官方原始 MP3、CC BY-ND attribution、local audio asset 與課程範�
 - `app/types`：共用學習模型
 - `app/utils`：純計算邏輯
 - `app/services`：版本化裝置端儲存
-- `app/api/feedback`：私密回饋寫入與擁有者匯出
-- `db`、`drizzle`：D1 模型與 migration
+- `app/api/feedback-config`：提供已設定的外部表單 URL
 - `public/audio`：授權音檔原檔
 - `tests`：伺服器輸出與純邏輯測試
 
@@ -80,11 +74,14 @@ playable phrase 都保留 canonical 詞條頁、原始 MP3 URL、speaker、授�
 
 ## 部署
 
-本專案使用 OpenAI Sites，並以 `.openai/hosting.json` 宣告 D1 綁定。請勿建立
-第二個 Sites 專案或更換既有 `project_id`。
+Vercel 使用標準 Next.js build：
 
-回饋 API 的 deployment boundary 與最小發佈前確認，請見
-[回饋安全部署邊界](./docs/feedback-security-deployment.md)。
+```bash
+npm run build:vercel
+```
 
-完整 production exit gate 與可執行 preflight 請見
+將 `FEEDBACK_EXTERNAL_FORM_URL` 設為 owner 的 HTTPS Google Form URL，再由
+Vercel Git integration 以 GitHub `main` 建立 preview 與 production deployment。
+
+部署前 gate 請見[回饋安全部署邊界](./docs/feedback-security-deployment.md)與
 [Production exit plan](./docs/production-exit-plan.md)。

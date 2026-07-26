@@ -147,7 +147,7 @@ export default function TaigiStartPage() {
         />
       )}
 
-      <FeedbackForm locale={progress.locale} learningStage={progress.stage} />
+      <FeedbackForm locale={progress.locale} />
 
       {reviewOpen && (
         <ReviewModal

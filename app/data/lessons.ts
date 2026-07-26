@@ -97,7 +97,7 @@ export const createLessonCatalog = (
 ): readonly Lesson[] => {
   const lessonsByNumber = new Map<number, Lesson>([
     [prototypeLesson.number, prototypeLesson],
-    ...plannedLessonPlaceholders.map((lesson) => [lesson.number, lesson]),
+    ...plannedLessonPlaceholders.map((lesson) => [lesson.number, lesson] as const),
   ]);
 
   for (const handoff of handoffs) {
