@@ -2,33 +2,33 @@
 
 ## Exact production release
 
-- Source: GitHub `main` mirrored to the locked Sites source repository
-- Release source commit: `e907fba1153bf2e58c3538660db96bf3ec250d9f`
-- Sites saved version: `22`
-- Sites saved source: `e907fba1153bf2e58c3538660db96bf3ec250d9f`
+- Source: validated release branch pushed to the locked Sites source repository
+- Release source commit: `e1b326d6b97781ae0701930fede29248c68f8fef`
+- Sites saved version: `24`
+- Sites saved source: `e1b326d6b97781ae0701930fede29248c68f8fef`
 - Production URL: https://taigi-start.alexcy2025.chatgpt.site
-- Version 22 deployment: `appgdep_6a6575224d5c8191a02d840534382810`, succeeded; env revision `5`
+- Version 24 deployment: `appgdep_6a657e775f048191a53ce1b7b0d51d7e`, succeeded; env revision `5`
 - Latest runtime-config deployment: `appgdep_6a64ecd7f7648191b1467cd0c1c03f25`, succeeded; Sites environment revision `5`
 - Previous rollback restore deployment: `appgdep_6a64b32624908191b2bddfb337d15aa6`, succeeded
 - Date: 2026-07-26
-- Scope: Lessons 2–18 production release with a learner-facing practical path order, POJ/audio provenance completion, and Codex-assisted verification; not external learner research
+- Scope: Lessons 1–20 production release with practical path order, POJ/audio provenance completion, title-to-content target lists, and Codex-moderated verification; not external learner research
 
 ## Evidence recorded
 
 | Area | Status | Evidence |
 | --- | --- | --- |
-| Automated suite | Pass | `npm test`, 48/48 including production build, handoff validation, path-order checks, and local audio file checks |
+| Automated suite | Pass | `npm test`, 50/50 including production build, routine lesson validation, handoff validation, path-order checks, and local audio file checks |
 | Lint | Pass | `npm run lint` |
 | Sites source provenance | Pass | Saved version 21 source equals the exact validated release commit; Sites built from the pushed source repository state |
-| Production publish | Pass | Version 21 publish returned `succeeded`; final live URL is the Sites production URL |
+| Production publish | Pass | Version 24 publish returned `succeeded`; cache-busted live read-back matched the 20-lesson scope |
 | Rollback drill | Pass | Version 5 deployment succeeded, live reverted to the old `7 / 12` UI, version 6 restored `1 / 1`, and version 7 then deployed successfully |
-| Live scope | Pass | Production browser shows 18 selectable course rows; cache-busted read-back shows the practical learner path from Lesson 1 greetings through Lesson 18 integrated conversation, and Lesson 18 renders as playable |
-| Live attribution | Pass | Production Lesson 18 exposes the canonical MOE phrase page and CC BY-ND 3.0 TW licence link; release handoffs cover all 52 phrase audio files |
-| Live Hear gate | Pass | Real production MP3 playback changed `已聽 0 次` to `已聽 1 次` and enabled See on Lesson 18 |
+| Live scope | Pass | Cache-busted production read-back shows 20 selectable course rows; Lesson 2 shows all three polite target phrases and Lesson 20 shows all three help/slow-down target phrases |
+| Live attribution | Pass | Production Lesson 2/20 expose canonical MOE phrase pages and CC BY-ND 3.0 TW licence links; release handoffs cover all 58 phrase audio files |
+| Live Hear gate | Pass | Real production Lesson 20 MP3 playback changed `已聽 0 次` to `已聽 1 次` and enabled See |
 | Five-stage path | Pass (release QA) | Exact release QA completed Lesson 18 Hear → See → Say → Recall → Use; Recall answer stayed hidden until reveal, Use added review, and the next phrase advanced to `2 / 4` |
 | Live zh-TW / English | Pass | Both language states rendered and returned correctly |
 | 320×700 | Pass | No horizontal overflow; visible controls met the 44px minimum |
-| 390×844 | Pass | Existing release QA selected Lessons 2–18, completed the Lesson 18 flow, and confirmed no horizontal overflow in the mobile viewport; the path-order change does not alter the mobile interaction contract |
+| 390×844 | Pass | Candidate QA selected Lessons 2/3/20, confirmed complete target lists, completed a representative five-stage flow, and found no horizontal overflow; production read-back then confirmed the same 20-lesson scope |
 | 412×915 | Pass | No horizontal overflow; visible controls met the 44px minimum |
 | Feedback anonymous export | Pass | Live `GET /api/feedback/export` returned 403 |
 | Feedback cross-origin | Pass | Live evil Origin returned 403; unsupported content type returned 415 |
