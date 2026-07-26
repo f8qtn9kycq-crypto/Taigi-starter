@@ -63,6 +63,12 @@ record，不能只寫「已檢查」。
 - Worker logs、rate limiting 與 rollback 方法已實測；D1 backup/restore
   仍須平台管理員提供證據。
 
+D1 recovery 必須使用 `bash scripts/d1-recovery.sh check` 先做唯讀檢查，再以
+`backup` 產生具 hash 的 SQL artifact，最後指定隔離的 staging database 執行
+`restore`。script 預設拒絕同一 production database restore；native Time Travel
+restore 另需明確 bookmark 與 owner confirmation。不要把未登入、未執行或只存在
+本機的輸出寫成 production evidence。
+
 若 Sites 無法提供 isolated staging/preview 或上述 runtime evidence，不要建立
 第二個 Sites project；把 Cloudflare Workers + D1 migration 留作明確的
 conditional fallback。
