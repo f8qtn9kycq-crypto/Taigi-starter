@@ -74,6 +74,7 @@ export type LessonCopy = {
   microphoneUnsupported: string;
   yourRecording: string;
   recordingLocalOnly: string;
+  speakingTask: string;
   showAnswer: string;
   addReview: string;
   reviewAdded: string;
@@ -191,6 +192,7 @@ export const copy: Record<Locale, LessonCopy> = {
     microphoneUnsupported: "此瀏覽器不支援錄音。你仍可直接開口跟讀。",
     yourRecording: "你的錄音",
     recordingLocalOnly: "錄音只留在這個頁面，不會上傳或保存。",
+    speakingTask: "完成口說任務：說一次這句話。",
     showAnswer: "顯示答案",
     addReview: "加入今日複習",
     reviewAdded: "已加入複習",
@@ -306,6 +308,7 @@ export const copy: Record<Locale, LessonCopy> = {
     microphoneUnsupported: "This browser cannot record audio. You can still practice aloud.",
     yourRecording: "Your recording",
     recordingLocalOnly: "This recording stays on this page and is never uploaded or saved.",
+    speakingTask: "Speaking task: say this phrase once.",
     showAnswer: "Show answer",
     addReview: "Add to today’s review",
     reviewAdded: "Added to review",

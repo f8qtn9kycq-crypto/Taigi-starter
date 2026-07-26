@@ -17,6 +17,7 @@ import type { PlayableLesson } from "./types/lesson";
 export default function TaigiStartPage() {
   const [activeLessonId, setActiveLessonId] = useState(prototypeLesson.id);
   const activeLesson = (lessonCatalog.find((lesson) => lesson.id === activeLessonId && lesson.status === "prototype") ?? prototypeLesson) as PlayableLesson;
+  const [activePhraseId, setActivePhraseId] = useState(prototypeLesson.phrases[0].id);
   const { progress, setLocale, setStage, setHasStarted, addReview, rateReview } = useLearningProgress(
     activeLesson.stages.length,
   );
@@ -27,7 +28,8 @@ export default function TaigiStartPage() {
   const pathRef = useRef<HTMLElement | null>(null);
   const heroAudio = useAudioPlayer(activeLesson.phrases[0].audioUrl);
   const text = copy[progress.locale];
-  const activeReview = progress.lessonOneReview?.id === activeLesson.phrases[0].id ? progress.lessonOneReview : null;
+  const activePhrase = activeLesson.phrases.find((phrase) => phrase.id === activePhraseId) ?? activeLesson.phrases[0];
+  const activeReview = progress.lessonOneReview?.id === activePhrase.id ? progress.lessonOneReview : null;
   const dueCount = isReviewDue(activeReview) ? 1 : 0;
 
   useEffect(() => {
@@ -74,6 +76,7 @@ export default function TaigiStartPage() {
   const selectLesson = (lesson: PlayableLesson) => {
     heroAudio.stop();
     setActiveLessonId(lesson.id);
+    setActivePhraseId(lesson.phrases[0].id);
     setStage(0);
     setHasStarted(true);
     setActiveTab("learn");
@@ -104,9 +107,11 @@ export default function TaigiStartPage() {
           lesson={activeLesson}
           text={text}
           stage={progress.stage}
-          reviewScheduled={progress.lessonOneReview?.id === activeLesson.phrases[0].id}
+          activePhraseId={activePhrase.id}
+          reviewedPhraseId={progress.lessonOneReview?.id ?? null}
           onStageChange={setStage}
-          onReviewAdded={() => addReview(activeLesson.phrases[0].id)}
+          onPhraseChange={setActivePhraseId}
+          onReviewAdded={addReview}
         />
         <CoursePath ref={pathRef} text={text} locale={progress.locale} activeLessonId={activeLesson.id} onSelectLesson={(lesson) => lesson.status === "prototype" && selectLesson(lesson)} />
         <footer>
@@ -138,7 +143,7 @@ export default function TaigiStartPage() {
       {reviewOpen && (
         <ReviewModal
           text={text}
-          phrase={activeLesson.phrases[0]}
+          phrase={activePhrase}
           card={activeReview}
           isDue={dueCount > 0}
           locale={progress.locale}

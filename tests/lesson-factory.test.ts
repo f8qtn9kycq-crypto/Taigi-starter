@@ -4,6 +4,7 @@ import introLesson from "../app/content/generated/intro-001.json" with { type: "
 import marketLesson from "../app/content/generated/market-001.json" with { type: "json" };
 import { generatedLessons } from "../app/data/generated-lessons.ts";
 import { lessonCatalog } from "../app/data/lessons.ts";
+import { generateLesson, type LessonSpec } from "../app/utils/lesson-factory.ts";
 import { validateLesson, validateLessonCollection } from "../app/utils/lesson-factory-validation.ts";
 
 function cloneLesson(value: unknown): Record<string, unknown> {
@@ -36,10 +37,23 @@ test("factory validator rejects missing sources, duplicate IDs, invalid steps, a
   (fakePhrase.audio as Record<string, unknown>).audioUrl = "https://example.invalid/fake.mp3";
   assert.ok(validateLesson(fakeAudio).some((issue) => issue.path.endsWith("audio.audioUrl")));
 
+  const unauthorizedSource = cloneLesson(introLesson);
+  const unauthorizedPhrase = (unauthorizedSource.targetPhrases as Array<Record<string, unknown>>)[0];
+  (unauthorizedPhrase.source as Record<string, unknown>).canonicalUrl = "https://example.invalid/source";
+  assert.ok(validateLesson(unauthorizedSource).some((issue) => issue.message.includes("MOE Dictionary canonical URL")));
+
   const tooMany = cloneLesson(introLesson);
   const phrases = tooMany.targetPhrases as unknown[];
   tooMany.targetPhrases = [...phrases, ...phrases, phrases[0]];
   assert.ok(validateLesson(tooMany).some((issue) => issue.message.includes("no more than 5")));
+});
+
+test("generator keeps missing collections recoverable for clear validator errors", () => {
+  const generated = generateLesson({ id: "broken" } as unknown as LessonSpec, "lesson-specs/broken.yaml");
+  const issues = validateLesson(generated);
+  assert.ok(issues.some((issue) => issue.path === "targetPhrases"));
+  assert.ok(issues.some((issue) => issue.path === "vocabulary"));
+  assert.ok(issues.some((issue) => issue.path === "sources"));
 });
 
 test("both factory lessons use the existing reusable playable lesson path", () => {
@@ -49,5 +63,7 @@ test("both factory lessons use the existing reusable playable lesson path", () =
     ["lesson-1-greetings", "market-001", "intro-001"],
   );
   assert.equal(generatedLessons.every((lesson) => lesson.stages.length === 5), true);
+  assert.equal(generatedLessons.every((lesson) => lesson.phrases.length === 3), true);
+  assert.equal(generatedLessons.every((lesson) => lesson.factorySteps?.some((step) => step.type === "completion")), true);
   assert.equal(generatedLessons.every((lesson) => lesson.phrases.every((phrase) => phrase.audioAttribution.isUnmodifiedOriginal)), true);
 });

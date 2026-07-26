@@ -35,6 +35,7 @@ export function generatedLessonToPlayableLesson(lesson: GeneratedLesson, number:
     summary: lesson.scenario,
     goal: lesson.goal,
     contentStatus: lesson.contentStatus,
+    factorySteps: lesson.steps,
     status: "prototype",
     durationMinutes: 5,
     stages: LESSON_STAGE_IDS.map((id) => ({ id, estimatedMinutes: 1 })),

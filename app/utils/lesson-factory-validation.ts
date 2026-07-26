@@ -5,6 +5,7 @@ import {
   type GeneratedContentStatus,
   type LessonFactoryStepType,
 } from "../types/generated-lesson.ts";
+import { officialMoeAudioUrl } from "./lesson-factory.ts";
 
 export type LessonFactoryValidationIssue = { path: string; message: string };
 type UnknownRecord = Record<string, unknown>;
@@ -12,6 +13,9 @@ const isRecord = (value: unknown): value is UnknownRecord => typeof value === "o
 const isNonEmptyString = (value: unknown): value is string => typeof value === "string" && value.trim().length > 0;
 const isLocalizedText = (value: unknown): boolean => isRecord(value) && isNonEmptyString(value.zh) && isNonEmptyString(value.en);
 const isHttpsUrl = (value: unknown): value is string => isNonEmptyString(value) && value.startsWith("https://");
+const isMoeCanonicalUrl = (value: unknown): value is string => typeof value === "string" && /^https:\/\/sutian\.moe\.edu\.tw\/(?:zh-hant|und-hani)\/su\/\d+\/$/.test(value);
+const MOE_LICENSE = "CC BY-ND 3.0 TW";
+const MOE_LICENSE_URL = "https://creativecommons.org/licenses/by-nd/3.0/tw/";
 const isContentStatus = (value: unknown): value is GeneratedContentStatus => GENERATED_CONTENT_STATUSES.some((status) => status === value);
 const isStepType = (value: unknown): value is LessonFactoryStepType => LESSON_FACTORY_STEP_TYPES.some((stepType) => stepType === value);
 
@@ -25,7 +29,7 @@ function validateSources(value: unknown, path: string, issues: LessonFactoryVali
     return;
   }
   value.forEach((source, index) => {
-    if (!isHttpsUrl(source)) addIssue(issues, `${path}[${index}]`, "must be an HTTPS canonical URL");
+    if (!isMoeCanonicalUrl(source)) addIssue(issues, `${path}[${index}]`, "must be an MOE Dictionary canonical URL");
   });
 }
 
@@ -55,9 +59,9 @@ function validateTargetPhrase(value: unknown, path: string, phraseIds: Set<strin
   if (!isRecord(value.source)) addIssue(issues, `${path}.source`, "must include source metadata");
   else {
     validateLocalizedField(value.source.title, `${path}.source.title`, issues);
-    if (!isHttpsUrl(value.source.canonicalUrl)) addIssue(issues, `${path}.source.canonicalUrl`, "must be an HTTPS canonical URL");
-    if (!isNonEmptyString(value.source.license)) addIssue(issues, `${path}.source.license`, "must identify the licence");
-    if (!isHttpsUrl(value.source.licenseUrl)) addIssue(issues, `${path}.source.licenseUrl`, "must link to a licence");
+    if (!isMoeCanonicalUrl(value.source.canonicalUrl)) addIssue(issues, `${path}.source.canonicalUrl`, "must be an MOE Dictionary canonical URL");
+    if (value.source.license !== MOE_LICENSE) addIssue(issues, `${path}.source.license`, `must be ${MOE_LICENSE}`);
+    if (value.source.licenseUrl !== MOE_LICENSE_URL) addIssue(issues, `${path}.source.licenseUrl`, "must link to the CC BY-ND 3.0 TW licence");
     if (value.source.speaker !== null && !isNonEmptyString(value.source.speaker)) addIssue(issues, `${path}.source.speaker`, "must be a name or null");
   }
   if (!isRecord(value.audio)) addIssue(issues, `${path}.audio`, "must include audio provenance");
@@ -65,8 +69,14 @@ function validateTargetPhrase(value: unknown, path: string, phraseIds: Set<strin
     for (const field of ["audioUrl", "originalUrl", "sourceUrl", "license", "licenseUrl"] as const) if (!isNonEmptyString(value.audio[field])) addIssue(issues, `${path}.audio.${field}`, "must be a non-empty string");
     if (isNonEmptyString(value.audio.audioUrl) && !/^\/audio\/.+\.mp3$/i.test(value.audio.audioUrl)) addIssue(issues, `${path}.audio.audioUrl`, "must be a local MP3 asset, not a fake or placeholder URL");
     if (value.audio.originalUrl && !isHttpsUrl(value.audio.originalUrl)) addIssue(issues, `${path}.audio.originalUrl`, "must be an HTTPS original URL");
-    if (value.audio.sourceUrl && !isHttpsUrl(value.audio.sourceUrl)) addIssue(issues, `${path}.audio.sourceUrl`, "must be an HTTPS source URL");
-    if (value.audio.licenseUrl && !isHttpsUrl(value.audio.licenseUrl)) addIssue(issues, `${path}.audio.licenseUrl`, "must be an HTTPS licence URL");
+    if (value.audio.sourceUrl && !isMoeCanonicalUrl(value.audio.sourceUrl)) addIssue(issues, `${path}.audio.sourceUrl`, "must be an MOE Dictionary source URL");
+    if (value.audio.license !== MOE_LICENSE) addIssue(issues, `${path}.audio.license`, `must be ${MOE_LICENSE}`);
+    if (value.audio.licenseUrl !== MOE_LICENSE_URL) addIssue(issues, `${path}.audio.licenseUrl`, "must link to the CC BY-ND 3.0 TW licence");
+    if (isMoeCanonicalUrl(value.source.canonicalUrl) && value.audio.sourceUrl !== value.source.canonicalUrl) addIssue(issues, `${path}.audio.sourceUrl`, "must match source.canonicalUrl");
+    if (isMoeCanonicalUrl(value.source.canonicalUrl)) {
+      const expectedOriginalUrl = officialMoeAudioUrl(value.source.canonicalUrl);
+      if (value.audio.originalUrl !== expectedOriginalUrl) addIssue(issues, `${path}.audio.originalUrl`, "must match the canonical MOE audio URL derived from source.canonicalUrl");
+    }
     if (value.audio.speaker !== null && !isNonEmptyString(value.audio.speaker)) addIssue(issues, `${path}.audio.speaker`, "must be a name or null");
     if (value.audio.isUnmodifiedOriginal !== true) addIssue(issues, `${path}.audio.isUnmodifiedOriginal`, "must be true for CC BY-ND source audio");
   }

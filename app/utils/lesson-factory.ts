@@ -37,14 +37,32 @@ function createSteps(spec: LessonSpec): readonly GeneratedLessonStep[] {
 }
 
 function createTargetPhrase(phrase: LessonSpecPhrase, contentStatus: LessonSpec["contentStatus"]): GeneratedTargetPhrase {
-  const sourceUrl = phrase.sources[0];
-  return { ...phrase, contentStatus, source: sourceMetadata(sourceUrl), audio: { audioUrl: phrase.audioUrl, originalUrl: officialMoeAudioUrl(sourceUrl), sourceUrl, license: MOE_LICENSE, licenseUrl: MOE_LICENSE_URL, speaker: null, isUnmodifiedOriginal: true } };
+  const sourceUrl = Array.isArray(phrase.sources) && typeof phrase.sources[0] === "string" ? phrase.sources[0] : "";
+  const audioUrl = typeof phrase.audioUrl === "string" ? phrase.audioUrl : "";
+  let originalUrl = "";
+  try {
+    originalUrl = officialMoeAudioUrl(sourceUrl);
+  } catch {
+    // Keep the generated record deterministic so validation can report the missing or invalid source field.
+  }
+  return {
+    id: phrase.id,
+    hanji: phrase.hanji,
+    tailo: phrase.tailo,
+    poj: phrase.poj,
+    meaning: phrase.meaning,
+    cultureNote: phrase.cultureNote,
+    sources: Array.isArray(phrase.sources) ? phrase.sources : [],
+    contentStatus,
+    source: sourceMetadata(sourceUrl),
+    audio: { audioUrl, originalUrl, sourceUrl, license: MOE_LICENSE, licenseUrl: MOE_LICENSE_URL, speaker: null, isUnmodifiedOriginal: true },
+  };
 }
 
 function createVocabularyItem(item: LessonSpecVocabulary, contentStatus: LessonSpec["contentStatus"]): GeneratedVocabularyItem { return { ...item, contentStatus }; }
 
 export function generateLesson(spec: LessonSpec, generatedFrom: string): GeneratedLesson {
-  const targetPhrases = spec.targetPhrases.map((phrase) => createTargetPhrase(phrase, spec.contentStatus));
+  const targetPhrases = (Array.isArray(spec.targetPhrases) ? spec.targetPhrases : []).map((phrase) => createTargetPhrase(phrase, spec.contentStatus));
   return {
     version: 1,
     generatedFrom,
@@ -54,10 +72,10 @@ export function generateLesson(spec: LessonSpec, generatedFrom: string): Generat
     scenario: spec.scenario,
     goal: spec.goal,
     targetPhrases,
-    vocabulary: spec.vocabulary.map((item) => createVocabularyItem(item, spec.contentStatus)),
+    vocabulary: (Array.isArray(spec.vocabulary) ? spec.vocabulary : []).map((item) => createVocabularyItem(item, spec.contentStatus)),
     steps: createSteps(spec),
     reviewItems: targetPhrases.map((phrase) => ({ id: `${spec.id}-review-${phrase.id}`, targetPhraseId: phrase.id, prompt: { zh: `看到意思時，試著說出「${phrase.hanji}」。`, en: `When you see the meaning, try to say “${phrase.hanji}.”` } })),
-    sources: [...new Set(spec.sources)],
+    sources: Array.isArray(spec.sources) ? [...new Set(spec.sources)] : [],
     contentStatus: spec.contentStatus,
   };
 }

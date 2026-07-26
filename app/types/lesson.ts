@@ -41,6 +41,12 @@ export type LessonStage = {
   estimatedMinutes: number;
 };
 
+export type LessonFactoryStep = {
+  type: string;
+  title: LocalizedText;
+  prompt: LocalizedText;
+};
+
 type LessonBase = {
   id: string;
   number: number;
@@ -49,6 +55,7 @@ type LessonBase = {
   summary: LocalizedText;
   goal: LocalizedText;
   contentStatus: GeneratedContentStatus;
+  factorySteps?: readonly LessonFactoryStep[];
   phrases: readonly LessonPhrase[];
 };
 
