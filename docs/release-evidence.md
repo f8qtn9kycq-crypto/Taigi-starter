@@ -3,11 +3,11 @@
 ## Exact production release
 
 - Source: GitHub `main` mirrored to the locked Sites source repository
-- Release source commit: `bcc0ff4327e6c3edf1c5305fc965a81d07367287`
-- Sites saved version: `16`
-- Sites saved source: `bcc0ff4327e6c3edf1c5305fc965a81d07367287`
+- Release source commit: `172bdd43abe1df93f6319d076854b42912936358`
+- Sites saved version: `17`
+- Sites saved source: `172bdd43abe1df93f6319d076854b42912936358`
 - Production URL: https://taigi-start.alexcy2025.chatgpt.site
-- Version 16 deployment: `appgdep_6a65690ae4a48191bca3a6d223497aea`, succeeded; env revision `5`
+- Version 17 deployment: `appgdep_6a656941f9488191bf0b4c6076966785`, succeeded; env revision `5`
 - Latest runtime-config deployment: `appgdep_6a64ecd7f7648191b1467cd0c1c03f25`, succeeded; Sites environment revision `5`
 - Previous rollback restore deployment: `appgdep_6a64b32624908191b2bddfb337d15aa6`, succeeded
 - Date: 2026-07-26
@@ -21,7 +21,7 @@
 | Lint | Pass | `npm run lint` |
 | Archive | Pass | Sites archive contains `dist/server/index.js` and locked `.openai/hosting.json` |
 | Sites provenance | Pass | Saved version 13 source equals the exact validated release commit |
-| Production publish | Pass | Version 16 publish returned `succeeded`; final live URL is the Sites production URL |
+| Production publish | Pass | Version 17 publish returned `succeeded`; final live URL is the Sites production URL |
 | Rollback drill | Pass | Version 5 deployment succeeded, live reverted to the old `7 / 12` UI, version 6 restored `1 / 1`, and version 7 then deployed successfully |
 | Live scope | Pass | Production browser shows `15 課可體驗`, 15 selectable course rows, and Lesson 15 renders as playable |
 | Live attribution | Pass | Production Lesson 15 exposes the canonical MOE phrase page and CC BY-ND 3.0 TW licence link; release handoffs cover all 42 phrase audio files |
