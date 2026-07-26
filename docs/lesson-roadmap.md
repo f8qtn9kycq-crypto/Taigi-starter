@@ -3,8 +3,7 @@
 ## 目的
 
 這份 roadmap 是內容製作與教師審核的順序，不是已完成課程數量。目前
-production 已部署第 1–15 課；release candidate 可體驗第 1–18 課。第 2 至 18
-課仍保留 teacher review pending，並以 owner risk acceptance、教育部原始未修改
+production 已部署第 1–18 課。第 2 至 18 課仍保留 teacher review pending，並以 owner risk acceptance、教育部原始未修改
 音檔、授權 attribution 與 390×844 mobile evidence 作為 playable handoff。第
 19 至 24 課仍是 roadmap。
 

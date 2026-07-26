@@ -28,4 +28,4 @@ The package data intentionally keeps `teacherReview.status: "required"` and pend
 
 ## Scope boundary
 
-This readiness work covers every package currently present, Lessons 2–18. Lesson 19 and later remain outside the package catalog and are not playable. The production site remains on the previously deployed Lessons 1–15 version until a separate production publish is authorized.
+This readiness work covers every package currently present, Lessons 2–18. Lesson 19 and later remain outside the package catalog and are not playable. Production now serves the Lessons 1–18 release.

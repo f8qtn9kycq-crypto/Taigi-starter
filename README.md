@@ -14,8 +14,8 @@
 - 繁體中文與英文介面
 - 60 秒產品回饋表單
 
-目前 production 已部署第 1–15 課；release candidate 已把 lesson package
-第 2–18 課全部接成 playable 五段流程。第 2–18 課仍保留
+目前 production 已部署第 1–18 課，lesson package 第 2–18 課全部接成
+playable 五段流程。第 2–18 課仍保留
 `teacherReview: required`，並以明確的 owner risk acceptance 交付，不宣稱已有
 教師核准。第 19 課以後仍是 roadmap。
 
