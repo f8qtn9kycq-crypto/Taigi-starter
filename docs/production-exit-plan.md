@@ -7,7 +7,7 @@
 ## Release source
 
 - 從 `github/main` 建立乾淨 release branch；不要使用含有未提交變更的工作區。
-- Lessons 1–15 必須維持可玩的五段 stage，以及每個 phrase 可追溯的教育部
+- Lessons 1–18 必須維持可玩的五段 stage，以及每個 phrase 可追溯的教育部
   來源、未修改音檔與授權 attribution。
 - `planned` package 只有在完整 handoff、音檔 provenance、mobile evidence 與
   owner risk acceptance（若 teacher review 尚未完成）都存在時，才能進入

@@ -3,10 +3,10 @@
 ## 目的
 
 這份 roadmap 是內容製作與教師審核的順序，不是已完成課程數量。目前
-production working release 可體驗第 1–15 課；第 2 至 15 課仍保留 teacher
-review pending，並以 owner risk acceptance、教育部原始未修改音檔、授權
-attribution 與 390×844 mobile evidence 作為 playable handoff。第 16 至 24
-課仍是 roadmap。
+production 已部署第 1–15 課；release candidate 可體驗第 1–18 課。第 2 至 18
+課仍保留 teacher review pending，並以 owner risk acceptance、教育部原始未修改
+音檔、授權 attribution 與 390×844 mobile evidence 作為 playable handoff。第
+19 至 24 課仍是 roadmap。
 
 ## 路線
 
@@ -36,9 +36,9 @@ attribution 與 390×844 mobile evidence 作為 playable handoff。第 16 至 24
 | 13 | 我是啥人 | 用名字與基本身分完成自我介紹 | 可體驗 prototype；teacher review pending |
 | 14 | 讀冊佮頭路 | 說出自己的學習或工作情境 | 可體驗 prototype；teacher review pending |
 | 15 | 身體袂爽快 | 表達身體不舒服並尋求協助 | 可體驗 prototype；teacher review pending |
-| 16 | 出門坐車 | 說明出門方式與目的地 | roadmap，尚未產製 package |
-| 17 | 餐廳點菜 | 在餐廳表達想吃的東西與需求 | roadmap，尚未產製 package |
-| 18 | 買物件佮問價 | 詢問數量、價格與是否要買 | roadmap，尚未產製 package |
+| 16 | 出門坐車 | 說明出門方式與目的地 | handoff ready；teacher review pending |
+| 17 | 餐廳點菜 | 在餐廳表達想吃的東西與需求 | handoff ready；teacher review pending |
+| 18 | 買物件佮問價 | 詢問數量、價格與是否要買 | handoff ready；teacher review pending |
 | 19 | 時間佮安排 | 說出時間和一個簡單安排 | roadmap，尚未產製 package |
 | 20 | 問路佮求助 | 問路、聽懂簡短方向並請人幫忙 | roadmap，尚未產製 package |
 | 21 | 我愛啥物 | 表達喜歡、不喜歡和簡單選擇 | roadmap，尚未產製 package |

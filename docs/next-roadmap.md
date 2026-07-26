@@ -2,10 +2,10 @@
 
 ## 這一段要解決的問題
 
-歷史 baseline 曾只有第 1 課可體驗；目前 production working release 已把
-第 2–15 課接入 playable handoff。第 2–15 課仍是有來源欄位的 `planned`
-package，teacher review 保持 pending，並以 owner risk acceptance 交付；第
-16–24 課仍是 roadmap。
+歷史 baseline 曾只有第 1 課可體驗；目前 production 已部署第 1–15 課，release
+candidate 已把第 2–18 課接入 playable handoff。第 2–18 課仍是有來源欄位的
+`planned` package，teacher review 保持 pending，並以 owner risk acceptance
+交付；第 19–24 課仍是 roadmap。
 下一段不應只繼續增加尚未可玩的課程數量，而要先把下面這條內容生產鏈做成
 可重複、可檢查、可交給教師審核的流程：
 
@@ -31,14 +31,14 @@ Only then: playable lesson integration
 
 ### Current release state
 
-- Runtime catalog 現在提供第 1–15 課，每課三個 source-backed phrases，使用
+- Release candidate runtime catalog 現在提供第 1–18 課，每課 source-backed phrases，使用
   相同的 Hear → See → Say → Recall → Use 流程與 device-local progress。
-- 第 2–15 課的 42 個 MP3 都直接取自教育部詞典官方音檔，保留原始 URL、CC
+- 第 2–18 課的 52 個 MP3 都直接取自教育部詞典官方音檔，保留原始 URL、CC
   BY-ND 3.0 TW attribution 與未修改標記；逐課 mobile QA 見
-  `docs/qa/lesson-2-15-390x844.md`。
+  `docs/qa/lesson-2-18-390x844.md`。
 - Teacher review 沒有被偽造為 approved。這次 release 以產品擁有者明確的
   owner risk acceptance 通過 handoff；後續仍可補回逐課教師審核紀錄。
-- 第 16 課以後沒有被誤標為 playable；M2.5 beginner pilot 仍未執行。
+- 第 19 課以後沒有被誤標為 playable；M2.5 beginner pilot 仍未執行。
 
 以 2026-07-26 的 roadmap snapshot parent `main`（`08732a4`）為歷史基準；此 SHA
 不是可變的 current `main` 指標，後續合併不會改寫這個 snapshot：

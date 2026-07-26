@@ -14,9 +14,10 @@
 - 繁體中文與英文介面
 - 60 秒產品回饋表單
 
-目前 production working release 提供第 1–15 課的 playable 五段流程；第 2–15
-課仍保留 `teacherReview: required`，並以明確的 owner risk acceptance 交付，
-不宣稱已有教師核准。第 16 課以後仍是 roadmap。
+目前 production 已部署第 1–15 課；release candidate 已把 lesson package
+第 2–18 課全部接成 playable 五段流程。第 2–18 課仍保留
+`teacherReview: required`，並以明確的 owner risk acceptance 交付，不宣稱已有
+教師核准。第 19 課以後仍是 roadmap。
 
 ## 回饋流程與隱私
 
@@ -66,7 +67,7 @@ AI 協作規範請見 [AGENTS.md](./AGENTS.md)，審查順序請見
 
 ## 音檔來源
 
-第 1–15 課詞條與原始音檔取自中華民國教育部《臺灣台語常用詞辭典》；每個
+第 1–18 課詞條與原始音檔取自中華民國教育部《臺灣台語常用詞辭典》；每個
 playable phrase 都保留 canonical 詞條頁、原始 MP3 URL、speaker、授權與
 `isUnmodifiedOriginal` attribution。
 

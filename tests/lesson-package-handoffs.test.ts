@@ -5,15 +5,15 @@ import { lessonPackageHandoffs } from "../app/data/lesson-package-handoffs.ts";
 import { lessonCatalog } from "../app/data/lessons.ts";
 import { validateLessonPackageHandoff } from "../app/utils/lesson-package-handoff.ts";
 
-test("Lessons 2–15 have valid source-backed handoffs and local original audio", async () => {
+test("every lesson package has a valid source-backed handoff and local original audio", async () => {
   assert.deepEqual(
     lessonPackageHandoffs.map((handoff) => handoff.package.number),
-    [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+    [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
   );
 
   for (const handoff of lessonPackageHandoffs) {
     assert.deepEqual(validateLessonPackageHandoff(handoff), []);
-    assert.equal(handoff.mobileFlowEvidence[0]?.evidenceRef, "docs/qa/lesson-2-15-390x844.md");
+    assert.equal(handoff.mobileFlowEvidence[0]?.evidenceRef, "docs/qa/lesson-2-18-390x844.md");
 
     for (const attribution of handoff.audioAttribution) {
       assert.match(attribution.sourceUrl, /^https:\/\/sutian\.moe\.edu\.tw\//);
@@ -28,9 +28,9 @@ test("Lessons 2–15 have valid source-backed handoffs and local original audio"
   }
 });
 
-test("the runtime catalog exposes exactly Lessons 1–15 as playable", () => {
+test("the runtime catalog exposes exactly Lessons 1–18 as playable", () => {
   assert.deepEqual(
     lessonCatalog.filter((lesson) => lesson.status === "prototype").map((lesson) => lesson.number),
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
   );
 });
