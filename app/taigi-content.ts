@@ -74,6 +74,8 @@ export type LessonCopy = {
   showAnswer: string;
   addReview: string;
   reviewAdded: string;
+  nextPhrase: string;
+  lessonComplete: string;
   path: string;
   pathSummary: string;
   cardsLeft: string;
@@ -188,8 +190,10 @@ export const copy: Record<Locale, LessonCopy> = {
     showAnswer: "顯示答案",
     addReview: "加入今日複習",
     reviewAdded: "已加入複習",
+    nextPhrase: "下一句",
+    lessonComplete: "這課完成了！",
     path: "初學者路徑",
-    pathSummary: "1 課可體驗 · 2 課規劃中",
+    pathSummary: "15 課可體驗",
     cardsLeft: "張待複習",
     reviewPrompt: "看到這句，你會怎麼說？",
     rate: "這次記得多熟？",
@@ -202,7 +206,7 @@ export const copy: Record<Locale, LessonCopy> = {
     nextReview: (date) => `下次複習：${date}`,
     allDone: "今日複習完成",
     close: "關閉",
-    prototype: "第 1 課可用版本 · 學習紀錄儲存在此裝置",
+    prototype: "第 1–15 課可體驗 · 學習紀錄儲存在此裝置",
     navLearn: "學習",
     navReview: "複習",
     navPath: "課程",
@@ -300,8 +304,10 @@ export const copy: Record<Locale, LessonCopy> = {
     showAnswer: "Show answer",
     addReview: "Add to today’s review",
     reviewAdded: "Added to review",
+    nextPhrase: "Next phrase",
+    lessonComplete: "Lesson complete!",
     path: "Beginner path",
-    pathSummary: "1 lesson available · 2 planned",
+    pathSummary: "15 lessons available",
     cardsLeft: "cards left",
     reviewPrompt: "How would you say this?",
     rate: "How well did you remember?",
@@ -314,7 +320,7 @@ export const copy: Record<Locale, LessonCopy> = {
     nextReview: (date) => `Next review: ${date}`,
     allDone: "Today’s review is complete",
     close: "Close",
-    prototype: "Lesson 1 working release · progress stays on this device",
+    prototype: "Lessons 1–15 working release · progress stays on this device",
     navLearn: "Learn",
     navReview: "Review",
     navPath: "Course",

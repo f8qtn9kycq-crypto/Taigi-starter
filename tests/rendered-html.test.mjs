@@ -54,7 +54,7 @@ test("ships the first-time Taigi landing content and production worker", async (
   assert.match(landing, /text\.stageCount\(stage, totalStages\)/);
   assert.doesNotMatch(copy, /stageCount: \(stage\) => .*\/ 5/);
   assert.match(content, /教育部《臺灣台語常用詞辭典》/);
-  assert.match(copy, /第 1 課可用版本 · 學習紀錄儲存在此裝置/);
+  assert.match(copy, /第 1–15 課可體驗 · 學習紀錄儲存在此裝置/);
   assert.match(worker, /api\/feedback/);
   assert.match(worker, /api\/feedback-config/);
   assert.match(feedbackConfig, /url\.protocol === "https:"/);
@@ -109,11 +109,11 @@ test("saved progress and lesson content stay explicit and truthful", async () =>
   ]);
 
   assert.match(types, /hasStarted: false/);
-  assert.match(types, /lessonOneReview: null/);
+  assert.match(types, /reviewCard: null/);
   assert.match(storage, /hasStarted: parsed\.hasStarted === true/);
   assert.match(storage, /parsed\.hasStarted === true &&[\s\S]*parsed\.dueCount/);
   assert.match(content, /status: "prototype"/);
   assert.match(content, /CC BY-ND 3\.0 TW/);
-  assert.match(copy, /1 \/ 1 句可體驗/);
+  assert.match(copy, /15 課可體驗/);
   assert.doesNotMatch(copy, /7 \/ 12/);
 });

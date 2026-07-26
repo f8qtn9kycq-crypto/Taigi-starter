@@ -16,20 +16,21 @@ test("invalid local state falls back safely", () => {
   assert.deepEqual(parseStoredProgress(null, parseOptions), DEFAULT_PROGRESS);
 });
 
-test("legacy progress migrates to version 2", () => {
+test("legacy progress migrates to version 3", () => {
   const migrated = parseStoredProgress(
     JSON.stringify({ locale: "en", stage: 3, hasStarted: true, dueCount: 1 }),
     parseOptions,
   );
 
-  assert.equal(migrated.version, 2);
+  assert.equal(migrated.version, 3);
   assert.equal(migrated.locale, "en");
   assert.equal(migrated.stage, 3);
   assert.equal(migrated.hasStarted, true);
-  assert.equal(migrated.lessonOneReview?.dueAt, now.toISOString());
+  assert.equal(migrated.reviewCard?.id, "li-tsiah-pa-bue");
+  assert.equal(migrated.reviewCard?.dueAt, now.toISOString());
 });
 
-test("version 2 progress round trips", () => {
+test("version 3 progress round trips", () => {
   const progress = { ...DEFAULT_PROGRESS, hasStarted: true, stage: 2 };
   assert.deepEqual(parseStoredProgress(serializeProgress(progress), parseOptions), progress);
 });

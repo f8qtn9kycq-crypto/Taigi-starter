@@ -16,6 +16,10 @@ type LegacyProgress = {
   hasStarted?: unknown;
 };
 
+type StoredProgress = Partial<LearningProgress> & LegacyProgress & {
+  lessonOneReview?: unknown;
+};
+
 function isLocale(value: unknown): value is Locale {
   return value === "zh" || value === "en";
 }
@@ -24,45 +28,62 @@ function isValidStage(value: unknown, stageCount: number): value is number {
   return typeof value === "number" && Number.isInteger(value) && value >= 0 && value < stageCount;
 }
 
+function isValidPhraseIndex(value: unknown, phraseCount: number): value is number {
+  return typeof value === "number" && Number.isInteger(value) && value >= 0 && value < phraseCount;
+}
+
+function isReviewCard(value: unknown): value is LearningProgress["reviewCard"] {
+  return Boolean(
+    value &&
+    typeof value === "object" &&
+    "id" in value &&
+    typeof value.id === "string" &&
+    "dueAt" in value &&
+    typeof value.dueAt === "string",
+  );
+}
+
 export function parseStoredProgress(
   raw: string | null,
-  options: { stageCount: number; now?: Date },
+  options: { stageCount: number; phraseCount?: number; now?: Date },
 ): LearningProgress {
-  const { stageCount, now = new Date() } = options;
+  const { stageCount, phraseCount = 1, now = new Date() } = options;
   if (!raw) return { ...DEFAULT_PROGRESS };
 
   try {
-    const parsed = JSON.parse(raw) as Partial<LearningProgress> & LegacyProgress;
+    const parsed = JSON.parse(raw) as StoredProgress;
 
-    if (parsed.version === 2) {
+    if (parsed.version === 3) {
+      const storedReview = isReviewCard(parsed.reviewCard) ? parsed.reviewCard : null;
       return {
-        version: 2,
+        version: 3,
         locale: isLocale(parsed.locale) ? parsed.locale : DEFAULT_PROGRESS.locale,
         stage: isValidStage(parsed.stage, stageCount) ? parsed.stage : DEFAULT_PROGRESS.stage,
+        phraseIndex: isValidPhraseIndex(parsed.phraseIndex, phraseCount)
+          ? parsed.phraseIndex
+          : DEFAULT_PROGRESS.phraseIndex,
         hasStarted: parsed.hasStarted === true,
-        lessonOneReview:
-          parsed.lessonOneReview &&
-          parsed.lessonOneReview.id === "lesson-1-greeting" &&
-          typeof parsed.lessonOneReview.dueAt === "string"
-            ? parsed.lessonOneReview
-            : null,
+        reviewCard: storedReview,
       };
     }
 
     return {
-      version: 2,
+      version: 3,
       locale: isLocale(parsed.locale) ? parsed.locale : DEFAULT_PROGRESS.locale,
       stage:
         parsed.hasStarted === true && isValidStage(parsed.stage, stageCount)
           ? parsed.stage
           : DEFAULT_PROGRESS.stage,
+      phraseIndex: DEFAULT_PROGRESS.phraseIndex,
       hasStarted: parsed.hasStarted === true,
-      lessonOneReview:
+      reviewCard:
         parsed.hasStarted === true &&
         typeof parsed.dueCount === "number" &&
         parsed.dueCount > 0
-          ? createReviewCard(now)
-          : null,
+          ? createReviewCard("li-tsiah-pa-bue", now)
+          : isReviewCard(parsed.lessonOneReview)
+            ? parsed.lessonOneReview
+            : null,
     };
   } catch {
     return { ...DEFAULT_PROGRESS };

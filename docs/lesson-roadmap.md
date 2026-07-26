@@ -2,27 +2,28 @@
 
 ## 目的
 
-這份 roadmap 是內容製作與教師審核的順序，不是已上線課程數量。現階段
-只有第 1 課可體驗；第 2 至 15 課已建立資料 package，但尚未接入 React 學習
-流程，也沒有宣稱音檔可播放。第 13 至 24 課是第二段 A1 生活對話 roadmap，
-其中目前先完成第 13 至 15 課的資料草稿。
+這份 roadmap 是內容製作與教師審核的順序，不是已完成課程數量。目前
+production working release 可體驗第 1–15 課；第 2 至 15 課仍保留 teacher
+review pending，並以 owner risk acceptance、教育部原始未修改音檔、授權
+attribution 與 390×844 mobile evidence 作為 playable handoff。第 16 至 24
+課仍是 roadmap。
 
 ## 路線
 
 | 課次 | 主題 | 學習任務 | 目前狀態 |
 | --- | --- | --- | --- |
 | 1 | 相借問 | 聽懂並說出一個日常關心的問候 | 可體驗 prototype |
-| 2 | 阮兜的人 | 用家庭詞介紹自己的家人 | package 已建立，待教師審核與音檔核准 |
-| 3 | 一二三 | 辨認並說出一、二、三 | package 已建立，待教師審核與音檔核准 |
-| 4 | 食飯佮飲水 | 在吃飯情境中表達需要與關心 | package 已建立，待教師審核與音檔核准 |
-| 5 | 今仔日的日常 | 說出簡單的日常活動 | package 已建立，待教師審核與音檔核准 |
-| 6 | 天氣佮感受 | 用短句描述天氣與身體感受 | package 已建立，待教師審核與音檔核准 |
-| 7 | 去佗位 | 問路、回答方向與目的地 | package 已建立，待教師審核與音檔核准 |
-| 8 | 買物件 | 在市場或商店詢問物品與數量 | package 已建立，待教師審核與音檔核准 |
-| 9 | 厝邊佮社區 | 認識生活周邊的人與地方 | package 已建立，待教師審核與音檔核准 |
-| 10 | 相招來 | 邀請、接受或婉拒一起做事 | package 已建立，待教師審核與音檔核准 |
-| 11 | 昨昏佮明仔載 | 用簡單時間詞談過去與接下來 | package 已建立，待教師審核與音檔核准 |
-| 12 | 我的生活對話 | 把前面學過的內容串成短對話 | package 已建立，待教師審核與音檔核准 |
+| 2 | 阮兜的人 | 用家庭詞介紹自己的家人 | 可體驗 prototype；teacher review pending |
+| 3 | 一二三 | 辨認並說出一、二、三 | 可體驗 prototype；teacher review pending |
+| 4 | 食飯佮飲水 | 在吃飯情境中表達需要與關心 | 可體驗 prototype；teacher review pending |
+| 5 | 今仔日的日常 | 說出簡單的日常活動 | 可體驗 prototype；teacher review pending |
+| 6 | 天氣佮感受 | 用短句描述天氣與身體感受 | 可體驗 prototype；teacher review pending |
+| 7 | 去佗位 | 問路、回答方向與目的地 | 可體驗 prototype；teacher review pending |
+| 8 | 買物件 | 在市場或商店詢問物品與數量 | 可體驗 prototype；teacher review pending |
+| 9 | 厝邊佮社區 | 認識生活周邊的人與地方 | 可體驗 prototype；teacher review pending |
+| 10 | 相招來 | 邀請、接受或婉拒一起做事 | 可體驗 prototype；teacher review pending |
+| 11 | 昨昏佮明仔載 | 用簡單時間詞談過去與接下來 | 可體驗 prototype；teacher review pending |
+| 12 | 我的生活對話 | 把前面學過的內容串成短對話 | 可體驗 prototype；teacher review pending |
 
 ## 第二段：A1 生活對話（第 13–24 課）
 
@@ -32,9 +33,9 @@
 
 | 課次 | 主題 | 學習任務 | 目前狀態 |
 | --- | --- | --- | --- |
-| 13 | 我是啥人 | 用名字與基本身分完成自我介紹 | package 已建立，待教師審核與音檔核准 |
-| 14 | 讀冊佮頭路 | 說出自己的學習或工作情境 | package 已建立，待教師審核與音檔核准 |
-| 15 | 身體袂爽快 | 表達身體不舒服並尋求協助 | package 已建立，待教師審核與音檔核准 |
+| 13 | 我是啥人 | 用名字與基本身分完成自我介紹 | 可體驗 prototype；teacher review pending |
+| 14 | 讀冊佮頭路 | 說出自己的學習或工作情境 | 可體驗 prototype；teacher review pending |
+| 15 | 身體袂爽快 | 表達身體不舒服並尋求協助 | 可體驗 prototype；teacher review pending |
 | 16 | 出門坐車 | 說明出門方式與目的地 | roadmap，尚未產製 package |
 | 17 | 餐廳點菜 | 在餐廳表達想吃的東西與需求 | roadmap，尚未產製 package |
 | 18 | 買物件佮問價 | 詢問數量、價格與是否要買 | roadmap，尚未產製 package |
@@ -69,6 +70,7 @@
 
 ## 與產品執行路徑的界線
 
-`app/data/lesson-packages.ts` 是內容製作資料，不會被目前的 React 頁面
-匯入。只有完成教師審核、音檔授權與 mobile lesson flow 驗證後，才可另開
-變更把 package 轉成可體驗 lesson。
+`app/data/lesson-packages.ts` 是內容製作資料；完成音檔授權與 mobile lesson
+flow 驗證後，package 可透過 handoff 轉成 playable lesson。若教師審核尚未
+完成，必須同時保留 pending 狀態與明確的 owner risk acceptance，不能把它誤
+寫成 teacher-approved。

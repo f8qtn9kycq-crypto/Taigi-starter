@@ -2,8 +2,10 @@
 
 ## 這一段要解決的問題
 
-目前 repo 的內容路線已經排到第 24 課，但實際可體驗的仍然只有第 1 課；
-第 2–15 課是有來源欄位的 `planned` package，第 16–24 課仍是 roadmap。
+歷史 baseline 曾只有第 1 課可體驗；目前 production working release 已把
+第 2–15 課接入 playable handoff。第 2–15 課仍是有來源欄位的 `planned`
+package，teacher review 保持 pending，並以 owner risk acceptance 交付；第
+16–24 課仍是 roadmap。
 下一段不應只繼續增加尚未可玩的課程數量，而要先把下面這條內容生產鏈做成
 可重複、可檢查、可交給教師審核的流程：
 
@@ -27,10 +29,21 @@ Only then: playable lesson integration
 
 ## 目前基線
 
+### Current release state
+
+- Runtime catalog 現在提供第 1–15 課，每課三個 source-backed phrases，使用
+  相同的 Hear → See → Say → Recall → Use 流程與 device-local progress。
+- 第 2–15 課的 42 個 MP3 都直接取自教育部詞典官方音檔，保留原始 URL、CC
+  BY-ND 3.0 TW attribution 與未修改標記；逐課 mobile QA 見
+  `docs/qa/lesson-2-15-390x844.md`。
+- Teacher review 沒有被偽造為 approved。這次 release 以產品擁有者明確的
+  owner risk acceptance 通過 handoff；後續仍可補回逐課教師審核紀錄。
+- 第 16 課以後沒有被誤標為 playable；M2.5 beginner pilot 仍未執行。
+
 以 2026-07-26 的 roadmap snapshot parent `main`（`08732a4`）為歷史基準；此 SHA
 不是可變的 current `main` 指標，後續合併不會改寫這個 snapshot：
 
-- 第 1 課是唯一可體驗的完整 lesson。
+- 第 1 課是當時唯一可體驗的完整 lesson（歷史 snapshot）。
 - 第 2–15 課已在 `app/data/lesson-packages.ts` 建立 typed package，全部
   保持 `planned`、要求教師審核，且音檔是 `not-yet-added`。
 - 第 16–24 課已在 `docs/lesson-roadmap.md` 排定，但尚未產製 package。
@@ -72,7 +85,7 @@ M2.1–M2.4 的實作邊界已進入 `main`；這不等於已經有真實的 app
 | M2.1 | Package validator | 純函式驗證器與測試 | 能檢查課次唯一、五段節奏、雙語欄位、來源／授權、教師審核與音檔 pending 狀態 |
 | M2.2 | Teacher review contract | 可追蹤的審核欄位與待確認清單 | 未完成審核的 package 仍只能是 `planned`，不能被 runtime catalog 當成可玩課程 |
 | M2.3 | 下一批內容 16–18 | `出門坐車`、`餐廳點菜`、`買物件佮問價` 的 source-verified package | 每課先核實教育部詞條，再通過 validator；不加入未核准音檔 |
-| M2.4 | Package-to-lesson handoff | 把「已審核 package」轉成 playable lesson 的明確輸入契約 | 只允許具備教師核准、音檔 attribution 與 mobile flow 證據的資料進入 integration PR |
+| M2.4 | Package-to-lesson handoff | 把 package 轉成 playable lesson 的明確輸入契約 | 需要音檔 attribution、mobile flow 證據；未完成 teacher review 時另需 owner risk acceptance |
 | M2.5 | Beginner pilot | 10–20 位初學者的短期驗證表 | 量測完成率、完成時間、回想、開口信心與放棄位置；不收集未授權的原始錄音 |
 
 ## 實作順序與 PR 邊界

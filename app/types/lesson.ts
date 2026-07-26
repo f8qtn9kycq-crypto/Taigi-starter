@@ -13,6 +13,7 @@ export type LessonSource = {
 export type LessonAudioAttribution = {
   audioUrl: string;
   sourceUrl: string;
+  originalUrl: string;
   license: string;
   licenseUrl: string;
   speaker: string | null;

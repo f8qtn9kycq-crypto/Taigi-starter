@@ -5,10 +5,12 @@ import type { LessonCopy, Locale } from "../taigi-content";
 type CoursePathProps = {
   text: LessonCopy;
   locale: Locale;
+  activeLessonNumber: number;
+  onLessonSelect: (lessonNumber: number) => void;
 };
 
 const CoursePath = forwardRef<HTMLElement, CoursePathProps>(
-  function CoursePath({ text, locale }, ref) {
+  function CoursePath({ text, locale, activeLessonNumber, onLessonSelect }, ref) {
     return (
       <section className="path-card" id="path" ref={ref}>
         <div className="path-heading">
@@ -17,10 +19,25 @@ const CoursePath = forwardRef<HTMLElement, CoursePathProps>(
         </div>
         <div className="lesson-list">
           {lessonCatalog.map((lesson) => (
-            <article key={lesson.id} className={lesson.status === "prototype" ? "active" : ""}>
-              <span>{String(lesson.number).padStart(2, "0")}</span>
-              <div><b>{lesson.title[locale]}</b><small>{lesson.secondaryTitle[locale]}</small></div>
-              <em>{lesson.status === "prototype" ? text.availableNow : text.planned}</em>
+            <article key={lesson.id} className={lesson.number === activeLessonNumber ? "active" : ""}>
+              {lesson.status === "prototype" ? (
+                <button
+                  type="button"
+                  className="lesson-list-button"
+                  onClick={() => onLessonSelect(lesson.number)}
+                  aria-current={lesson.number === activeLessonNumber ? "page" : undefined}
+                >
+                  <span>{String(lesson.number).padStart(2, "0")}</span>
+                  <div><b>{lesson.title[locale]}</b><small>{lesson.secondaryTitle[locale]}</small></div>
+                  <em>{text.availableNow}</em>
+                </button>
+              ) : (
+                <>
+                  <span>{String(lesson.number).padStart(2, "0")}</span>
+                  <div><b>{lesson.title[locale]}</b><small>{lesson.secondaryTitle[locale]}</small></div>
+                  <em>{text.planned}</em>
+                </>
+              )}
             </article>
           ))}
         </div>

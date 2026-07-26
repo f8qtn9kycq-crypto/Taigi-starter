@@ -11,6 +11,7 @@ type MutableHandoff = {
   package: MutableRecord;
   audioAttribution: MutableRecord[];
   mobileFlowEvidence: MutableRecord[];
+  ownerRiskAcceptance: MutableRecord;
 };
 
 const createApprovedPackage = (): MutableRecord => {
@@ -33,6 +34,7 @@ const createCompleteHandoff = (): MutableHandoff => {
       phraseId: phrase.id,
       audioUrl: `/audio/${phrase.id}.mp3`,
       sourceUrl: "https://audio.example.test/lesson-2",
+      originalUrl: "https://audio.example.test/lesson-2.mp3",
       license: "CC BY-ND 3.0 TW",
       licenseUrl: "https://creativecommons.org/licenses/by-nd/3.0/tw/",
       speaker: "Test speaker",
@@ -45,6 +47,14 @@ const createCompleteHandoff = (): MutableHandoff => {
         evidenceRef: "test://mobile/lesson-2-390x844",
       },
     ],
+    ownerRiskAcceptance: {
+      acceptedBy: "product-owner",
+      acceptedAt: "2026-07-25T00:00:00.000Z",
+      reason: {
+        zh: "本次發布接受教師審核尚未完成的風險，保留審核欄位供後續追蹤。",
+        en: "This release accepts the risk of incomplete teacher review while retaining the review fields for follow-up.",
+      },
+    },
   };
 };
 
@@ -59,7 +69,7 @@ test("complete approved handoff passes without making the package playable", () 
   assert.equal(audio.status, "not-yet-added");
 });
 
-test("handoff rejects packages that are not teacher-approved", () => {
+test("owner risk acceptance can authorize a package without teacher approval", () => {
   const handoff = createCompleteHandoff();
   const review = handoff.package.teacherReview as MutableRecord;
   review.status = "required";
@@ -67,8 +77,21 @@ test("handoff rejects packages that are not teacher-approved", () => {
   review.reviewedAt = null;
   for (const check of review.checks as MutableRecord[]) check.status = "pending";
 
+  assert.deepEqual(validateLessonPackageHandoff(handoff), []);
+  assert.equal(isLessonPackageHandoff(handoff), true);
+});
+
+test("handoff rejects an unapproved package without owner risk acceptance", () => {
+  const handoff = createCompleteHandoff();
+  const review = handoff.package.teacherReview as MutableRecord;
+  review.status = "required";
+  review.reviewer = null;
+  review.reviewedAt = null;
+  for (const check of review.checks as MutableRecord[]) check.status = "pending";
+  delete (handoff as MutableRecord).ownerRiskAcceptance;
+
   const paths = validateLessonPackageHandoff(handoff).map((issue) => issue.path);
-  assert.ok(paths.includes("package.teacherReview.status"));
+  assert.ok(paths.includes("ownerRiskAcceptance"));
   assert.equal(isLessonPackageHandoff(handoff), false);
 });
 

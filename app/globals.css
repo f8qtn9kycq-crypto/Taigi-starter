@@ -653,6 +653,9 @@ a:focus-visible {
   background: linear-gradient(90deg, var(--jade), #36a88e);
 }
 
+.progress-line .progress-fill-3-1 { width: 33.333%; }
+.progress-line .progress-fill-3-2 { width: 66.666%; }
+
 .progress-line b {
   color: var(--muted);
   font-size: 10px;
@@ -1238,6 +1241,25 @@ a:focus-visible {
 
 .lesson-list article.active {
   color: var(--ink);
+}
+
+.lesson-list-button {
+  display: grid;
+  width: 100%;
+  min-height: 66px;
+  grid-template-columns: 34px 1fr 40px;
+  align-items: center;
+  gap: 9px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+.lesson-list-button:focus-visible {
+  outline: 3px solid var(--jade);
+  outline-offset: -3px;
 }
 
 footer {

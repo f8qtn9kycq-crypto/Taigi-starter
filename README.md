@@ -14,8 +14,9 @@
 - 繁體中文與英文介面
 - 60 秒產品回饋表單
 
-目前只承諾第 1 課的完整品質。其他課程仍是路徑預覽，不應被描述為已完成
-內容。
+目前 production working release 提供第 1–15 課的 playable 五段流程；第 2–15
+課仍保留 `teacherReview: required`，並以明確的 owner risk acceptance 交付，
+不宣稱已有教師核准。第 16 課以後仍是 roadmap。
 
 ## 回饋流程與隱私
 
@@ -65,8 +66,9 @@ AI 協作規範請見 [AGENTS.md](./AGENTS.md)，審查順序請見
 
 ## 音檔來源
 
-第 1 課例句「你食飽未？」取自中華民國教育部《臺灣台語常用詞辭典》，
-原始例句頁面：<https://sutian.moe.edu.tw/und-hani/su/1653/>。
+第 1–15 課詞條與原始音檔取自中華民國教育部《臺灣台語常用詞辭典》；每個
+playable phrase 都保留 canonical 詞條頁、原始 MP3 URL、speaker、授權與
+`isUnmodifiedOriginal` attribution。
 
 文字與音檔依「創用 CC 姓名標示－禁止改作 3.0 臺灣」授權使用。專案保存
 未修改的原始 MP3；不得裁切、混音或以其他方式改作。

@@ -7,9 +7,11 @@
 ## Release source
 
 - 從 `github/main` 建立乾淨 release branch；不要使用含有未提交變更的工作區。
-- Lesson 1 必須維持一個可玩的 phrase、五個固定 stage，以及可追溯的教育部
+- Lessons 1–15 必須維持可玩的五段 stage，以及每個 phrase 可追溯的教育部
   來源、未修改音檔與授權 attribution。
-- `planned` lesson package 不得被 runtime catalog 當成 playable lesson。
+- `planned` package 只有在完整 handoff、音檔 provenance、mobile evidence 與
+  owner risk acceptance（若 teacher review 尚未完成）都存在時，才能進入
+  runtime catalog；runtime 不得把 pending review 顯示成 teacher-approved。
 - Sites saved version 的 `source.commit_sha` 必須等於已驗證並推送的 release
   commit；目前 live version 13 已對應到 exact release head `c52077d`。
 

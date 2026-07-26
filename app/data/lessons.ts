@@ -4,6 +4,7 @@ import {
   type PlayableLesson,
   type PlannedLesson,
 } from "../types/lesson.ts";
+import { lessonPackageHandoffs } from "./lesson-package-handoffs.ts";
 import { lessonPackageHandoffToPlayableLesson } from "../utils/lesson-package-handoff.ts";
 
 const lessonOneStages = LESSON_STAGE_IDS.map((id) => ({
@@ -51,6 +52,7 @@ export const prototypeLesson: PlayableLesson = {
       audioAttribution: {
         audioUrl: "/audio/li-tsiah-pa-bue.mp3",
         sourceUrl: "https://sutian.moe.edu.tw/und-hani/su/1653/",
+        originalUrl: "https://sutian.moe.edu.tw/media/senn/mp3/imtong/subak/1/1653.mp3",
         license: "CC BY-ND 3.0 TW",
         licenseUrl: "https://creativecommons.org/licenses/by-nd/3.0/tw/",
         speaker: null,
@@ -97,4 +99,4 @@ export const createLessonCatalog = (
   return [...lessonsByNumber.values()].sort((left, right) => left.number - right.number);
 };
 
-export const lessonCatalog: readonly Lesson[] = createLessonCatalog();
+export const lessonCatalog: readonly Lesson[] = createLessonCatalog(lessonPackageHandoffs);

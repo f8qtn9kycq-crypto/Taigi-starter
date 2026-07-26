@@ -26,6 +26,7 @@ const createHandoff = (poj: string | null = null): Record<string, unknown> => {
       phraseId: phrase.id,
       audioUrl: `/audio/${phrase.id}.mp3`,
       sourceUrl: phrase.source.canonicalUrl,
+      originalUrl: "https://audio.example.test/lesson-2.mp3",
       license: "CC BY-ND 3.0 TW",
       licenseUrl: "https://creativecommons.org/licenses/by-nd/3.0/tw/",
       speaker: null,
@@ -36,6 +37,14 @@ const createHandoff = (poj: string | null = null): Record<string, unknown> => {
       checkedAt: "2026-07-25T00:00:00.000Z",
       evidenceRef: "test://mobile/lesson-2",
     }],
+    ownerRiskAcceptance: {
+      acceptedBy: "product-owner",
+      acceptedAt: "2026-07-25T00:00:00.000Z",
+      reason: {
+        zh: "本次發布接受教師審核尚未完成的風險，保留審核欄位供後續追蹤。",
+        en: "This release accepts the risk of incomplete teacher review while retaining the review fields for follow-up.",
+      },
+    },
   };
 };
 
@@ -60,9 +69,10 @@ test("approved handoff preserves missing POJ instead of inventing a value", () =
   assert.equal(lesson.phrases[0].poj, null);
 });
 
-test("unapproved or incomplete handoff cannot produce a playable lesson", () => {
+test("incomplete handoff cannot produce a playable lesson", () => {
   const handoff = createHandoff();
   (handoff.package as { teacherReview: { status: string } }).teacherReview.status = "required";
+  delete handoff.ownerRiskAcceptance;
 
   assert.equal(lessonPackageHandoffToPlayableLesson(handoff), null);
   assert.equal(lessonPackageHandoffToPlayableLesson({}), null);

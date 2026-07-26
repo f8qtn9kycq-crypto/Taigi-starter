@@ -9,14 +9,16 @@ type LessonAccordionProps = {
   text: LessonCopy;
   lesson: PlayableLesson;
   stage: number;
+  phraseIndex: number;
   reviewScheduled: boolean;
   onStageChange: (stage: number) => void;
-  onReviewAdded: () => void;
+  onReviewAdded: (phraseId: string) => void;
+  onPhraseAdvance: () => void;
 };
 
 const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
   function LessonAccordion(
-    { text, lesson, stage, reviewScheduled, onStageChange, onReviewAdded },
+    { text, lesson, stage, phraseIndex, reviewScheduled, onStageChange, onReviewAdded, onPhraseAdvance },
     ref,
   ) {
     const lastStage = lesson.stages.length - 1;
@@ -32,8 +34,8 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
             <span className="rhythm-mark" aria-hidden="true">{lesson.durationMinutes}′</span>
             <span><b>{text.lessonTime}</b><small>{text.lessonRhythm}</small></span>
           </div>
-          <div className="progress-line" aria-label={text.phraseProgress(1, lesson.phrases.length)}>
-            <span><i /></span><b>{text.phraseProgress(1, lesson.phrases.length)}</b>
+          <div className="progress-line" aria-label={text.phraseProgress(phraseIndex + 1, lesson.phrases.length)}>
+            <span><i className={`progress-fill progress-fill-${lesson.phrases.length}-${phraseIndex + 1}`} /></span><b>{text.phraseProgress(phraseIndex + 1, lesson.phrases.length)}</b>
           </div>
         </div>
 
@@ -63,13 +65,15 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
 
                 {isCurrent && (
                   <LessonStagePanel
-                    key={lessonStage.id}
+                    key={`${lesson.id}-${phraseIndex}-${lessonStage.id}`}
                     stage={stage}
                     text={text}
                     lesson={lesson}
+                    phraseIndex={phraseIndex}
                     reviewScheduled={reviewScheduled}
                     onAdvance={advance}
                     onReviewAdded={onReviewAdded}
+                    onPhraseAdvance={onPhraseAdvance}
                   />
                 )}
               </li>

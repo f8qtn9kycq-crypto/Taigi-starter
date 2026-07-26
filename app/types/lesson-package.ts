@@ -55,6 +55,7 @@ export type LessonPackageAudioAttribution = {
   phraseId: string;
   audioUrl: string;
   sourceUrl: string;
+  originalUrl: string;
   license: string;
   licenseUrl: string;
   speaker: string | null;
@@ -67,8 +68,15 @@ export type LessonPackageMobileFlowEvidence = {
   evidenceRef: string;
 };
 
+export type LessonPackageOwnerRiskAcceptance = {
+  acceptedBy: string;
+  acceptedAt: string;
+  reason: LocalizedText;
+};
+
 export type LessonPackageHandoff = {
   package: LessonPackage;
   audioAttribution: readonly LessonPackageAudioAttribution[];
   mobileFlowEvidence: readonly LessonPackageMobileFlowEvidence[];
+  ownerRiskAcceptance: LessonPackageOwnerRiskAcceptance;
 };

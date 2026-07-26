@@ -73,6 +73,9 @@ const validateAudioAttribution = (
     if (!isHttpsUrl(attribution.sourceUrl)) {
       addIssue(issues, `${attributionPath}.sourceUrl`, "must be an HTTPS attribution source");
     }
+    if (!isHttpsUrl(attribution.originalUrl)) {
+      addIssue(issues, `${attributionPath}.originalUrl`, "must be the HTTPS original audio URL");
+    }
     if (!isNonEmptyString(attribution.license)) {
       addIssue(issues, `${attributionPath}.license`, "must identify the audio licence");
     }
@@ -123,6 +126,34 @@ const validateMobileFlowEvidence = (
   }
 };
 
+const validateOwnerRiskAcceptance = (
+  value: unknown,
+  path: string,
+  issues: LessonPackageHandoffValidationIssue[],
+): void => {
+  if (!isRecord(value)) {
+    addIssue(issues, path, "must include explicit owner risk acceptance");
+    return;
+  }
+
+  if (!isNonEmptyString(value.acceptedBy)) {
+    addIssue(issues, `${path}.acceptedBy`, "must identify the accepting owner");
+  }
+  if (!isValidIsoTimestamp(value.acceptedAt)) {
+    addIssue(issues, `${path}.acceptedAt`, "must be an ISO timestamp");
+  }
+  if (!isRecord(value.reason)) {
+    addIssue(issues, `${path}.reason`, "must explain the accepted risk in zh and en");
+    return;
+  }
+  if (!isNonEmptyString(value.reason.zh)) {
+    addIssue(issues, `${path}.reason.zh`, "must be a non-empty string");
+  }
+  if (!isNonEmptyString(value.reason.en)) {
+    addIssue(issues, `${path}.reason.en`, "must be a non-empty string");
+  }
+};
+
 export function validateLessonPackageHandoff(
   value: unknown,
 ): readonly LessonPackageHandoffValidationIssue[] {
@@ -138,7 +169,7 @@ export function validateLessonPackageHandoff(
   if (isRecord(packageValue)) {
     const review = packageValue.teacherReview;
     if (isRecord(review) && review.status !== "approved") {
-      addIssue(issues, "package.teacherReview.status", "must be approved before handoff");
+      validateOwnerRiskAcceptance(value.ownerRiskAcceptance, "ownerRiskAcceptance", issues);
     }
 
     const phrases = packageValue.phrases;
@@ -172,6 +203,7 @@ export const lessonPackageHandoffToPlayableLesson = (
     const audioAttribution: LessonAudioAttribution = {
       audioUrl: attribution.audioUrl,
       sourceUrl: attribution.sourceUrl,
+      originalUrl: attribution.originalUrl,
       license: attribution.license,
       licenseUrl: attribution.licenseUrl,
       speaker: attribution.speaker,

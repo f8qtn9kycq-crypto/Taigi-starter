@@ -11,22 +11,26 @@ type LessonStagePanelProps = {
   stage: number;
   text: LessonCopy;
   lesson: PlayableLesson;
+  phraseIndex: number;
   reviewScheduled: boolean;
   onAdvance: () => void;
-  onReviewAdded: () => void;
+  onReviewAdded: (phraseId: string) => void;
+  onPhraseAdvance: () => void;
 };
 
 export default function LessonStagePanel({
   stage,
   text,
   lesson,
+  phraseIndex,
   reviewScheduled,
   onAdvance,
   onReviewAdded,
+  onPhraseAdvance,
 }: LessonStagePanelProps) {
   const [audioPlays, setAudioPlays] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
-  const phrase = lesson.phrases[0];
+  const phrase = lesson.phrases[phraseIndex];
   const lessonStage = lesson.stages[stage];
   const { isPlaying, hasError, toggle } = useAudioPlayer(phrase.audioUrl);
 
@@ -86,9 +90,17 @@ export default function LessonStagePanel({
         {lessonStage.id === "recall" && !showAnswer && <button type="button" className="action-button primary-action" onClick={() => setShowAnswer(true)}>{text.showAnswer}<span>↓</span></button>}
         {lessonStage.id === "recall" && showAnswer && <button type="button" className="action-button primary-action" onClick={onAdvance}>{text.nextUse}<span>→</span></button>}
         {lessonStage.id === "use" && (
-          <button type="button" className="action-button primary-action" onClick={onReviewAdded} disabled={reviewScheduled}>
-            {reviewScheduled ? text.reviewAdded : text.addReview}<span>{reviewScheduled ? "✓" : "+"}</span>
-          </button>
+          reviewScheduled ? (
+            phraseIndex < lesson.phrases.length - 1 ? (
+              <button type="button" className="action-button primary-action" onClick={onPhraseAdvance}>
+                {text.nextPhrase}<span>→</span>
+              </button>
+            ) : <p className="lesson-complete" role="status">✓ {text.lessonComplete}</p>
+          ) : (
+            <button type="button" className="action-button primary-action" onClick={() => onReviewAdded(phrase.id)}>
+              {text.addReview}<span>+</span>
+            </button>
+          )
         )}
       </div>
     </div>
