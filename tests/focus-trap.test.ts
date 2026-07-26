@@ -21,7 +21,7 @@ test("dialogs wire the shared focus trap and close controls", async () => {
     readFile(new URL("../app/FeedbackForm.tsx", import.meta.url), "utf8"),
   ]);
   assert.match(hook, /document\.addEventListener\("keydown", handleKeyDown\)/);
-  assert.match(hook, /event\.key === "Tab"/);
+  assert.match(hook, /event\.key !== "Tab"/);
   assert.match(hook, /event\.shiftKey/);
   assert.match(hook, /window\.clearTimeout|window\.cancelAnimationFrame/);
   assert.match(review, /useFocusTrap\(\{/);
