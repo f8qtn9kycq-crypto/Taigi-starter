@@ -7,24 +7,28 @@ import LandingHero from "./components/LandingHero";
 import FeedbackForm from "./FeedbackForm";
 import LessonAccordion from "./components/LessonAccordion";
 import ReviewModal from "./components/ReviewModal";
-import { prototypeLesson } from "./data/lessons";
+import { lessonCatalog, prototypeLesson } from "./data/lessons";
 import { useAudioPlayer } from "./hooks/useAudioPlayer";
 import { useLearningProgress } from "./hooks/useLearningProgress";
 import { copy } from "./taigi-content";
 import { isReviewDue } from "./utils/srs";
+import type { PlayableLesson } from "./types/lesson";
 
 export default function TaigiStartPage() {
+  const [activeLessonId, setActiveLessonId] = useState(prototypeLesson.id);
+  const activeLesson = (lessonCatalog.find((lesson) => lesson.id === activeLessonId && lesson.status === "prototype") ?? prototypeLesson) as PlayableLesson;
   const { progress, setLocale, setStage, setHasStarted, addReview, rateReview } = useLearningProgress(
-    prototypeLesson.stages.length,
+    activeLesson.stages.length,
   );
   const [reviewOpen, setReviewOpen] = useState(false);
   const [startPending, setStartPending] = useState(false);
   const [activeTab, setActiveTab] = useState<"learn" | "review" | "progress">("learn");
   const lessonRef = useRef<HTMLElement | null>(null);
   const pathRef = useRef<HTMLElement | null>(null);
-  const heroAudio = useAudioPlayer(prototypeLesson.phrases[0].audioUrl);
+  const heroAudio = useAudioPlayer(activeLesson.phrases[0].audioUrl);
   const text = copy[progress.locale];
-  const dueCount = isReviewDue(progress.lessonOneReview) ? 1 : 0;
+  const activeReview = progress.lessonOneReview?.id === activeLesson.phrases[0].id ? progress.lessonOneReview : null;
+  const dueCount = isReviewDue(activeReview) ? 1 : 0;
 
   useEffect(() => {
     document.documentElement.lang = progress.locale === "zh" ? "zh-Hant-TW" : "en";
@@ -67,6 +71,14 @@ export default function TaigiStartPage() {
       window.setTimeout(() => setStartPending(false), 450);
     });
   };
+  const selectLesson = (lesson: PlayableLesson) => {
+    heroAudio.stop();
+    setActiveLessonId(lesson.id);
+    setStage(0);
+    setHasStarted(true);
+    setActiveTab("learn");
+    window.requestAnimationFrame(scrollToLesson);
+  };
 
   return (
     <main className={`site-shell${progress.hasStarted ? " app-active" : ""}`} id="learn">
@@ -76,7 +88,7 @@ export default function TaigiStartPage() {
         hasStarted={progress.hasStarted}
         dueCount={dueCount}
         stage={progress.stage}
-        totalStages={prototypeLesson.stages.length}
+        totalStages={activeLesson.stages.length}
         isPlaying={heroAudio.isPlaying}
         audioError={heroAudio.hasError}
         startPending={startPending}
@@ -89,16 +101,17 @@ export default function TaigiStartPage() {
       <div className="learning-column">
         <LessonAccordion
           ref={lessonRef}
-          lesson={prototypeLesson}
+          lesson={activeLesson}
           text={text}
           stage={progress.stage}
-          reviewScheduled={progress.lessonOneReview !== null}
+          reviewScheduled={progress.lessonOneReview?.id === activeLesson.phrases[0].id}
           onStageChange={setStage}
-          onReviewAdded={addReview}
+          onReviewAdded={() => addReview(activeLesson.phrases[0].id)}
         />
-        <CoursePath ref={pathRef} text={text} locale={progress.locale} />
+        <CoursePath ref={pathRef} text={text} locale={progress.locale} activeLessonId={activeLesson.id} onSelectLesson={(lesson) => lesson.status === "prototype" && selectLesson(lesson)} />
         <footer>
           <span>{text.prototype}</span>
+          <small className="content-disclaimer">{text.contentDisclaimer}</small>
           <a
             href="https://github.com/f8qtn9kycq-crypto/Taigi-Starter"
             target="_blank"
@@ -125,8 +138,8 @@ export default function TaigiStartPage() {
       {reviewOpen && (
         <ReviewModal
           text={text}
-          phrase={prototypeLesson.phrases[0]}
-          card={progress.lessonOneReview}
+          phrase={activeLesson.phrases[0]}
+          card={activeReview}
           isDue={dueCount > 0}
           locale={progress.locale}
           onClose={closeReview}

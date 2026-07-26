@@ -51,7 +51,7 @@ export function useLearningProgress(stageCount: number) {
     setLocale: (locale: Locale) => update({ locale }),
     setStage: (stage: number) => update({ stage }),
     setHasStarted: (hasStarted: boolean) => update({ hasStarted }),
-    addReview: () => update({ lessonOneReview: createReviewCard() }),
+    addReview: (phraseId = "lesson-1-greeting") => update({ lessonOneReview: createReviewCard(phraseId) }),
     rateReview: (rating: ReviewRating) => {
       setProgress((current) => ({
         ...current,

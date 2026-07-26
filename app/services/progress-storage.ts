@@ -42,7 +42,7 @@ export function parseStoredProgress(
         hasStarted: parsed.hasStarted === true,
         lessonOneReview:
           parsed.lessonOneReview &&
-          parsed.lessonOneReview.id === "lesson-1-greeting" &&
+          typeof parsed.lessonOneReview.id === "string" &&
           typeof parsed.lessonOneReview.dueAt === "string"
             ? parsed.lessonOneReview
             : null,

@@ -32,6 +32,9 @@ export type LessonCopy = {
   day: string;
   streak: string;
   currentLesson: string;
+  lessonGoalLabel: string;
+  targetPhrasesLabel: string;
+  contentDisclaimer: string;
   lessonNumber: (number: number) => string;
   lesson: string;
   lessonSummary: string;
@@ -128,6 +131,9 @@ export const copy: Record<Locale, LessonCopy> = {
     day: "第 3 天",
     streak: "連續學習",
     currentLesson: "目前課程",
+    lessonGoalLabel: "這課要做到：",
+    targetPhrasesLabel: "目標詞語",
+    contentDisclaimer: "初期測試版本：採常見生活用語；部分字詞可能因地區與使用習慣不同。",
     lessonNumber: (number) => `第 ${number} 課`,
     lesson: "第 1 課 · 相借問",
     lessonSummary: "從日常招呼開始，把聲音、文字和開口練習連起來。",
@@ -189,7 +195,7 @@ export const copy: Record<Locale, LessonCopy> = {
     addReview: "加入今日複習",
     reviewAdded: "已加入複習",
     path: "初學者路徑",
-    pathSummary: "1 課可體驗 · 2 課規劃中",
+    pathSummary: "3 課可體驗 · 後續課程規劃中",
     cardsLeft: "張待複習",
     reviewPrompt: "看到這句，你會怎麼說？",
     rate: "這次記得多熟？",
@@ -202,7 +208,7 @@ export const copy: Record<Locale, LessonCopy> = {
     nextReview: (date) => `下次複習：${date}`,
     allDone: "今日複習完成",
     close: "關閉",
-    prototype: "第 1 課可用版本 · 學習紀錄儲存在此裝置",
+    prototype: "目前內容為可體驗版本 · 第 1 課可用版本 · 學習紀錄儲存在此裝置",
     navLearn: "學習",
     navReview: "複習",
     navPath: "課程",
@@ -240,6 +246,9 @@ export const copy: Record<Locale, LessonCopy> = {
     day: "Day 3",
     streak: "learning streak",
     currentLesson: "CURRENT LESSON",
+    lessonGoalLabel: "Lesson goal:",
+    targetPhrasesLabel: "Target phrases",
+    contentDisclaimer: "Early test version: everyday phrases are used; wording may vary by region and usage.",
     lessonNumber: (number) => `Lesson ${number}`,
     lesson: "Lesson 1 · Greetings",
     lessonSummary: "Connect the sound, script, and speaking practice of an everyday greeting.",
@@ -301,7 +310,7 @@ export const copy: Record<Locale, LessonCopy> = {
     addReview: "Add to today’s review",
     reviewAdded: "Added to review",
     path: "Beginner path",
-    pathSummary: "1 lesson available · 2 planned",
+    pathSummary: "3 lessons available · more planned",
     cardsLeft: "cards left",
     reviewPrompt: "How would you say this?",
     rate: "How well did you remember?",

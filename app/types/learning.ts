@@ -3,7 +3,7 @@ export type Locale = "zh" | "en";
 export type ReviewRating = "again" | "hard" | "easy";
 
 export type ReviewCard = {
-  id: "lesson-1-greeting";
+  id: string;
   dueAt: string;
   intervalDays: number;
   repetitions: number;

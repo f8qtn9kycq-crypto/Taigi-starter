@@ -74,8 +74,10 @@ test("catalog replaces a matching planned placeholder only for a valid handoff",
 
   assert.equal(lessonTwo.length, 1);
   assert.equal(lessonTwo[0].status, "prototype");
-  assert.equal(catalog.find((lesson) => lesson.number === 3)?.status, "planned");
+  assert.equal(catalog.find((lesson) => lesson.number === 3)?.status, "prototype");
+  assert.equal(catalog.find((lesson) => lesson.number === 3)?.id, "intro-001");
 
   const unchanged = createLessonCatalog([{}]);
-  assert.equal(unchanged.find((lesson) => lesson.number === 2)?.status, "planned");
+  assert.equal(unchanged.find((lesson) => lesson.number === 2)?.status, "prototype");
+  assert.equal(unchanged.find((lesson) => lesson.number === 2)?.id, "market-001");
 });

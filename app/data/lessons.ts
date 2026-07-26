@@ -5,6 +5,7 @@ import {
   type PlannedLesson,
 } from "../types/lesson.ts";
 import { lessonPackageHandoffToPlayableLesson } from "../utils/lesson-package-handoff.ts";
+import { generatedLessons } from "./generated-lessons.ts";
 
 const lessonOneStages = LESSON_STAGE_IDS.map((id) => ({
   id,
@@ -20,6 +21,11 @@ export const prototypeLesson: PlayableLesson = {
     zh: "從一句日常關心開始，把聲音、文字和開口練習連起來。",
     en: "Connect sound, script, and speaking through one caring everyday greeting.",
   },
+  goal: {
+    zh: "用一句日常問候關心身邊的人。",
+    en: "Use one everyday greeting to show care for someone around you.",
+  },
+  contentStatus: "verified",
   status: "prototype",
   durationMinutes: 5,
   stages: lessonOneStages,
@@ -67,6 +73,8 @@ const plannedLessonPlaceholders: readonly PlannedLesson[] = [
     title: { zh: "阮兜的人", en: "My family" },
     secondaryTitle: { zh: "My family", en: "阮兜的人" },
     summary: { zh: "規劃中", en: "Planned" },
+    goal: { zh: "規劃中", en: "Planned" },
+    contentStatus: "provisional",
     status: "planned",
     phrases: [],
   },
@@ -76,6 +84,8 @@ const plannedLessonPlaceholders: readonly PlannedLesson[] = [
     title: { zh: "一二三", en: "Numbers" },
     secondaryTitle: { zh: "Numbers", en: "一二三" },
     summary: { zh: "規劃中", en: "Planned" },
+    goal: { zh: "規劃中", en: "Planned" },
+    contentStatus: "provisional",
     status: "planned",
     phrases: [],
   },
@@ -87,6 +97,7 @@ export const createLessonCatalog = (
   const lessonsByNumber = new Map<number, Lesson>([
     [prototypeLesson.number, prototypeLesson],
     ...plannedLessonPlaceholders.map((lesson) => [lesson.number, lesson]),
+    ...generatedLessons.map((lesson) => [lesson.number, lesson]),
   ]);
 
   for (const handoff of handoffs) {

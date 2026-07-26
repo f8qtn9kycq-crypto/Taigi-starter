@@ -64,7 +64,7 @@ export function useAudioPlayer(source: string) {
       if (activeAudio === audio) activeAudio = null;
       audioRef.current = null;
     },
-    [],
+    [source],
   );
 
   return { isPlaying, hasError, toggle, stop };

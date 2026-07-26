@@ -1,4 +1,5 @@
 import type { Locale } from "./learning";
+import type { GeneratedContentStatus } from "./generated-lesson";
 
 export type LocalizedText = Record<Locale, string>;
 
@@ -46,6 +47,8 @@ type LessonBase = {
   title: LocalizedText;
   secondaryTitle: LocalizedText;
   summary: LocalizedText;
+  goal: LocalizedText;
+  contentStatus: GeneratedContentStatus;
   phrases: readonly LessonPhrase[];
 };
 
