@@ -1,9 +1,16 @@
 import { NextResponse } from "next/server";
 import { env } from "cloudflare:workers";
-import { getConfiguredExternalFormUrl } from "../../utils/feedback-mode";
 
 function getExternalFormUrl(): string | null {
-  return getConfiguredExternalFormUrl(env.FEEDBACK_EXTERNAL_FORM_URL);
+  const value = typeof env.FEEDBACK_EXTERNAL_FORM_URL === "string" ? env.FEEDBACK_EXTERNAL_FORM_URL.trim() : "";
+  if (!value) return null;
+
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" ? url.toString() : null;
+  } catch {
+    return null;
+  }
 }
 
 export function GET() {
