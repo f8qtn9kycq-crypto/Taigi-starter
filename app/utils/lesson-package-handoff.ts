@@ -199,6 +199,8 @@ export const lessonPackageHandoffToPlayableLesson = (
     title: value.package.title,
     secondaryTitle: value.package.secondaryTitle,
     summary: value.package.summary,
+    goal: value.package.summary,
+    contentStatus: "provisional",
     status: "prototype",
     durationMinutes: LESSON_STAGE_IDS.length,
     stages: LESSON_STAGE_IDS.map((id) => ({ id, estimatedMinutes: 1 })),

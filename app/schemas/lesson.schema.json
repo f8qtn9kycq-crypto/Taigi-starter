@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://taigi-start.local/schemas/lesson.schema.json",
+  "title": "Taigi Start generated lesson",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "generatedFrom", "id", "number", "title", "level", "scenario", "goal", "targetPhrases", "vocabulary", "steps", "reviewItems", "sources", "contentStatus"],
+  "properties": {
+    "version": { "const": 1 },
+    "generatedFrom": { "type": "string", "minLength": 1 },
+    "id": { "type": "string", "minLength": 1 },
+    "number": { "type": "integer", "minimum": 1 },
+    "title": { "$ref": "#/$defs/localizedText" },
+    "level": { "enum": ["A0", "A1", "A2", "B1", "B2"] },
+    "scenario": { "$ref": "#/$defs/localizedText" },
+    "goal": { "$ref": "#/$defs/localizedText" },
+    "targetPhrases": { "type": "array", "minItems": 1, "maxItems": 5, "items": { "$ref": "#/$defs/targetPhrase" } },
+    "vocabulary": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/vocabularyItem" } },
+    "steps": { "type": "array", "minItems": 8, "maxItems": 8, "items": { "$ref": "#/$defs/step" } },
+    "reviewItems": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/reviewItem" } },
+    "sources": { "type": "array", "minItems": 1, "items": { "type": "string", "format": "uri" } },
+    "contentStatus": { "enum": ["verified", "provisional", "blocked"] }
+  },
+  "$defs": {
+    "localizedText": { "type": "object", "additionalProperties": false, "required": ["zh", "en"], "properties": { "zh": { "type": "string", "minLength": 1 }, "en": { "type": "string", "minLength": 1 } } },
+    "source": { "type": "object", "additionalProperties": false, "required": ["title", "canonicalUrl", "license", "licenseUrl", "speaker"], "properties": { "title": { "$ref": "#/$defs/localizedText" }, "canonicalUrl": { "type": "string", "format": "uri" }, "license": { "type": "string", "minLength": 1 }, "licenseUrl": { "type": "string", "format": "uri" }, "speaker": { "type": ["string", "null"] } } },
+    "audio": { "type": "object", "additionalProperties": false, "required": ["audioUrl", "originalUrl", "sourceUrl", "sha256", "license", "licenseUrl", "speaker", "isUnmodifiedOriginal"], "properties": { "audioUrl": { "type": "string", "minLength": 1 }, "originalUrl": { "type": "string", "format": "uri" }, "sourceUrl": { "type": "string", "format": "uri" }, "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }, "license": { "type": "string", "minLength": 1 }, "licenseUrl": { "type": "string", "format": "uri" }, "speaker": { "type": ["string", "null"] }, "isUnmodifiedOriginal": { "const": true } } },
+    "targetPhrase": { "type": "object", "additionalProperties": false, "required": ["id", "hanji", "tailo", "poj", "meaning", "cultureNote", "sources", "contentStatus", "source", "audio"], "properties": { "id": { "type": "string", "minLength": 1 }, "hanji": { "type": "string", "minLength": 1 }, "tailo": { "type": "string", "minLength": 1 }, "poj": { "type": "string", "minLength": 1 }, "meaning": { "$ref": "#/$defs/localizedText" }, "cultureNote": { "$ref": "#/$defs/localizedText" }, "sources": { "type": "array", "minItems": 1, "items": { "type": "string", "format": "uri" } }, "contentStatus": { "enum": ["verified", "provisional", "blocked"] }, "source": { "$ref": "#/$defs/source" }, "audio": { "$ref": "#/$defs/audio" } } },
+    "vocabularyItem": { "type": "object", "additionalProperties": false, "required": ["id", "hanji", "tailo", "poj", "meaning", "sources", "contentStatus"], "properties": { "id": { "type": "string", "minLength": 1 }, "hanji": { "type": "string", "minLength": 1 }, "tailo": { "type": "string", "minLength": 1 }, "poj": { "type": "string", "minLength": 1 }, "meaning": { "$ref": "#/$defs/localizedText" }, "sources": { "type": "array", "minItems": 1, "items": { "type": "string", "format": "uri" } }, "contentStatus": { "enum": ["verified", "provisional", "blocked"] } } },
+    "step": { "type": "object", "additionalProperties": false, "required": ["type", "title", "prompt"], "properties": { "type": { "enum": ["context", "input", "listen", "repeat", "constrained-dialogue", "feedback", "review", "completion"] }, "title": { "$ref": "#/$defs/localizedText" }, "prompt": { "$ref": "#/$defs/localizedText" } } },
+    "reviewItem": { "type": "object", "additionalProperties": false, "required": ["id", "targetPhraseId", "prompt"], "properties": { "id": { "type": "string", "minLength": 1 }, "targetPhraseId": { "type": "string", "minLength": 1 }, "prompt": { "$ref": "#/$defs/localizedText" } } }
+  }
+}

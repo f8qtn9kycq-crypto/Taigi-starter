@@ -16,22 +16,34 @@ test("invalid local state falls back safely", () => {
   assert.deepEqual(parseStoredProgress(null, parseOptions), DEFAULT_PROGRESS);
 });
 
-test("legacy progress migrates to version 2", () => {
+test("legacy progress migrates to version 3 review cards", () => {
   const migrated = parseStoredProgress(
     JSON.stringify({ locale: "en", stage: 3, hasStarted: true, dueCount: 1 }),
     parseOptions,
   );
 
-  assert.equal(migrated.version, 2);
+  assert.equal(migrated.version, 3);
   assert.equal(migrated.locale, "en");
   assert.equal(migrated.stage, 3);
   assert.equal(migrated.hasStarted, true);
-  assert.equal(migrated.lessonOneReview?.dueAt, now.toISOString());
+  assert.equal(migrated.reviewCards["lesson-1-greeting"]?.dueAt, now.toISOString());
 });
 
-test("version 2 progress round trips", () => {
+test("version 3 progress round trips", () => {
   const progress = { ...DEFAULT_PROGRESS, hasStarted: true, stage: 2 };
   assert.deepEqual(parseStoredProgress(serializeProgress(progress), parseOptions), progress);
+});
+
+test("version 2 review card migrates without losing its phrase ID", () => {
+  const migrated = parseStoredProgress(JSON.stringify({
+    version: 2,
+    locale: "zh",
+    stage: 1,
+    hasStarted: true,
+    lessonOneReview: { id: "market-buy", dueAt: now.toISOString(), intervalDays: 1, repetitions: 0, easeFactor: 2.5, lastReviewedAt: null },
+  }), parseOptions);
+
+  assert.equal(migrated.reviewCards["market-buy"]?.id, "market-buy");
 });
 
 test("stored stage validation follows lesson metadata", () => {

@@ -9,18 +9,26 @@ type LessonAccordionProps = {
   text: LessonCopy;
   lesson: PlayableLesson;
   stage: number;
-  reviewScheduled: boolean;
+  activePhraseId: string;
+  reviewedPhraseId: string | null;
   onStageChange: (stage: number) => void;
-  onReviewAdded: () => void;
+  onPhraseChange: (phraseId: string) => void;
+  onReviewAdded: (phraseId: string) => void;
 };
 
 const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
   function LessonAccordion(
-    { text, lesson, stage, reviewScheduled, onStageChange, onReviewAdded },
+    { text, lesson, stage, activePhraseId, reviewedPhraseId, onStageChange, onPhraseChange, onReviewAdded },
     ref,
   ) {
     const lastStage = lesson.stages.length - 1;
+    const activePhraseIndex = Math.max(0, lesson.phrases.findIndex((phrase) => phrase.id === activePhraseId));
+    const activePhrase = lesson.phrases[activePhraseIndex];
     const advance = () => onStageChange(Math.min(stage + 1, lastStage));
+    const selectPhrase = (phraseId: string) => {
+      onPhraseChange(phraseId);
+      onStageChange(0);
+    };
 
     return (
       <section className="lesson-card" aria-labelledby="lesson-title" ref={ref}>
@@ -28,12 +36,22 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
           <span className="section-label">{text.currentLesson}</span>
           <h2 id="lesson-title">{text.lessonNumber(lesson.number)} · {lesson.title[text.locale]}</h2>
           <p>{lesson.summary[text.locale]}</p>
+          <p className="lesson-goal"><b>{text.lessonGoalLabel}</b> {lesson.goal[text.locale]}</p>
+          <ul className="lesson-target-phrases" aria-label={text.targetPhrasesLabel}>
+            {lesson.phrases.map((phrase, index) => (
+              <li key={phrase.id}>
+                <button type="button" className={index === activePhraseIndex ? "active" : ""} onClick={() => selectPhrase(phrase.id)} aria-current={index === activePhraseIndex ? "true" : undefined}>
+                  <b>{phrase.hanji}</b><span>{phrase.tailo}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
           <div className="lesson-rhythm" aria-label={text.lessonTime}>
             <span className="rhythm-mark" aria-hidden="true">{lesson.durationMinutes}′</span>
             <span><b>{text.lessonTime}</b><small>{text.lessonRhythm}</small></span>
           </div>
           <div className="progress-line" aria-label={text.phraseProgress(1, lesson.phrases.length)}>
-            <span><i /></span><b>{text.phraseProgress(1, lesson.phrases.length)}</b>
+            <span><i data-total={lesson.phrases.length} data-index={activePhraseIndex + 1} /></span><b>{text.phraseProgress(activePhraseIndex + 1, lesson.phrases.length)}</b>
           </div>
         </div>
 
@@ -67,7 +85,8 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
                     stage={stage}
                     text={text}
                     lesson={lesson}
-                    reviewScheduled={reviewScheduled}
+                    phraseIndex={activePhraseIndex}
+                    reviewScheduled={reviewedPhraseId === activePhrase?.id}
                     onAdvance={advance}
                     onReviewAdded={onReviewAdded}
                   />

@@ -109,7 +109,7 @@ test("saved progress and lesson content stay explicit and truthful", async () =>
   ]);
 
   assert.match(types, /hasStarted: false/);
-  assert.match(types, /lessonOneReview: null/);
+  assert.match(types, /reviewCards: \{\}/);
   assert.match(storage, /hasStarted: parsed\.hasStarted === true/);
   assert.match(storage, /parsed\.hasStarted === true &&[\s\S]*parsed\.dueCount/);
   assert.match(content, /status: "prototype"/);

@@ -1,4 +1,5 @@
 import type { Locale } from "./learning";
+import type { GeneratedContentStatus } from "./generated-lesson";
 
 export type LocalizedText = Record<Locale, string>;
 
@@ -40,12 +41,21 @@ export type LessonStage = {
   estimatedMinutes: number;
 };
 
+export type LessonFactoryStep = {
+  type: string;
+  title: LocalizedText;
+  prompt: LocalizedText;
+};
+
 type LessonBase = {
   id: string;
   number: number;
   title: LocalizedText;
   secondaryTitle: LocalizedText;
   summary: LocalizedText;
+  goal: LocalizedText;
+  contentStatus: GeneratedContentStatus;
+  factorySteps?: readonly LessonFactoryStep[];
   phrases: readonly LessonPhrase[];
 };
 
