@@ -30,6 +30,21 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
           <span className="section-label">{text.currentLesson}</span>
           <h2 id="lesson-title">{text.lessonNumber(lesson.pathOrder)} · {lesson.title[text.locale]}</h2>
           <p>{lesson.summary[text.locale]}</p>
+          <div className="lesson-mission">
+            <span>{text.lessonMission}</span>
+            <p>{lesson.mission[text.locale]}</p>
+          </div>
+          <div className="lesson-targets">
+            <span>{text.lessonTargets}</span>
+            <ul>
+              {lesson.phrases.map((phrase) => (
+                <li key={phrase.id}>
+                  <b>{phrase.hanji}</b>
+                  <small>{phrase.tailo}</small>
+                </li>
+              ))}
+            </ul>
+          </div>
           <div className="lesson-rhythm" aria-label={text.lessonTime}>
             <span className="rhythm-mark" aria-hidden="true">{lesson.durationMinutes}′</span>
             <span><b>{text.lessonTime}</b><small>{text.lessonRhythm}</small></span>

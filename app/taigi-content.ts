@@ -35,6 +35,8 @@ export type LessonCopy = {
   lessonNumber: (number: number) => string;
   lesson: string;
   lessonSummary: string;
+  lessonMission: string;
+  lessonTargets: string;
   lessonRhythm: string;
   lessonTime: string;
   stageTime: (minutes: number) => string;
@@ -133,6 +135,8 @@ export const copy: Record<Locale, LessonCopy> = {
     lessonNumber: (number) => `第 ${number} 課`,
     lesson: "第 1 課 · 相借問",
     lessonSummary: "從日常招呼開始，把聲音、文字和開口練習連起來。",
+    lessonMission: "生活任務",
+    lessonTargets: "本課目標詞",
     lessonRhythm: "先聽 → 看文字 → 開口講 → 回想 → 生活運用",
     lessonTime: "約 5 分鐘",
     stageTime: (minutes) => `約 ${minutes} 分鐘`,
@@ -193,7 +197,7 @@ export const copy: Record<Locale, LessonCopy> = {
     nextPhrase: "下一句",
     lessonComplete: "這課完成了！",
     path: "初學者路徑",
-    pathSummary: "18 課可體驗",
+    pathSummary: "20 課可體驗",
     cardsLeft: "張待複習",
     reviewPrompt: "看到這句，你會怎麼說？",
     rate: "這次記得多熟？",
@@ -206,7 +210,7 @@ export const copy: Record<Locale, LessonCopy> = {
     nextReview: (date) => `下次複習：${date}`,
     allDone: "今日複習完成",
     close: "關閉",
-    prototype: "第 1–18 課可體驗 · 學習紀錄儲存在此裝置",
+    prototype: "第 1–20 課可體驗 · 學習紀錄儲存在此裝置",
     navLearn: "學習",
     navReview: "複習",
     navPath: "課程",
@@ -247,6 +251,8 @@ export const copy: Record<Locale, LessonCopy> = {
     lessonNumber: (number) => `Lesson ${number}`,
     lesson: "Lesson 1 · Greetings",
     lessonSummary: "Connect the sound, script, and speaking practice of an everyday greeting.",
+    lessonMission: "Real-life task",
+    lessonTargets: "Target phrases",
     lessonRhythm: "Hear → see → say → recall → use",
     lessonTime: "About 5 minutes",
     stageTime: (minutes) => `About ${minutes} minute${minutes === 1 ? "" : "s"}`,
@@ -307,7 +313,7 @@ export const copy: Record<Locale, LessonCopy> = {
     nextPhrase: "Next phrase",
     lessonComplete: "Lesson complete!",
     path: "Beginner path",
-    pathSummary: "18 lessons available",
+    pathSummary: "20 lessons available",
     cardsLeft: "cards left",
     reviewPrompt: "How would you say this?",
     rate: "How well did you remember?",
@@ -320,7 +326,7 @@ export const copy: Record<Locale, LessonCopy> = {
     nextReview: (date) => `Next review: ${date}`,
     allDone: "Today’s review is complete",
     close: "Close",
-    prototype: "Lessons 1–18 working release · progress stays on this device",
+    prototype: "Lessons 1–20 working release · progress stays on this device",
     navLearn: "Learn",
     navReview: "Review",
     navPath: "Course",

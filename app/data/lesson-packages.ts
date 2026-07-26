@@ -89,6 +89,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
       zh: "學習者能聽懂並說出「阮兜、阿母、阿爸」，知道稱謂和描述用法的差別。",
       en: "Learners can hear and say guán tau, a-bú, and a-pah, and distinguish address terms from descriptions.",
     },
+    mission: {
+      zh: "介紹家裡的人：指出自己的家、媽媽和爸爸。",
+      en: "Talk about home: identify your home, mother, and father.",
+    },
     status: "planned",
     stagePlan,
     phrases: [
@@ -146,6 +150,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
     objective: {
       zh: "學習者能辨認並說出一、二、三，並知道「二」在不同腔口可能有不同讀音。",
       en: "Learners can recognize and say one, two, and three, and know that two has regional readings.",
+    },
+    mission: {
+      zh: "數身邊三樣物件，聽到數字時指出正確數量。",
+      en: "Count three everyday objects and point to the right quantity when you hear each number.",
     },
     status: "planned",
     stagePlan,
@@ -205,6 +213,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
       zh: "學習者能聽懂並說出「食飯、啉水、食茶」，知道「食」和「啉」在飲食語境中的差異。",
       en: "Learners can hear and say tsia̍h-pn̄g, lim tsuí, and tsia̍h-tê, and notice the contextual difference between tsia̍h and lim.",
     },
+    mission: {
+      zh: "完成一個飲食選擇：說你要吃飯、喝水，或喝茶。",
+      en: "Make one food or drink choice: say whether you want a meal, water, or tea.",
+    },
     status: "planned",
     stagePlan,
     phrases: [
@@ -262,6 +274,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
     objective: {
       zh: "學習者能理解「今仔日、早起、做代誌」，並用短句說出今天早上的一件事。",
       en: "Learners can understand kin-á-ji̍t, tsá-khí, and tsò tāi-tsì, then say one thing they did this morning.",
+    },
+    mission: {
+      zh: "說出今天早上的一件日常代誌，讓對方知道你在做啥。",
+      en: "Say one thing you did this morning so someone knows what you were doing.",
     },
     status: "planned",
     stagePlan,
@@ -321,6 +337,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
       zh: "學習者能說出天氣、熱和冷，並用短句描述今天的感受。",
       en: "Learners can say weather, hot, and cold, then describe how today feels in a short phrase.",
     },
+    mission: {
+      zh: "看窗外講一句天氣感受：今仔日是熱抑是冷。",
+      en: "Look outside and say how the weather feels today: hot or cold.",
+    },
     status: "planned",
     stagePlan,
     phrases: [
@@ -375,6 +395,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
     objective: {
       zh: "學習者能聽懂「你欲去佗？」並用來去或路的詞組回應方向。",
       en: "Learners can understand lí beh khì toh? and respond with a simple destination or route phrase.",
+    },
+    mission: {
+      zh: "完成一輪問路：先問欲去佗，再用去或路回應。",
+      en: "Complete one directions exchange: ask where someone is going, then respond with a route or destination.",
     },
     status: "planned",
     stagePlan,
@@ -431,6 +455,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
       zh: "學習者能說出要買的物件，並辨認錢和購物動作的基本詞。",
       en: "Learners can name something they want to buy and recognize the basic words for money and shopping.",
     },
+    mission: {
+      zh: "在店內指出一項物件，說你欲買，並準備用錢付款。",
+      en: "In a shop, identify one item, say you want to buy it, and get ready to pay.",
+    },
     status: "planned",
     stagePlan,
     phrases: [
@@ -485,6 +513,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
     objective: {
       zh: "學習者能辨認厝邊、隔壁和朋友，並用簡短句子介紹身邊的人。",
       en: "Learners can recognize neighbors, next door, and friends, then introduce people around them in short sentences.",
+    },
+    mission: {
+      zh: "介紹身邊一個人：說是厝邊、隔壁，抑是朋友。",
+      en: "Introduce one person nearby: say whether they are a neighbor, next door, or a friend.",
     },
     status: "planned",
     stagePlan,
@@ -541,6 +573,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
       zh: "學習者能聽懂相招、做伙和來去，並說出一個簡單邀請。",
       en: "Learners can understand sio-tsio, tsò-hué, and lâi-khì, then make a simple invitation.",
     },
+    mission: {
+      zh: "邀請一個人做伙來去：說欲去佗，抑是欲做啥。",
+      en: "Invite someone to go together: say where you want to go or what you want to do.",
+    },
     status: "planned",
     stagePlan,
     phrases: [
@@ -595,6 +631,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
     objective: {
       zh: "學習者能分辨昨昏、今仔日和明仔載，並說出一件已經做過或準備要做的事。",
       en: "Learners can distinguish yesterday, today, and tomorrow, then say one past or upcoming action.",
+    },
+    mission: {
+      zh: "把一件代誌放進時間軸：昨昏做過、今仔日做緊，抑是明仔載欲做。",
+      en: "Place one activity on a time line: done yesterday, happening today, or planned for tomorrow.",
     },
     status: "planned",
     stagePlan,
@@ -651,6 +691,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
       zh: "學習者能在不追求長句的情況下，完成一輪聽、回應、追問和生活連結。",
       en: "Learners can complete a short hear, respond, follow-up, and real-life connection loop without needing long sentences.",
     },
+    mission: {
+      zh: "把食飯、阮兜和今仔日串成一輪短對話，完成聽、回應和追問。",
+      en: "Connect a meal, home, and today into one short conversation with a response and follow-up.",
+    },
     status: "planned",
     stagePlan,
     phrases: [
@@ -705,6 +749,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
     objective: {
       zh: "學習者能聽懂並說出「我、叫、是」，完成一輪簡短自我介紹。",
       en: "Learners can hear and say guá, kiò, and sī, then complete a short self-introduction.",
+    },
+    mission: {
+      zh: "完成自我介紹：用「我、叫、是」講自己的名字和基本身分。",
+      en: "Complete a self-introduction: use I, name, and be to share your name and basic identity.",
     },
     status: "planned",
     stagePlan,
@@ -761,6 +809,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
       zh: "學習者能辨認「學校、讀冊、頭路」，用短句說出自己目前的生活角色。",
       en: "Learners can recognize ha̍k-hāu, tha̍k-tsheh, and thâu-lōo, then describe a current life role in short sentences.",
     },
+    mission: {
+      zh: "說出你目前的生活角色：佇學校讀冊，抑是有頭路。",
+      en: "Say your current life role: studying at school or working in a job.",
+    },
     status: "planned",
     stagePlan,
     phrases: [
@@ -815,6 +867,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
     objective: {
       zh: "學習者能辨認「身體、袂爽、食藥仔」，用台語說明自己需要休息或尋求協助；本課不提供醫療建議。",
       en: "Learners can recognize sin-thé, bē-sóng, and tsia̍h io̍h-á to describe needing rest or help; this lesson is not medical advice.",
+    },
+    mission: {
+      zh: "用台語表達基本不舒服：講身體袂爽，並說需要休息或尋求協助；這不是醫療建議。",
+      en: "Describe basic discomfort in Taigi and say that you need rest or help; this is not medical advice.",
     },
     status: "planned",
     stagePlan,
@@ -871,6 +927,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
       zh: "學習者能辨認「出門、坐車、車站」，用短句說明出門方式與目的地。",
       en: "Learners can recognize tshut-mn̂g, tsē tshia, and tshia-tsām, then describe how they travel and where they are going.",
     },
+    mission: {
+      zh: "說明一趟簡單行程：何時出門、坐車，欲去佗一个車站。",
+      en: "Describe one simple trip: when you leave, how you ride, and which station you are going to.",
+    },
     status: "planned",
     stagePlan,
     phrases: [
@@ -925,6 +985,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
     objective: {
       zh: "學習者能辨認「食餐廳、欲、菜」，用短句表達想吃的東西與基本點菜需求。",
       en: "Learners can recognize tsia̍h-tshan-thiann, beh, and tshài, then express what they want to eat in a restaurant.",
+    },
+    mission: {
+      zh: "在餐廳完成最小點菜任務：說你欲食啥物菜。",
+      en: "Complete a minimal restaurant order: say which dish you want to eat.",
     },
     status: "planned",
     stagePlan,
@@ -981,6 +1045,10 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
       zh: "學習者能辨認「買、物件、偌濟、價錢」，詢問物品與價格，並表達是否購買。",
       en: "Learners can recognize bé, mi̍h-kiānn, guā-tsē, and kè-tsînn, then ask about an item and its price before deciding whether to buy it.",
     },
+    mission: {
+      zh: "完成一輪購物問答：指出物件、問偌濟錢，再決定欲買抑無。",
+      en: "Complete one shopping exchange: identify an item, ask its price, and decide whether to buy it.",
+    },
     status: "planned",
     stagePlan,
     phrases: [
@@ -1035,6 +1103,124 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
     ],
     teacherReview: requiredTeacherReview,
   },
+  {
+    id: "lesson-19-polite-exchanges-package",
+    number: 19,
+    title: { zh: "請問、多謝、失禮", en: "Polite everyday exchanges" },
+    secondaryTitle: { zh: "Polite everyday exchanges", en: "請問、多謝、失禮" },
+    summary: {
+      zh: "用請問開始互動，用多謝回應幫忙，用失禮修補小失誤。",
+      en: "Start an interaction politely, thank someone for help, and repair a small mistake.",
+    },
+    objective: {
+      zh: "學習者能在問路、接受幫忙和需要道歉時，選用合適的客氣語。",
+      en: "Learners can choose an appropriate polite expression when asking, receiving help, or apologizing.",
+    },
+    mission: {
+      zh: "完成三個生活禮貌動作：請問、說多謝、出錯時說失禮。",
+      en: "Complete three real-life courtesy moves: ask politely, say thanks, and apologize after a mistake.",
+    },
+    status: "planned",
+    stagePlan,
+    phrases: [
+      makePhrase({
+        id: "lesson-19-polite-ask",
+        hanji: "請問",
+        tailo: "Tshiánn-mn̄g",
+        poj: null,
+        meaning: { zh: "請問；客氣地向人詢問", en: "excuse me; a polite way to ask" },
+        cultureNote: {
+          zh: "教育部將「請問」定義為向人詢問時的客氣語；本課把它放在問路和求助的開頭。",
+          en: "The MOE defines tshiánn-mn̄g as a polite expression for asking someone; use it at the start of directions and help requests.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/11443/"),
+      }),
+      makePhrase({
+        id: "lesson-19-polite-thanks",
+        hanji: "多謝",
+        tailo: "To-siā",
+        poj: null,
+        meaning: { zh: "謝謝、感謝", en: "thank you; express thanks" },
+        cultureNote: {
+          zh: "教育部例句直接用「多謝你！」；完成任務時要把它放在對方幫忙之後，而不是只背意思。",
+          en: "The MOE gives To-siā--lí as a direct example; place it after someone helps you rather than memorizing it in isolation.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/2415/"),
+      }),
+      makePhrase({
+        id: "lesson-19-polite-apology",
+        hanji: "失禮",
+        tailo: "Sit-lé",
+        poj: null,
+        meaning: { zh: "對不起；向人賠罪", en: "sorry; apologize to someone" },
+        cultureNote: {
+          zh: "教育部用「真失禮」表達賠罪；本課將它限定在修補互動的小失誤，不延伸成正式道歉文書。",
+          en: "The MOE uses tsin sit-lé for apologizing; keep this lesson on repairing a small interaction, not formal written apologies.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/1826/"),
+      }),
+    ],
+    teacherReview: requiredTeacherReview,
+  },
+  {
+    id: "lesson-20-help-and-slow-down-package",
+    number: 20,
+    title: { zh: "求助佮講較慢", en: "Ask for help and slow down" },
+    secondaryTitle: { zh: "Ask for help and slow down", en: "求助佮講較慢" },
+    summary: {
+      zh: "聽無或跟袂著時，請對方幫助，請對方講慢慢仔。",
+      en: "When you cannot follow, ask for help and ask the other person to slow down.",
+    },
+    objective: {
+      zh: "學習者能辨認幫助、慢和慢慢仔，完成一個不懂時的修復策略。",
+      en: "Learners can recognize help, slow, and slowly, then use a repair strategy when they do not understand.",
+    },
+    mission: {
+      zh: "完成聽不懂時的三步驟：請問、求助、請對方慢慢仔講。",
+      en: "Use a three-step repair when you cannot follow: ask politely, request help, and ask the person to speak slowly.",
+    },
+    status: "planned",
+    stagePlan,
+    phrases: [
+      makePhrase({
+        id: "lesson-20-help-support",
+        hanji: "幫助",
+        tailo: "Pang-tsōo",
+        poj: null,
+        meaning: { zh: "幫忙；給予支援", en: "help; give support" },
+        cultureNote: {
+          zh: "教育部將「幫助」解作替人出力或給予支援；本課用在需要協助的生活情境。",
+          en: "The MOE defines pang-tsōo as giving effort or support; use it in everyday requests for assistance.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/12157/"),
+      }),
+      makePhrase({
+        id: "lesson-20-help-slow",
+        hanji: "慢",
+        tailo: "Bān",
+        poj: null,
+        meaning: { zh: "慢；速度較緩", en: "slow; at a slower speed" },
+        cultureNote: {
+          zh: "教育部用「駛較慢」示範速度；本課把慢放入請對方放慢的修復任務。",
+          en: "The MOE demonstrates bān with a request to drive more slowly; use it in a repair task that asks for a slower pace.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/10498/"),
+      }),
+      makePhrase({
+        id: "lesson-20-help-slowly",
+        hanji: "慢慢仔",
+        tailo: "Bān-bān-á",
+        poj: null,
+        meaning: { zh: "慢慢地；放慢速度", en: "slowly; at an unhurried pace" },
+        cultureNote: {
+          zh: "教育部例句「有話慢慢仔講」直接對應溝通修復；本課讓學習者在聽無時請對方慢慢仔講。",
+          en: "The MOE example Ū uē bān-bān-á kóng directly fits communication repair; use it to ask someone to speak slowly.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/10519/"),
+      }),
+    ],
+    teacherReview: requiredTeacherReview,
+  },
 ] as const;
 
 const pojByTailo: Readonly<Record<string, string>> = {
@@ -1084,6 +1270,12 @@ const pojByTailo: Readonly<Record<string, string>> = {
   "Tshài": "Chhài",
   "Guā-tsē / guā-tsuē": "Goā-chē / goā-choē",
   "Kè-tsînn": "Kè-chîⁿ",
+  "Tshiánn-mn̄g": "Chhiáⁿ-mn̄g",
+  "To-siā": "To-siā",
+  "Sit-lé": "Sit-lé",
+  "Pang-tsōo": "Pang-chō͘",
+  "Bān": "Bān",
+  "Bān-bān-á": "Bān-bān-á",
 };
 
 const sharedAudioUrlByPhraseId: Readonly<Record<string, string>> = {
@@ -1091,23 +1283,25 @@ const sharedAudioUrlByPhraseId: Readonly<Record<string, string>> = {
 };
 
 const recommendedPathOrderByPackageNumber: Readonly<Record<number, number>> = {
-  2: 13,
-  3: 3,
-  4: 4,
-  5: 16,
-  6: 12,
-  7: 8,
-  8: 6,
-  9: 14,
-  10: 15,
-  11: 10,
-  12: 18,
-  13: 2,
-  14: 17,
-  15: 11,
-  16: 9,
-  17: 5,
-  18: 7,
+  2: 15,
+  3: 5,
+  4: 6,
+  5: 18,
+  6: 14,
+  7: 10,
+  8: 8,
+  9: 16,
+  10: 17,
+  11: 12,
+  12: 20,
+  13: 4,
+  14: 19,
+  15: 13,
+  16: 11,
+  17: 7,
+  18: 9,
+  19: 2,
+  20: 3,
 };
 
 const completeLessonPackage = (lessonPackage: RawLessonPackage): LessonPackage => ({

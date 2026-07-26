@@ -7,7 +7,7 @@ import { TEACHER_REVIEW_CHECK_IDS } from "../app/types/lesson-package.ts";
 test("planned lesson packages carry complete POJ and original-audio metadata", () => {
   assert.deepEqual(
     lessonPackages.map((lesson) => lesson.number),
-    [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+    [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
   );
 
   const phraseIds = new Set<string>();
@@ -21,7 +21,9 @@ test("planned lesson packages carry complete POJ and original-audio metadata", (
       lesson.teacherReview.checks.map((check) => check.id),
       TEACHER_REVIEW_CHECK_IDS,
     );
-    assert.ok(lesson.phrases.length > 0);
+    assert.ok(lesson.phrases.length >= 3);
+    assert.ok(lesson.mission.zh.trim());
+    assert.ok(lesson.mission.en.trim());
 
     for (const check of lesson.teacherReview.checks) {
       assert.equal(check.status, "pending");
@@ -51,7 +53,7 @@ test("planned lesson packages carry complete POJ and original-audio metadata", (
 });
 
 test("M2.3 packages keep the source-verified lesson scope", () => {
-  const m23Packages = lessonPackages.filter((lesson) => lesson.number >= 16);
+  const m23Packages = lessonPackages.filter((lesson) => lesson.number >= 16 && lesson.number <= 18);
 
   assert.deepEqual(
     m23Packages.map((lesson) => lesson.title.zh),

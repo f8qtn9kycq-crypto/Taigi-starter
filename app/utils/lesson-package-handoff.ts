@@ -232,6 +232,7 @@ export const lessonPackageHandoffToPlayableLesson = (
     title: value.package.title,
     secondaryTitle: value.package.secondaryTitle,
     summary: value.package.summary,
+    mission: value.package.mission,
     status: "prototype",
     durationMinutes: LESSON_STAGE_IDS.length,
     stages: LESSON_STAGE_IDS.map((id) => ({ id, estimatedMinutes: 1 })),

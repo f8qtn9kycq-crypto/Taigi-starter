@@ -30,6 +30,40 @@ test("validator rejects missing stages, sources, review, and incomplete audio", 
   assert.ok(paths.includes("packages[0].phrases[0].audio.status"));
 });
 
+test("validator rejects missing objective, Tâi-lô, bilingual text, licence, and fake audio", () => {
+  const invalid = clonePackages();
+  const first = invalid[0];
+  const phrase = (first.phrases as Record<string, unknown>[])[0];
+  const source = phrase.source as Record<string, unknown>;
+  const audio = phrase.audio as Record<string, unknown>;
+
+  delete first.objective;
+  delete (phrase as Record<string, unknown>).tailo;
+  delete (phrase.meaning as Record<string, unknown>).en;
+  source.license = "CC0";
+  source.canonicalUrl = "https://example.com/not-moe";
+  audio.audioUrl = "/audio/placeholder-phrase.mp3";
+  audio.originalUrl = "https://sutian.moe.edu.tw/media/pending-original.mp3";
+
+  const paths = validateLessonPackages(invalid).map((issue) => issue.path);
+  assert.ok(paths.includes("packages[0].objective"));
+  assert.ok(paths.includes("packages[0].phrases[0].tailo"));
+  assert.ok(paths.includes("packages[0].phrases[0].meaning.en"));
+  assert.ok(paths.includes("packages[0].phrases[0].source.license"));
+  assert.ok(paths.includes("packages[0].phrases[0].source.canonicalUrl"));
+  assert.ok(paths.includes("packages[0].phrases[0].audio.audioUrl"));
+  assert.ok(paths.includes("packages[0].phrases[0].audio.originalUrl"));
+});
+
+test("validator rejects a covered package with fewer than three target phrases", () => {
+  const invalid = clonePackages();
+  const first = invalid[0];
+  (first.phrases as unknown[]).splice(1);
+
+  const paths = validateLessonPackages(invalid).map((issue) => issue.path);
+  assert.ok(paths.includes("packages[0].phrases"));
+});
+
 test("validator reports empty teacher review checks once", () => {
   const invalid = clonePackages();
   const review = invalid[0].teacherReview as Record<string, unknown>;

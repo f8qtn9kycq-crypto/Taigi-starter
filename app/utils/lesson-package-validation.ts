@@ -15,9 +15,10 @@ const EXPECTED_STAGE_PREFIXES = [
   { zh: "用：", en: "Use:" },
 ] as const;
 
-const MOE_DICTIONARY_URL = /^https:\/\/sutian\.moe\.edu\.tw\//;
+const MOE_DICTIONARY_URL = /^https:\/\/sutian\.moe\.edu\.tw\/(?:zh-hant|und-hani)\/su\/\d+\/$/;
 const MOE_LICENSE = "CC BY-ND 3.0 TW";
 const MOE_LICENSE_URL = "https://creativecommons.org/licenses/by-nd/3.0/tw/";
+const FAKE_AUDIO_MARKER = /(fake|placeholder|pending|todo|example|not[-_ ]yet[-_ ]added)/i;
 
 export type LessonPackageValidationIssue = {
   path: string;
@@ -148,8 +149,14 @@ const validateAudio = (
   if (!isNonEmptyString(value.audioUrl) || !value.audioUrl.startsWith("/audio/")) {
     addIssue(issues, `${path}.audioUrl`, "must reference a local audio asset");
   }
+  if (typeof value.audioUrl === "string" && FAKE_AUDIO_MARKER.test(value.audioUrl)) {
+    addIssue(issues, `${path}.audioUrl`, "planned lessons must not use a fake or placeholder audio URL");
+  }
   if (!isNonEmptyString(value.originalUrl) || !value.originalUrl.startsWith("https://sutian.moe.edu.tw/media/")) {
     addIssue(issues, `${path}.originalUrl`, "must reference the official MOE original audio URL");
+  }
+  if (typeof value.originalUrl === "string" && FAKE_AUDIO_MARKER.test(value.originalUrl)) {
+    addIssue(issues, `${path}.originalUrl`, "planned lessons must not use a fake or placeholder original audio URL");
   }
   if (value.license !== "CC BY-ND 3.0 TW") addIssue(issues, `${path}.license`, "must be CC BY-ND 3.0 TW");
   if (value.licenseUrl !== "https://creativecommons.org/licenses/by-nd/3.0/tw/") {
@@ -286,22 +293,22 @@ const validatePackage = (
     lessonNumbers.add(value.number);
   }
 
-  if (typeof value.pathOrder !== "number" || !Number.isInteger(value.pathOrder) || value.pathOrder < 2 || value.pathOrder > 18) {
-    addIssue(issues, `${path}.pathOrder`, "must be a unique learner path position from 2 through 18");
+  if (typeof value.pathOrder !== "number" || !Number.isInteger(value.pathOrder) || value.pathOrder < 2 || value.pathOrder > 20) {
+    addIssue(issues, `${path}.pathOrder`, "must be a unique learner path position from 2 through 20");
   } else if (pathOrders.has(value.pathOrder)) {
     addIssue(issues, `${path}.pathOrder`, "must be unique");
   } else {
     pathOrders.add(value.pathOrder);
   }
 
-  for (const field of ["title", "secondaryTitle", "summary", "objective"] as const) {
+  for (const field of ["title", "secondaryTitle", "summary", "objective", "mission"] as const) {
     validateLocalizedText(value[field], `${path}.${field}`, issues);
   }
   if (value.status !== "planned") addIssue(issues, `${path}.status`, "must remain planned");
   validateStagePlan(value.stagePlan, `${path}.stagePlan`, issues);
 
-  if (!Array.isArray(value.phrases) || value.phrases.length === 0) {
-    addIssue(issues, `${path}.phrases`, "must be a non-empty array");
+  if (!Array.isArray(value.phrases) || value.phrases.length < 3) {
+    addIssue(issues, `${path}.phrases`, "must contain at least three target phrases for a covered lesson");
   } else {
     for (const [index, phrase] of value.phrases.entries()) {
       validatePhrase(phrase, `${path}.phrases[${index}]`, phraseIds, issues);

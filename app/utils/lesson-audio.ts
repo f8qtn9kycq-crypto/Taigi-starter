@@ -14,7 +14,7 @@ export const officialMoeAudioUrl = (canonicalUrl: string): string => {
 };
 
 export const lessonAudioUrl = (lessonNumber: number, phraseId: string): string => (
-  `/audio/lesson-${lessonNumber <= 15 ? "2-15" : "16-18"}/${phraseId}.mp3`
+  `/audio/lesson-${lessonNumber <= 15 ? "2-15" : lessonNumber <= 18 ? "16-18" : "19-20"}/${phraseId}.mp3`
 );
 
 export const createLessonPackageAudio = (

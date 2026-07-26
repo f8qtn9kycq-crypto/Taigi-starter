@@ -16,15 +16,15 @@ const addIssues = (path: string, values: readonly { path: string; message: strin
 
 addIssues("lessonPackages", validateLessonPackages(lessonPackages));
 
-const expectedPackageNumbers = Array.from({ length: 17 }, (_, index) => index + 2);
+const expectedPackageNumbers = Array.from({ length: 19 }, (_, index) => index + 2);
 const packageNumbers = lessonPackages.map((lesson) => lesson.number);
 if (JSON.stringify(packageNumbers) !== JSON.stringify(expectedPackageNumbers)) {
-  issues.push(`lessonPackages: expected lessons 2–18, got ${packageNumbers.join(", ")}`);
+  issues.push(`lessonPackages: expected lessons 2–20, got ${packageNumbers.join(", ")}`);
 }
 
 const handoffNumbers = lessonPackageHandoffs.map((handoff) => handoff.package.number);
 if (JSON.stringify(handoffNumbers) !== JSON.stringify(expectedPackageNumbers)) {
-  issues.push(`lessonPackageHandoffs: expected lessons 2–18, got ${handoffNumbers.join(", ")}`);
+  issues.push(`lessonPackageHandoffs: expected lessons 2–20, got ${handoffNumbers.join(", ")}`);
 }
 
 for (const handoff of lessonPackageHandoffs) {
@@ -62,14 +62,14 @@ const playableNumbers = lessonCatalog
   .filter((lesson) => lesson.status === "prototype")
   .map((lesson) => lesson.number)
   .sort((left, right) => left - right);
-const expectedPlayableNumbers = Array.from({ length: 18 }, (_, index) => index + 1);
+const expectedPlayableNumbers = Array.from({ length: 20 }, (_, index) => index + 1);
 if (JSON.stringify(playableNumbers) !== JSON.stringify(expectedPlayableNumbers)) {
-  issues.push(`lessonCatalog: expected playable lessons 1–18, got ${playableNumbers.join(", ")}`);
+  issues.push(`lessonCatalog: expected playable lessons 1–20, got ${playableNumbers.join(", ")}`);
 }
 const pathOrders = lessonCatalog.map((lesson) => lesson.pathOrder);
-const expectedPathOrders = Array.from({ length: 18 }, (_, index) => index + 1);
+const expectedPathOrders = Array.from({ length: 20 }, (_, index) => index + 1);
 if (JSON.stringify(pathOrders) !== JSON.stringify(expectedPathOrders)) {
-  issues.push(`lessonCatalog: expected recommended path order 1–18, got ${pathOrders.join(", ")}`);
+  issues.push(`lessonCatalog: expected recommended path order 1–20, got ${pathOrders.join(", ")}`);
 }
 
 const lessonOne = lessonCatalog.find((lesson) => lesson.number === 1);
@@ -88,5 +88,5 @@ if (issues.length > 0) {
   process.exitCode = 1;
 } else {
   const phraseCount = lessonPackages.reduce((total, lesson) => total + lesson.phrases.length, 0);
-  console.log(`Lesson validation passed: ${lessonPackages.length} packages, ${phraseCount} phrases, ${phraseCount} licensed original audio assets, playable lessons 1–18.`);
+  console.log(`Lesson validation passed: ${lessonPackages.length} packages, ${phraseCount} phrases, ${phraseCount} licensed original audio assets, playable lessons 1–20.`);
 }

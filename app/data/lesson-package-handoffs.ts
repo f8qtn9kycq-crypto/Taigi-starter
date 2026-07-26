@@ -30,12 +30,12 @@ const createHandoff = (lessonPackage: LessonPackage): LessonPackageHandoff => ({
   })),
   mobileFlowEvidence: [{
     viewport: "390x844",
-    checkedAt: "2026-07-26T10:10:35+08:00",
-    evidenceRef: "docs/qa/lesson-2-18-390x844.md",
+    checkedAt: "2026-07-26T11:23:27+08:00",
+    evidenceRef: "docs/qa/lesson-2-20-390x844.md",
   }],
   ownerRiskAcceptance,
 });
 
 export const lessonPackageHandoffs: readonly LessonPackageHandoff[] = lessonPackages
-  .filter((lessonPackage) => lessonPackage.number >= 2 && lessonPackage.number <= 18)
+  .filter((lessonPackage) => lessonPackage.number >= 2 && lessonPackage.number <= 20)
   .map(createHandoff);

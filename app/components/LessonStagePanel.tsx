@@ -51,6 +51,7 @@ export default function LessonStagePanel({
         stage={lessonStage.id}
         text={text}
         phrase={phrase}
+        mission={lesson.mission}
         showAnswer={showAnswer}
         onPlay={() => void playAudio()}
       />

@@ -7,13 +7,13 @@
 ## Release source
 
 - 從 `github/main` 建立乾淨 release branch；不要使用含有未提交變更的工作區。
-- Lessons 1–18 必須維持可玩的五段 stage，以及每個 phrase 可追溯的教育部
+- Lessons 1–20 必須維持可玩的五段 stage，以及每個 phrase 可追溯的教育部
   來源、未修改音檔與授權 attribution。
 - `planned` package 只有在完整 handoff、音檔 provenance、mobile evidence 與
   owner risk acceptance（若 teacher review 尚未完成）都存在時，才能進入
   runtime catalog；runtime 不得把 pending review 顯示成 teacher-approved。
 - Sites saved version 的 `source.commit_sha` 必須等於已驗證並推送的 release
-  commit；目前 live version 13 已對應到 exact release head `c52077d`。
+  commit；本次部署完成後要以 Sites read-back 記錄 exact head、version 與 deployment。
 
 ## Required gates
 
@@ -92,6 +92,10 @@ conditional fallback。
 
 若 live 頁面的內容、source SHA 或 version provenance 對不上，停止發布，不要
 用新版本覆蓋不明來源的 production 狀態。
+
+內容 release 採無教師阻塞模式：teacher review pending 可以先測試，但不得
+宣稱教師核准、唯一正確、標準發音評分、精準聲調診斷、全地區適用或專業認證；
+沒有可追溯來源／授權／原始音檔的課程一律不進 release。
 
 ## Preflight command
 

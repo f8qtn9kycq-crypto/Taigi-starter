@@ -2,46 +2,41 @@
 
 ## Current result
 
-Every lesson package currently in `app/data/lesson-packages.ts` is ready for implementation through a validated handoff:
+這個 release candidate 已有 19 個 source-backed package，對應學習者可體驗的
+Lessons 2–20；連同 Lesson 1，共 20 課、58 個目標詞與 58 個教育部原始 MP3。
+Learner-facing `pathOrder` 是 1–20，package `number` 維持穩定識別，不破壞
+device-local progress。
 
-- Packages: Lessons 2–18, 17 lessons total.
-- Phrases: 52 total.
-- Local original MP3s: 52 total.
-- POJ comparisons: 52/52, mapped from the source-verified Tâi-lô forms using the Ministry of Education's Tâi-lô/POJ correspondence tables.
-- Handoffs: 17, one per package.
-- Learner-facing path: `pathOrder` 1–18, prioritising self-introduction, food, shopping, directions, and transport before family, community, and work topics.
-- Runtime candidate catalog: Lessons 1–18 playable.
-- Mobile evidence: `docs/qa/lesson-2-18-390x844.md`.
+- 每個詞都有漢字、臺羅、POJ、雙語意思、文化註記、教育部 canonical URL、
+  授權與 original MP3 provenance。
+- 每個 package 都有雙語標題、摘要、主要學習目標、生活任務與完整
+  Hear → See → Say → Recall → Use 五段節奏。
+- 課卡直接列出完整目標詞，避免課名與內容只顯示第一個詞造成誤判。
+- Lesson 12 已是獨立的飲食／生活對話，不重複 Lesson 1 的完整問候詞。
+- Teacher review 保持 `required`／pending；這不是教師核准。無教師阻塞模式
+  允許先測試，但只宣稱來源可追溯的初期測試版本。
 
-## Readiness contract
+## Routine gate
 
-Each handoff must have:
+每次新增或修改 lesson package 都必須執行 `npm run lessons:validate`；
+`npm test` 也會執行同一個 gate。validator 必須拒絕：
 
-- the unchanged package record and all five learning stages;
-- one attribution record for every phrase;
-- the official MOE canonical phrase page and original MP3 URL;
-- a non-empty POJ comparison for every Tâi-lô phrase;
-- CC BY-ND 3.0 TW licence and licence URL;
-- local MP3 presence and ID3 audio validation;
-- `isUnmodifiedOriginal: true`;
-- 390×844 mobile flow evidence; and
-- explicit owner risk acceptance when `teacherReview.status` is not `approved`.
+- 重複課次、重複 package／phrase identity 或重複 learner path order；
+- 不完整或順序錯誤的五段節奏；
+- 缺少臺羅、POJ、雙語欄位、主要學習目標或生活任務；
+- 缺少教育部 canonical source、授權、license URL 或 original URL；
+- planned 課程使用 fake、placeholder、pending、todo 或 example 音檔 URL；
+- 缺少本機原始 MP3、ID3 header、合理檔案大小、未修改標記或 handoff
+  attribution 不一致；
+- catalog scope 不等於 1–20，或 Lesson 12 重複 Lesson 1。
 
-The routine gate is `npm run lessons:validate` and is also the first step of
-`npm test`. It blocks missing POJ, missing or non-original audio metadata,
-missing local MP3s, invalid ID3/size checks, mismatched handoff attribution,
-incomplete 2–18 handoffs, a catalog outside Lessons 1–18, and a repeat of
-Lesson 1's complete greeting in Lesson 12. Teacher review may remain pending
-only when the handoff keeps the review fields and explicit owner risk
-acceptance; this gate does not claim teacher approval.
-
-The POJ correspondence reference is the Ministry of Education's
-[臺灣台語羅馬字拼音方案使用手冊](https://language.moe.gov.tw/files/people_files/tshiutsheh_1140819.pdf).
-All audio provenance is checked against the official
-[MOE dictionary audio and licence guidance](https://sutian.moe.edu.tw/zh-hant/piantsip/pankhuan-singbing/).
-
-The package data intentionally keeps `teacherReview.status: "required"` and pending checks. Owner risk acceptance makes the implementation handoff valid for this release candidate, but it is not a substitute for teacher approval.
+這個 routine gate 是內容 release gate，不是教師認證 gate；它也不宣稱地區
+變體已全部涵蓋、提供發音評分、精準聲調診斷或專業臺語認證。
 
 ## Scope boundary
 
-This readiness work covers every package currently present, Lessons 2–18. Lesson 19 and later remain outside the package catalog and are not playable. Production now serves the Lessons 1–18 release. Lesson 12 is a distinct meal-context conversation and no longer repeats Lesson 1's complete greeting phrase.
+本次候選範圍是 Lessons 1–20。下一批才評估廁所／所在、電話與聯絡、緊急
+求助、住宿；每一課都必須先找到可追溯的教育部詞條、原始音檔與 POJ，不能
+用假 URL 填補。Say completion gate、真正的 Recall retrieval check、Use
+micro-transfer task 與 B08 真人 mobile review 保持後續 PR，不在本次內容
+provenance 修復中擴張。

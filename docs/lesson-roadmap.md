@@ -1,81 +1,49 @@
 # 台語起步 lesson roadmap
 
-## 目的
+## 目前定位
 
-這份 roadmap 是內容製作與教師審核的順序，不是已完成課程數量。目前
-production 已部署第 1–18 課。第 2 至 18 課仍保留 teacher review pending，並以 owner risk acceptance、教育部原始未修改
-音檔、授權 attribution 與 390×844 mobile evidence 作為 playable handoff。第
-19 至 24 課仍是 roadmap。
-Learner-facing 的生活優先順序見
-[`docs/course-path-priority.md`](./course-path-priority.md)；package `number`
-是穩定識別，`pathOrder` 才是推薦學習順序。
+這是單人 MVP 的內容順序，不是完整課程工廠。release candidate 先提供
+Lessons 1–20 的 source-backed 小課；每課有一個主要生活任務、至少三個
+目標詞、臺羅／POJ、教育部來源、未修改原始 MP3 與
+Hear → See → Say → Recall → Use 五段節奏。
 
-## 路線
+本階段採無教師阻塞模式：可以用教育部公開資源、既有辭典／教材、人工比對
+多個來源與基本檢查先測試；teacher review 仍是 pending，不能宣稱教師核准、
+唯一正確、標準發音評分、精準聲調診斷、全地區適用或專業認證。產品文案標示
+「初期測試版本，採常見生活用語；部分字詞可能因地區與使用習慣不同」。
 
-| 課次 | 主題 | 學習任務 | 目前狀態 |
-| --- | --- | --- | --- |
-| 1 | 相借問 | 聽懂並說出一個日常關心的問候 | 可體驗 prototype |
-| 2 | 阮兜的人 | 用家庭詞介紹自己的家人 | 可體驗 prototype；teacher review pending |
-| 3 | 一二三 | 辨認並說出一、二、三 | 可體驗 prototype；teacher review pending |
-| 4 | 食飯佮飲水 | 在吃飯情境中表達需要與關心 | 可體驗 prototype；teacher review pending |
-| 5 | 今仔日的日常 | 說出簡單的日常活動 | 可體驗 prototype；teacher review pending |
-| 6 | 天氣佮感受 | 用短句描述天氣與身體感受 | 可體驗 prototype；teacher review pending |
-| 7 | 去佗位 | 問路、回答方向與目的地 | 可體驗 prototype；teacher review pending |
-| 8 | 買物件 | 在市場或商店詢問物品與數量 | 可體驗 prototype；teacher review pending |
-| 9 | 厝邊佮社區 | 認識生活周邊的人與地方 | 可體驗 prototype；teacher review pending |
-| 10 | 相招來 | 邀請、接受或婉拒一起做事 | 可體驗 prototype；teacher review pending |
-| 11 | 昨昏佮明仔載 | 用簡單時間詞談過去與接下來 | 可體驗 prototype；teacher review pending |
-| 12 | 我的生活對話 | 把前面學過的內容串成短對話 | 可體驗 prototype；teacher review pending |
+## 目前可體驗路徑
 
-## 第二段：A1 生活對話（第 13–24 課）
+| Path | Package | 主題 | 主要生活任務 |
+| --- | ---: | --- | --- |
+| 1 | 1 | 相借問 | 完成自然問候 |
+| 2 | 19 | 請問、多謝、失禮 | 禮貌問人、道謝、道歉 |
+| 3 | 20 | 求助佮講較慢 | 聽不懂時請人幫忙、放慢 |
+| 4 | 13 | 我是啥人 | 自我介紹 |
+| 5 | 3 | 一二三 | 處理基本數量 |
+| 6 | 4 | 食飯佮飲水 | 表達飲食需要 |
+| 7 | 17 | 餐廳點菜 | 完成最小點菜 |
+| 8 | 8 | 買物件 | 指物並表達購買 |
+| 9 | 18 | 買物件佮問價 | 問價格並決定 |
+| 10 | 7 | 去佗位 | 問目的地與方向 |
+| 11 | 16 | 出門坐車 | 說明交通與車站 |
+| 12 | 11 | 昨昏佮明仔載 | 說時間與安排 |
+| 13 | 15 | 身體袂爽快 | 表達不舒服並求助 |
+| 14 | 6 | 天氣佮感受 | 描述環境感受 |
+| 15 | 2 | 阮兜的人 | 談家人與住家 |
+| 16 | 9 | 厝邊佮社區 | 認識身邊的人 |
+| 17 | 10 | 相招來 | 邀請別人共同行動 |
+| 18 | 5 | 今仔日的日常 | 說一件日常活動 |
+| 19 | 14 | 讀冊佮頭路 | 談學校與工作 |
+| 20 | 12 | 我的生活對話 | 綜合回收 |
 
-這一段沿用第一段的 Hear → See → Say → Recall → Use 節奏，但學習任務從
-「認識詞」往前走一步，改成用少量詞彙完成短句、自我表達和簡短互動。每課
-仍然只放一個主要生活任務，避免把初學者一次推進太多文法或自由對話。
+## 下一批
 
-| 課次 | 主題 | 學習任務 | 目前狀態 |
-| --- | --- | --- | --- |
-| 13 | 我是啥人 | 用名字與基本身分完成自我介紹 | 可體驗 prototype；teacher review pending |
-| 14 | 讀冊佮頭路 | 說出自己的學習或工作情境 | 可體驗 prototype；teacher review pending |
-| 15 | 身體袂爽快 | 表達身體不舒服並尋求協助 | 可體驗 prototype；teacher review pending |
-| 16 | 出門坐車 | 說明出門方式與目的地 | handoff ready；teacher review pending |
-| 17 | 餐廳點菜 | 在餐廳表達想吃的東西與需求 | handoff ready；teacher review pending |
-| 18 | 買物件佮問價 | 詢問數量、價格與是否要買 | handoff ready；teacher review pending |
-| 19 | 時間佮安排 | 說出時間和一個簡單安排 | roadmap，尚未產製 package |
-| 20 | 問路佮求助 | 問路、聽懂簡短方向並請人幫忙 | roadmap，尚未產製 package |
-| 21 | 我愛啥物 | 表達喜歡、不喜歡和簡單選擇 | roadmap，尚未產製 package |
-| 22 | 以前做過啥 | 用簡單時間詞回顧做過的事 | roadmap，尚未產製 package |
-| 23 | 明仔載欲做啥 | 說出明天或近期的一個計畫 | roadmap，尚未產製 package |
-| 24 | 我的生活對話 II | 把 A1 詞彙串成一段可完成的生活對話 | roadmap，尚未產製 package |
+下一批只在來源與原始音檔齊備時評估：廁所／所在、電話與聯絡、緊急求助、
+住宿。每個新增詞都必須先有教育部 canonical URL、授權、原始 MP3、未修改
+證據與可核對 POJ；沒有就留在 roadmap，不用假音檔 URL 填補。
 
-### 第二段的製作順序
-
-1. 13–15：先建立「我是誰、我在做什麼、我感覺如何」的自我表達。
-2. 16–18：再進入出門、吃飯、買物件等高頻服務情境。
-3. 19–21：加入時間安排、問問題和個人偏好，讓互動不只停在背詞。
-4. 22–24：最後才處理過去、未來和總結對話，並保留教師可控的句型範圍。
-
-這個順序延續同一條產品思路：先用 Busuu 式的教學節奏建立可完成的小任務，
-用 Duolingo 式的低摩擦日常回訪承接練習，再用真實語料和教師治理確保台語
-表達不變成只會套模板的 AI 對話。第二段仍然不等於 React 已上線課程。
-
-## Package 交付規則
-
-每個 package 必須包含：
-
-- 雙語標題、摘要與學習目標。
-- 穩定 package number 與 learner-facing `pathOrder`。
-- Hear → See → Say → Recall → Use 的教學節奏草案。
-- 漢字、台羅、可選白話字、意思與文化註記。
-- 每個詞條的教育部 canonical URL、授權與 speaker 欄位。
-- 教師審核狀態與待確認事項。
-- 音檔狀態；有官方原始音檔時必須保留 local path、原始 URL、授權與 `isUnmodifiedOriginal`，沒有時才明確標為尚未加入。
-
-每次新增或修改 package 都要先跑 `npm run lessons:validate`；`npm test` 也會固定執行同一個 gate。缺 POJ、音檔不存在、音檔不是可辨識的原始 MP3、官方 URL／授權／handoff 不一致，或 catalog scope／Lesson 1–12 重複檢查失敗，都必須阻擋 release。
-
-## 與產品執行路徑的界線
-
-`app/data/lesson-packages.ts` 是內容製作資料；完成音檔授權與 mobile lesson
-flow 驗證後，package 可透過 handoff 轉成 playable lesson。若教師審核尚未
-完成，必須同時保留 pending 狀態與明確的 owner risk acceptance，不能把它誤
-寫成 teacher-approved。
+Say completion gate、真正的 Recall retrieval check、Use micro-transfer task
+與 B08 真人 mobile review 是後續教學互動 PR。教師帳號／審核後台、多人協作、
+CMS、自動發布系統、複雜資料庫、語音模型、自由聊天 tutor，以及一次涵蓋
+A0–B2 或所有課型，都不在單人 MVP 的下一步。

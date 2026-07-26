@@ -51,6 +51,7 @@ export type LessonPackage = {
   secondaryTitle: LocalizedText;
   summary: LocalizedText;
   objective: LocalizedText;
+  mission: LocalizedText;
   status: "planned";
   stagePlan: readonly LocalizedText[];
   phrases: readonly LessonPackagePhrase[];

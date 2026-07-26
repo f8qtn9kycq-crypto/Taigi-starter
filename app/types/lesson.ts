@@ -48,6 +48,7 @@ type LessonBase = {
   title: LocalizedText;
   secondaryTitle: LocalizedText;
   summary: LocalizedText;
+  mission: LocalizedText;
   phrases: readonly LessonPhrase[];
 };
 

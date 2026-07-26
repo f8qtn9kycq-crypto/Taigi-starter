@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import type { LessonCopy } from "../taigi-content";
-import type { LessonPhrase, LessonStageId } from "../types/lesson";
+import type { LessonPhrase, LessonStageId, LocalizedText } from "../types/lesson";
 
 type LessonStageContentProps = {
   stage: LessonStageId;
   text: LessonCopy;
   phrase: LessonPhrase;
+  mission: LocalizedText;
   showAnswer: boolean;
   onPlay: () => void;
 };
@@ -16,6 +17,7 @@ export default function LessonStageContent({
   stage,
   text,
   phrase,
+  mission,
   showAnswer,
   onPlay,
 }: LessonStageContentProps) {
@@ -74,9 +76,15 @@ export default function LessonStageContent({
   }
 
   return (
-    <div className="culture-note">
-      <span aria-hidden="true">語</span>
-      <p>{phrase.cultureNote[text.locale]}</p>
+    <div className="use-content">
+      <div className="lesson-mission use-mission">
+        <span>{text.lessonMission}</span>
+        <p>{mission[text.locale]}</p>
+      </div>
+      <div className="culture-note">
+        <span aria-hidden="true">語</span>
+        <p>{phrase.cultureNote[text.locale]}</p>
+      </div>
     </div>
   );
 }
