@@ -5,8 +5,11 @@ import { getFocusTrapIndex } from "../app/hooks/useFocusTrap.ts";
 
 test("focus trap wraps forward and backward at dialog boundaries", () => {
   assert.equal(getFocusTrapIndex(-1, 3, false), 0);
+  assert.equal(getFocusTrapIndex(0, 3, false), 1);
+  assert.equal(getFocusTrapIndex(1, 3, false), 2);
   assert.equal(getFocusTrapIndex(2, 3, false), 0);
   assert.equal(getFocusTrapIndex(0, 3, true), 2);
+  assert.equal(getFocusTrapIndex(1, 3, true), 0);
   assert.equal(getFocusTrapIndex(-1, 3, true), 2);
   assert.equal(getFocusTrapIndex(0, 0, false), -1);
 });
@@ -18,6 +21,8 @@ test("dialogs wire the shared focus trap and close controls", async () => {
     readFile(new URL("../app/FeedbackForm.tsx", import.meta.url), "utf8"),
   ]);
   assert.match(hook, /document\.addEventListener\("keydown", handleKeyDown\)/);
+  assert.match(hook, /event\.key === "Tab"/);
+  assert.match(hook, /event\.shiftKey/);
   assert.match(hook, /window\.clearTimeout|window\.cancelAnimationFrame/);
   assert.match(review, /useFocusTrap\(\{/);
   assert.match(review, /ref=\{dialogRef\}/);
