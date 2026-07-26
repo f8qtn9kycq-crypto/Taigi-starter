@@ -4,10 +4,10 @@
 
 - Source: GitHub `main` mirrored to the locked Sites source repository
 - Release source commit: `e907fba1153bf2e58c3538660db96bf3ec250d9f`
-- Sites saved version: `21`
+- Sites saved version: `22`
 - Sites saved source: `e907fba1153bf2e58c3538660db96bf3ec250d9f`
 - Production URL: https://taigi-start.alexcy2025.chatgpt.site
-- Version 21 deployment: `appgdep_6a657412622081918b239584ee56d46f`, succeeded; env revision `5`
+- Version 22 deployment: `appgdep_6a6575224d5c8191a02d840534382810`, succeeded; env revision `5`
 - Latest runtime-config deployment: `appgdep_6a64ecd7f7648191b1467cd0c1c03f25`, succeeded; Sites environment revision `5`
 - Previous rollback restore deployment: `appgdep_6a64b32624908191b2bddfb337d15aa6`, succeeded
 - Date: 2026-07-26
