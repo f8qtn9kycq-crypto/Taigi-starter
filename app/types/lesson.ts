@@ -44,6 +44,7 @@ export type LessonStage = {
 type LessonBase = {
   id: string;
   number: number;
+  pathOrder: number;
   title: LocalizedText;
   secondaryTitle: LocalizedText;
   summary: LocalizedText;

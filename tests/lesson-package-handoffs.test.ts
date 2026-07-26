@@ -30,7 +30,7 @@ test("every lesson package has a valid source-backed handoff and local original 
 
 test("the runtime catalog exposes exactly Lessons 1–18 as playable", () => {
   assert.deepEqual(
-    lessonCatalog.filter((lesson) => lesson.status === "prototype").map((lesson) => lesson.number),
+    lessonCatalog.filter((lesson) => lesson.status === "prototype").map((lesson) => lesson.number).sort((left, right) => left - right),
     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
   );
 });

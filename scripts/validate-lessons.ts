@@ -60,10 +60,16 @@ for (const handoff of lessonPackageHandoffs) {
 
 const playableNumbers = lessonCatalog
   .filter((lesson) => lesson.status === "prototype")
-  .map((lesson) => lesson.number);
+  .map((lesson) => lesson.number)
+  .sort((left, right) => left - right);
 const expectedPlayableNumbers = Array.from({ length: 18 }, (_, index) => index + 1);
 if (JSON.stringify(playableNumbers) !== JSON.stringify(expectedPlayableNumbers)) {
   issues.push(`lessonCatalog: expected playable lessons 1–18, got ${playableNumbers.join(", ")}`);
+}
+const pathOrders = lessonCatalog.map((lesson) => lesson.pathOrder);
+const expectedPathOrders = Array.from({ length: 18 }, (_, index) => index + 1);
+if (JSON.stringify(pathOrders) !== JSON.stringify(expectedPathOrders)) {
+  issues.push(`lessonCatalog: expected recommended path order 1–18, got ${pathOrders.join(", ")}`);
 }
 
 const lessonOne = lessonCatalog.find((lesson) => lesson.number === 1);

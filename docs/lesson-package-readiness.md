@@ -9,6 +9,7 @@ Every lesson package currently in `app/data/lesson-packages.ts` is ready for imp
 - Local original MP3s: 52 total.
 - POJ comparisons: 52/52, mapped from the source-verified Tâi-lô forms using the Ministry of Education's Tâi-lô/POJ correspondence tables.
 - Handoffs: 17, one per package.
+- Learner-facing path: `pathOrder` 1–18, prioritising self-introduction, food, shopping, directions, and transport before family, community, and work topics.
 - Runtime candidate catalog: Lessons 1–18 playable.
 - Mobile evidence: `docs/qa/lesson-2-18-390x844.md`.
 

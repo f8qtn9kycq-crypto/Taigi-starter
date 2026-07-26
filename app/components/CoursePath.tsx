@@ -27,13 +27,13 @@ const CoursePath = forwardRef<HTMLElement, CoursePathProps>(
                   onClick={() => onLessonSelect(lesson.number)}
                   aria-current={lesson.number === activeLessonNumber ? "page" : undefined}
                 >
-                  <span>{String(lesson.number).padStart(2, "0")}</span>
+                  <span>{String(lesson.pathOrder).padStart(2, "0")}</span>
                   <div><b>{lesson.title[locale]}</b><small>{lesson.secondaryTitle[locale]}</small></div>
                   <em>{text.availableNow}</em>
                 </button>
               ) : (
                 <>
-                  <span>{String(lesson.number).padStart(2, "0")}</span>
+                  <span>{String(lesson.pathOrder).padStart(2, "0")}</span>
                   <div><b>{lesson.title[locale]}</b><small>{lesson.secondaryTitle[locale]}</small></div>
                   <em>{text.planned}</em>
                 </>

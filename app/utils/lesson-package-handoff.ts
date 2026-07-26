@@ -228,6 +228,7 @@ export const lessonPackageHandoffToPlayableLesson = (
   return {
     id: value.package.id,
     number: value.package.number,
+    pathOrder: value.package.pathOrder,
     title: value.package.title,
     secondaryTitle: value.package.secondaryTitle,
     summary: value.package.summary,

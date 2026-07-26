@@ -4,7 +4,7 @@
 
 歷史 baseline 曾只有第 1 課可體驗；目前 production 已部署第 1–18 課。第 2–18 課仍是有來源欄位的
 `planned` package，teacher review 保持 pending，並以 owner risk acceptance
-交付；第 19–24 課仍是 roadmap。
+交付；learner-facing 的生活優先 path order 見 `docs/course-path-priority.md`；第 19–24 課仍是 roadmap。
 下一段不應只繼續增加尚未可玩的課程數量，而要先把下面這條內容生產鏈做成
 可重複、可檢查、可交給教師審核的流程：
 

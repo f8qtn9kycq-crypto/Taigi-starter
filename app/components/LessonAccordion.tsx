@@ -28,7 +28,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
       <section className="lesson-card" aria-labelledby="lesson-title" ref={ref}>
         <div className="lesson-heading">
           <span className="section-label">{text.currentLesson}</span>
-          <h2 id="lesson-title">{text.lessonNumber(lesson.number)} · {lesson.title[text.locale]}</h2>
+          <h2 id="lesson-title">{text.lessonNumber(lesson.pathOrder)} · {lesson.title[text.locale]}</h2>
           <p>{lesson.summary[text.locale]}</p>
           <div className="lesson-rhythm" aria-label={text.lessonTime}>
             <span className="rhythm-mark" aria-hidden="true">{lesson.durationMinutes}′</span>

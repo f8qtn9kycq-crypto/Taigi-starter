@@ -46,6 +46,7 @@ export type LessonPackagePhrase = {
 export type LessonPackage = {
   id: string;
   number: number;
+  pathOrder: number;
   title: LocalizedText;
   secondaryTitle: LocalizedText;
   summary: LocalizedText;

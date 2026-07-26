@@ -6,6 +6,9 @@
 production 已部署第 1–18 課。第 2 至 18 課仍保留 teacher review pending，並以 owner risk acceptance、教育部原始未修改
 音檔、授權 attribution 與 390×844 mobile evidence 作為 playable handoff。第
 19 至 24 課仍是 roadmap。
+Learner-facing 的生活優先順序見
+[`docs/course-path-priority.md`](./course-path-priority.md)；package `number`
+是穩定識別，`pathOrder` 才是推薦學習順序。
 
 ## 路線
 
@@ -61,6 +64,7 @@ production 已部署第 1–18 課。第 2 至 18 課仍保留 teacher review pe
 每個 package 必須包含：
 
 - 雙語標題、摘要與學習目標。
+- 穩定 package number 與 learner-facing `pathOrder`。
 - Hear → See → Say → Recall → Use 的教學節奏草案。
 - 漢字、台羅、可選白話字、意思與文化註記。
 - 每個詞條的教育部 canonical URL、授權與 speaker 欄位。

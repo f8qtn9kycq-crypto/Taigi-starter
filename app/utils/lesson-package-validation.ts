@@ -263,6 +263,7 @@ const validatePackage = (
   path: string,
   lessonIds: Set<string>,
   lessonNumbers: Set<number>,
+  pathOrders: Set<number>,
   phraseIds: Set<string>,
   issues: LessonPackageValidationIssue[],
 ): void => {
@@ -283,6 +284,14 @@ const validatePackage = (
   } else {
     if (lessonNumbers.has(value.number)) addIssue(issues, `${path}.number`, "must be unique");
     lessonNumbers.add(value.number);
+  }
+
+  if (typeof value.pathOrder !== "number" || !Number.isInteger(value.pathOrder) || value.pathOrder < 2 || value.pathOrder > 18) {
+    addIssue(issues, `${path}.pathOrder`, "must be a unique learner path position from 2 through 18");
+  } else if (pathOrders.has(value.pathOrder)) {
+    addIssue(issues, `${path}.pathOrder`, "must be unique");
+  } else {
+    pathOrders.add(value.pathOrder);
   }
 
   for (const field of ["title", "secondaryTitle", "summary", "objective"] as const) {
@@ -307,6 +316,7 @@ export function validateLessonPackages(value: unknown): readonly LessonPackageVa
   const issues: LessonPackageValidationIssue[] = [];
   const lessonIds = new Set<string>();
   const lessonNumbers = new Set<number>();
+  const pathOrders = new Set<number>();
   const phraseIds = new Set<string>();
 
   for (const [index, lessonPackage] of value.entries()) {
@@ -315,6 +325,7 @@ export function validateLessonPackages(value: unknown): readonly LessonPackageVa
       `packages[${index}]`,
       lessonIds,
       lessonNumbers,
+      pathOrders,
       phraseIds,
       issues,
     );

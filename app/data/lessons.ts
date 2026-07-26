@@ -15,6 +15,7 @@ const lessonOneStages = LESSON_STAGE_IDS.map((id) => ({
 export const prototypeLesson: PlayableLesson = {
   id: "lesson-1-greetings",
   number: 1,
+  pathOrder: 1,
   title: { zh: "相借問", en: "Greetings" },
   secondaryTitle: { zh: "Greetings", en: "相借問" },
   summary: {
@@ -66,6 +67,7 @@ const plannedLessonPlaceholders: readonly PlannedLesson[] = [
   {
     id: "lesson-2-family",
     number: 2,
+    pathOrder: 13,
     title: { zh: "阮兜的人", en: "My family" },
     secondaryTitle: { zh: "My family", en: "阮兜的人" },
     summary: { zh: "規劃中", en: "Planned" },
@@ -75,6 +77,7 @@ const plannedLessonPlaceholders: readonly PlannedLesson[] = [
   {
     id: "lesson-3-numbers",
     number: 3,
+    pathOrder: 3,
     title: { zh: "一二三", en: "Numbers" },
     secondaryTitle: { zh: "Numbers", en: "一二三" },
     summary: { zh: "規劃中", en: "Planned" },
@@ -96,7 +99,7 @@ export const createLessonCatalog = (
     if (playableLesson) lessonsByNumber.set(playableLesson.number, playableLesson);
   }
 
-  return [...lessonsByNumber.values()].sort((left, right) => left.number - right.number);
+  return [...lessonsByNumber.values()].sort((left, right) => left.pathOrder - right.pathOrder);
 };
 
 export const lessonCatalog: readonly Lesson[] = createLessonCatalog(lessonPackageHandoffs);

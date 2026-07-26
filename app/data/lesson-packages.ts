@@ -73,7 +73,9 @@ const requiredTeacherReview: TeacherReview = {
   checks: teacherChecks,
 };
 
-const rawLessonPackages: readonly LessonPackage[] = [
+type RawLessonPackage = Omit<LessonPackage, "pathOrder">;
+
+const rawLessonPackages: readonly RawLessonPackage[] = [
   {
     id: "lesson-2-family-package",
     number: 2,
@@ -1088,8 +1090,29 @@ const sharedAudioUrlByPhraseId: Readonly<Record<string, string>> = {
   "lesson-12-conversation-meal": "/audio/lesson-2-15/lesson-4-food-and-drink-meal.mp3",
 };
 
-const completeLessonPackage = (lessonPackage: LessonPackage): LessonPackage => ({
+const recommendedPathOrderByPackageNumber: Readonly<Record<number, number>> = {
+  2: 13,
+  3: 3,
+  4: 4,
+  5: 16,
+  6: 12,
+  7: 8,
+  8: 6,
+  9: 14,
+  10: 15,
+  11: 10,
+  12: 18,
+  13: 2,
+  14: 17,
+  15: 11,
+  16: 9,
+  17: 5,
+  18: 7,
+};
+
+const completeLessonPackage = (lessonPackage: RawLessonPackage): LessonPackage => ({
   ...lessonPackage,
+  pathOrder: recommendedPathOrderByPackageNumber[lessonPackage.number] ?? 0,
   phrases: lessonPackage.phrases.map((phrase) => {
     const poj = phrase.poj ?? pojByTailo[phrase.tailo];
     if (!poj) throw new Error(`Missing POJ mapping for ${phrase.id}: ${phrase.tailo}`);

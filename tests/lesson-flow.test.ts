@@ -34,9 +34,14 @@ test("planned lessons remain truthful content placeholders", () => {
 test("every package lesson is playable only through a complete source-backed handoff", () => {
   const playableNumbers = lessonCatalog
     .filter((lesson) => lesson.status === "prototype")
-    .map((lesson) => lesson.number);
+    .map((lesson) => lesson.number)
+    .sort((left, right) => left - right);
 
   assert.deepEqual(playableNumbers, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]);
+  assert.deepEqual(
+    lessonCatalog.map((lesson) => lesson.pathOrder),
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+  );
 
   for (const lesson of lessonCatalog.filter((item) => item.number >= 2 && item.number <= 15)) {
     assert.equal(lesson.status, "prototype");
