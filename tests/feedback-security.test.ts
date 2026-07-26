@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { getConfiguredExternalFormUrl, isExternalFeedbackOnly } from "../app/utils/feedback-mode.ts";
 import {
   csvCell,
   FEEDBACK_RATE_LIMIT_MAX_SUBMISSIONS,
@@ -47,4 +48,13 @@ test("neutralizes spreadsheet formulas while preserving CSV escaping", () => {
   }
   assert.equal(csvCell('hello, "world"'), '"hello, ""world"""');
   assert.equal(csvCell("hello\nworld"), '"hello\nworld"');
+});
+
+
+test("external feedback mode accepts only an HTTPS destination", () => {
+  const formUrl = "https://docs.google.com/forms/d/example/preview";
+  assert.equal(getConfiguredExternalFormUrl(formUrl), formUrl);
+  assert.equal(isExternalFeedbackOnly(formUrl), true);
+  assert.equal(getConfiguredExternalFormUrl("http://example.test/form"), null);
+  assert.equal(isExternalFeedbackOnly(""), false);
 });
