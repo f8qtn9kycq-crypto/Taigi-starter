@@ -3,8 +3,12 @@ import { NextResponse } from "next/server";
 import { ensureFeedbackTable, FeedbackRow } from "../../../../db/feedback";
 import { getChatGPTUser } from "../../../chatgpt-auth";
 import { csvCell } from "../../../utils/feedback-security";
+import { isExternalFeedbackOnly } from "../../../utils/feedback-mode";
 
 export async function GET() {
+  if (isExternalFeedbackOnly(env.FEEDBACK_EXTERNAL_FORM_URL)) {
+    return NextResponse.json({ error: "external_feedback_only" }, { status: 410 });
+  }
   const user = await getChatGPTUser();
   if (!user || !env.FEEDBACK_OWNER_EMAIL || user.email !== env.FEEDBACK_OWNER_EMAIL) return NextResponse.json({ error: "forbidden" }, { status: 403 });
   const db = await ensureFeedbackTable();

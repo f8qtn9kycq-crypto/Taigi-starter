@@ -1,5 +1,7 @@
+import { env } from "cloudflare:workers";
 import { NextResponse } from "next/server";
 import { ensureFeedbackTable } from "../../../db/feedback";
+import { isExternalFeedbackOnly } from "../../utils/feedback-mode";
 import {
   FEEDBACK_RATE_LIMIT_MAX_SUBMISSIONS,
   FEEDBACK_RATE_LIMIT_WINDOW_MS,
@@ -101,6 +103,9 @@ export async function POST(request: Request) {
   }
   if (!isSupportedJsonContentType(request.headers.get("content-type"))) {
     return NextResponse.json({ ok: false, error: "unsupported_content_type" }, { status: 415 });
+  }
+  if (isExternalFeedbackOnly(env.FEEDBACK_EXTERNAL_FORM_URL)) {
+    return NextResponse.json({ ok: false, error: "external_feedback_only" }, { status: 410 });
   }
   const rateLimitSource = normalizeRateLimitSource(request.headers.get("cf-connecting-ip"));
   if (!rateLimitSource) {

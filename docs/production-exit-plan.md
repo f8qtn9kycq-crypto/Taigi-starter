@@ -60,10 +60,15 @@ record，不能只寫「已檢查」。
 - production 唯一入口沒有可繞過可信 edge 的 alternate Worker route。
 - `cf-connecting-ip` 是可信 edge 注入的原始 requester source。
 - `oai-authenticated-user-email` 只能在可信 platform boundary 後被信任。
-- Worker logs、rate limiting 與 rollback 方法已實測；D1 backup/restore
-  仍須平台管理員提供證據。
+- Worker logs、rate limiting 與 rollback 方法已實測。
+- 若 owner 提供的 HTTPS 外部表單已啟用，production `/api/feedback` 必須回傳
+  `410 external_feedback_only`，`/api/feedback/export` 與 `/feedback` 必須在
+  進入 D1 前停止；此時 `FEEDBACK_EXTERNAL_ONLY_STATUS=pass` 可取代本 release 的
+  D1 backup/restore evidence。
+- 若上述 external-only smoke 失敗，仍必須完成 D1 backup/restore evidence；不得用
+  設定值宣稱已停用 production D1。
 
-D1 recovery 必須使用 `bash scripts/d1-recovery.sh check` 先做唯讀檢查，再以
+D1 recovery（僅在 production feedback 未切換為 external-only 時需要）必須使用 `bash scripts/d1-recovery.sh check` 先做唯讀檢查，再以
 `backup` 產生具 hash 的 SQL artifact，最後指定隔離的 staging database 執行
 `restore`。script 預設拒絕同一 production database restore；native Time Travel
 restore 另需明確 bookmark 與 owner confirmation。不要把未登入、未執行或只存在
@@ -102,10 +107,10 @@ MICROPHONE_DENIED_STATUS=pass \
 MICROPHONE_UNSUPPORTED_STATUS=pass \
 STAGING_FEEDBACK_STATUS=pass \
 OWNER_ATTESTATION_STATUS=pass \
-D1_BACKUP_STATUS=pass \
 ROLLBACK_STATUS=pass \
+FEEDBACK_EXTERNAL_ONLY_STATUS=pass \
 npm run production:preflight
 ```
 
-每個環境變數都是獨立 evidence assertion，不是用來繞過檢查的 aggregate flag；
+每個環境變數都是獨立 evidence assertion；`FEEDBACK_EXTERNAL_ONLY_STATUS=pass` 只有在 live route smoke 已證明 public feedback write/export/dashboard 都不進入 D1 時才有效，不是用來繞過檢查的 aggregate flag；
 PR 或 release 記錄必須同時附上每一項對應證據位置。

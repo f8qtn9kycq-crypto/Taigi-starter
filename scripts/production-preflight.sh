@@ -67,14 +67,18 @@ for evidence_name in \
   MICROPHONE_UNSUPPORTED_STATUS \
   STAGING_FEEDBACK_STATUS \
   OWNER_ATTESTATION_STATUS \
-  D1_BACKUP_STATUS \
-  ROLLBACK_STATUS
+  ROLLBACK_STATUS \
+  FEEDBACK_EXTERNAL_ONLY_STATUS
 do
   evidence_value="${!evidence_name:-}"
   if [[ "${evidence_value}" != "pass" ]]; then
     fail "${evidence_name}=pass evidence is required"
   fi
 done
+
+if [[ "${FEEDBACK_EXTERNAL_ONLY_STATUS}" != "pass" && "${D1_BACKUP_STATUS:-}" != "pass" ]]; then
+  fail "D1_BACKUP_STATUS=pass evidence is required unless FEEDBACK_EXTERNAL_ONLY_STATUS=pass"
+fi
 
 if (( failure_count > 0 )); then
   echo "Production preflight blocked with ${failure_count} failure(s)." >&2

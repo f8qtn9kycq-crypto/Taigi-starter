@@ -2,8 +2,10 @@ import { env } from "cloudflare:workers";
 import { notFound } from "next/navigation";
 import { ensureFeedbackTable, FeedbackRow } from "../../db/feedback";
 import { requireChatGPTUser } from "../chatgpt-auth";
+import { isExternalFeedbackOnly } from "../utils/feedback-mode";
 
 export default async function FeedbackDashboard() {
+  if (isExternalFeedbackOnly(env.FEEDBACK_EXTERNAL_FORM_URL)) notFound();
   const user = await requireChatGPTUser("/feedback");
   if (!env.FEEDBACK_OWNER_EMAIL || user.email !== env.FEEDBACK_OWNER_EMAIL) notFound();
   const db = await ensureFeedbackTable();

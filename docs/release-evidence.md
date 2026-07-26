@@ -42,7 +42,17 @@
 | Google Form readiness | Pass | Unauthenticated preview exposed enabled radio, checkbox, textbox, and Submit controls; no response was submitted by Codex; the URL is now active in production |
 | Live API security smoke | Pass | Current live config returned the external URL with `no-store`; export returned 403, evil Origin returned 403, and same-origin unsupported content type returned 415 |
 | Sites owner/auth attestation | Pass | Owner deployment attestation recorded in PR #28 comment `5078972911`; it covers the live ingress, trusted forwarded source, platform auth boundary, and explicit acceptance |
-| D1 backup/restore | Pending | Sites connector exposes no backup/restore operation; platform evidence not yet demonstrated |
+| External feedback-only mode | Pending deployment verification | After this release deploys, live same-origin feedback POST must return 410 external_feedback_only; export and dashboard must also stop before D1 access |
+| D1 backup/restore | N/A for active production feedback path | Production feedback writes/exports are disabled in external-only mode; D1 remains only for local/legacy fallback. If the external-only smoke fails, restore the D1 gate and require platform evidence |
 
 This file records evidence only. It does not set the production preflight
 assertions or convert pending items into a production approval.
+
+## External-only release gate
+
+This release changes production feedback to the verified owner-provided Google Form. The
+release is not complete until the live deployment proves all three conditions:
+
+- `/api/feedback-config` returns the owner HTTPS form URL.
+- A valid same-origin feedback POST returns `410 external_feedback_only` before D1 access.
+- `/api/feedback/export` and `/feedback` are unavailable in external-only mode.
