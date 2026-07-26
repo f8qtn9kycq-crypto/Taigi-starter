@@ -16,8 +16,7 @@
 
 ## Risk acceptance and overrides
 
-- [ ] Tier 1+ risk acceptance is documented when applicable
-- Owner risk rationale / accepted residual risk:
+- [ ] Tier 2+ risk acceptance is documented when applicable
 - Additional review instructions, requested approvals, or blockers:
 
 ## Validation
