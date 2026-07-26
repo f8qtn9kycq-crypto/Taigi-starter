@@ -33,7 +33,12 @@ export type LessonPackagePhrase = {
   cultureNote: LocalizedText;
   source: LessonSource;
   audio: {
-    status: "not-yet-added";
+    status: "added";
+    audioUrl: string;
+    originalUrl: string;
+    license: string;
+    licenseUrl: string;
+    isUnmodifiedOriginal: true;
     note: LocalizedText;
   };
 };

@@ -65,7 +65,9 @@ production 已部署第 1–18 課。第 2 至 18 課仍保留 teacher review pe
 - 漢字、台羅、可選白話字、意思與文化註記。
 - 每個詞條的教育部 canonical URL、授權與 speaker 欄位。
 - 教師審核狀態與待確認事項。
-- 音檔狀態；沒有核准的原始音檔時，必須明確標為尚未加入。
+- 音檔狀態；有官方原始音檔時必須保留 local path、原始 URL、授權與 `isUnmodifiedOriginal`，沒有時才明確標為尚未加入。
+
+每次新增或修改 package 都要先跑 `npm run lessons:validate`；`npm test` 也會固定執行同一個 gate。缺 POJ、音檔不存在、音檔不是可辨識的原始 MP3、官方 URL／授權／handoff 不一致，或 catalog scope／Lesson 1–12 重複檢查失敗，都必須阻擋 release。
 
 ## 與產品執行路徑的界線
 

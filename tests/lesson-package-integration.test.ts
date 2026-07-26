@@ -62,11 +62,10 @@ test("approved handoff maps to a playable lesson without changing the source pac
   assert.equal((handoff.package as { status: string }).status, "planned");
 });
 
-test("approved handoff preserves missing POJ instead of inventing a value", () => {
+test("handoff with missing POJ is rejected instead of inventing a value", () => {
   const lesson = lessonPackageHandoffToPlayableLesson(createHandoff());
 
-  assert.ok(lesson);
-  assert.equal(lesson.phrases[0].poj, null);
+  assert.equal(lesson, null);
 });
 
 test("incomplete handoff cannot produce a playable lesson", () => {
@@ -79,7 +78,7 @@ test("incomplete handoff cannot produce a playable lesson", () => {
 });
 
 test("catalog replaces a matching planned placeholder only for a valid handoff", () => {
-  const catalog = createLessonCatalog([createHandoff()]);
+  const catalog = createLessonCatalog([createHandoff("Lí chia̍h-pá--bōe?")]);
   const lessonTwo = catalog.filter((lesson) => lesson.number === 2);
 
   assert.equal(lessonTwo.length, 1);

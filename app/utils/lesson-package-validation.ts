@@ -140,13 +140,22 @@ const validateAudio = (
   issues: LessonPackageValidationIssue[],
 ): void => {
   if (!isRecord(value)) {
-    addIssue(issues, path, "must include audio status and note");
+    addIssue(issues, path, "must include complete original audio metadata and note");
     return;
   }
 
-  if (value.status !== "not-yet-added") {
-    addIssue(issues, `${path}.status`, "must remain not-yet-added until review and attribution are complete");
+  if (value.status !== "added") addIssue(issues, `${path}.status`, "must be added before a package can enter the release candidate");
+  if (!isNonEmptyString(value.audioUrl) || !value.audioUrl.startsWith("/audio/")) {
+    addIssue(issues, `${path}.audioUrl`, "must reference a local audio asset");
   }
+  if (!isNonEmptyString(value.originalUrl) || !value.originalUrl.startsWith("https://sutian.moe.edu.tw/media/")) {
+    addIssue(issues, `${path}.originalUrl`, "must reference the official MOE original audio URL");
+  }
+  if (value.license !== "CC BY-ND 3.0 TW") addIssue(issues, `${path}.license`, "must be CC BY-ND 3.0 TW");
+  if (value.licenseUrl !== "https://creativecommons.org/licenses/by-nd/3.0/tw/") {
+    addIssue(issues, `${path}.licenseUrl`, "must link to the CC BY-ND 3.0 TW license");
+  }
+  if (value.isUnmodifiedOriginal !== true) addIssue(issues, `${path}.isUnmodifiedOriginal`, "must remain true");
   validateLocalizedText(value.note, `${path}.note`, issues);
 };
 
@@ -171,9 +180,7 @@ const validatePhrase = (
   for (const field of ["hanji", "tailo"] as const) {
     if (!isNonEmptyString(value[field])) addIssue(issues, `${path}.${field}`, "must be a non-empty string");
   }
-  if (value.poj !== null && !isNonEmptyString(value.poj)) {
-    addIssue(issues, `${path}.poj`, "must be a string or null");
-  }
+  if (!isNonEmptyString(value.poj)) addIssue(issues, `${path}.poj`, "must include the source-traceable POJ comparison");
   validateLocalizedText(value.meaning, `${path}.meaning`, issues);
   validateLocalizedText(value.cultureNote, `${path}.cultureNote`, issues);
   validateSource(value.source, `${path}.source`, issues);

@@ -5,6 +5,7 @@ import type {
   TeacherReviewCheck,
 } from "../types/lesson-package.ts";
 import type { LessonSource, LocalizedText } from "../types/lesson";
+import { createLessonPackageAudio } from "../utils/lesson-audio.ts";
 
 const moeSource = (canonicalUrl: string): LessonSource => ({
   title: {
@@ -18,10 +19,15 @@ const moeSource = (canonicalUrl: string): LessonSource => ({
 });
 
 const audioPending: LessonPackagePhrase["audio"] = {
-  status: "not-yet-added",
+  status: "added",
+  audioUrl: "",
+  originalUrl: "",
+  license: "CC BY-ND 3.0 TW",
+  licenseUrl: "https://creativecommons.org/licenses/by-nd/3.0/tw/",
+  isUnmodifiedOriginal: true,
   note: {
-    zh: "尚未加入產品音檔；完成教師確認、來源核對與原檔授權檢查後才可串接。",
-    en: "No product audio yet; add it only after teacher review, source verification, and an original-file licence check.",
+    zh: "待由完整資料化流程補上音檔 metadata。",
+    en: "Audio metadata is completed by the package finalization step.",
   },
 };
 
@@ -67,7 +73,7 @@ const requiredTeacherReview: TeacherReview = {
   checks: teacherChecks,
 };
 
-export const lessonPackages: readonly LessonPackage[] = [
+const rawLessonPackages: readonly LessonPackage[] = [
   {
     id: "lesson-2-family-package",
     number: 2,
@@ -647,16 +653,16 @@ export const lessonPackages: readonly LessonPackage[] = [
     stagePlan,
     phrases: [
       makePhrase({
-        id: "lesson-12-conversation-greeting",
-        hanji: "你食飽未？",
-        tailo: "Lí tsia̍h-pá--buē?",
-        poj: "Lí chia̍h-pá--bōe?",
-        meaning: { zh: "你吃飽了嗎？；日常關心的問候", en: "Have you eaten?; a caring everyday greeting" },
+        id: "lesson-12-conversation-meal",
+        hanji: "食飯",
+        tailo: "Tsia̍h-pn̄g",
+        poj: null,
+        meaning: { zh: "吃飯；用餐", en: "eat a meal; have a meal" },
         cultureNote: {
-          zh: "第 1 課的核心問候在總複習中重新出現，重點是自然回應，不是重新背誦。",
-          en: "The Lesson 1 greeting returns as a capstone so learners practice a natural response rather than merely reciting it again.",
+          zh: "改用「食飯」把生活對話帶回用餐情境，避免把第 1 課的完整問候原樣重複一次。",
+          en: "Use tsia̍h-pn̄g to ground the conversation in a meal context instead of repeating Lesson 1's full greeting verbatim.",
         },
-        source: moeSource("https://sutian.moe.edu.tw/und-hani/su/1653/"),
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/9222/"),
       }),
       makePhrase({
         id: "lesson-12-conversation-home",
@@ -1028,3 +1034,77 @@ export const lessonPackages: readonly LessonPackage[] = [
     teacherReview: requiredTeacherReview,
   },
 ] as const;
+
+const pojByTailo: Readonly<Record<string, string>> = {
+  "Guán tau": "Goán tau",
+  "A-bú": "A-bú",
+  "A-pah": "A-pah",
+  "Tsi̍t": "Chi̍t",
+  "Jī / lī": "Jī / lī",
+  "Sann": "Saⁿ",
+  "Tsia̍h-pn̄g": "Chia̍h-pn̄g",
+  "Lim tsuí": "Lim chúi",
+  "Tsia̍h-tê": "Chia̍h-tê",
+  "Kin-á-ji̍t / kin-á-li̍t": "Kin-á-ji̍t / kin-á-li̍t",
+  "Tsá-khí": "Chá-khí",
+  "Tsò tāi-tsì": "Chò tāi-chì",
+  "Thinn-khì": "Thiⁿ-khì",
+  "Jua̍h / lua̍h": "Joa̍h / loa̍h",
+  "Líng": "Léng",
+  "Khì toh": "Khì toh",
+  "Lâi-khì": "Lâi-khì",
+  "Lōo": "Lō͘",
+  "Bé / bué": "Bé / bóe",
+  "Mi̍h-kiānn / mn̍gh-kiānn": "Mi̍h-kiāⁿ / mn̍gh-kiāⁿ",
+  "Tsînn": "Chîⁿ",
+  "Tshù-pinn": "Chhù-piⁿ",
+  "Keh-piah": "Keh-piah",
+  "Pîng-iú": "Pêng-iú",
+  "Sio-tsio": "Sio-chio",
+  "Tsò-hué / tsuè-hé": "Chò-hóe / chòe-hé",
+  "Tsa-hng": "Cha-hng",
+  "Bîn-á-tsài": "Bîn-á-chài",
+  "Lí tsia̍h-pá--buē?": "Lí chia̍h-pá--bōe?",
+  "Guá": "Goá",
+  "Kiò": "Kiò",
+  "Sī": "Sī",
+  "Ha̍k-hāu": "Ha̍k-hāu",
+  "Tha̍k-tsheh": "Tha̍k-chheh",
+  "Thâu-lōo": "Thâu-lō͘",
+  "Sin-thé": "Sin-thé",
+  "Bē-sóng / buē-sóng": "Bē-sóng / bōe-sóng",
+  "Tsia̍h io̍h-á": "Chia̍h io̍h-á",
+  "Tshut-mn̂g": "Chhut-mn̂g",
+  "Tsē tshia": "Chē chhia",
+  "Tshia-tsām": "Chhia-chām",
+  "Tsia̍h-tshan-thiann": "Chia̍h-chhan-thiaⁿ",
+  "Beh / bueh": "Beh / bōeh",
+  "Tshài": "Chhài",
+  "Guā-tsē / guā-tsuē": "Goā-chē / goā-choē",
+  "Kè-tsînn": "Kè-chîⁿ",
+};
+
+const sharedAudioUrlByPhraseId: Readonly<Record<string, string>> = {
+  "lesson-12-conversation-meal": "/audio/lesson-2-15/lesson-4-food-and-drink-meal.mp3",
+};
+
+const completeLessonPackage = (lessonPackage: LessonPackage): LessonPackage => ({
+  ...lessonPackage,
+  phrases: lessonPackage.phrases.map((phrase) => {
+    const poj = phrase.poj ?? pojByTailo[phrase.tailo];
+    if (!poj) throw new Error(`Missing POJ mapping for ${phrase.id}: ${phrase.tailo}`);
+
+    return {
+      ...phrase,
+      poj,
+      audio: createLessonPackageAudio(
+        lessonPackage.number,
+        phrase.id,
+        phrase.source.canonicalUrl,
+        sharedAudioUrlByPhraseId[phrase.id],
+      ),
+    };
+  }),
+});
+
+export const lessonPackages: readonly LessonPackage[] = rawLessonPackages.map(completeLessonPackage);

@@ -58,7 +58,7 @@ const createCompleteHandoff = (): MutableHandoff => {
   };
 };
 
-test("complete approved handoff passes without making the package playable", () => {
+test("complete approved handoff passes without changing the planned package status", () => {
   const handoff = createCompleteHandoff();
 
   assert.deepEqual(validateLessonPackageHandoff(handoff), []);
@@ -66,7 +66,7 @@ test("complete approved handoff passes without making the package playable", () 
   assert.equal(handoff.package.status, "planned");
   const phrases = handoff.package.phrases as MutableRecord[];
   const audio = phrases[0].audio as MutableRecord;
-  assert.equal(audio.status, "not-yet-added");
+  assert.equal(audio.status, "added");
 });
 
 test("owner risk acceptance can authorize a package without teacher approval", () => {

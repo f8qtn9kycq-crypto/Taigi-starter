@@ -11,7 +11,7 @@ test("all current planned packages satisfy the Lesson Factory contract", () => {
   assert.deepEqual(validateLessonPackages(lessonPackages), []);
 });
 
-test("validator rejects missing stages, sources, review, and pending audio", () => {
+test("validator rejects missing stages, sources, review, and incomplete audio", () => {
   const invalid = clonePackages();
   const first = invalid[0];
   const phrase = (first.phrases as Record<string, unknown>[])[0];
@@ -39,6 +39,15 @@ test("validator reports empty teacher review checks once", () => {
     (issue) => issue.path === "packages[0].teacherReview.checks",
   );
   assert.deepEqual(issues.map((issue) => issue.message), ["must be a non-empty array"]);
+});
+
+test("validator rejects a package phrase without POJ", () => {
+  const invalid = clonePackages();
+  const phrase = (invalid[0].phrases as Record<string, unknown>[])[0];
+  phrase.poj = null;
+
+  const paths = validateLessonPackages(invalid).map((issue) => issue.path);
+  assert.ok(paths.includes("packages[0].phrases[0].poj"));
 });
 
 test("validator rejects approval without traceable reviewer evidence", () => {

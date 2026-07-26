@@ -45,10 +45,12 @@ npm run dev
 ```bash
 npm test
 npm run lint
+npm run lessons:validate
 ```
 
-`npm test` 會建立正式產物、檢查首頁交付內容，並測試間隔複習與本機進度
-資料的純函式。
+`npm test` 會先執行 lesson package routine gate，再建立正式產物、檢查首頁
+交付內容，並測試間隔複習與本機進度資料的純函式。routine gate 會逐詞檢查
+POJ、官方原始 MP3、CC BY-ND attribution、local audio asset 與課程範圍。
 
 ## 專案結構
 

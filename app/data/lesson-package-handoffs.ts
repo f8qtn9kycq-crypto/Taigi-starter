@@ -3,19 +3,9 @@ import type {
   LessonPackage,
   LessonPackageHandoff,
 } from "../types/lesson-package.ts";
-
-const MOE_AUDIO_ROOT = "https://sutian.moe.edu.tw/media/senn/mp3/imtong/subak";
 const LICENSE = "CC BY-ND 3.0 TW";
 const LICENSE_URL = "https://creativecommons.org/licenses/by-nd/3.0/tw/";
-
-export const officialMoeAudioUrl = (canonicalUrl: string): string => {
-  const match = canonicalUrl.match(/\/su\/(\d+)\/$/);
-  if (!match) throw new Error(`Unsupported MOE source URL: ${canonicalUrl}`);
-
-  const entryId = match[1];
-  const directory = entryId.length > 3 ? entryId.slice(0, -3) : "0";
-  return `${MOE_AUDIO_ROOT}/${directory}/${entryId}.mp3`;
-};
+export { officialMoeAudioUrl } from "../utils/lesson-audio.ts";
 
 const ownerRiskAcceptance = {
   acceptedBy: "product-owner",
@@ -30,13 +20,13 @@ const createHandoff = (lessonPackage: LessonPackage): LessonPackageHandoff => ({
   package: lessonPackage,
   audioAttribution: lessonPackage.phrases.map((phrase) => ({
     phraseId: phrase.id,
-    audioUrl: `/audio/lesson-${lessonPackage.number <= 15 ? "2-15" : "16-18"}/${phrase.id}.mp3`,
+    audioUrl: phrase.audio.audioUrl,
     sourceUrl: phrase.source.canonicalUrl,
     license: LICENSE,
     licenseUrl: LICENSE_URL,
     speaker: phrase.source.speaker,
     isUnmodifiedOriginal: true,
-    originalUrl: officialMoeAudioUrl(phrase.source.canonicalUrl),
+    originalUrl: phrase.audio.originalUrl,
   })),
   mobileFlowEvidence: [{
     viewport: "390x844",
