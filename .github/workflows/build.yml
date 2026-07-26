@@ -28,6 +28,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate recovery script syntax
+        run: bash -n scripts/d1-recovery.sh
+
       - name: Run tests
         run: npm test
 
