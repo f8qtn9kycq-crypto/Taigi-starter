@@ -12,17 +12,17 @@ export type ReviewCard = {
 };
 
 export type LearningProgress = {
-  version: 2;
+  version: 3;
   locale: Locale;
   stage: number;
   hasStarted: boolean;
-  lessonOneReview: ReviewCard | null;
+  reviewCards: Record<string, ReviewCard>;
 };
 
 export const DEFAULT_PROGRESS: LearningProgress = {
-  version: 2,
+  version: 3,
   locale: "zh",
   stage: 0,
   hasStarted: false,
-  lessonOneReview: null,
+  reviewCards: {},
 };

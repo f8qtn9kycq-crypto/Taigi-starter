@@ -29,8 +29,8 @@ export default function TaigiStartPage() {
   const heroAudio = useAudioPlayer(activeLesson.phrases[0].audioUrl);
   const text = copy[progress.locale];
   const activePhrase = activeLesson.phrases.find((phrase) => phrase.id === activePhraseId) ?? activeLesson.phrases[0];
-  const activeReview = progress.lessonOneReview?.id === activePhrase.id ? progress.lessonOneReview : null;
-  const dueCount = isReviewDue(activeReview) ? 1 : 0;
+  const activeReview = progress.reviewCards[activePhrase.id] ?? null;
+  const dueCount = Object.values(progress.reviewCards).filter((card) => isReviewDue(card)).length;
 
   useEffect(() => {
     document.documentElement.lang = progress.locale === "zh" ? "zh-Hant-TW" : "en";
@@ -108,7 +108,7 @@ export default function TaigiStartPage() {
           text={text}
           stage={progress.stage}
           activePhraseId={activePhrase.id}
-          reviewedPhraseId={progress.lessonOneReview?.id ?? null}
+          reviewedPhraseId={activeReview?.id ?? null}
           onStageChange={setStage}
           onPhraseChange={setActivePhraseId}
           onReviewAdded={addReview}
@@ -148,7 +148,7 @@ export default function TaigiStartPage() {
           isDue={dueCount > 0}
           locale={progress.locale}
           onClose={closeReview}
-          onRate={(rating) => { rateReview(rating); closeReview(); }}
+          onRate={(rating) => { rateReview(activePhrase.id, rating); closeReview(); }}
         />
       )}
     </main>

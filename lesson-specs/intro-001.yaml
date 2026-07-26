@@ -1,4 +1,5 @@
 id: intro-001
+number: 3
 title:
   zh: 自我介紹
   en: Introduce yourself
@@ -23,6 +24,7 @@ targetPhrases:
     sources:
       - https://sutian.moe.edu.tw/zh-hant/su/3139/
     audioUrl: /audio/generated/intro-001-i.mp3
+    audioSha256: 31a7abd3f122ea30dba91d39ff6b8969c19d3aeab4a78639164959a5d6b4e97a
   - id: intro-called
     hanji: 叫
     tailo: Kiò
@@ -36,6 +38,7 @@ targetPhrases:
     sources:
       - https://sutian.moe.edu.tw/zh-hant/su/1402/
     audioUrl: /audio/generated/intro-001-name.mp3
+    audioSha256: 44ab4121c073f3a0c73366c1fec35952a56843a091cff6d439ccdcda019a709e
   - id: intro-be
     hanji: 是
     tailo: Sī
@@ -49,6 +52,7 @@ targetPhrases:
     sources:
       - https://sutian.moe.edu.tw/zh-hant/su/4997/
     audioUrl: /audio/generated/intro-001-be.mp3
+    audioSha256: 75e8118f52b5b81daea3c16f256fedaa1006b8c46fd8ea979fa3edb8a255022f
 vocabulary:
   - id: intro-i
     hanji: 我

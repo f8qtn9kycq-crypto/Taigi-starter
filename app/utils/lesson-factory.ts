@@ -1,9 +1,9 @@
 import type { GeneratedLesson, GeneratedLessonStep, GeneratedSource, GeneratedTargetPhrase, GeneratedVocabularyItem } from "../types/generated-lesson.ts";
 import type { LocalizedText } from "../types/lesson.ts";
 
-export type LessonSpecPhrase = { id: string; hanji: string; tailo: string; poj: string | null; meaning: LocalizedText; cultureNote: LocalizedText; sources: readonly string[]; audioUrl: string };
-export type LessonSpecVocabulary = Omit<LessonSpecPhrase, "cultureNote" | "audioUrl">;
-export type LessonSpec = { id: string; title: LocalizedText; level: GeneratedLesson["level"]; scenario: LocalizedText; goal: LocalizedText; targetPhrases: readonly LessonSpecPhrase[]; vocabulary: readonly LessonSpecVocabulary[]; sources: readonly string[]; contentStatus: GeneratedLesson["contentStatus"] };
+export type LessonSpecPhrase = { id: string; hanji: string; tailo: string; poj: string; meaning: LocalizedText; cultureNote: LocalizedText; sources: readonly string[]; audioUrl: string; audioSha256: string };
+export type LessonSpecVocabulary = Omit<LessonSpecPhrase, "cultureNote" | "audioUrl" | "audioSha256">;
+export type LessonSpec = { id: string; number: number; title: LocalizedText; level: GeneratedLesson["level"]; scenario: LocalizedText; goal: LocalizedText; targetPhrases: readonly LessonSpecPhrase[]; vocabulary: readonly LessonSpecVocabulary[]; sources: readonly string[]; contentStatus: GeneratedLesson["contentStatus"] };
 
 const MOE_LICENSE = "CC BY-ND 3.0 TW";
 const MOE_LICENSE_URL = "https://creativecommons.org/licenses/by-nd/3.0/tw/";
@@ -55,7 +55,7 @@ function createTargetPhrase(phrase: LessonSpecPhrase, contentStatus: LessonSpec[
     sources: Array.isArray(phrase.sources) ? phrase.sources : [],
     contentStatus,
     source: sourceMetadata(sourceUrl),
-    audio: { audioUrl, originalUrl, sourceUrl, license: MOE_LICENSE, licenseUrl: MOE_LICENSE_URL, speaker: null, isUnmodifiedOriginal: true },
+    audio: { audioUrl, originalUrl, sourceUrl, sha256: typeof phrase.audioSha256 === "string" ? phrase.audioSha256 : "", license: MOE_LICENSE, licenseUrl: MOE_LICENSE_URL, speaker: null, isUnmodifiedOriginal: true },
   };
 }
 
@@ -67,6 +67,7 @@ export function generateLesson(spec: LessonSpec, generatedFrom: string): Generat
     version: 1,
     generatedFrom,
     id: spec.id,
+    number: typeof spec.number === "number" ? spec.number : 0,
     title: spec.title,
     level: spec.level,
     scenario: spec.scenario,

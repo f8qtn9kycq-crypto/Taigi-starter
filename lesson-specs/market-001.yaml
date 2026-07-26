@@ -1,4 +1,5 @@
 id: market-001
+number: 2
 title:
   zh: 去菜市場買水果
   en: Buy fruit at the market
@@ -23,6 +24,7 @@ targetPhrases:
     sources:
       - https://sutian.moe.edu.tw/zh-hant/su/9037/
     audioUrl: /audio/generated/market-001-buy.mp3
+    audioSha256: dee275197cd44c3a4ba912ec6566f01d036d44ff5a79c12b085f65e59f1b7778
   - id: market-fruit
     hanji: 水果
     tailo: Tsuí-kó
@@ -36,6 +38,7 @@ targetPhrases:
     sources:
       - https://sutian.moe.edu.tw/und-hani/su/966/
     audioUrl: /audio/generated/market-001-fruit.mp3
+    audioSha256: 48691ad815c31da73c95c5ae9da12ce43d43574a02db9cd1cf816063cdaeb6f8
   - id: market-money
     hanji: 錢
     tailo: Tsînn
@@ -49,6 +52,7 @@ targetPhrases:
     sources:
       - https://sutian.moe.edu.tw/zh-hant/su/11988/
     audioUrl: /audio/generated/market-001-money.mp3
+    audioSha256: c37b7d3bb03027a775c8e60f81fca62a78ae57f1715d1771257b9b8b7b1f3299
 vocabulary:
   - id: market-buy
     hanji: 買

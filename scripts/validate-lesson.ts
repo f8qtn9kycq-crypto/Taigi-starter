@@ -1,4 +1,5 @@
 import { readdir, readFile, stat } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateLessonCollection } from "../app/utils/lesson-factory-validation.ts";
@@ -13,11 +14,18 @@ for (const lesson of lessons) {
   if (typeof lesson !== "object" || lesson === null || !Array.isArray((lesson as { targetPhrases?: unknown }).targetPhrases)) continue;
   for (const phrase of (lesson as { targetPhrases: unknown[] }).targetPhrases) {
     if (typeof phrase !== "object" || phrase === null) continue;
-    const audioUrl = (phrase as { audio?: { audioUrl?: unknown } }).audio?.audioUrl;
+    const audio = (phrase as { audio?: { audioUrl?: unknown; sha256?: unknown } }).audio;
+    const audioUrl = audio?.audioUrl;
     if (typeof audioUrl !== "string" || !audioUrl.startsWith("/")) continue;
     try {
-      const audioFile = await stat(join(projectDirectory, "public", audioUrl.slice(1)));
-      if (!audioFile.isFile() || audioFile.size === 0) issues.push({ path: "audio", message: audioUrl + " must reference a non-empty local audio asset" });
+      const audioPath = join(projectDirectory, "public", audioUrl.slice(1));
+      const audioFile = await stat(audioPath);
+      if (!audioFile.isFile() || audioFile.size === 0) {
+        issues.push({ path: "audio", message: audioUrl + " must reference a non-empty local audio asset" });
+      } else {
+        const actualSha256 = createHash("sha256").update(await readFile(audioPath)).digest("hex");
+        if (actualSha256 !== audio?.sha256) issues.push({ path: "audio", message: audioUrl + " SHA-256 does not match its recorded original checksum" });
+      }
     } catch {
       issues.push({ path: "audio", message: audioUrl + " must reference an existing local audio asset" });
     }

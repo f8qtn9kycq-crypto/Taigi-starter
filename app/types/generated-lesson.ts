@@ -19,15 +19,16 @@ export const LESSON_FACTORY_STEP_TYPES = [
 export type LessonFactoryStepType = (typeof LESSON_FACTORY_STEP_TYPES)[number];
 
 export type GeneratedSource = { title: LocalizedText; canonicalUrl: string; license: string; licenseUrl: string; speaker: string | null };
-export type GeneratedAudio = { audioUrl: string; originalUrl: string; sourceUrl: string; license: string; licenseUrl: string; speaker: string | null; isUnmodifiedOriginal: true };
-export type GeneratedTargetPhrase = { id: string; hanji: string; tailo: string; poj: string | null; meaning: LocalizedText; cultureNote: LocalizedText; sources: readonly string[]; contentStatus: GeneratedContentStatus; source: GeneratedSource; audio: GeneratedAudio };
-export type GeneratedVocabularyItem = { id: string; hanji: string; tailo: string; poj: string | null; meaning: LocalizedText; sources: readonly string[]; contentStatus: GeneratedContentStatus };
+export type GeneratedAudio = { audioUrl: string; originalUrl: string; sourceUrl: string; sha256: string; license: string; licenseUrl: string; speaker: string | null; isUnmodifiedOriginal: true };
+export type GeneratedTargetPhrase = { id: string; hanji: string; tailo: string; poj: string; meaning: LocalizedText; cultureNote: LocalizedText; sources: readonly string[]; contentStatus: GeneratedContentStatus; source: GeneratedSource; audio: GeneratedAudio };
+export type GeneratedVocabularyItem = { id: string; hanji: string; tailo: string; poj: string; meaning: LocalizedText; sources: readonly string[]; contentStatus: GeneratedContentStatus };
 export type GeneratedLessonStep = { type: LessonFactoryStepType; title: LocalizedText; prompt: LocalizedText };
 export type GeneratedReviewItem = { id: string; targetPhraseId: string; prompt: LocalizedText };
 export type GeneratedLesson = {
   version: 1;
   generatedFrom: string;
   id: string;
+  number: number;
   title: LocalizedText;
   level: GeneratedLessonLevel;
   scenario: LocalizedText;

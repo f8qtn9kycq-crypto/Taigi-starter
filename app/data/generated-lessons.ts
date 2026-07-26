@@ -29,7 +29,7 @@ function toPhrase(phrase: GeneratedLesson["targetPhrases"][number]): LessonPhras
 export function generatedLessonToPlayableLesson(lesson: GeneratedLesson, number: number): PlayableLesson {
   return {
     id: lesson.id,
-    number,
+    number: lesson.number || number,
     title: lesson.title,
     secondaryTitle: { zh: lesson.title.en, en: lesson.title.zh },
     summary: lesson.scenario,

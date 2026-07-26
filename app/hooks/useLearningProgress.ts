@@ -51,14 +51,23 @@ export function useLearningProgress(stageCount: number) {
     setLocale: (locale: Locale) => update({ locale }),
     setStage: (stage: number) => update({ stage }),
     setHasStarted: (hasStarted: boolean) => update({ hasStarted }),
-    addReview: (phraseId = "lesson-1-greeting") => update({ lessonOneReview: createReviewCard(phraseId) }),
-    rateReview: (rating: ReviewRating) => {
-      setProgress((current) => ({
-        ...current,
-        lessonOneReview: current.lessonOneReview
-          ? scheduleReview(current.lessonOneReview, rating)
-          : null,
-      }));
+    addReview: (phraseId = "lesson-1-greeting") => {
+      const card = createReviewCard(phraseId);
+      if (!isHydrated) {
+        pendingUpdatesRef.current = {
+          ...pendingUpdatesRef.current,
+          reviewCards: { ...pendingUpdatesRef.current.reviewCards, [phraseId]: card },
+        };
+      }
+      setProgress((current) => ({ ...current, reviewCards: { ...current.reviewCards, [phraseId]: card } }));
+    },
+    rateReview: (phraseId: string, rating: ReviewRating) => {
+      setProgress((current) => {
+        const card = current.reviewCards[phraseId];
+        return card
+          ? { ...current, reviewCards: { ...current.reviewCards, [phraseId]: scheduleReview(card, rating) } }
+          : current;
+      });
     },
   };
 }

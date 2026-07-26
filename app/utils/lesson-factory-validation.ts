@@ -51,7 +51,7 @@ function validateTargetPhrase(value: unknown, path: string, phraseIds: Set<strin
   else if (phraseIds.has(value.id)) addIssue(issues, `${path}.id`, "must be unique within the lesson");
   else phraseIds.add(value.id);
   for (const field of ["hanji", "tailo"] as const) if (!isNonEmptyString(value[field])) addIssue(issues, `${path}.${field}`, "must be a non-empty string");
-  if (value.poj !== null && !isNonEmptyString(value.poj)) addIssue(issues, `${path}.poj`, "must be a string or null");
+  if (!isNonEmptyString(value.poj)) addIssue(issues, `${path}.poj`, "must include POJ romanization");
   validateLocalizedField(value.meaning, `${path}.meaning`, issues);
   validateLocalizedField(value.cultureNote, `${path}.cultureNote`, issues);
   validateSources(value.sources, `${path}.sources`, issues);
@@ -67,6 +67,7 @@ function validateTargetPhrase(value: unknown, path: string, phraseIds: Set<strin
   if (!isRecord(value.audio)) addIssue(issues, `${path}.audio`, "must include audio provenance");
   else {
     for (const field of ["audioUrl", "originalUrl", "sourceUrl", "license", "licenseUrl"] as const) if (!isNonEmptyString(value.audio[field])) addIssue(issues, `${path}.audio.${field}`, "must be a non-empty string");
+    if (!/^[a-f0-9]{64}$/.test(String(value.audio.sha256 ?? ""))) addIssue(issues, `${path}.audio.sha256`, "must be a lowercase SHA-256 checksum");
     if (isNonEmptyString(value.audio.audioUrl) && !/^\/audio\/.+\.mp3$/i.test(value.audio.audioUrl)) addIssue(issues, `${path}.audio.audioUrl`, "must be a local MP3 asset, not a fake or placeholder URL");
     if (value.audio.originalUrl && !isHttpsUrl(value.audio.originalUrl)) addIssue(issues, `${path}.audio.originalUrl`, "must be an HTTPS original URL");
     if (value.audio.sourceUrl && !isMoeCanonicalUrl(value.audio.sourceUrl)) addIssue(issues, `${path}.audio.sourceUrl`, "must be an MOE Dictionary source URL");
@@ -97,8 +98,7 @@ function validateVocabulary(value: unknown, path: string, issues: LessonFactoryV
     if (!isNonEmptyString(item.id)) addIssue(issues, `${itemPath}.id`, "must be a non-empty string");
     else if (ids.has(item.id)) addIssue(issues, `${itemPath}.id`, "must be unique");
     else ids.add(item.id);
-    for (const field of ["hanji", "tailo"] as const) if (!isNonEmptyString(item[field])) addIssue(issues, `${itemPath}.${field}`, "must be a non-empty string");
-    if (item.poj !== null && !isNonEmptyString(item.poj)) addIssue(issues, `${itemPath}.poj`, "must be a string or null");
+    for (const field of ["hanji", "tailo", "poj"] as const) if (!isNonEmptyString(item[field])) addIssue(issues, `${itemPath}.${field}`, "must be a non-empty string");
     validateLocalizedField(item.meaning, `${itemPath}.meaning`, issues);
     validateSources(item.sources, `${itemPath}.sources`, issues);
     validateStatus(item.contentStatus, `${itemPath}.contentStatus`, issues);
@@ -145,6 +145,7 @@ export function validateLesson(value: unknown): readonly LessonFactoryValidation
   if (!isRecord(value)) return [{ path: "lesson", message: "must be an object" }];
   const issues: LessonFactoryValidationIssue[] = [];
   for (const field of ["id", "generatedFrom"] as const) if (!isNonEmptyString(value[field])) addIssue(issues, field, "must be a non-empty string");
+  if (!Number.isInteger(value.number) || Number(value.number) < 1) addIssue(issues, "number", "must be a positive integer");
   if (value.version !== 1) addIssue(issues, "version", "must be 1");
   validateLocalizedField(value.title, "title", issues);
   if (!GENERATED_LESSON_LEVELS.some((level) => level === value.level)) addIssue(issues, "level", "is not a supported level");
@@ -167,11 +168,17 @@ export function validateLesson(value: unknown): readonly LessonFactoryValidation
 export function validateLessonCollection(values: readonly unknown[]): readonly LessonFactoryValidationIssue[] {
   const issues: LessonFactoryValidationIssue[] = [];
   const ids = new Set<string>();
+  const numbers = new Set<number>();
   values.forEach((value, index) => {
     validateLesson(value).forEach((issue) => addIssue(issues, `lessons[${index}].${issue.path}`, issue.message));
     if (isRecord(value) && isNonEmptyString(value.id)) {
       if (ids.has(value.id)) addIssue(issues, `lessons[${index}].id`, "duplicate lesson ID");
       ids.add(value.id);
+    }
+    if (isRecord(value) && Number.isInteger(value.number)) {
+      const number = Number(value.number);
+      if (numbers.has(number)) addIssue(issues, `lessons[${index}].number`, "duplicate lesson number");
+      numbers.add(number);
     }
   });
   return issues;

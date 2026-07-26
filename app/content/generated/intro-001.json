@@ -2,6 +2,7 @@
   "version": 1,
   "generatedFrom": "lesson-specs/intro-001.yaml",
   "id": "intro-001",
+  "number": 3,
   "title": {
     "zh": "自我介紹",
     "en": "Introduce yourself"
@@ -47,6 +48,7 @@
         "audioUrl": "/audio/generated/intro-001-i.mp3",
         "originalUrl": "https://sutian.moe.edu.tw/media/senn/mp3/imtong/subak/3/3139.mp3",
         "sourceUrl": "https://sutian.moe.edu.tw/zh-hant/su/3139/",
+        "sha256": "31a7abd3f122ea30dba91d39ff6b8969c19d3aeab4a78639164959a5d6b4e97a",
         "license": "CC BY-ND 3.0 TW",
         "licenseUrl": "https://creativecommons.org/licenses/by-nd/3.0/tw/",
         "speaker": null,
@@ -84,6 +86,7 @@
         "audioUrl": "/audio/generated/intro-001-name.mp3",
         "originalUrl": "https://sutian.moe.edu.tw/media/senn/mp3/imtong/subak/1/1402.mp3",
         "sourceUrl": "https://sutian.moe.edu.tw/zh-hant/su/1402/",
+        "sha256": "44ab4121c073f3a0c73366c1fec35952a56843a091cff6d439ccdcda019a709e",
         "license": "CC BY-ND 3.0 TW",
         "licenseUrl": "https://creativecommons.org/licenses/by-nd/3.0/tw/",
         "speaker": null,
@@ -121,6 +124,7 @@
         "audioUrl": "/audio/generated/intro-001-be.mp3",
         "originalUrl": "https://sutian.moe.edu.tw/media/senn/mp3/imtong/subak/4/4997.mp3",
         "sourceUrl": "https://sutian.moe.edu.tw/zh-hant/su/4997/",
+        "sha256": "75e8118f52b5b81daea3c16f256fedaa1006b8c46fd8ea979fa3edb8a255022f",
         "license": "CC BY-ND 3.0 TW",
         "licenseUrl": "https://creativecommons.org/licenses/by-nd/3.0/tw/",
         "speaker": null,

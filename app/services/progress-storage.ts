@@ -16,6 +16,19 @@ type LegacyProgress = {
   hasStarted?: unknown;
 };
 
+function isReviewCard(value: unknown): value is LearningProgress["reviewCards"][string] {
+  return typeof value === "object" && value !== null
+    && typeof (value as { id?: unknown }).id === "string"
+    && typeof (value as { dueAt?: unknown }).dueAt === "string";
+}
+
+function parseReviewCards(value: unknown): LearningProgress["reviewCards"] {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return {};
+  return Object.fromEntries(
+    Object.entries(value).filter(([key, card]) => key.length > 0 && isReviewCard(card)),
+  ) as LearningProgress["reviewCards"];
+}
+
 function isLocale(value: unknown): value is Locale {
   return value === "zh" || value === "en";
 }
@@ -34,35 +47,30 @@ export function parseStoredProgress(
   try {
     const parsed = JSON.parse(raw) as Partial<LearningProgress> & LegacyProgress;
 
-    if (parsed.version === 2) {
+    if (parsed.version === 3) {
       return {
-        version: 2,
+        version: 3,
         locale: isLocale(parsed.locale) ? parsed.locale : DEFAULT_PROGRESS.locale,
         stage: isValidStage(parsed.stage, stageCount) ? parsed.stage : DEFAULT_PROGRESS.stage,
         hasStarted: parsed.hasStarted === true,
-        lessonOneReview:
-          parsed.lessonOneReview &&
-          typeof parsed.lessonOneReview.id === "string" &&
-          typeof parsed.lessonOneReview.dueAt === "string"
-            ? parsed.lessonOneReview
-            : null,
+        reviewCards: parseReviewCards((parsed as { reviewCards?: unknown }).reviewCards),
       };
     }
 
+    const legacyReview = (parsed as { lessonOneReview?: unknown }).lessonOneReview;
     return {
-      version: 2,
+      version: 3,
       locale: isLocale(parsed.locale) ? parsed.locale : DEFAULT_PROGRESS.locale,
       stage:
         parsed.hasStarted === true && isValidStage(parsed.stage, stageCount)
           ? parsed.stage
           : DEFAULT_PROGRESS.stage,
       hasStarted: parsed.hasStarted === true,
-      lessonOneReview:
-        parsed.hasStarted === true &&
-        typeof parsed.dueCount === "number" &&
-        parsed.dueCount > 0
-          ? createReviewCard(now)
-          : null,
+      reviewCards: isReviewCard(legacyReview)
+        ? { [legacyReview.id]: legacyReview }
+        : parsed.hasStarted === true && typeof parsed.dueCount === "number" && parsed.dueCount > 0
+          ? { "lesson-1-greeting": createReviewCard(now) }
+          : {},
     };
   } catch {
     return { ...DEFAULT_PROGRESS };

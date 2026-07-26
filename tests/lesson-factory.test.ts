@@ -42,6 +42,14 @@ test("factory validator rejects missing sources, duplicate IDs, invalid steps, a
   (unauthorizedPhrase.source as Record<string, unknown>).canonicalUrl = "https://example.invalid/source";
   assert.ok(validateLesson(unauthorizedSource).some((issue) => issue.message.includes("MOE Dictionary canonical URL")));
 
+  const missingPoj = cloneLesson(introLesson);
+  delete (missingPoj.targetPhrases as Array<Record<string, unknown>>)[0].poj;
+  assert.ok(validateLesson(missingPoj).some((issue) => issue.path.endsWith(".poj")));
+
+  const invalidChecksum = cloneLesson(introLesson);
+  (invalidChecksum.targetPhrases as Array<Record<string, unknown>>)[0].audio = { sha256: "not-a-sha256" };
+  assert.ok(validateLesson(invalidChecksum).some((issue) => issue.path.endsWith("audio.sha256")));
+
   const tooMany = cloneLesson(introLesson);
   const phrases = tooMany.targetPhrases as unknown[];
   tooMany.targetPhrases = [...phrases, ...phrases, phrases[0]];
@@ -66,4 +74,7 @@ test("both factory lessons use the existing reusable playable lesson path", () =
   assert.equal(generatedLessons.every((lesson) => lesson.phrases.length === 3), true);
   assert.equal(generatedLessons.every((lesson) => lesson.factorySteps?.some((step) => step.type === "completion")), true);
   assert.equal(generatedLessons.every((lesson) => lesson.phrases.every((phrase) => phrase.audioAttribution.isUnmodifiedOriginal)), true);
+  const duplicateNumber = cloneLesson(introLesson);
+  duplicateNumber.number = marketLesson.number;
+  assert.ok(validateLessonCollection([duplicateNumber, marketLesson]).some((issue) => issue.message === "duplicate lesson number"));
 });
