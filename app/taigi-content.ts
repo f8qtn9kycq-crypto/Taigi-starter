@@ -67,6 +67,9 @@ export type LessonCopy = {
   recording: string;
   microphoneRequest: string;
   stopRecording: string;
+  confirmSay: string;
+  sayCompleted: string;
+  sayCompletionRequired: string;
   recordAgain: string;
   recordingPrivacy: string;
   microphoneDenied: string;
@@ -185,6 +188,9 @@ export const copy: Record<Locale, LessonCopy> = {
     recording: "錄音中，再按一次完成",
     microphoneRequest: "正在請求麥克風權限…",
     stopRecording: "停止錄音",
+    confirmSay: "我已經跟讀",
+    sayCompleted: "已完成一次跟讀，可以進下一步。",
+    sayCompletionRequired: "先完成一次跟讀，才可以進入回想。",
     recordAgain: "重新錄音",
     recordingPrivacy: "正在此裝置錄音；按停止後可以立即回放。",
     microphoneDenied: "無法使用麥克風。你仍可直接跟著示範音檔練習。",
@@ -301,6 +307,9 @@ export const copy: Record<Locale, LessonCopy> = {
     recording: "Recording, tap again to finish",
     microphoneRequest: "Requesting microphone access…",
     stopRecording: "Stop recording",
+    confirmSay: "I said it aloud",
+    sayCompleted: "Speaking practice complete. You can continue.",
+    sayCompletionRequired: "Complete one speaking attempt before continuing to Recall.",
     recordAgain: "Record again",
     recordingPrivacy: "Recording on this device. Stop when you are ready to play it back.",
     microphoneDenied: "Microphone access is unavailable. You can still speak along with the example.",

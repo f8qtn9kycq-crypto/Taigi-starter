@@ -42,6 +42,8 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(stagePanel, /lessonStage\.id === "recall" && !showAnswer/);
   assert.match(stagePanel, /lessonStage\.id === "recall" && showAnswer/);
   assert.match(stagePanel, /reviewScheduled/);
+  assert.match(stagePanel, /sayCompleted/);
+  assert.match(stagePanel, /disabled=\{!sayCompleted\}/);
   assert.match(stageContent, /stage === "recall"/);
   assert.match(stageContent, /showAnswer &&/);
   assert.match(stageContent, /text\.tailoLabel/);
@@ -49,11 +51,15 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(stageContent, /phrase\.poj !== null/);
   assert.match(stageContent, /script === "poj" && phrase\.poj \? phrase\.poj : phrase\.tailo/);
   assert.match(recording, /text\.recordingLocalOnly/);
+  assert.match(recording, /onCompletionChange/);
+  assert.match(recording, /fallbackConfirmed/);
   assert.doesNotMatch(`${recording}\n${recorder}`, /fetch\(|XMLHttpRequest|navigator\.sendBeacon/);
   assert.match(landing, /text\.stageCount\(stage, totalStages\)/);
   assert.doesNotMatch(copy, /stageCount: \(stage\) => .*\/ 5/);
   assert.match(content, /教育部《臺灣台語常用詞辭典》/);
   assert.match(copy, /第 1–20 課可體驗 · 學習紀錄儲存在此裝置/);
+  assert.match(copy, /先完成一次跟讀/);
+  assert.match(copy, /我已經跟讀/);
   assert.doesNotMatch(feedbackForm, /fetch\(["']\/api\/feedback["']/);
   assert.match(feedbackConfig, /url\.protocol === "https:"/);
   assert.match(feedbackConfig, /process\.env\.FEEDBACK_EXTERNAL_FORM_URL/);

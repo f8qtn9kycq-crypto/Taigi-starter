@@ -1,14 +1,22 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRecorder } from "../hooks/useRecorder";
 import type { LessonCopy } from "../taigi-content";
 
 type RecordingPracticeProps = {
   text: LessonCopy;
+  onCompletionChange: (completed: boolean) => void;
 };
 
-export default function RecordingPractice({ text }: RecordingPracticeProps) {
+export default function RecordingPractice({ text, onCompletionChange }: RecordingPracticeProps) {
   const { status, recordingUrl, start, stop, reset } = useRecorder();
+  const [fallbackConfirmed, setFallbackConfirmed] = useState(false);
+  const sayCompleted = status === "ready" || fallbackConfirmed;
+
+  useEffect(() => {
+    onCompletionChange(sayCompleted);
+  }, [onCompletionChange, sayCompleted]);
 
   const buttonLabel = status === "requesting"
     ? text.microphoneRequest
@@ -24,6 +32,7 @@ export default function RecordingPractice({ text }: RecordingPracticeProps) {
       return;
     }
     if (status === "ready") reset();
+    setFallbackConfirmed(false);
     void start();
   };
 
@@ -42,6 +51,12 @@ export default function RecordingPractice({ text }: RecordingPracticeProps) {
       {status === "recording" && <p role="status">{text.recordingPrivacy}</p>}
       {status === "denied" && <p role="alert">{text.microphoneDenied}</p>}
       {status === "unsupported" && <p role="alert">{text.microphoneUnsupported}</p>}
+      {(status === "denied" || status === "unsupported") && !fallbackConfirmed && (
+        <button type="button" className="action-button" onClick={() => setFallbackConfirmed(true)}>
+          {text.confirmSay}
+        </button>
+      )}
+      {sayCompleted && <p role="status">{text.sayCompleted}</p>}
       {recordingUrl && (
         <div className="recording-playback">
           <span>{text.yourRecording}</span>
