@@ -163,7 +163,7 @@ const validateMetadata = (
     );
   } else if (status === "complete") {
     const parsed = Date.parse(value.executedAt);
-    if (!Number.isFinite(parsed) || !/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$/.test(value.executedAt)) {
+    if (!Number.isFinite(parsed) || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/.test(value.executedAt)) {
       addIssue(issues, "metadata.executedAt", "invalid-timestamp", "must be an ISO-8601 UTC timestamp");
     }
   }
