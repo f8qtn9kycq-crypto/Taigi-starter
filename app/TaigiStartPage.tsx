@@ -18,18 +18,21 @@ export default function TaigiStartPage() {
   const playableLessons = lessonCatalog.filter(
     (lesson): lesson is PlayableLesson => lesson.status === "prototype",
   );
-  const [activeLessonNumber, setActiveLessonNumber] = useState(prototypeLesson.number);
-  const activeLesson = playableLessons.find((lesson) => lesson.number === activeLessonNumber) ?? prototypeLesson;
-  const phraseIds = useMemo(() => activeLesson.phrases.map((phrase) => phrase.id), [activeLesson]);
+  const phraseIds = useMemo(
+    () => playableLessons.flatMap((lesson) => lesson.phrases.map((phrase) => phrase.id)),
+    [playableLessons],
+  );
   const {
     progress,
     setLocale,
+    setLessonId,
     setStage,
     setPhraseIndex,
     setHasStarted,
     addReview,
     rateReview,
-  } = useLearningProgress(activeLesson.id, phraseIds, activeLesson.stages.length);
+  } = useLearningProgress(prototypeLesson.id, phraseIds, prototypeLesson.stages.length);
+  const activeLesson = playableLessons.find((lesson) => lesson.id === progress.lessonId) ?? prototypeLesson;
   const [reviewOpen, setReviewOpen] = useState(false);
   const [startPending, setStartPending] = useState(false);
   const [activeTab, setActiveTab] = useState<"learn" | "review" | "progress">("learn");
@@ -82,7 +85,11 @@ export default function TaigiStartPage() {
     });
   };
   const selectLesson = (lessonNumber: number) => {
-    setActiveLessonNumber(lessonNumber);
+    const lesson = playableLessons.find((candidate) => candidate.number === lessonNumber);
+    if (!lesson) return;
+    setLessonId(lesson.id);
+    setPhraseIndex(0);
+    setHasStarted(true);
     setActiveTab("learn");
     window.requestAnimationFrame(scrollToLesson);
   };
@@ -126,26 +133,17 @@ export default function TaigiStartPage() {
         />
         <footer>
           <span>{text.prototype}</span>
-          <a
-            href="https://github.com/f8qtn9kycq-crypto/Taigi-Starter"
-            target="_blank"
-            rel="noreferrer"
-          >
-            GitHub · Technical feedback ↗
-          </a>
         </footer>
       </div>
 
-      {progress.hasStarted && (
-        <BottomNav
-          text={text}
-          dueCount={dueCount}
-          activeTab={activeTab}
-          onLearn={() => { setActiveTab("learn"); scrollToLesson(); }}
-          onReview={openReview}
-          onPath={() => { setActiveTab("progress"); scrollToPath(); }}
-        />
-      )}
+      <BottomNav
+        text={text}
+        dueCount={dueCount}
+        activeTab={activeTab}
+        onLearn={() => { setActiveTab("learn"); scrollToLesson(); }}
+        onReview={openReview}
+        onPath={() => { setActiveTab("progress"); scrollToPath(); }}
+      />
 
       <FeedbackForm locale={progress.locale} />
 

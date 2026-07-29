@@ -12,10 +12,14 @@ export default function RecordingPractice({ text }: RecordingPracticeProps) {
 
   const buttonLabel = status === "requesting"
     ? text.microphoneRequest
+    : status === "checking"
+      ? text.microphoneChecking
     : status === "recording"
       ? text.stopRecording
       : status === "ready"
         ? text.recordAgain
+        : status === "denied" || status === "unsupported"
+          ? text.retryMicrophone
         : text.record;
 
   const handleClick = () => {
@@ -33,7 +37,7 @@ export default function RecordingPractice({ text }: RecordingPracticeProps) {
         type="button"
         className={status === "recording" ? "action-button record-action live" : "action-button record-action"}
         onClick={handleClick}
-        disabled={status === "requesting" || status === "unsupported"}
+        disabled={status === "checking" || status === "requesting"}
       >
         <span aria-hidden="true" />
         {buttonLabel}
@@ -41,7 +45,7 @@ export default function RecordingPractice({ text }: RecordingPracticeProps) {
 
       {status === "recording" && <p role="status">{text.recordingPrivacy}</p>}
       {status === "denied" && <p role="alert">{text.microphoneDenied}</p>}
-      {status === "unsupported" && <p role="alert">{text.microphoneUnsupported}</p>}
+      {status === "unsupported" && <p role="alert">{text.microphoneUnsupported} {text.openSafariHint}</p>}
       {recordingUrl && (
         <div className="recording-playback">
           <span>{text.yourRecording}</span>
