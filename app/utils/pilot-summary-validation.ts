@@ -1,6 +1,7 @@
 import { LESSON_STAGE_IDS, type LessonStageId } from "../types/lesson.ts";
 import {
   PILOT_SUMMARY_NOT_RUN,
+  PILOT_SUMMARY_PENDING,
   type PilotAggregateSummary,
 } from "../types/pilot-summary.ts";
 
@@ -162,7 +163,7 @@ const validateMetadata = (
     );
   } else if (status === "complete") {
     const parsed = Date.parse(value.executedAt);
-    if (!Number.isFinite(parsed) || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/.test(value.executedAt)) {
+    if (!Number.isFinite(parsed) || !/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$/.test(value.executedAt)) {
       addIssue(issues, "metadata.executedAt", "invalid-timestamp", "must be an ISO-8601 UTC timestamp");
     }
   }
@@ -198,6 +199,7 @@ const validateComplete = (
   issues: PilotSummaryValidationIssue[],
 ): void => {
   for (const field of METRIC_KEYS) {
+    if (field === "delayedRecallRate" && value[field] === PILOT_SUMMARY_PENDING) continue;
     if (!isFiniteNumber(value[field])) {
       addIssue(issues, field, "invalid-metric", "must be a finite number when pilot is complete");
     }
@@ -238,6 +240,7 @@ const validateComplete = (
 
   for (const field of ["immediateRecallRate", "delayedRecallRate"] as const) {
     const rate = value[field];
+    if (field === "delayedRecallRate" && rate === PILOT_SUMMARY_PENDING) continue;
     if (isFiniteNumber(rate) && (rate < 0 || rate > 1)) {
       addIssue(issues, field, "out-of-range", "must be between 0 and 1");
     }
