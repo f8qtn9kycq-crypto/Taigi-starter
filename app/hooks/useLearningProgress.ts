@@ -59,7 +59,12 @@ export function useLearningProgress(
   return {
     progress,
     setLocale: (locale: Locale) => update({ locale }),
-    setLessonId: (nextLessonId: string) => update({\n      lessonId: nextLessonId,\n      stage: 0,\n      phraseIndex: 0,\n      reviewCard: null,\n    }),
+    setLessonId: (nextLessonId: string) => update({
+      lessonId: nextLessonId,
+      stage: 0,
+      phraseIndex: 0,
+      reviewCard: null,
+    }),
     setStage: (stage: number) => update({ stage }),
     setPhraseIndex: (phraseIndex: number) => update({ phraseIndex, stage: 0 }),
     setHasStarted: (hasStarted: boolean) => update({ hasStarted }),
