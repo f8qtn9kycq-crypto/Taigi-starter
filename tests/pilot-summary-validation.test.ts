@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { PILOT_SUMMARY_PENDING } from "../app/types/pilot-summary.ts";
 import { validatePilotAggregateSummary } from "../app/utils/pilot-summary-validation.ts";
 
 const notRunSummary = () => ({
@@ -78,6 +79,15 @@ test("completed summaries require consistent bounded aggregates", () => {
 
   assert.ok(codes.includes("out-of-range"));
   assert.ok(codes.includes("inconsistent-counts"));
+});
+
+test("completed summaries allow delayed recall to remain pending", () => {
+  const pendingDelayedRecall = {
+    ...completeSummary(),
+    delayedRecallRate: PILOT_SUMMARY_PENDING,
+  };
+
+  assert.deepEqual(validatePilotAggregateSummary(pendingDelayedRecall), []);
 });
 
 test("completed summaries reject invalid stage IDs and timestamps", () => {
