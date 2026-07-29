@@ -42,7 +42,10 @@ export function useRecorder() {
   const [recordingUrl, setRecordingUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    setStatus(getRecorderInitialStatus(navigator.mediaDevices, typeof MediaRecorder !== "undefined"));
+    const timer = window.setTimeout(() => {
+      setStatus(getRecorderInitialStatus(navigator.mediaDevices, typeof MediaRecorder !== "undefined"));
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const releaseStream = useCallback(() => {
