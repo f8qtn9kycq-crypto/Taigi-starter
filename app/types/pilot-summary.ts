@@ -2,7 +2,10 @@ import type { LessonStageId } from "./lesson.ts";
 
 export const PILOT_SUMMARY_NOT_RUN = "not-run" as const;
 export type PilotSummaryNotRun = typeof PILOT_SUMMARY_NOT_RUN;
+export const PILOT_SUMMARY_PENDING = "pending" as const;
+export type PilotSummaryPending = typeof PILOT_SUMMARY_PENDING;
 export type PilotSummaryMetric = number | PilotSummaryNotRun;
+export type PilotSummaryDelayedRecallMetric = PilotSummaryMetric | PilotSummaryPending;
 
 export type PilotSummaryMetadata = Readonly<{
   testCommit: string;
@@ -20,7 +23,7 @@ export type PilotAggregateSummary = Readonly<{
   completionRate: PilotSummaryMetric;
   completionTimeMedianMinutes: PilotSummaryMetric;
   immediateRecallRate: PilotSummaryMetric;
-  delayedRecallRate: PilotSummaryMetric;
+  delayedRecallRate: PilotSummaryDelayedRecallMetric;
   confidenceChangeMedian: PilotSummaryMetric;
   topAbandonmentStages: readonly LessonStageId[] | PilotSummaryNotRun;
   privacyOrSafetyIncidents: PilotSummaryMetric;
