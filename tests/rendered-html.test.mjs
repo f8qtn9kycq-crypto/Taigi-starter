@@ -40,6 +40,8 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(stagePanel, /text\.stageCount\(stage, lesson\.stages\.length\)/);
   assert.match(stagePanel, /disabled=\{audioPlays < 1 && !hasError\}/);
   assert.match(stagePanel, /lessonStage\.id === "recall" && !showAnswer/);
+  assert.match(stagePanel, /recallAttempted/);
+  assert.match(stagePanel, /text\.recallAttempt/);
   assert.match(stagePanel, /lessonStage\.id === "recall" && showAnswer/);
   assert.match(stagePanel, /reviewScheduled/);
   assert.match(stageContent, /stage === "recall"/);

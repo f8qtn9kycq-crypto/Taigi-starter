@@ -74,6 +74,7 @@ export type LessonCopy = {
   yourRecording: string;
   recordingLocalOnly: string;
   showAnswer: string;
+  recallAttempt: string;
   addReview: string;
   reviewAdded: string;
   nextPhrase: string;
@@ -192,6 +193,7 @@ export const copy: Record<Locale, LessonCopy> = {
     yourRecording: "你的錄音",
     recordingLocalOnly: "錄音只留在這個頁面，不會上傳或保存。",
     showAnswer: "顯示答案",
+    recallAttempt: "我已經回想",
     addReview: "加入今日複習",
     reviewAdded: "已加入複習",
     nextPhrase: "下一句",
@@ -308,6 +310,7 @@ export const copy: Record<Locale, LessonCopy> = {
     yourRecording: "Your recording",
     recordingLocalOnly: "This recording stays on this page and is never uploaded or saved.",
     showAnswer: "Show answer",
+    recallAttempt: "I recalled it",
     addReview: "Add to today’s review",
     reviewAdded: "Added to review",
     nextPhrase: "Next phrase",

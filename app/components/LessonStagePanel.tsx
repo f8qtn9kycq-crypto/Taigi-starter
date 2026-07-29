@@ -30,6 +30,7 @@ export default function LessonStagePanel({
 }: LessonStagePanelProps) {
   const [audioPlays, setAudioPlays] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [recallAttempted, setRecallAttempted] = useState(false);
   const phrase = lesson.phrases[phraseIndex];
   const lessonStage = lesson.stages[stage];
   const { isPlaying, hasError, toggle } = useAudioPlayer(phrase.audioUrl);
@@ -88,7 +89,8 @@ export default function LessonStagePanel({
             <button type="button" className="action-button primary-action" onClick={onAdvance}>{text.nextRecall}<span>→</span></button>
           </>
         )}
-        {lessonStage.id === "recall" && !showAnswer && <button type="button" className="action-button primary-action" onClick={() => setShowAnswer(true)}>{text.showAnswer}<span>↓</span></button>}
+        {lessonStage.id === "recall" && !showAnswer && !recallAttempted && <button type="button" className="action-button primary-action" onClick={() => setRecallAttempted(true)}>{text.recallAttempt}<span>✓</span></button>}
+        {lessonStage.id === "recall" && !showAnswer && recallAttempted && <button type="button" className="action-button primary-action" onClick={() => setShowAnswer(true)}>{text.showAnswer}<span>↓</span></button>}
         {lessonStage.id === "recall" && showAnswer && <button type="button" className="action-button primary-action" onClick={onAdvance}>{text.nextUse}<span>→</span></button>}
         {lessonStage.id === "use" && (
           reviewScheduled ? (
