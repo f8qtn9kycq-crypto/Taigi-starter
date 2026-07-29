@@ -66,3 +66,29 @@ test("hydration preserves progress updates made before storage is ready", () => 
     { ...stored, hasStarted: true, stage: 1 },
   );
 });
+
+
+test("lesson switching clears the previous lesson review card", () => {
+  const previous = {
+    ...DEFAULT_PROGRESS,
+    lessonId: "lesson-1-greetings",
+    reviewCard: {
+      id: "li-tsiah-pa-bue",
+      dueAt: now.toISOString(),
+      intervalDays: 0,
+      repetitions: 0,
+      easeFactor: 2.3,
+      lastReviewedAt: null,
+    },
+  };
+
+  const switched = mergePendingProgress(previous, {
+    lessonId: "lesson-2-family",
+    stage: 0,
+    phraseIndex: 0,
+    reviewCard: null,
+  });
+
+  assert.equal(switched.lessonId, "lesson-2-family");
+  assert.equal(switched.reviewCard, null);
+});
