@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 export type RecorderStatus =
   | "checking"
+  | "unverified"
   | "idle"
   | "requesting"
   | "recording"
@@ -21,8 +22,8 @@ export function detectRecorderSupport(
 export function getRecorderInitialStatus(
   mediaDevices: Pick<MediaDevices, "getUserMedia"> | undefined,
   mediaRecorderAvailable: boolean,
-): "idle" | "unsupported" {
-  return detectRecorderSupport(mediaDevices, mediaRecorderAvailable) ? "idle" : "unsupported";
+): "unverified" | "unsupported" {
+  return detectRecorderSupport(mediaDevices, mediaRecorderAvailable) ? "unverified" : "unsupported";
 }
 
 export function classifyRecorderError(error: unknown): "denied" | "unsupported" {
@@ -42,10 +43,10 @@ export function useRecorder() {
   const [recordingUrl, setRecordingUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
+    const frame = window.requestAnimationFrame(() => {
       setStatus(getRecorderInitialStatus(navigator.mediaDevices, typeof MediaRecorder !== "undefined"));
-    }, 0);
-    return () => window.clearTimeout(timer);
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   const releaseStream = useCallback(() => {

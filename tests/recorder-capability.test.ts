@@ -22,8 +22,8 @@ test("recording capability is unavailable when microphone access is missing", ()
   assert.equal(detectRecorderSupport(undefined, true), false);
 });
 
-test("checking resolves to idle when recording is supported", () => {
-  assert.equal(getRecorderInitialStatus({ getUserMedia }, true), "idle");
+test("available APIs stay unverified until getUserMedia succeeds", () => {
+  assert.equal(getRecorderInitialStatus({ getUserMedia }, true), "unverified");
 });
 
 test("checking resolves to unsupported when recording is unavailable", () => {
