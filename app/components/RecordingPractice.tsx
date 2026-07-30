@@ -48,9 +48,7 @@ export default function RecordingPractice({ text }: RecordingPracticeProps) {
       {status === "recording" && <p role="status">{text.recordingPrivacy}</p>}
       {status === "unverified" && <p role="status">{text.microphoneEnableHint}</p>}
       {status === "denied" && <p role="alert">{text.microphoneDenied}</p>}
-      {status === "unsupported" && (
-        <p role="alert">{text.microphoneUnsupported} {text.openSafariHint}</p>
-      )}
+      {status === "unsupported" && <p role="alert">{text.microphoneUnsupported} {text.openSafariHint}</p>}
       {recordingUrl && (
         <div className="recording-playback">
           <span>{text.yourRecording}</span>
