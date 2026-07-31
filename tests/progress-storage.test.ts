@@ -16,13 +16,14 @@ test("invalid local state falls back safely", () => {
   assert.deepEqual(parseStoredProgress(null, parseOptions), DEFAULT_PROGRESS);
 });
 
-test("legacy progress migrates to version 3", () => {
+test("legacy progress migrates to version 4", () => {
   const migrated = parseStoredProgress(
     JSON.stringify({ locale: "en", stage: 3, hasStarted: true, dueCount: 1 }),
     parseOptions,
   );
 
-  assert.equal(migrated.version, 3);
+  assert.equal(migrated.version, 4);
+  assert.equal(migrated.lessonId, DEFAULT_PROGRESS.lessonId);
   assert.equal(migrated.locale, "en");
   assert.equal(migrated.stage, 3);
   assert.equal(migrated.hasStarted, true);
@@ -30,9 +31,24 @@ test("legacy progress migrates to version 3", () => {
   assert.equal(migrated.reviewCard?.dueAt, now.toISOString());
 });
 
-test("version 3 progress round trips", () => {
+test("version 4 progress round trips", () => {
   const progress = { ...DEFAULT_PROGRESS, hasStarted: true, stage: 2 };
   assert.deepEqual(parseStoredProgress(serializeProgress(progress), parseOptions), progress);
+});
+
+test("version 3 progress keeps its stage while adding the default lesson", () => {
+  const migrated = parseStoredProgress(JSON.stringify({
+    version: 3,
+    locale: "zh",
+    stage: 2,
+    phraseIndex: 0,
+    hasStarted: true,
+    reviewCard: null,
+  }), parseOptions);
+
+  assert.equal(migrated.version, 4);
+  assert.equal(migrated.lessonId, DEFAULT_PROGRESS.lessonId);
+  assert.equal(migrated.stage, 2);
 });
 
 test("stored stage validation follows lesson metadata", () => {
@@ -49,4 +65,30 @@ test("hydration preserves progress updates made before storage is ready", () => 
     mergePendingProgress(stored, { hasStarted: true, stage: 1 }),
     { ...stored, hasStarted: true, stage: 1 },
   );
+});
+
+
+test("lesson switching clears the previous lesson review card", () => {
+  const previous = {
+    ...DEFAULT_PROGRESS,
+    lessonId: "lesson-1-greetings",
+    reviewCard: {
+      id: "li-tsiah-pa-bue",
+      dueAt: now.toISOString(),
+      intervalDays: 0,
+      repetitions: 0,
+      easeFactor: 2.3,
+      lastReviewedAt: null,
+    },
+  };
+
+  const switched = mergePendingProgress(previous, {
+    lessonId: "lesson-2-family",
+    stage: 0,
+    phraseIndex: 0,
+    reviewCard: null,
+  });
+
+  assert.equal(switched.lessonId, "lesson-2-family");
+  assert.equal(switched.reviewCard, null);
 });

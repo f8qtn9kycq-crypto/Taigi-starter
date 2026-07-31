@@ -42,7 +42,7 @@ export default function LessonStagePanel({
   return (
     <div className="stage-panel" aria-live="polite">
       <div className="stage-copy">
-        <span>{text.stageCount(stage, lesson.stages.length)} · {text.stageTime(lessonStage.estimatedMinutes)}</span>
+        <span>{text.stageProgress(stage, lesson.stages.length, text.stageLabels[lessonStage.id])} · {text.stageTime(lessonStage.estimatedMinutes)}</span>
         <h3>{text.stageHeadings[lessonStage.id]}</h3>
         <p>{text.stageBodies[lessonStage.id]}</p>
       </div>
@@ -76,6 +76,7 @@ export default function LessonStagePanel({
               <span><b>{isPlaying ? text.listening : text.listen}</b><small>{text.listened(audioPlays)}</small></span>
             </button>
             {hasError && <p className="media-error" role="alert">{text.audioUnavailable}</p>}
+            {audioPlays < 1 && !hasError && <p className="stage-completion-hint" role="status">{text.hearCompletionHint}</p>}
             <button type="button" className="action-button primary-action" onClick={onAdvance} disabled={audioPlays < 1 && !hasError}>
               {hasError ? text.continueWithoutAudio : text.nextSee}<span>→</span>
             </button>
