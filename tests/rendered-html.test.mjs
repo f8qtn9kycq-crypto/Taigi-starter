@@ -54,6 +54,7 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(stageContent, /phrase\.poj !== null/);
   assert.match(stageContent, /script === "poj" && phrase\.poj \? phrase\.poj : phrase\.tailo/);
   assert.match(recording, /text\.recordingLocalOnly/);
+  assert.match(recording, /status === "denied"[\s\S]*text\.openSafariHint/);
   assert.doesNotMatch(`${recording}\n${recorder}`, /fetch\(|XMLHttpRequest|navigator\.sendBeacon/);
   assert.match(landing, /text\.stageCount\(stage, totalStages\)/);
   assert.doesNotMatch(copy, /stageCount: \(stage\) => .*\/ 5/);
