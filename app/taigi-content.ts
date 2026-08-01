@@ -72,6 +72,9 @@ export type LessonCopy = {
   microphoneEnable: string;
   microphoneEnableHint: string;
   stopRecording: string;
+  confirmSay: string;
+  sayCompleted: string;
+  sayCompletionRequired: string;
   recordAgain: string;
   retryMicrophone: string;
   recordingPrivacy: string;
@@ -197,6 +200,9 @@ export const copy: Record<Locale, LessonCopy> = {
     microphoneEnable: "檢查麥克風並開始錄音",
     microphoneEnableHint: "確認瀏覽器可用後才會開始錄音；若不支援，會引導你改用 Safari。",
     stopRecording: "停止錄音",
+    confirmSay: "我已經跟讀",
+    sayCompleted: "已完成一次跟讀，可以進下一步。",
+    sayCompletionRequired: "先完成一次跟讀，才可以進入回想。",
     recordAgain: "重新錄音",
     retryMicrophone: "再試一次錄音",
     recordingPrivacy: "正在此裝置錄音；按停止後可以立即回放。",
@@ -320,6 +326,9 @@ export const copy: Record<Locale, LessonCopy> = {
     microphoneEnable: "Check microphone and start recording",
     microphoneEnableHint: "Recording starts only after this browser confirms support. If unavailable, open the lesson in Safari.",
     stopRecording: "Stop recording",
+    confirmSay: "I said it aloud",
+    sayCompleted: "Speaking practice complete. You can continue.",
+    sayCompletionRequired: "Complete one speaking attempt before continuing to Recall.",
     recordAgain: "Record again",
     retryMicrophone: "Try recording again",
     recordingPrivacy: "Recording on this device. Stop when you are ready to play it back.",

@@ -47,6 +47,8 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(stagePanel, /lessonStage\.id === "recall" && !showAnswer/);
   assert.match(stagePanel, /lessonStage\.id === "recall" && showAnswer/);
   assert.match(stagePanel, /reviewScheduled/);
+  assert.match(stagePanel, /sayCompleted/);
+  assert.match(stagePanel, /disabled=\{!sayCompleted\}/);
   assert.match(stageContent, /stage === "recall"/);
   assert.match(stageContent, /showAnswer &&/);
   assert.match(stageContent, /text\.tailoLabel/);
@@ -54,6 +56,8 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(stageContent, /phrase\.poj !== null/);
   assert.match(stageContent, /script === "poj" && phrase\.poj \? phrase\.poj : phrase\.tailo/);
   assert.match(recording, /text\.recordingLocalOnly/);
+  assert.match(recording, /onCompletionChange/);
+  assert.match(recording, /fallbackConfirmed/);
   assert.match(recording, /status === "denied"[\s\S]*text\.openSafariHint/);
   assert.match(recording, /text\.microphoneEnableHint[\s\S]*<button/);
   assert.match(copy, /若目前不是 Safari，請改用 Safari；若已在 Safari，請到設定允許麥克風。/);
@@ -62,6 +66,8 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.doesNotMatch(copy, /stageCount: \(stage\) => .*\/ 5/);
   assert.match(content, /教育部《臺灣台語常用詞辭典》/);
   assert.match(copy, /20 課可體驗/);
+  assert.match(copy, /先完成一次跟讀/);
+  assert.match(copy, /我已經跟讀/);
   assert.doesNotMatch(feedbackForm, /fetch\(["']\/api\/feedback["']/);
   assert.match(feedbackService, /docs\.google\.com\/forms\/d\/e\/1FAIpQLScQAOPmLNn545S4l9XQtjKaTZNDXhtacEH3XIGUcDXC4K_obQ/);
   assert.match(feedbackForm, /LEARNER_FEEDBACK_URL/);
