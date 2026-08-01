@@ -20,10 +20,16 @@ export default function RecordingPractice({ text, onCompletionChange }: Recordin
 
   const buttonLabel = status === "requesting"
     ? text.microphoneRequest
+    : status === "checking"
+      ? text.microphoneChecking
+    : status === "unverified"
+      ? text.microphoneEnable
     : status === "recording"
       ? text.stopRecording
       : status === "ready"
         ? text.recordAgain
+        : status === "denied" || status === "unsupported"
+          ? text.retryMicrophone
         : text.record;
 
   const handleClick = () => {
@@ -38,19 +44,21 @@ export default function RecordingPractice({ text, onCompletionChange }: Recordin
 
   return (
     <div className="recording-practice">
+      {status === "unverified" && <p role="status">{text.microphoneEnableHint}</p>}
+      {status === "denied" && <p role="alert">{text.microphoneDenied} {text.openSafariHint}</p>}
+      {status === "unsupported" && <p role="alert">{text.microphoneUnsupported} {text.openSafariHint}</p>}
+
       <button
         type="button"
         className={status === "recording" ? "action-button record-action live" : "action-button record-action"}
         onClick={handleClick}
-        disabled={status === "requesting" || status === "unsupported"}
+        disabled={status === "checking" || status === "requesting"}
       >
         <span aria-hidden="true" />
         {buttonLabel}
       </button>
 
       {status === "recording" && <p role="status">{text.recordingPrivacy}</p>}
-      {status === "denied" && <p role="alert">{text.microphoneDenied}</p>}
-      {status === "unsupported" && <p role="alert">{text.microphoneUnsupported}</p>}
       {(status === "denied" || status === "unsupported") && !fallbackConfirmed && (
         <button type="button" className="action-button" onClick={() => setFallbackConfirmed(true)}>
           {text.confirmSay}

@@ -48,6 +48,8 @@ export type LessonCopy = {
   completedStep: string;
   lockedStep: string;
   stageCount: (stage: number, total: number) => string;
+  stageProgress: (stage: number, total: number, label: string) => string;
+  hearCompletionHint: string;
   stageHeadings: Record<LessonStageId, string>;
   stageBodies: Record<LessonStageId, string>;
   listen: string;
@@ -66,14 +68,19 @@ export type LessonCopy = {
   record: string;
   recording: string;
   microphoneRequest: string;
+  microphoneChecking: string;
+  microphoneEnable: string;
+  microphoneEnableHint: string;
   stopRecording: string;
   confirmSay: string;
   sayCompleted: string;
   sayCompletionRequired: string;
   recordAgain: string;
+  retryMicrophone: string;
   recordingPrivacy: string;
   microphoneDenied: string;
   microphoneUnsupported: string;
+  openSafariHint: string;
   yourRecording: string;
   recordingLocalOnly: string;
   showAnswer: string;
@@ -157,6 +164,8 @@ export const copy: Record<Locale, LessonCopy> = {
     completedStep: "已完成",
     lockedStep: "稍後開放",
     stageCount: (stage, total) => `步驟 ${stage + 1} / ${total}`,
+    stageProgress: (stage, total, label) => `${stage + 1} / ${total} · ${label}`,
+    hearCompletionHint: "請先播放一次示範音檔，才可以進入看文字。",
     stageHeadings: {
       hear: "先用耳朵記住這句話",
       see: "把聲音和文字連起來",
@@ -187,14 +196,19 @@ export const copy: Record<Locale, LessonCopy> = {
     record: "開始錄音",
     recording: "錄音中，再按一次完成",
     microphoneRequest: "正在請求麥克風權限…",
+    microphoneChecking: "正在檢查錄音功能…",
+    microphoneEnable: "檢查麥克風並開始錄音",
+    microphoneEnableHint: "確認瀏覽器可用後才會開始錄音；若不支援，會引導你改用 Safari。",
     stopRecording: "停止錄音",
     confirmSay: "我已經跟讀",
     sayCompleted: "已完成一次跟讀，可以進下一步。",
     sayCompletionRequired: "先完成一次跟讀，才可以進入回想。",
     recordAgain: "重新錄音",
+    retryMicrophone: "再試一次錄音",
     recordingPrivacy: "正在此裝置錄音；按停止後可以立即回放。",
     microphoneDenied: "無法使用麥克風。你仍可直接跟著示範音檔練習。",
     microphoneUnsupported: "此瀏覽器不支援錄音。你仍可直接開口跟讀。",
+    openSafariHint: "若目前不是 Safari，請改用 Safari；若已在 Safari，請到設定允許麥克風。",
     yourRecording: "你的錄音",
     recordingLocalOnly: "錄音只留在這個頁面，不會上傳或保存。",
     showAnswer: "顯示答案",
@@ -276,6 +290,8 @@ export const copy: Record<Locale, LessonCopy> = {
     completedStep: "Completed",
     lockedStep: "Up next",
     stageCount: (stage, total) => `Step ${stage + 1} of ${total}`,
+    stageProgress: (stage, total, label) => `${stage + 1} / ${total} · ${label}`,
+    hearCompletionHint: "Play the example once before moving on to see the script.",
     stageHeadings: {
       hear: "Let your ears learn it first",
       see: "Connect the sound and script",
@@ -306,14 +322,19 @@ export const copy: Record<Locale, LessonCopy> = {
     record: "Start recording",
     recording: "Recording, tap again to finish",
     microphoneRequest: "Requesting microphone access…",
+    microphoneChecking: "Checking recording support…",
+    microphoneEnable: "Check microphone and start recording",
+    microphoneEnableHint: "Recording starts only after this browser confirms support. If unavailable, open the lesson in Safari.",
     stopRecording: "Stop recording",
     confirmSay: "I said it aloud",
     sayCompleted: "Speaking practice complete. You can continue.",
     sayCompletionRequired: "Complete one speaking attempt before continuing to Recall.",
     recordAgain: "Record again",
+    retryMicrophone: "Try recording again",
     recordingPrivacy: "Recording on this device. Stop when you are ready to play it back.",
     microphoneDenied: "Microphone access is unavailable. You can still speak along with the example.",
     microphoneUnsupported: "This browser cannot record audio. You can still practice aloud.",
+    openSafariHint: "If you are not using Safari, open this lesson in Safari. If you are already in Safari, allow microphone access in Settings.",
     yourRecording: "Your recording",
     recordingLocalOnly: "This recording stays on this page and is never uploaded or saved.",
     showAnswer: "Show answer",
