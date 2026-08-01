@@ -18,22 +18,9 @@ const moeSource = (canonicalUrl: string): LessonSource => ({
   speaker: null,
 });
 
-const audioPending: LessonPackagePhrase["audio"] = {
-  status: "added",
-  audioUrl: "",
-  originalUrl: "",
-  license: "CC BY-ND 3.0 TW",
-  licenseUrl: "https://creativecommons.org/licenses/by-nd/3.0/tw/",
-  isUnmodifiedOriginal: true,
-  note: {
-    zh: "待由完整資料化流程補上音檔 metadata。",
-    en: "Audio metadata is completed by the package finalization step.",
-  },
-};
-
 const makePhrase = (
   phrase: Omit<LessonPackagePhrase, "audio">,
-): LessonPackagePhrase => ({ ...phrase, audio: audioPending });
+): Omit<LessonPackagePhrase, "audio"> => phrase;
 
 const stagePlan: readonly LocalizedText[] = [
   { zh: "聽：先辨認關鍵詞的聲音", en: "Hear: recognize the key words by sound" },
@@ -73,7 +60,9 @@ const requiredTeacherReview: TeacherReview = {
   checks: teacherChecks,
 };
 
-type RawLessonPackage = Omit<LessonPackage, "pathOrder">;
+type RawLessonPackage = Omit<LessonPackage, "pathOrder" | "phrases"> & {
+  phrases: readonly Omit<LessonPackagePhrase, "audio">[];
+};
 
 const rawLessonPackages: readonly RawLessonPackage[] = [
   {
@@ -96,7 +85,7 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
     status: "planned",
     stagePlan,
     phrases: [
-      {
+      makePhrase({
         id: "lesson-2-family-home",
         hanji: "阮兜",
         tailo: "Guán tau",
@@ -107,9 +96,8 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
           en: "The MOE entry for tau uses guán tau as its example; keep the full phrase instead of teaching tau in isolation.",
         },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/6917/"),
-        audio: audioPending,
-      },
-      {
+      }),
+      makePhrase({
         id: "lesson-2-family-mother",
         hanji: "阿母",
         tailo: "A-bú",
@@ -120,9 +108,8 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
           en: "The MOE lists a-bú as the main reading and a-bó as another reading; a teacher should decide how to present the variant.",
         },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/4524/"),
-        audio: audioPending,
-      },
-      {
+      }),
+      makePhrase({
         id: "lesson-2-family-father",
         hanji: "阿爸",
         tailo: "A-pah",
@@ -133,8 +120,7 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
           en: "The MOE lists a-pah as the main reading and records a-pa and a-pâ as variants; do not treat the variants as errors.",
         },
         source: moeSource("https://sutian.moe.edu.tw/und-hani/su/4558/"),
-        audio: audioPending,
-      },
+      }),
     ],
     teacherReview: requiredTeacherReview,
   },
@@ -158,7 +144,7 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
     status: "planned",
     stagePlan,
     phrases: [
-      {
+      makePhrase({
         id: "lesson-3-numbers-one",
         hanji: "一",
         tailo: "Tsi̍t",
@@ -169,9 +155,8 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
           en: "The MOE lists tsi̍t as the main reading and also records it; this package starts with the colloquial main reading.",
         },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/1/"),
-        audio: audioPending,
-      },
-      {
+      }),
+      makePhrase({
         id: "lesson-3-numbers-two",
         hanji: "二",
         tailo: "Jī / lī",
@@ -182,9 +167,8 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
           en: "The MOE records jī, lī, and regional readings; the final lesson needs a teacher-approved primary model and variant order.",
         },
         source: moeSource("https://sutian.moe.edu.tw/und-hani/su/44/"),
-        audio: audioPending,
-      },
-      {
+      }),
+      makePhrase({
         id: "lesson-3-numbers-three",
         hanji: "三",
         tailo: "Sann",
@@ -195,8 +179,7 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
           en: "The MOE lists sann as the colloquial main reading and also records literary readings sam and sàm; the beginner lesson focuses on sann first.",
         },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/163/"),
-        audio: audioPending,
-      },
+      }),
     ],
     teacherReview: requiredTeacherReview,
   },
@@ -220,7 +203,7 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
     status: "planned",
     stagePlan,
     phrases: [
-      {
+      makePhrase({
         id: "lesson-4-food-and-drink-meal",
         hanji: "食飯",
         tailo: "Tsia̍h-pn̄g",
@@ -231,9 +214,8 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
           en: "The MOE entry for pn̄g uses tsia̍h-pn̄g as its example for eating a meal, connecting naturally to everyday life after Lesson 1.",
         },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/9222/"),
-        audio: audioPending,
-      },
-      {
+      }),
+      makePhrase({
         id: "lesson-4-food-and-drink-water",
         hanji: "啉水",
         tailo: "Lim tsuí",
@@ -244,9 +226,8 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
           en: "The MOE entry for lim directly uses lim tsuí as its example and defines lim as to drink.",
         },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/7018/"),
-        audio: audioPending,
-      },
-      {
+      }),
+      makePhrase({
         id: "lesson-4-food-and-drink-tea",
         hanji: "食茶",
         tailo: "Tsia̍h-tê",
@@ -257,8 +238,7 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
           en: "The MOE entry for tsia̍h lists tsia̍h-tê as an example for drinking tea, making it useful for comparing tsia̍h and lim in context.",
         },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/5570/"),
-        audio: audioPending,
-      },
+      }),
     ],
     teacherReview: requiredTeacherReview,
   },
@@ -282,7 +262,7 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
     status: "planned",
     stagePlan,
     phrases: [
-      {
+      makePhrase({
         id: "lesson-5-daily-today",
         hanji: "今仔日",
         tailo: "Kin-á-ji̍t / kin-á-li̍t",
@@ -293,9 +273,8 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
           en: "The MOE entry lists kin-á-ji̍t and kin-á-li̍t; a teacher should choose the primary model while keeping the other as an acceptable variant.",
         },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/629/"),
-        audio: audioPending,
-      },
-      {
+      }),
+      makePhrase({
         id: "lesson-5-daily-morning",
         hanji: "早起",
         tailo: "Tsá-khí",
@@ -306,9 +285,8 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
           en: "The MOE entry uses tsá-khí for both morning and breakfast, so the lesson should use context to make the meaning clear.",
         },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/2517/"),
-        audio: audioPending,
-      },
-      {
+      }),
+      makePhrase({
         id: "lesson-5-daily-work",
         hanji: "做代誌",
         tailo: "Tsò tāi-tsì",
@@ -319,8 +297,7 @@ const rawLessonPackages: readonly RawLessonPackage[] = [
           en: "The MOE dictionary lists tāi-tsì and provides an example; keep tsò tāi-tsì as an everyday phrase for short sentences rather than turning it into a job-specific term.",
         },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/1370/"),
-        audio: audioPending,
-      },
+      }),
     ],
     teacherReview: requiredTeacherReview,
   },

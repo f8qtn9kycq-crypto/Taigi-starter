@@ -1,5 +1,10 @@
 # Release evidence
 
+> This file records a historical Sites release snapshot. It is not a current
+> production attestation: before any publish, verify that the exact validated
+> GitHub source SHA equals the saved Sites source SHA and the deployed version.
+> A provenance mismatch is a release blocker. This PR does not deploy Sites.
+
 ## Exact production release
 
 - Source: validated release branch pushed to the locked Sites source repository

@@ -7,6 +7,7 @@ import { lessonPackages } from "../app/data/lesson-packages.ts";
 import { lessonCatalog } from "../app/data/lessons.ts";
 import { validateLessonPackageHandoff } from "../app/utils/lesson-package-handoff.ts";
 import { validateLessonPackages } from "../app/utils/lesson-package-validation.ts";
+import { officialMoeAudioUrl } from "../app/utils/lesson-audio.ts";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const issues: string[] = [];
@@ -39,6 +40,21 @@ for (const handoff of lessonPackageHandoffs) {
     }
     if (attribution.originalUrl !== phrase.audio.originalUrl) {
       issues.push(`lesson-${handoff.package.number}/${phrase.id}: handoff original URL differs from package metadata`);
+    }
+    if (attribution.sourceUrl !== phrase.source.canonicalUrl) {
+      issues.push(`lesson-${handoff.package.number}/${phrase.id}: handoff source URL differs from package metadata`);
+    }
+
+    try {
+      const expectedOriginalUrl = officialMoeAudioUrl(phrase.source.canonicalUrl);
+      if (phrase.audio.originalUrl !== expectedOriginalUrl) {
+        issues.push(`lesson-${handoff.package.number}/${phrase.id}: original audio URL does not match the official MOE source URL`);
+      }
+    } catch (error) {
+      issues.push(`lesson-${handoff.package.number}/${phrase.id}: cannot derive official MOE audio URL (${String(error)})`);
+    }
+    if (phrase.audio.note.zh.includes("待由") || phrase.audio.note.en.toLowerCase().includes("pending")) {
+      issues.push(`lesson-${handoff.package.number}/${phrase.id}: audio note still describes incomplete metadata`);
     }
 
     const relativePath = phrase.audio.audioUrl.replace(/^\//, "");
