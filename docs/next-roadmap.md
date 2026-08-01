@@ -38,7 +38,7 @@ Only then: playable lesson integration
   相同的 Hear → See → Say → Recall → Use 流程與 device-local progress。
 - 第 2–20 課的 58 個 MP3 都直接取自教育部詞典官方音檔，保留原始 URL、CC
   BY-ND 3.0 TW attribution 與未修改標記；逐課 mobile QA 見
-  `docs/qa/lesson-2-18-390x844.md`。
+  `docs/qa/lesson-2-20-390x844.md`。
 - Teacher review 沒有被偽造為 approved。這次 release 以產品擁有者明確的
   owner risk acceptance 通過 handoff；後續仍可補回逐課教師審核紀錄。
 - 第 21 課以後沒有被誤標為 playable；M2.5 beginner pilot 仍未執行。
