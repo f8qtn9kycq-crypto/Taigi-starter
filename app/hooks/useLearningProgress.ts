@@ -47,7 +47,7 @@ export function useLearningProgress(
   useEffect(() => {
     if (!isHydrated) return;
     window.localStorage.setItem(PROGRESS_STORAGE_KEY, serializeProgress(progress));
-  }, [isHydrated, progress]);
+  }, [isHydrated, lessonId, progress]);
 
   const update = (changes: Partial<Omit<LearningProgress, "version">>) => {
     if (!isHydrated) {
@@ -59,6 +59,12 @@ export function useLearningProgress(
   return {
     progress,
     setLocale: (locale: Locale) => update({ locale }),
+    setLessonId: (nextLessonId: string) => update({
+      lessonId: nextLessonId,
+      stage: 0,
+      phraseIndex: 0,
+      reviewCard: null,
+    }),
     setStage: (stage: number) => update({ stage }),
     setPhraseIndex: (phraseIndex: number) => update({ phraseIndex, stage: 0 }),
     setHasStarted: (hasStarted: boolean) => update({ hasStarted }),

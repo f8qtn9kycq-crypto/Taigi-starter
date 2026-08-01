@@ -62,7 +62,7 @@ a:focus-visible {
   min-height: 100vh;
 }
 
-.site-shell.app-active {
+.site-shell {
   padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom));
 }
 
@@ -859,6 +859,13 @@ a:focus-visible {
   color: var(--muted);
   font-size: 12px;
   line-height: 1.7;
+}
+
+.stage-completion-hint {
+  margin: 0;
+  color: var(--orange);
+  font-size: 11px;
+  line-height: 1.6;
 }
 
 .sound-visual {
