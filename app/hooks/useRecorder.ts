@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export type RecorderStatus =
+  | "checking"
+  | "unverified"
   | "idle"
   | "requesting"
   | "recording"
@@ -10,13 +12,42 @@ export type RecorderStatus =
   | "denied"
   | "unsupported";
 
+export function detectRecorderSupport(
+  mediaDevices: Pick<MediaDevices, "getUserMedia"> | undefined,
+  mediaRecorderAvailable: boolean,
+): boolean {
+  return typeof mediaDevices?.getUserMedia === "function" && mediaRecorderAvailable;
+}
+
+export function getRecorderInitialStatus(
+  mediaDevices: Pick<MediaDevices, "getUserMedia"> | undefined,
+  mediaRecorderAvailable: boolean,
+): "unverified" | "unsupported" {
+  return detectRecorderSupport(mediaDevices, mediaRecorderAvailable) ? "unverified" : "unsupported";
+}
+
+export function classifyRecorderError(error: unknown): "denied" | "unsupported" {
+  return typeof error === "object" && error !== null
+    && ((error as { name?: unknown }).name === "NotAllowedError"
+      || (error as { name?: unknown }).name === "PermissionDeniedError")
+    ? "denied"
+    : "unsupported";
+}
+
 export function useRecorder() {
   const recorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const urlRef = useRef<string | null>(null);
-  const [status, setStatus] = useState<RecorderStatus>("idle");
+  const [status, setStatus] = useState<RecorderStatus>("checking");
   const [recordingUrl, setRecordingUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setStatus(getRecorderInitialStatus(navigator.mediaDevices, typeof MediaRecorder !== "undefined"));
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const releaseStream = useCallback(() => {
     streamRef.current?.getTracks().forEach((track) => track.stop());
@@ -24,7 +55,7 @@ export function useRecorder() {
   }, []);
 
   const start = useCallback(async () => {
-    if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
+    if (!detectRecorderSupport(navigator.mediaDevices, typeof MediaRecorder !== "undefined")) {
       setStatus("unsupported");
       return;
     }
@@ -34,7 +65,14 @@ export function useRecorder() {
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream);
+      let recorder: MediaRecorder;
+      try {
+        recorder = new MediaRecorder(stream);
+      } catch {
+        releaseStream();
+        setStatus("unsupported");
+        return;
+      }
       streamRef.current = stream;
       recorderRef.current = recorder;
 
@@ -52,9 +90,9 @@ export function useRecorder() {
 
       recorder.start();
       setStatus("recording");
-    } catch {
+    } catch (error) {
       releaseStream();
-      setStatus("denied");
+      setStatus(classifyRecorderError(error) === "denied" ? "denied" : "unsupported");
     }
   }, [releaseStream]);
 

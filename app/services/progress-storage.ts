@@ -53,11 +53,14 @@ export function parseStoredProgress(
   try {
     const parsed = JSON.parse(raw) as StoredProgress;
 
-    if (parsed.version === 3) {
+    if (parsed.version === 4 || parsed.version === 3) {
       const storedReview = isReviewCard(parsed.reviewCard) ? parsed.reviewCard : null;
       return {
-        version: 3,
+        version: 4,
         locale: isLocale(parsed.locale) ? parsed.locale : DEFAULT_PROGRESS.locale,
+        lessonId: typeof parsed.lessonId === "string" && parsed.lessonId.length > 0
+          ? parsed.lessonId
+          : DEFAULT_PROGRESS.lessonId,
         stage: isValidStage(parsed.stage, stageCount) ? parsed.stage : DEFAULT_PROGRESS.stage,
         phraseIndex: isValidPhraseIndex(parsed.phraseIndex, phraseCount)
           ? parsed.phraseIndex
@@ -68,8 +71,9 @@ export function parseStoredProgress(
     }
 
     return {
-      version: 3,
+      version: 4,
       locale: isLocale(parsed.locale) ? parsed.locale : DEFAULT_PROGRESS.locale,
+      lessonId: DEFAULT_PROGRESS.lessonId,
       stage:
         parsed.hasStarted === true && isValidStage(parsed.stage, stageCount)
           ? parsed.stage

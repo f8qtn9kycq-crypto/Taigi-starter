@@ -12,8 +12,9 @@ export type ReviewCard = {
 };
 
 export type LearningProgress = {
-  version: 3;
+  version: 4;
   locale: Locale;
+  lessonId: string;
   stage: number;
   phraseIndex: number;
   hasStarted: boolean;
@@ -21,8 +22,9 @@ export type LearningProgress = {
 };
 
 export const DEFAULT_PROGRESS: LearningProgress = {
-  version: 3,
+  version: 4,
   locale: "zh",
+  lessonId: "lesson-1-greetings",
   stage: 0,
   phraseIndex: 0,
   hasStarted: false,
