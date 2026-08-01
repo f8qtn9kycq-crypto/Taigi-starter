@@ -4,6 +4,7 @@ import test from "node:test";
 import { lessonPackageHandoffs } from "../app/data/lesson-package-handoffs.ts";
 import { lessonCatalog } from "../app/data/lessons.ts";
 import { validateLessonPackageHandoff } from "../app/utils/lesson-package-handoff.ts";
+import { officialMoeAudioUrl } from "../app/utils/lesson-audio.ts";
 
 test("every lesson package has a valid source-backed handoff and local original audio", async () => {
   assert.deepEqual(
@@ -16,8 +17,12 @@ test("every lesson package has a valid source-backed handoff and local original 
     assert.equal(handoff.mobileFlowEvidence[0]?.evidenceRef, "docs/qa/lesson-2-20-390x844.md");
 
     for (const attribution of handoff.audioAttribution) {
+      const phrase = handoff.package.phrases.find((item) => item.id === attribution.phraseId);
+      assert.ok(phrase, attribution.phraseId);
       assert.match(attribution.sourceUrl, /^https:\/\/sutian\.moe\.edu\.tw\//);
       assert.match(attribution.originalUrl, /^https:\/\/sutian\.moe\.edu\.tw\/media\/senn\/mp3\/imtong\/subak\//);
+      assert.equal(attribution.sourceUrl, phrase.source.canonicalUrl);
+      assert.equal(attribution.originalUrl, officialMoeAudioUrl(phrase.source.canonicalUrl));
       assert.equal(attribution.license, "CC BY-ND 3.0 TW");
       assert.equal(attribution.isUnmodifiedOriginal, true);
 

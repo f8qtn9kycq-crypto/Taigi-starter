@@ -31,6 +31,7 @@ export default function LessonStagePanel({
   const [audioPlays, setAudioPlays] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
   const [recallAttempted, setRecallAttempted] = useState(false);
+  const [sayCompleted, setSayCompleted] = useState(false);
   const phrase = lesson.phrases[phraseIndex];
   const lessonStage = lesson.stages[stage];
   const { isPlaying, hasError, toggle } = useAudioPlayer(phrase.audioUrl);
@@ -86,8 +87,9 @@ export default function LessonStagePanel({
         {lessonStage.id === "see" && <button type="button" className="action-button primary-action" onClick={onAdvance}>{text.nextSay}<span>→</span></button>}
         {lessonStage.id === "say" && (
           <>
-            <RecordingPractice text={text} />
-            <button type="button" className="action-button primary-action" onClick={onAdvance}>{text.nextRecall}<span>→</span></button>
+            <RecordingPractice text={text} onCompletionChange={setSayCompleted} />
+            {!sayCompleted && <p className="stage-gate-hint" role="status">{text.sayCompletionRequired}</p>}
+            <button type="button" className="action-button primary-action" onClick={onAdvance} disabled={!sayCompleted}>{text.nextRecall}<span>→</span></button>
           </>
         )}
         {lessonStage.id === "recall" && !showAnswer && !recallAttempted && <button type="button" className="action-button primary-action" onClick={() => setRecallAttempted(true)}>{text.recallAttempt}<span>✓</span></button>}
