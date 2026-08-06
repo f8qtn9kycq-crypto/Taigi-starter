@@ -59,6 +59,9 @@ export type LessonCopy = {
   nextSay: string;
   nextRecall: string;
   nextUse: string;
+  usePrompt: string;
+  usePlaceholder: string;
+  useCompletionRequired: string;
   tailoLabel: string;
   pojLabel: string;
   romanizationSystem: string;
@@ -188,6 +191,9 @@ export const copy: Record<Locale, LessonCopy> = {
     nextSay: "下一步：跟著講",
     nextRecall: "下一步：想一想",
     nextUse: "下一步：生活用法",
+    usePrompt: "你會在什麼情境用這句？",
+    usePlaceholder: "寫一個自己的生活情境…",
+    useCompletionRequired: "先寫下一個自己的情境，再完成這一步。",
     tailoLabel: "台羅",
     pojLabel: "白話字",
     romanizationSystem: "羅馬字系統",
@@ -315,6 +321,9 @@ export const copy: Record<Locale, LessonCopy> = {
     nextSay: "Next: say it",
     nextRecall: "Next: recall it",
     nextUse: "Next: use it",
+    usePrompt: "When would you use this phrase?",
+    usePlaceholder: "Write one everyday situation…",
+    useCompletionRequired: "Add one personal situation before completing this step.",
     tailoLabel: "Tâi-lô",
     pojLabel: "POJ",
     romanizationSystem: "Romanization system",

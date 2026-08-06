@@ -49,6 +49,9 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(stagePanel, /text\.recallAttempt/);
   assert.match(stagePanel, /lessonStage\.id === "recall" && showAnswer/);
   assert.match(stagePanel, /reviewScheduled/);
+  assert.match(stagePanel, /hasUseResponse = useResponse\.trim\(\)\.length > 0/);
+  assert.match(stagePanel, /disabled=\{!hasUseResponse\}/);
+  assert.doesNotMatch(stagePanel, /fetch\(|localStorage|sessionStorage/);
   assert.match(stagePanel, /sayCompleted/);
   assert.match(stagePanel, /disabled=\{!sayCompleted\}/);
   assert.match(stageContent, /stage === "recall"/);
@@ -109,6 +112,7 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(css, /\.locale \{[\s\S]*min-height: 44px/);
   assert.match(css, /\.script-tabs button \{[\s\S]*min-height: 44px/);
   assert.match(css, /\.media-attribution a \{[\s\S]*min-height: 44px/);
+  assert.match(css, /\.use-response textarea \{[\s\S]*min-height: 72px/);
   assert.match(css, /\.progress-line i \{[\s\S]*width: 100%/);
   assert.doesNotMatch(css, /\.progress-line i \{[\s\S]*width: 62%/);
   assert.match(css, /env\(safe-area-inset-bottom\)/);
