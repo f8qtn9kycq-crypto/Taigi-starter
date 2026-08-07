@@ -34,13 +34,15 @@ export default function TaigiStartPage() {
   } = useLearningProgress(prototypeLesson.id, phraseIds, prototypeLesson.stages.length);
   const activeLesson = playableLessons.find((lesson) => lesson.id === progress.lessonId) ?? prototypeLesson;
   const [reviewOpen, setReviewOpen] = useState(false);
+  const [completedPhraseIds, setCompletedPhraseIds] = useState<ReadonlySet<string>>(new Set());
   const [startPending, setStartPending] = useState(false);
   const [activeTab, setActiveTab] = useState<"learn" | "review" | "progress">("learn");
   const lessonRef = useRef<HTMLElement | null>(null);
   const pathRef = useRef<HTMLElement | null>(null);
   const heroAudio = useAudioPlayer(activeLesson.phrases[0].audioUrl);
   const text = copy[progress.locale];
-  const activePhrase = activeLesson.phrases[progress.phraseIndex] ?? activeLesson.phrases[0];
+  const activePhraseIndex = activeLesson.phrases[progress.phraseIndex] ? progress.phraseIndex : 0;
+  const activePhrase = activeLesson.phrases[activePhraseIndex];
   const dueCount = isReviewDue(progress.reviewCard) ? 1 : 0;
 
   useEffect(() => {
@@ -93,6 +95,10 @@ export default function TaigiStartPage() {
     setActiveTab("learn");
     window.requestAnimationFrame(scrollToLesson);
   };
+  const completePhrase = (phraseId: string) => {
+    addReview(phraseId);
+    setCompletedPhraseIds((current) => new Set(current).add(phraseId));
+  };
 
   return (
     <main className={`site-shell${progress.hasStarted ? " app-active" : ""}`} id="learn">
@@ -118,11 +124,13 @@ export default function TaigiStartPage() {
           lesson={activeLesson}
           text={text}
           stage={progress.stage}
-          phraseIndex={progress.phraseIndex}
+          phraseIndex={activePhraseIndex}
           reviewScheduled={progress.reviewCard?.id === activePhrase.id}
+          completedPhraseIds={completedPhraseIds}
           onStageChange={setStage}
-          onReviewAdded={addReview}
-          onPhraseAdvance={() => setPhraseIndex(progress.phraseIndex + 1)}
+          onReviewAdded={completePhrase}
+          onPhraseChange={setPhraseIndex}
+          onPhraseAdvance={() => setPhraseIndex(activePhraseIndex + 1)}
         />
         <CoursePath
           ref={pathRef}

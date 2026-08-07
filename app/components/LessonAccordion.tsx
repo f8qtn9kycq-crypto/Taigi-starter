@@ -11,14 +11,27 @@ type LessonAccordionProps = {
   stage: number;
   phraseIndex: number;
   reviewScheduled: boolean;
+  completedPhraseIds: ReadonlySet<string>;
   onStageChange: (stage: number) => void;
   onReviewAdded: (phraseId: string) => void;
+  onPhraseChange: (phraseIndex: number) => void;
   onPhraseAdvance: () => void;
 };
 
 const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
   function LessonAccordion(
-    { text, lesson, stage, phraseIndex, reviewScheduled, onStageChange, onReviewAdded, onPhraseAdvance },
+    {
+      text,
+      lesson,
+      stage,
+      phraseIndex,
+      reviewScheduled,
+      completedPhraseIds,
+      onStageChange,
+      onReviewAdded,
+      onPhraseChange,
+      onPhraseAdvance,
+    },
     ref,
   ) {
     const lastStage = lesson.stages.length - 1;
@@ -35,12 +48,23 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
             <p>{lesson.mission[text.locale]}</p>
           </div>
           <div className="lesson-targets">
-            <span>{text.lessonTargets}</span>
-            <ul>
-              {lesson.phrases.map((phrase) => (
+            <span id="phrase-selector-label">{text.phraseSelectorLabel(phraseIndex + 1, lesson.phrases.length)}</span>
+            <ul aria-labelledby="phrase-selector-label">
+              {lesson.phrases.map((phrase, index) => (
                 <li key={phrase.id}>
-                  <b>{phrase.hanji}</b>
-                  <small>{phrase.tailo}</small>
+                  <button
+                    type="button"
+                    className={index === phraseIndex ? "active" : ""}
+                    onClick={() => onPhraseChange(index)}
+                    aria-pressed={index === phraseIndex}
+                    aria-label={text.phraseSelectorOption(phrase.hanji, index + 1, lesson.phrases.length)}
+                  >
+                    <span>
+                      <b>{phrase.hanji}</b>
+                      <small>{phrase.tailo}</small>
+                    </span>
+                    {completedPhraseIds.has(phrase.id) && <i aria-label={text.completedPhrase}>✓</i>}
+                  </button>
                 </li>
               ))}
             </ul>
