@@ -45,8 +45,8 @@ export default function RecordingPractice({ text, onCompletionChange }: Recordin
   return (
     <div className="recording-practice">
       {status === "unverified" && <p role="status">{text.microphoneEnableHint}</p>}
-      {status === "denied" && <p role="alert">{text.microphoneDenied} {text.openSafariHint}</p>}
-      {status === "unsupported" && <p role="alert">{text.microphoneUnsupported} {text.openSafariHint}</p>}
+      {status === "denied" && <p role="alert">{text.microphoneDenied}</p>}
+      {status === "unsupported" && <p role="alert">{text.microphoneUnsupported}</p>}
 
       <button
         type="button"
