@@ -3,11 +3,12 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("ships the first-time Taigi landing content and Vercel feedback path", async () => {
-  const [layout, landing, page, bottomNav, lesson, stagePanel, stageContent, recording, recorder, copy, content, feedbackConfig, feedbackForm] = await Promise.all([
+  const [layout, landing, page, bottomNav, coursePath, lesson, stagePanel, stageContent, recording, recorder, copy, content, feedbackConfig, feedbackForm] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/TaigiStartPage.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/BottomNav.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/CoursePath.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonAccordion.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonStagePanel.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonStageContent.tsx", import.meta.url), "utf8"),
@@ -25,6 +26,12 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(landing, /locale === "zh" \? "EN" : "繁"/);
   assert.doesNotMatch(landing, /locale === "zh" \? "EN" : "中"/);
   assert.match(lesson, /stage-accordion/);
+  assert.match(bottomNav, /aria-label=\{text\.primaryNavigation\}/);
+  assert.match(coursePath, /aria-pressed=\{isActive\}/);
+  assert.match(coursePath, /text\.startLesson/);
+  assert.match(coursePath, /text\.continueLesson\(activeStage \+ 1, stageCount\)/);
+  assert.match(coursePath, /text\.lessonCompleted/);
+  assert.match(coursePath, /onLessonSelect\(lesson\.number\)/);
   assert.match(copy, /今仔日，講一句台語。/);
   assert.match(copy, /每天 3 分鐘，從聽懂到開口。/);
   assert.match(copy, /開始今日一句/);
@@ -44,7 +51,6 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(lesson, /text\.stageLabels\[lessonStage\.id\]/);
   assert.match(lesson, /disabled=\{!isCurrent && !isComplete\}/);
   assert.match(lesson, /isComplete && onStageChange\(index\)/);
-  assert.match(bottomNav, /aria-label=\{text\.primaryNavigation\}/);
   assert.match(stagePanel, /text\.stageProgress\(stage, lesson\.stages\.length/);
   assert.match(stagePanel, /text\.hearCompletionHint/);
   assert.match(stagePanel, /disabled=\{audioPlays < 1 && !hasError\}/);
@@ -74,7 +80,8 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(landing, /text\.stageCount\(stage, totalStages\)/);
   assert.doesNotMatch(copy, /stageCount: \(stage\) => .*\/ 5/);
   assert.match(content, /教育部《臺灣台語常用詞辭典》/);
-  assert.match(copy, /20 課可體驗/);
+  assert.match(copy, /20 課已開放/);
+  assert.doesNotMatch(copy, /可體驗/);
   assert.match(copy, /先完成一次跟讀/);
   assert.match(copy, /我已經跟讀/);
   assert.doesNotMatch(feedbackForm, /fetch\(["']\/api\/feedback["']/);
@@ -141,6 +148,6 @@ test("saved progress and lesson content stay explicit and truthful", async () =>
   assert.match(storage, /parsed\.hasStarted === true &&[\s\S]*parsed\.dueCount/);
   assert.match(content, /status: "prototype"/);
   assert.match(content, /CC BY-ND 3\.0 TW/);
-  assert.match(copy, /20 課可體驗/);
+  assert.match(copy, /20 課已開放/);
   assert.doesNotMatch(copy, /7 \/ 12/);
 });

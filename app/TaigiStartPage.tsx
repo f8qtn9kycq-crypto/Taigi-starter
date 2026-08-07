@@ -137,6 +137,10 @@ export default function TaigiStartPage() {
           text={text}
           locale={progress.locale}
           activeLessonNumber={activeLesson.number}
+          activeStage={progress.stage}
+          stageCount={activeLesson.stages.length}
+          hasStarted={progress.hasStarted}
+          completedPhraseIds={completedPhraseIds}
           onLessonSelect={selectLesson}
         />
         <footer>
