@@ -1,0 +1,305 @@
+import {
+  makePhrase,
+  moeSource,
+  requiredTeacherReview,
+  stagePlan,
+  type RawLessonPackage,
+} from "./shared.ts";
+
+export const lessonPackages2To6: readonly RawLessonPackage[] = [
+  {
+    id: "lesson-2-family-package",
+    number: 2,
+    title: { zh: "阮兜的人", en: "My family" },
+    secondaryTitle: { zh: "My family", en: "阮兜的人" },
+    summary: {
+      zh: "從自己的家開始，認識三個日常家庭詞。",
+      en: "Start with home and learn three everyday family words.",
+    },
+    objective: {
+      zh: "學習者能聽懂並說出「阮兜、阿母、阿爸」，知道稱謂和描述用法的差別。",
+      en: "Learners can hear and say guán tau, a-bú, and a-pah, and distinguish address terms from descriptions.",
+    },
+    mission: {
+      zh: "介紹家裡的人：指出自己的家、媽媽和爸爸。",
+      en: "Talk about home: identify your home, mother, and father.",
+    },
+    status: "planned",
+    stagePlan,
+    phrases: [
+      makePhrase({
+        id: "lesson-2-family-home",
+        hanji: "阮兜",
+        tailo: "Guán tau",
+        poj: null,
+        meaning: { zh: "我家／我們家", en: "my home / our home" },
+        cultureNote: {
+          zh: "教育部詞條「兜」的用例是「阮兜」；這裡先保留完整詞組，避免只教孤立的「兜」。",
+          en: "The MOE entry for tau uses guán tau as its example; keep the full phrase instead of teaching tau in isolation.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/6917/"),
+      }),
+      makePhrase({
+        id: "lesson-2-family-mother",
+        hanji: "阿母",
+        tailo: "A-bú",
+        poj: null,
+        meaning: { zh: "媽媽；常用作面稱", en: "mother; commonly used when addressing her" },
+        cultureNote: {
+          zh: "教育部列「a-bú」為主音讀，也列出「a-bó」的又唸；上線前需由教師決定呈現方式。",
+          en: "The MOE lists a-bú as the main reading and a-bó as another reading; a teacher should decide how to present the variant.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/4524/"),
+      }),
+      makePhrase({
+        id: "lesson-2-family-father",
+        hanji: "阿爸",
+        tailo: "A-pah",
+        poj: null,
+        meaning: { zh: "爸爸；子女對父親的稱呼", en: "father; a child’s term of address for their father" },
+        cultureNote: {
+          zh: "教育部列「a-pah」為主音讀，並記錄 a-pa、a-pâ 等變體；不先把變體當成錯誤。",
+          en: "The MOE lists a-pah as the main reading and records a-pa and a-pâ as variants; do not treat the variants as errors.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/und-hani/su/4558/"),
+      }),
+    ],
+    teacherReview: requiredTeacherReview,
+  },
+  {
+    id: "lesson-3-numbers-package",
+    number: 3,
+    title: { zh: "一二三", en: "One, two, three" },
+    secondaryTitle: { zh: "One, two, three", en: "一二三" },
+    summary: {
+      zh: "用最小的一組數字練習節奏、辨音和簡單數數。",
+      en: "Use the smallest set of numbers to practice rhythm, listening, and simple counting.",
+    },
+    objective: {
+      zh: "學習者能辨認並說出一、二、三，並知道「二」在不同腔口可能有不同讀音。",
+      en: "Learners can recognize and say one, two, and three, and know that two has regional readings.",
+    },
+    mission: {
+      zh: "數身邊三樣物件，聽到數字時指出正確數量。",
+      en: "Count three everyday objects and point to the right quantity when you hear each number.",
+    },
+    status: "planned",
+    stagePlan,
+    phrases: [
+      makePhrase({
+        id: "lesson-3-numbers-one",
+        hanji: "一",
+        tailo: "Tsi̍t",
+        poj: null,
+        meaning: { zh: "一；數字", en: "one; the number" },
+        cultureNote: {
+          zh: "教育部詞條把「tsi̍t」列為主音讀，並另列「it」；此 package 先以白讀主音讀為主。",
+          en: "The MOE lists tsi̍t as the main reading and also records it; this package starts with the colloquial main reading.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/1/"),
+      }),
+      makePhrase({
+        id: "lesson-3-numbers-two",
+        hanji: "二",
+        tailo: "Jī / lī",
+        poj: null,
+        meaning: { zh: "二；數字", en: "two; the number" },
+        cultureNote: {
+          zh: "教育部記錄「jī、lī」及不同地區的讀音；正式課程需要教師決定主要示範音與變體呈現順序。",
+          en: "The MOE records jī, lī, and regional readings; the final lesson needs a teacher-approved primary model and variant order.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/und-hani/su/44/"),
+      }),
+      makePhrase({
+        id: "lesson-3-numbers-three",
+        hanji: "三",
+        tailo: "Sann",
+        poj: null,
+        meaning: { zh: "三；數字", en: "three; the number" },
+        cultureNote: {
+          zh: "教育部詞條列「sann」為白讀主音讀，另有文讀 sam、sàm；初學課先聚焦白讀。",
+          en: "The MOE lists sann as the colloquial main reading and also records literary readings sam and sàm; the beginner lesson focuses on sann first.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/163/"),
+      }),
+    ],
+    teacherReview: requiredTeacherReview,
+  },
+  {
+    id: "lesson-4-food-and-drink-package",
+    number: 4,
+    title: { zh: "食飯佮飲水", en: "Food and drink" },
+    secondaryTitle: { zh: "Food and drink", en: "食飯佮飲水" },
+    summary: {
+      zh: "從吃飯和喝水開始，辨認台語裡不同的飲食說法。",
+      en: "Start with eating and drinking, and notice how Taigi expresses both.",
+    },
+    objective: {
+      zh: "學習者能聽懂並說出「食飯、啉水、食茶」，知道「食」和「啉」在飲食語境中的差異。",
+      en: "Learners can hear and say tsia̍h-pn̄g, lim tsuí, and tsia̍h-tê, and notice the contextual difference between tsia̍h and lim.",
+    },
+    mission: {
+      zh: "完成一個飲食選擇：說你要吃飯、喝水，或喝茶。",
+      en: "Make one food or drink choice: say whether you want a meal, water, or tea.",
+    },
+    status: "planned",
+    stagePlan,
+    phrases: [
+      makePhrase({
+        id: "lesson-4-food-and-drink-meal",
+        hanji: "食飯",
+        tailo: "Tsia̍h-pn̄g",
+        poj: null,
+        meaning: { zh: "吃飯；用餐", en: "eat rice; have a meal" },
+        cultureNote: {
+          zh: "教育部「飯」詞條以「食飯」作為吃飯的用例，適合延續第 1 課從日常關心進入生活語境。",
+          en: "The MOE entry for pn̄g uses tsia̍h-pn̄g as its example for eating a meal, connecting naturally to everyday life after Lesson 1.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/9222/"),
+      }),
+      makePhrase({
+        id: "lesson-4-food-and-drink-water",
+        hanji: "啉水",
+        tailo: "Lim tsuí",
+        poj: null,
+        meaning: { zh: "喝水", en: "drink water" },
+        cultureNote: {
+          zh: "教育部「啉」詞條直接以「啉水」作為喝水的用例，也註明「啉」有喝、飲的意思。",
+          en: "The MOE entry for lim directly uses lim tsuí as its example and defines lim as to drink.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/7018/"),
+      }),
+      makePhrase({
+        id: "lesson-4-food-and-drink-tea",
+        hanji: "食茶",
+        tailo: "Tsia̍h-tê",
+        poj: null,
+        meaning: { zh: "喝茶", en: "drink tea" },
+        cultureNote: {
+          zh: "教育部「食」詞條列出「食茶」作為喝茶的用例；這是很適合在課堂中比較「食」和「啉」的真實語料。",
+          en: "The MOE entry for tsia̍h lists tsia̍h-tê as an example for drinking tea, making it useful for comparing tsia̍h and lim in context.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/5570/"),
+      }),
+    ],
+    teacherReview: requiredTeacherReview,
+  },
+  {
+    id: "lesson-5-daily-routine-package",
+    number: 5,
+    title: { zh: "今仔日的日常", en: "Today’s routine" },
+    secondaryTitle: { zh: "Today’s routine", en: "今仔日的日常" },
+    summary: {
+      zh: "用今天、早上和做事三個詞，說出一點自己的日常。",
+      en: "Use today, morning, and doing things to describe a little of daily life.",
+    },
+    objective: {
+      zh: "學習者能理解「今仔日、早起、做代誌」，並用短句說出今天早上的一件事。",
+      en: "Learners can understand kin-á-ji̍t, tsá-khí, and tsò tāi-tsì, then say one thing they did this morning.",
+    },
+    mission: {
+      zh: "說出今天早上的一件日常代誌，讓對方知道你在做啥。",
+      en: "Say one thing you did this morning so someone knows what you were doing.",
+    },
+    status: "planned",
+    stagePlan,
+    phrases: [
+      makePhrase({
+        id: "lesson-5-daily-today",
+        hanji: "今仔日",
+        tailo: "Kin-á-ji̍t / kin-á-li̍t",
+        poj: null,
+        meaning: { zh: "今天、今日", en: "today" },
+        cultureNote: {
+          zh: "教育部詞條列「kin-á-ji̍t、kin-á-li̍t」兩種讀音；課程需要教師決定主要示範音，再保留另一種作為可接受變體。",
+          en: "The MOE entry lists kin-á-ji̍t and kin-á-li̍t; a teacher should choose the primary model while keeping the other as an acceptable variant.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/629/"),
+      }),
+      makePhrase({
+        id: "lesson-5-daily-morning",
+        hanji: "早起",
+        tailo: "Tsá-khí",
+        poj: null,
+        meaning: { zh: "早上、早晨；早餐", en: "morning; breakfast" },
+        cultureNote: {
+          zh: "教育部詞條同時收錄「早起」作為早上和早餐，提醒課程要用情境幫助初學者分辨意思。",
+          en: "The MOE entry uses tsá-khí for both morning and breakfast, so the lesson should use context to make the meaning clear.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/2517/"),
+      }),
+      makePhrase({
+        id: "lesson-5-daily-work",
+        hanji: "做代誌",
+        tailo: "Tsò tāi-tsì",
+        poj: null,
+        meaning: { zh: "做事情；做事", en: "do things; carry out a task" },
+        cultureNote: {
+          zh: "教育部詞典收錄「代誌 tāi-tsì」並提供例句；這裡先把「做代誌」當成可放入短句的生活詞組，不延伸成職業或工作專門術語。",
+          en: "The MOE dictionary lists tāi-tsì and provides an example; keep tsò tāi-tsì as an everyday phrase for short sentences rather than turning it into a job-specific term.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/1370/"),
+      }),
+    ],
+    teacherReview: requiredTeacherReview,
+  },
+  {
+    id: "lesson-6-weather-and-feelings-package",
+    number: 6,
+    title: { zh: "天氣佮感受", en: "Weather and feelings" },
+    secondaryTitle: { zh: "Weather and feelings", en: "天氣佮感受" },
+    summary: {
+      zh: "從天氣開始，練習用簡單形容詞表達感受。",
+      en: "Start with the weather and practice simple words for how it feels.",
+    },
+    objective: {
+      zh: "學習者能說出天氣、熱和冷，並用短句描述今天的感受。",
+      en: "Learners can say weather, hot, and cold, then describe how today feels in a short phrase.",
+    },
+    mission: {
+      zh: "看窗外講一句天氣感受：今仔日是熱抑是冷。",
+      en: "Look outside and say how the weather feels today: hot or cold.",
+    },
+    status: "planned",
+    stagePlan,
+    phrases: [
+      makePhrase({
+        id: "lesson-6-weather-weather",
+        hanji: "天氣",
+        tailo: "Thinn-khì",
+        poj: null,
+        meaning: { zh: "天候、天氣", en: "weather" },
+        cultureNote: {
+          zh: "教育部例句把「今仔日天氣無好」和出門帶雨衣放在一起，適合教成生活中的提醒，而不是抽象名詞。",
+          en: "An MOE example connects bad weather today with taking a raincoat, so teach this as a practical everyday reminder rather than an abstract noun.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/1028/"),
+      }),
+      makePhrase({
+        id: "lesson-6-weather-hot",
+        hanji: "熱",
+        tailo: "Jua̍h / lua̍h",
+        poj: null,
+        meaning: { zh: "熱；溫度高的感覺", en: "hot; the feeling of high temperature" },
+        cultureNote: {
+          zh: "教育部列「jua̍h、lua̍h」兩種白讀，並以「今仔日真熱」示範；上線前需決定主要示範音。",
+          en: "The MOE lists jua̍h and lua̍h as colloquial readings and demonstrates kin-á-ji̍t tsin jua̍h; the primary model still needs teacher approval.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/11204/"),
+      }),
+      makePhrase({
+        id: "lesson-6-weather-cold",
+        hanji: "冷",
+        tailo: "Líng",
+        poj: null,
+        meaning: { zh: "冷；溫度低", en: "cold; low in temperature" },
+        cultureNote: {
+          zh: "教育部把「冷」的氣候意思和冷水、冷飯用例放在一起，課程要先固定在溫度語境。",
+          en: "The MOE includes climate, cold water, and cold rice examples; keep this beginner package focused on the temperature meaning first.",
+        },
+        source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/2874/"),
+      }),
+    ],
+    teacherReview: requiredTeacherReview,
+  },
+] as const;

@@ -14,10 +14,10 @@
 - 繁體中文與英文介面
 - 60 秒產品回饋表單
 
-目前 production 已部署第 1–18 課，lesson package 第 2–18 課全部接成
-playable 五段流程。第 2–18 課仍保留
+目前 runtime catalog 包含第 1–20 課，lesson package 第 2–20 課全部接成
+playable 五段流程。第 2–20 課仍保留
 `teacherReview: required`，並以明確的 owner risk acceptance 交付，不宣稱已有
-教師核准。第 19 課以後仍是 roadmap。
+教師核准。
 
 ## 回饋流程與隱私
 
@@ -41,6 +41,7 @@ npm run dev
 npm test
 npm run lint
 npm run lessons:validate
+git diff --check
 ```
 
 `npm test` 會先執行 lesson package routine gate，再建立正式產物、檢查首頁
@@ -54,6 +55,7 @@ POJ、官方原始 MP3、CC BY-ND attribution、local audio asset 與課程範�
 - `app/types`：共用學習模型
 - `app/utils`：純計算邏輯
 - `app/services`：版本化裝置端儲存
+- `app/data/lesson-packages`：依課程範圍拆分的 authoring package 資料
 - `app/api/feedback-config`：提供已設定的外部表單 URL
 - `public/audio`：授權音檔原檔
 - `tests`：伺服器輸出與純邏輯測試
@@ -61,9 +63,26 @@ POJ、官方原始 MP3、CC BY-ND attribution、local audio asset 與課程範�
 AI 協作規範請見 [AGENTS.md](./AGENTS.md)，審查順序請見
 [REVIEW.md](./REVIEW.md)。
 
+## 課程資料邊界
+
+課程內容先以 `app/data/lesson-packages` 的 authoring package 維護，經
+`app/utils/lesson-package-validation.ts` 驗證，再由
+`app/utils/lesson-package-adapter.ts` 轉成 learner runtime model。
+`app/utils/lesson-catalog.ts` 只負責依既有優先順序組裝 catalog，
+`app/data/lessons.ts` 則保留穩定的 runtime export。發布前的 handoff gate 位於
+`app/data/lesson-package-handoffs.ts` 與
+`app/utils/lesson-package-handoff.ts`；未通過 schema、來源驗證與必要教師審查的
+draft 不得直接進入 learner runtime。
+
+`app/types/lesson-conversation.ts` 與對應 builder 提供純粹、單一課程範圍的
+context。`app/services/ai` 目前只有 server-side／離線 authoring 使用的窄型別
+contract、prompt builder 與受 gate 保護的 draft consumer；沒有 provider adapter、
+model 名稱、憑證或外部模型呼叫，也不會進入 learner client bundle。課程步驟中的
+instruction／prompt 是學習者看得到的教學文字，不是 LLM prompt。
+
 ## 音檔來源
 
-第 1–18 課詞條與原始音檔取自中華民國教育部《臺灣台語常用詞辭典》；每個
+第 1–20 課詞條與原始音檔取自中華民國教育部《臺灣台語常用詞辭典》；每個
 playable phrase 都保留 canonical 詞條頁、原始 MP3 URL、speaker、授權與
 `isUnmodifiedOriginal` attribution。
 
