@@ -1,24 +1,23 @@
-import type { Locale } from "./learning";
+import type {
+  LessonAudioAttribution,
+  LessonContentStatus,
+  LessonFactoryStepId,
+  LessonSource,
+  LocalizedText,
+} from "./lesson-domain.ts";
 
-export type LocalizedText = Record<Locale, string>;
-
-export type LessonSource = {
-  title: LocalizedText;
-  canonicalUrl: string;
-  license: string;
-  licenseUrl: string;
-  speaker: string | null;
-};
-
-export type LessonAudioAttribution = {
-  audioUrl: string;
-  sourceUrl: string;
-  originalUrl: string;
-  license: string;
-  licenseUrl: string;
-  speaker: string | null;
-  isUnmodifiedOriginal: true;
-};
+export {
+  LESSON_FACTORY_STEP_IDS,
+  LESSON_FACTORY_STEP_IDS as LESSON_STAGE_IDS,
+} from "./lesson-domain.ts";
+export type {
+  LessonAudioAsset,
+  LessonAudioAttribution,
+  LessonContentStatus,
+  LessonFactoryStepId,
+  LessonSource,
+  LocalizedText,
+} from "./lesson-domain.ts";
 
 export type LessonPhrase = {
   id: string;
@@ -32,9 +31,7 @@ export type LessonPhrase = {
   audioAttribution: LessonAudioAttribution;
 };
 
-export const LESSON_STAGE_IDS = ["hear", "see", "say", "recall", "use"] as const;
-
-export type LessonStageId = (typeof LESSON_STAGE_IDS)[number];
+export type LessonStageId = LessonFactoryStepId;
 
 export type LessonStage = {
   id: LessonStageId;
@@ -53,13 +50,13 @@ type LessonBase = {
 };
 
 export type PlayableLesson = LessonBase & {
-  status: "prototype";
+  status: Extract<LessonContentStatus, "prototype">;
   durationMinutes: number;
   stages: readonly LessonStage[];
 };
 
 export type PlannedLesson = LessonBase & {
-  status: "planned";
+  status: Extract<LessonContentStatus, "planned">;
 };
 
 export type Lesson = PlayableLesson | PlannedLesson;
