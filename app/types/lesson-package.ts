@@ -1,4 +1,10 @@
-import type { LessonSource, LocalizedText } from "./lesson";
+import type {
+  LessonAudioAsset,
+  LessonAudioAttribution,
+  LessonContentStatus,
+  LessonSource,
+  LocalizedText,
+} from "./lesson-domain.ts";
 
 export const TEACHER_REVIEW_CHECK_IDS = [
   "orthography",
@@ -32,13 +38,8 @@ export type LessonPackagePhrase = {
   meaning: LocalizedText;
   cultureNote: LocalizedText;
   source: LessonSource;
-  audio: {
+  audio: LessonAudioAsset & {
     status: "added";
-    audioUrl: string;
-    originalUrl: string;
-    license: string;
-    licenseUrl: string;
-    isUnmodifiedOriginal: true;
     note: LocalizedText;
   };
 };
@@ -52,21 +53,14 @@ export type LessonPackage = {
   summary: LocalizedText;
   objective: LocalizedText;
   mission: LocalizedText;
-  status: "planned";
+  status: Extract<LessonContentStatus, "planned">;
   stagePlan: readonly LocalizedText[];
   phrases: readonly LessonPackagePhrase[];
   teacherReview: TeacherReview;
 };
 
-export type LessonPackageAudioAttribution = {
+export type LessonPackageAudioAttribution = LessonAudioAttribution & {
   phraseId: string;
-  audioUrl: string;
-  sourceUrl: string;
-  originalUrl: string;
-  license: string;
-  licenseUrl: string;
-  speaker: string | null;
-  isUnmodifiedOriginal: true;
 };
 
 export type LessonPackageMobileFlowEvidence = {
