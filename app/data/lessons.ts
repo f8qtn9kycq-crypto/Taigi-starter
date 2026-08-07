@@ -5,7 +5,7 @@ import {
   type PlannedLesson,
 } from "../types/lesson.ts";
 import { lessonPackageHandoffs } from "./lesson-package-handoffs.ts";
-import { lessonPackageHandoffToPlayableLesson } from "../utils/lesson-package-handoff.ts";
+import { buildLessonCatalog } from "../utils/lesson-catalog.ts";
 
 const lessonOneStages = LESSON_STAGE_IDS.map((id) => ({
   id,
@@ -94,18 +94,9 @@ const plannedLessonPlaceholders: readonly PlannedLesson[] = [
 
 export const createLessonCatalog = (
   handoffs: readonly unknown[] = [],
-): readonly Lesson[] => {
-  const lessonsByNumber = new Map<number, Lesson>([
-    [prototypeLesson.number, prototypeLesson],
-    ...plannedLessonPlaceholders.map((lesson) => [lesson.number, lesson] as const),
-  ]);
-
-  for (const handoff of handoffs) {
-    const playableLesson = lessonPackageHandoffToPlayableLesson(handoff);
-    if (playableLesson) lessonsByNumber.set(playableLesson.number, playableLesson);
-  }
-
-  return [...lessonsByNumber.values()].sort((left, right) => left.pathOrder - right.pathOrder);
-};
+): readonly Lesson[] => buildLessonCatalog(
+  [prototypeLesson, ...plannedLessonPlaceholders],
+  handoffs,
+);
 
 export const lessonCatalog: readonly Lesson[] = createLessonCatalog(lessonPackageHandoffs);

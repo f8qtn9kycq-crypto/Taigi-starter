@@ -1,12 +1,8 @@
 import type {
   LessonPackageHandoff,
 } from "../types/lesson-package.ts";
-import {
-  LESSON_STAGE_IDS,
-  type LessonAudioAttribution,
-  type LessonPhrase,
-  type PlayableLesson,
-} from "../types/lesson.ts";
+import type { PlayableLesson } from "../types/lesson.ts";
+import { adaptLessonPackageHandoff } from "./lesson-package-adapter.ts";
 import {
   isValidIsoTimestamp,
   validateLessonPackages,
@@ -192,52 +188,7 @@ export const lessonPackageHandoffToPlayableLesson = (
   value: unknown,
 ): PlayableLesson | null => {
   if (!isLessonPackageHandoff(value)) return null;
-
-  const attributionByPhraseId = new Map(
-    value.audioAttribution.map((attribution) => [attribution.phraseId, attribution]),
-  );
-  const phrases: readonly LessonPhrase[] = value.package.phrases.map((phrase) => {
-    const attribution = attributionByPhraseId.get(phrase.id);
-    if (!attribution) return null;
-
-    const audioAttribution: LessonAudioAttribution = {
-      audioUrl: attribution.audioUrl,
-      sourceUrl: attribution.sourceUrl,
-      originalUrl: attribution.originalUrl,
-      license: attribution.license,
-      licenseUrl: attribution.licenseUrl,
-      speaker: attribution.speaker,
-      isUnmodifiedOriginal: true,
-    };
-
-    return {
-      id: phrase.id,
-      hanji: phrase.hanji,
-      tailo: phrase.tailo,
-      poj: phrase.poj,
-      meaning: phrase.meaning,
-      cultureNote: phrase.cultureNote,
-      audioUrl: attribution.audioUrl,
-      source: phrase.source,
-      audioAttribution,
-    };
-  }).filter((phrase): phrase is LessonPhrase => phrase !== null);
-
-  if (phrases.length !== value.package.phrases.length) return null;
-
-  return {
-    id: value.package.id,
-    number: value.package.number,
-    pathOrder: value.package.pathOrder,
-    title: value.package.title,
-    secondaryTitle: value.package.secondaryTitle,
-    summary: value.package.summary,
-    mission: value.package.mission,
-    status: "prototype",
-    durationMinutes: LESSON_STAGE_IDS.length,
-    stages: LESSON_STAGE_IDS.map((id) => ({ id, estimatedMinutes: 1 })),
-    phrases,
-  };
+  return adaptLessonPackageHandoff(value);
 };
 
 export const isLessonPackageHandoff = (
