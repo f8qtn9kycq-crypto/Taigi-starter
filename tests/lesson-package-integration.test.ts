@@ -88,3 +88,21 @@ test("catalog replaces a matching planned placeholder only for a valid handoff",
   const unchanged = createLessonCatalog([{}]);
   assert.equal(unchanged.find((lesson) => lesson.number === 2)?.status, "planned");
 });
+
+test("catalog replacement precedence is explicit without mutating handoffs", () => {
+  const first = createHandoff("Lí chia̍h-pá--bōe?");
+  const second = structuredClone(first);
+  const secondPackage = second.package as {
+    title: { zh: string; en: string };
+  };
+  secondPackage.title = { zh: "後載入的標題", en: "Later title" };
+  const handoffs = [first, second];
+  const before = structuredClone(handoffs);
+
+  const catalog = createLessonCatalog(handoffs);
+  const lessonTwo = catalog.find((lesson) => lesson.number === 2);
+
+  assert.deepEqual(lessonTwo?.title, secondPackage.title);
+  assert.deepEqual(handoffs, before);
+  assert.deepEqual(catalog.map((lesson) => lesson.pathOrder), [1, 3, 15]);
+});
