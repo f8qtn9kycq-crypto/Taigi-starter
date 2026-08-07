@@ -41,6 +41,7 @@ next-env.d.ts
 /.sites-runtime/
 /outputs/
 /work/
+/.release-work/
 /.sites-runtime/
 /node_modules.broken/
 *.csv
