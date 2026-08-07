@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("ships the first-time Taigi landing content and Vercel feedback path", async () => {
-  const [layout, landing, page, bottomNav, lesson, stagePanel, stageContent, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService] = await Promise.all([
+  const [layout, landing, page, bottomNav, lesson, stagePanel, stageContent, recording, recorder, copy, content, feedbackConfig, feedbackForm] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/TaigiStartPage.tsx", import.meta.url), "utf8"),
@@ -17,7 +17,6 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
     readFile(new URL("../app/data/lessons.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/api/feedback-config/route.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/FeedbackForm.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/services/feedback.ts", import.meta.url), "utf8"),
   ]);
 
   assert.match(layout, /台語起步 Tâi-gí Start/);
@@ -63,9 +62,9 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(recording, /text\.recordingLocalOnly/);
   assert.match(recording, /onCompletionChange/);
   assert.match(recording, /fallbackConfirmed/);
-  assert.match(recording, /status === "denied"[\s\S]*text\.openSafariHint/);
+  assert.doesNotMatch(recording, /openSafariHint/);
   assert.match(recording, /text\.microphoneEnableHint[\s\S]*<button/);
-  assert.match(copy, /若目前不是 Safari，請改用 Safari；若已在 Safari，請到設定允許麥克風。/);
+  assert.doesNotMatch(copy, /若目前不是 Safari|open this lesson in Safari/);
   assert.doesNotMatch(`${recording}\n${recorder}`, /fetch\(|XMLHttpRequest|navigator\.sendBeacon/);
   assert.match(landing, /text\.stageCount\(stage, totalStages\)/);
   assert.doesNotMatch(copy, /stageCount: \(stage\) => .*\/ 5/);
@@ -74,10 +73,10 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(copy, /先完成一次跟讀/);
   assert.match(copy, /我已經跟讀/);
   assert.doesNotMatch(feedbackForm, /fetch\(["']\/api\/feedback["']/);
-  assert.match(feedbackService, /docs\.google\.com\/forms\/d\/e\/1FAIpQLScQAOPmLNn545S4l9XQtjKaTZNDXhtacEH3XIGUcDXC4K_obQ/);
-  assert.match(feedbackForm, /LEARNER_FEEDBACK_URL/);
+  assert.match(feedbackConfig, /process\.env\.FEEDBACK_EXTERNAL_FORM_URL/);
+  assert.match(feedbackConfig, /url\.protocol === "https:"/);
+  assert.match(feedbackForm, /api\/feedback-config/);
   assert.doesNotMatch(`${feedbackForm}\n${page}`, /GitHub\s*·\s*Technical feedback|GitHub feedback/i);
-  assert.match(feedbackConfig, /LEARNER_FEEDBACK_URL/);
   assert.match(feedbackForm, /target="_blank"/);
   assert.doesNotMatch(`${feedbackConfig}\n${feedbackForm}`, /cloudflare:workers|codex-preview|_sites-preview|react-loading-skeleton/);
 });
