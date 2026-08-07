@@ -37,6 +37,9 @@ export type LessonCopy = {
   lessonSummary: string;
   lessonMission: string;
   lessonTargets: string;
+  phraseSelectorLabel: (current: number, total: number) => string;
+  phraseSelectorOption: (phrase: string, current: number, total: number) => string;
+  completedPhrase: string;
   lessonRhythm: string;
   lessonTime: string;
   stageTime: (minutes: number) => string;
@@ -89,7 +92,7 @@ export type LessonCopy = {
   recallAttempt: string;
   addReview: string;
   reviewAdded: string;
-  nextPhrase: string;
+  nextPhrase: (phrase: string) => string;
   lessonComplete: string;
   path: string;
   pathSummary: string;
@@ -150,6 +153,9 @@ export const copy: Record<Locale, LessonCopy> = {
     lessonSummary: "從日常招呼開始，把聲音、文字和開口練習連起來。",
     lessonMission: "生活任務",
     lessonTargets: "本課目標詞",
+    phraseSelectorLabel: (current, total) => `選擇要練習的詞語（${current}/${total}）`,
+    phraseSelectorOption: (phrase, current, total) => `${phrase}，第 ${current} 個，共 ${total} 個`,
+    completedPhrase: "本次已完成",
     lessonRhythm: "先聽 → 看文字 → 開口講 → 回想 → 生活運用",
     lessonTime: "約 5 分鐘",
     stageTime: (minutes) => `約 ${minutes} 分鐘`,
@@ -220,7 +226,7 @@ export const copy: Record<Locale, LessonCopy> = {
     recallAttempt: "我已先回想",
     addReview: "加入今日複習",
     reviewAdded: "已加入複習",
-    nextPhrase: "下一句",
+    nextPhrase: (phrase) => `下一個詞：${phrase}`,
     lessonComplete: "這課完成了！",
     path: "初學者路徑",
     pathSummary: "20 課可體驗",
@@ -279,6 +285,9 @@ export const copy: Record<Locale, LessonCopy> = {
     lessonSummary: "Connect the sound, script, and speaking practice of an everyday greeting.",
     lessonMission: "Real-life task",
     lessonTargets: "Target phrases",
+    phraseSelectorLabel: (current, total) => `Choose a phrase to practise (${current}/${total})`,
+    phraseSelectorOption: (phrase, current, total) => `${phrase}, ${current} of ${total}`,
+    completedPhrase: "Completed this session",
     lessonRhythm: "Hear → see → say → recall → use",
     lessonTime: "About 5 minutes",
     stageTime: (minutes) => `About ${minutes} minute${minutes === 1 ? "" : "s"}`,
@@ -349,7 +358,7 @@ export const copy: Record<Locale, LessonCopy> = {
     recallAttempt: "I tried to recall it",
     addReview: "Add to today’s review",
     reviewAdded: "Added to review",
-    nextPhrase: "Next phrase",
+    nextPhrase: (phrase) => `Next phrase: ${phrase}`,
     lessonComplete: "Lesson complete!",
     path: "Beginner path",
     pathSummary: "20 lessons available",

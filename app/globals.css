@@ -636,12 +636,44 @@ a:focus-visible {
 }
 
 .lesson-targets li {
-  display: grid;
-  gap: 2px;
   min-width: 0;
-  padding: 7px 9px;
+}
+
+.lesson-targets button {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border: 1px solid transparent;
   border-radius: 9px;
   background: #f5f0e6;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.lesson-targets button > span {
+  display: grid;
+  gap: 2px;
+}
+
+.lesson-targets button:hover,
+.lesson-targets button:focus-visible {
+  border-color: var(--jade);
+}
+
+.lesson-targets button.active {
+  border-color: var(--jade);
+  background: #e6f4ef;
+  box-shadow: 0 0 0 2px rgb(8 127 109 / 0.12);
+}
+
+.lesson-targets button > i {
+  color: var(--jade-dark);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
 }
 
 .lesson-targets b {

@@ -113,7 +113,7 @@ export default function LessonStagePanel({
             {reviewScheduled ? (
               phraseIndex < lesson.phrases.length - 1 ? (
                 <button type="button" className="action-button primary-action" onClick={onPhraseAdvance} disabled={!hasUseResponse}>
-                  {text.nextPhrase}<span>→</span>
+                  {text.nextPhrase(lesson.phrases[phraseIndex + 1].hanji)}<span>→</span>
                 </button>
               ) : hasUseResponse && <p className="lesson-complete" role="status">✓ {text.lessonComplete}</p>
             ) : (

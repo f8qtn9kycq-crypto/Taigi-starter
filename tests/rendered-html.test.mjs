@@ -35,6 +35,11 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(copy, /lessonRhythm: "先聽 → 看文字 → 開口講 → 回想 → 生活運用"/);
   assert.match(copy, /lessonTime: "約 5 分鐘"/);
   assert.match(lesson, /lesson-rhythm/);
+  assert.match(lesson, /aria-pressed=\{index === phraseIndex\}/);
+  assert.match(lesson, /onPhraseChange\(index\)/);
+  assert.match(lesson, /completedPhraseIds\.has\(phrase\.id\)/);
+  assert.match(copy, /選擇要練習的詞語/);
+  assert.match(copy, /下一個詞：/);
   assert.match(lesson, /lesson.stages.map/);
   assert.match(lesson, /text\.stageLabels\[lessonStage\.id\]/);
   assert.match(lesson, /disabled=\{!isCurrent && !isComplete\}/);
@@ -92,6 +97,7 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   ]);
 
   assert.match(page, /<BottomNav/);
+  assert.match(page, /activeLesson\.phrases\[progress\.phraseIndex\] \? progress\.phraseIndex : 0/);
   assert.match(page, /onStart=\{startLearning\}/);
   assert.match(page, /document\.documentElement\.lang = progress\.locale === "zh" \? "zh-Hant-TW" : "en"/);
   assert.match(landing, /onClick=\{onAudioToggle\}/);
@@ -110,6 +116,7 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(css, /\.brand \{[\s\S]*min-height: 44px/);
   assert.match(css, /\.locale \{[\s\S]*min-height: 44px/);
   assert.match(css, /\.script-tabs button \{[\s\S]*min-height: 44px/);
+  assert.match(css, /\.lesson-targets button \{[\s\S]*min-height: 44px/);
   assert.match(css, /\.media-attribution a \{[\s\S]*min-height: 44px/);
   assert.match(css, /\.use-response textarea \{[\s\S]*min-height: 72px/);
   assert.match(css, /\.progress-line i \{[\s\S]*width: 100%/);
