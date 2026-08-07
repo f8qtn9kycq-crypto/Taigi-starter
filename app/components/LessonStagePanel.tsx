@@ -32,6 +32,8 @@ export default function LessonStagePanel({
   const [showAnswer, setShowAnswer] = useState(false);
   const [recallAttempted, setRecallAttempted] = useState(false);
   const [sayCompleted, setSayCompleted] = useState(false);
+  const [useResponse, setUseResponse] = useState("");
+  const hasUseResponse = useResponse.trim().length > 0;
   const phrase = lesson.phrases[phraseIndex];
   const lessonStage = lesson.stages[stage];
   const { isPlaying, hasError, toggle } = useAudioPlayer(phrase.audioUrl);
@@ -96,17 +98,30 @@ export default function LessonStagePanel({
         {lessonStage.id === "recall" && !showAnswer && recallAttempted && <button type="button" className="action-button primary-action" onClick={() => setShowAnswer(true)}>{text.showAnswer}<span>↓</span></button>}
         {lessonStage.id === "recall" && showAnswer && <button type="button" className="action-button primary-action" onClick={onAdvance}>{text.nextUse}<span>→</span></button>}
         {lessonStage.id === "use" && (
-          reviewScheduled ? (
-            phraseIndex < lesson.phrases.length - 1 ? (
-              <button type="button" className="action-button primary-action" onClick={onPhraseAdvance}>
-                {text.nextPhrase}<span>→</span>
+          <>
+            <label className="use-response">
+              <span>{text.usePrompt}</span>
+              <textarea
+                value={useResponse}
+                onChange={(event) => setUseResponse(event.target.value)}
+                placeholder={text.usePlaceholder}
+                maxLength={120}
+                rows={2}
+              />
+            </label>
+            {!hasUseResponse && <p className="stage-gate-hint" role="status">{text.useCompletionRequired}</p>}
+            {reviewScheduled ? (
+              phraseIndex < lesson.phrases.length - 1 ? (
+                <button type="button" className="action-button primary-action" onClick={onPhraseAdvance} disabled={!hasUseResponse}>
+                  {text.nextPhrase}<span>→</span>
+                </button>
+              ) : hasUseResponse && <p className="lesson-complete" role="status">✓ {text.lessonComplete}</p>
+            ) : (
+              <button type="button" className="action-button primary-action" onClick={() => onReviewAdded(phrase.id)} disabled={!hasUseResponse}>
+                {text.addReview}<span>+</span>
               </button>
-            ) : <p className="lesson-complete" role="status">✓ {text.lessonComplete}</p>
-          ) : (
-            <button type="button" className="action-button primary-action" onClick={() => onReviewAdded(phrase.id)}>
-              {text.addReview}<span>+</span>
-            </button>
-          )
+            )}
+          </>
         )}
       </div>
     </div>
