@@ -33,6 +33,8 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(coursePath, /text\.continueLesson\(activeStage \+ 1, stageCount\)/);
   assert.match(coursePath, /text\.lessonCompleted/);
   assert.match(coursePath, /onLessonSelect\(lesson\.number\)/);
+  assert.match(coursePath, /text\.lessonNumber\(lesson\.pathOrder\)/);
+  assert.doesNotMatch(coursePath, /text\.lessonNumber\(lesson\.number\)/);
   assert.match(coursePath, /role="progressbar"/);
   assert.match(coursePath, /text\.lessonDuration\(lesson\.durationMinutes\)/);
   assert.match(coursePath, /lesson\.status === "planned"[\s\S]*\? "locked"/);

@@ -74,7 +74,7 @@ const CoursePath = forwardRef<HTMLElement, CoursePathProps>(
                   >
                     <span className="lesson-icon" aria-hidden="true">{lessonIcons[lesson.number] ?? "•"}</span>
                     <div className="lesson-card-copy">
-                      <span className="lesson-kicker">{text.lessonNumber(lesson.number)}</span>
+                      <span className="lesson-kicker">{text.lessonNumber(lesson.pathOrder)}</span>
                       <b>{lesson.title[locale]}</b>
                       <small>{lesson.secondaryTitle[locale]} · {text.lessonDuration(lesson.durationMinutes)}</small>
                       {(isActive || isComplete) && (
@@ -99,7 +99,7 @@ const CoursePath = forwardRef<HTMLElement, CoursePathProps>(
                   <>
                     <span className="lesson-icon" aria-hidden="true">{lessonIcons[lesson.number] ?? "•"}</span>
                     <div className="lesson-card-copy">
-                      <span className="lesson-kicker">{text.lessonNumber(lesson.number)}</span>
+                      <span className="lesson-kicker">{text.lessonNumber(lesson.pathOrder)}</span>
                       <b>{lesson.title[locale]}</b>
                       <small>{lesson.secondaryTitle[locale]} · {text.planned}</small>
                     </div>
