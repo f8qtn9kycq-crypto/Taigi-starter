@@ -27,7 +27,7 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.doesNotMatch(landing, /locale === "zh" \? "EN" : "中"/);
   assert.match(lesson, /stage-accordion/);
   assert.match(bottomNav, /aria-label=\{text\.primaryNavigation\}/);
-  assert.match(coursePath, /aria-pressed=\{isActive\}/);
+  assert.match(coursePath, /aria-current=\{isActive \? "page" : undefined\}/);
   assert.match(coursePath, /text\.startLesson/);
   assert.match(coursePath, /text\.continueLesson\(activeStage \+ 1, stageCount\)/);
   assert.match(coursePath, /text\.lessonCompleted/);

@@ -51,7 +51,7 @@ const CoursePath = forwardRef<HTMLElement, CoursePathProps>(
                     type="button"
                     className="lesson-list-button"
                     onClick={() => onLessonSelect(lesson.number)}
-                    aria-pressed={isActive}
+                    aria-current={isActive ? "page" : undefined}
                   >
                     <span>{String(lesson.pathOrder).padStart(2, "0")}</span>
                     <div><b>{lesson.title[locale]}</b><small>{lesson.secondaryTitle[locale]}</small></div>
