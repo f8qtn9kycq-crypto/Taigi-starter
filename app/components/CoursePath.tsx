@@ -55,12 +55,16 @@ const CoursePath = forwardRef<HTMLElement, CoursePathProps>(
               : isActive && hasStarted
                 ? text.continueLesson(activeStage + 1, stageCount)
                 : text.startLesson;
+            const cardState = lesson.status === "planned"
+              ? "locked"
+              : isComplete
+                ? "complete"
+                : isActive
+                  ? "active"
+                  : "available";
 
             return (
-              <article
-                key={lesson.id}
-                className={isComplete ? "complete" : isActive ? "active" : "locked"}
-              >
+              <article key={lesson.id} className={cardState}>
                 {lesson.status === "prototype" ? (
                   <button
                     type="button"

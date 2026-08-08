@@ -1444,6 +1444,10 @@ a:focus-visible {
   background: #f7f8f7;
 }
 
+.lesson-list article.available {
+  color: var(--ink);
+}
+
 .lesson-progress {
   display: flex;
   align-items: center;
