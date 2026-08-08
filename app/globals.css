@@ -1355,7 +1355,7 @@ a:focus-visible {
 .lesson-list article {
   display: grid;
   min-height: 66px;
-  grid-template-columns: 34px 1fr 40px;
+  grid-template-columns: 34px 1fr minmax(84px, auto);
   align-items: center;
   gap: 9px;
   border-top: 1px solid var(--line);
@@ -1392,15 +1392,25 @@ a:focus-visible {
   text-align: right;
 }
 
+.lesson-list em i {
+  margin-left: 5px;
+  font-style: normal;
+}
+
+.lesson-list em.complete {
+  color: var(--jade-dark);
+}
+
 .lesson-list article.active {
   color: var(--ink);
+  background: #f2f8f5;
 }
 
 .lesson-list-button {
   display: grid;
   width: 100%;
   min-height: 66px;
-  grid-template-columns: 34px 1fr 40px;
+  grid-template-columns: 34px 1fr minmax(84px, auto);
   align-items: center;
   gap: 9px;
   padding: 0;
@@ -1408,6 +1418,11 @@ a:focus-visible {
   background: transparent;
   color: inherit;
   text-align: left;
+  cursor: pointer;
+}
+
+.lesson-list-button:hover {
+  background: rgb(8 127 109 / 0.05);
 }
 
 .lesson-list-button:focus-visible {

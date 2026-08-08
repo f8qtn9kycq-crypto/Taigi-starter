@@ -114,7 +114,9 @@ export type LessonCopy = {
   navPath: string;
   navProgress: string;
   primaryNavigation: string;
-  availableNow: string;
+  startLesson: string;
+  continueLesson: (stage: number, total: number) => string;
+  lessonCompleted: string;
   planned: string;
 };
 
@@ -159,8 +161,8 @@ export const copy: Record<Locale, LessonCopy> = {
     lessonRhythm: "先聽 → 看文字 → 開口講 → 回想 → 生活運用",
     lessonTime: "約 5 分鐘",
     stageTime: (minutes) => `約 ${minutes} 分鐘`,
-    lessonProgress: "1 / 1 句可體驗",
-    phraseProgress: (current, total) => `${current} / ${total} 句可體驗`,
+    lessonProgress: "1 個目標詞",
+    phraseProgress: (current, total) => `第 ${current} / ${total} 個詞語`,
     stageLabels: {
       hear: "聽",
       see: "看",
@@ -229,7 +231,7 @@ export const copy: Record<Locale, LessonCopy> = {
     nextPhrase: (phrase) => `下一個詞：${phrase}`,
     lessonComplete: "這課完成了！",
     path: "初學者路徑",
-    pathSummary: "20 課可體驗",
+    pathSummary: "20 課已開放",
     cardsLeft: "張待複習",
     reviewPrompt: "看到這句，你會怎麼說？",
     rate: "這次記得多熟？",
@@ -242,13 +244,15 @@ export const copy: Record<Locale, LessonCopy> = {
     nextReview: (date) => `下次複習：${date}`,
     allDone: "今日複習完成",
     close: "關閉",
-    prototype: "第 1–20 課可體驗 · 學習紀錄儲存在此裝置",
+    prototype: "第 1–20 課已開放 · 學習紀錄儲存在此裝置",
     navLearn: "學習",
     navReview: "複習",
     navPath: "課程",
     navProgress: "進度",
     primaryNavigation: "主要導覽",
-    availableNow: "可體驗",
+    startLesson: "開始",
+    continueLesson: (stage, total) => `繼續 · ${stage}/${total}`,
+    lessonCompleted: "✓ 已完成",
     planned: "規劃中",
   },
   en: {
@@ -291,8 +295,8 @@ export const copy: Record<Locale, LessonCopy> = {
     lessonRhythm: "Hear → see → say → recall → use",
     lessonTime: "About 5 minutes",
     stageTime: (minutes) => `About ${minutes} minute${minutes === 1 ? "" : "s"}`,
-    lessonProgress: "1 / 1 phrase available",
-    phraseProgress: (current, total) => `${current} / ${total} phrase available`,
+    lessonProgress: "1 target phrase",
+    phraseProgress: (current, total) => `Phrase ${current} of ${total}`,
     stageLabels: {
       hear: "Hear",
       see: "See",
@@ -380,7 +384,9 @@ export const copy: Record<Locale, LessonCopy> = {
     navPath: "Course",
     navProgress: "Progress",
     primaryNavigation: "Primary navigation",
-    availableNow: "Try now",
+    startLesson: "Start",
+    continueLesson: (stage, total) => `Continue · ${stage}/${total}`,
+    lessonCompleted: "✓ Completed",
     planned: "Planned",
   },
 };
