@@ -28,10 +28,16 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(lesson, /stage-accordion/);
   assert.match(bottomNav, /aria-label=\{text\.primaryNavigation\}/);
   assert.match(coursePath, /aria-current=\{isActive \? "page" : undefined\}/);
+  assert.doesNotMatch(coursePath, /aria-pressed/);
   assert.match(coursePath, /text\.startLesson/);
   assert.match(coursePath, /text\.continueLesson\(activeStage \+ 1, stageCount\)/);
   assert.match(coursePath, /text\.lessonCompleted/);
   assert.match(coursePath, /onLessonSelect\(lesson\.number\)/);
+  assert.match(coursePath, /role="progressbar"/);
+  assert.match(coursePath, /text\.lessonDuration\(lesson\.durationMinutes\)/);
+  assert.match(coursePath, /className=\{isComplete \? "complete" : isActive \? "active" : "locked"\}/);
+  assert.match(copy, /lessonLocked: "尚未開放"/);
+  assert.match(copy, /lessonLocked: "Locked"/);
   assert.match(copy, /今仔日，講一句台語。/);
   assert.match(copy, /每天 3 分鐘，從聽懂到開口。/);
   assert.match(copy, /開始今日一句/);
@@ -124,6 +130,8 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(css, /\.locale \{[\s\S]*min-height: 44px/);
   assert.match(css, /\.script-tabs button \{[\s\S]*min-height: 44px/);
   assert.match(css, /\.lesson-targets button \{[\s\S]*min-height: 44px/);
+  assert.match(css, /\.lesson-list-button \{[\s\S]*grid-column: 1 \/ -1/);
+  assert.match(css, /\.lesson-list article\.active \{[\s\S]*border-color: var\(--jade\)/);
   assert.match(css, /\.media-attribution a \{[\s\S]*min-height: 44px/);
   assert.match(css, /\.use-response textarea \{[\s\S]*min-height: 72px/);
   assert.match(css, /\.progress-line i \{[\s\S]*width: 100%/);

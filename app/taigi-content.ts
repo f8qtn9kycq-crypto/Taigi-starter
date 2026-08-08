@@ -117,6 +117,9 @@ export type LessonCopy = {
   startLesson: string;
   continueLesson: (stage: number, total: number) => string;
   lessonCompleted: string;
+  lessonDuration: (minutes: number) => string;
+  lessonProgressLabel: (completed: number, total: number) => string;
+  lessonLocked: string;
   planned: string;
 };
 
@@ -253,6 +256,9 @@ export const copy: Record<Locale, LessonCopy> = {
     startLesson: "開始",
     continueLesson: (stage, total) => `繼續 · ${stage}/${total}`,
     lessonCompleted: "✓ 已完成",
+    lessonDuration: (minutes) => `約 ${minutes} 分鐘`,
+    lessonProgressLabel: (completed, total) => `課程進度：${completed}/${total}`,
+    lessonLocked: "尚未開放",
     planned: "規劃中",
   },
   en: {
@@ -387,6 +393,9 @@ export const copy: Record<Locale, LessonCopy> = {
     startLesson: "Start",
     continueLesson: (stage, total) => `Continue · ${stage}/${total}`,
     lessonCompleted: "✓ Completed",
+    lessonDuration: (minutes) => `About ${minutes} min`,
+    lessonProgressLabel: (completed, total) => `Lesson progress: ${completed} of ${total}`,
+    lessonLocked: "Locked",
     planned: "Planned",
   },
 };

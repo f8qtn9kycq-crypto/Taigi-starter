@@ -1354,17 +1354,28 @@ a:focus-visible {
 
 .lesson-list article {
   display: grid;
-  min-height: 66px;
-  grid-template-columns: 34px 1fr minmax(84px, auto);
+  min-height: 112px;
+  grid-template-columns: 48px 1fr minmax(76px, auto);
   align-items: center;
-  gap: 9px;
-  border-top: 1px solid var(--line);
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
   color: #818985;
 }
 
-.lesson-list article > span {
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 10px;
+.lesson-icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 16px;
+  background: #edf3f0;
+  color: var(--jade-dark);
+  font-size: 20px;
+  font-weight: 900;
 }
 
 .lesson-list b,
@@ -1373,7 +1384,7 @@ a:focus-visible {
 }
 
 .lesson-list b {
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .lesson-list small {
@@ -1382,6 +1393,15 @@ a:focus-visible {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 10px;
   font-style: italic;
+}
+
+.lesson-kicker {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--jade-dark);
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: 0.08em;
 }
 
 .lesson-list em {
@@ -1403,17 +1423,71 @@ a:focus-visible {
 
 .lesson-list article.active {
   color: var(--ink);
+  border-color: var(--jade);
   background: #f2f8f5;
+  box-shadow: 0 8px 24px rgb(8 127 109 / 0.12);
+}
+
+.lesson-list article.complete {
+  color: var(--ink);
+  border-color: #b8ded0;
+  background: #f8fcfa;
+}
+
+.lesson-list article.active .lesson-icon,
+.lesson-list article.complete .lesson-icon {
+  background: var(--jade);
+  color: #fff;
+}
+
+.lesson-list article.locked {
+  background: #f7f8f7;
+}
+
+.lesson-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 9px;
+}
+
+.lesson-progress progress {
+  appearance: none;
+  overflow: hidden;
+  height: 6px;
+  flex: 1;
+  border: 0;
+  border-radius: 999px;
+  background: #dce7e2;
+}
+
+.lesson-progress progress::-webkit-progress-bar {
+  background: #dce7e2;
+}
+
+.lesson-progress progress::-webkit-progress-value,
+.lesson-progress progress::-moz-progress-bar {
+  border-radius: 999px;
+  background: var(--jade);
+}
+
+.lesson-progress > small {
+  margin: 0;
+  font-family: var(--font-geist-mono), monospace;
+  font-style: normal;
 }
 
 .lesson-list-button {
   display: grid;
   width: 100%;
-  min-height: 66px;
-  grid-template-columns: 34px 1fr minmax(84px, auto);
+  min-height: 82px;
+  grid-column: 1 / -1;
+  grid-template-columns: 48px 1fr minmax(76px, auto);
   align-items: center;
   gap: 9px;
-  padding: 0;
+  padding: 14px;
+  margin: -14px;
+  border-radius: 18px;
   border: 0;
   background: transparent;
   color: inherit;
