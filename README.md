@@ -61,7 +61,8 @@ POJ、官方原始 MP3、CC BY-ND attribution、local audio asset 與課程範�
 - `tests`：伺服器輸出與純邏輯測試
 
 AI 協作規範請見 [AGENTS.md](./AGENTS.md)，審查順序請見
-[REVIEW.md](./REVIEW.md)。
+[REVIEW.md](./REVIEW.md)，變更後的任務式驗證與 evidence 分級請見
+[Post-change UX validation plan](./docs/ux-validation-plan.md)。
 
 ## 課程資料邊界
 
