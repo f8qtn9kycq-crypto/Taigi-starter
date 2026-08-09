@@ -1,11 +1,33 @@
 # Release evidence
 
-> This file records a historical Sites release snapshot. It is not a current
-> production attestation: before any publish, verify that the exact validated
-> GitHub source SHA equals the saved Sites source SHA and the deployed version.
-> A provenance mismatch is a release blocker. This PR does not deploy Sites.
+## Current Vercel runtime baseline
 
-## Exact production release
+- Canonical source: GitHub `main`
+- Last behavior-changing production source commit:
+  `c81c7f0af22063c3362c39df0583404e7477fc88`
+- Vercel deployment: `do2cwqAe2Sx7hjuvbC3KMEu2Ni1a`, Ready／success
+- Deployment URL: https://taigi-starter-6a7hbmivh-alex-vercel-x-projects.vercel.app
+- Date: 2026-08-09
+- Scope: Lessons 1–20 plus v5 device-local per-lesson progress and a multi-card
+  review queue; no account, cloud sync, learner-facing AI, recording upload, or
+  content change
+- Exact-head evidence: `npm test` 73/73, `npm run lint`, `git diff --check`,
+  GitHub build, Vercel Preview Ready, and 390×844 Preview flow `0/15 → 1/15`
+  with `1/15` retained after reload
+
+Later documentation-only commits can advance the production deployment SHA
+without changing this runtime baseline. This is deployment and focused smoke
+evidence, not external learner research or teacher approval. Vercel is the only
+current production verification target.
+
+## Historical Sites snapshot
+
+> The following evidence is retained only as historical release provenance.
+> chatgpt.site／Sites is retired and is no longer a fallback, synchronization
+> target, production attestation, or release gate. No Sites deployment is
+> required for current releases.
+
+### Historical production release
 
 - Source: validated release branch pushed to the locked Sites source repository
 - Release source commit: `e1b326d6b97781ae0701930fede29248c68f8fef`
