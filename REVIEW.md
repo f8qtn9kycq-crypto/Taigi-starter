@@ -10,6 +10,24 @@ Review in this order:
 
 Block merge when secrets, raw feedback data, inaccessible controls, unvalidated public input, or misleading audio claims are present.
 
+## UX evidence gate
+
+For learner-facing changes, follow `docs/ux-validation-plan.md` and record these
+fields in the PR body or linked issue:
+
+- affected learner journey;
+- exact Vercel Preview URL and head SHA;
+- viewport, browser, device, and saved-progress state actually exercised;
+- task and observed result;
+- separate `Pass` / `Partial` / `Pending` / `Blocked` status for automated,
+  expert walkthrough, real-device, and participant evidence;
+- post-merge Vercel Production read-back.
+
+CI, Preview, real-device, and participant evidence are not interchangeable.
+Restart the Preview and PR review gate whenever the head SHA changes. A
+supplemental tool-assisted review comment is informational; it is not a GitHub
+approval or a substitute for a required human reviewer.
+
 ## Operating mode and risk escalation
 
 Taigi uses sole-contributor mode by default. The owner may review and deliver a
