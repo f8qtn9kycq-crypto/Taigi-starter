@@ -10,7 +10,7 @@
 - 台羅與白話字對照
 - 瀏覽器內錄音與立即回放；錄音不會上傳或保存
 - Again / Hard / Easy 三種不同的複習間隔
-- 版本化的裝置端學習進度
+- v5 版本化裝置端學習進度：逐課保留階段、詞語位置、完成項目與複習卡
 - 繁體中文與英文介面
 - 60 秒產品回饋表單
 
@@ -101,6 +101,9 @@ npm run build:vercel
 
 將 `FEEDBACK_EXTERNAL_FORM_URL` 設為 owner 的 HTTPS Google Form URL，再由
 Vercel Git integration 以 GitHub `main` 建立 preview 與 production deployment。
+Vercel 是目前唯一的 production 驗證與發佈目標；既有 chatgpt.site／Sites
+版本只保留為歷史紀錄，不再是必要 fallback 或 release gate。為避免改變既有
+專案設定，`.openai/hosting.json` 仍原樣保留。
 
 部署前 gate 請見[回饋安全部署邊界](./docs/feedback-security-deployment.md)與
 [Production exit plan](./docs/production-exit-plan.md)。

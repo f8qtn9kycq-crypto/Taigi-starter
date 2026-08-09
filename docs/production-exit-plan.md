@@ -1,7 +1,9 @@
 # Production exit plan
 
-本專案目前採 Vercel Hobby preview／production 路徑；Cloudflare Sites 保留為
-尚未切換前的 fallback，不是本次 migration 的發佈目標。
+本專案目前採 Vercel Hobby preview／production 路徑。Vercel 是唯一的 current
+production 驗證與發佈目標；chatgpt.site／Sites 已退役，不再是 fallback、同步
+目標或 release gate。`.openai/hosting.json` 為相容既有專案設定而保留，但不得據此
+推論仍需保存或部署 Sites 版本。
 
 ## 必要 source gates
 
@@ -31,4 +33,5 @@ Say → Recall → Use 節奏、臺羅與 POJ 欄位規則、教育部 canonical
 
 只有 preview 以上 gates 全部通過，且 Vercel deployment status 為 Ready，才可部署
 production。部署後記錄 source commit、Vercel deployment URL、production URL 與
-可回復的上一個 deployment；本次 migration 不自動部署 production。
+可回復的上一個 deployment。Vercel Git integration 可由已合併的 GitHub `main`
+自動建立 production deployment；文件更新本身不得觸發或宣稱 Sites 發佈。

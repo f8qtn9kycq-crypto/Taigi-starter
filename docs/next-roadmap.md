@@ -2,9 +2,11 @@
 
 ## 這一段要解決的問題
 
-歷史 baseline 曾只有第 1 課可體驗；目前 release candidate 目標是第 1–20 課。第 2–20 課仍是有來源欄位的
-`planned` package，teacher review 保持 pending，並以 owner risk acceptance
-交付；learner-facing 的生活優先 path order 見 `docs/course-path-priority.md`；第 21–24 課仍是 roadmap。
+歷史 baseline 曾只有第 1 課可體驗；目前 production runtime 已提供第 1–20 課。
+第 2–20 課的 authoring package 仍保留 `teacherReview: required`／pending 記錄，
+並以 owner risk acceptance 完成 learner-runtime handoff；這代表課程可用，不代表
+曾取得教師核准。生活優先 path order 見 `docs/course-path-priority.md`；第 21–24 課
+仍是 roadmap。
 下一段不應只繼續增加尚未可玩的課程數量，而要先把下面這條內容生產鏈做成
 可重複、可檢查、可交給教師審核的流程：
 
@@ -34,8 +36,9 @@ Only then: playable lesson integration
 
 ### Current release state
 
-- Release candidate runtime catalog 現在提供第 1–20 課，每課 source-backed phrases，使用
-  相同的 Hear → See → Say → Recall → Use 流程與 device-local progress。
+- Production runtime catalog 現在提供第 1–20 課，每課 source-backed phrases，使用
+  相同的 Hear → See → Say → Recall → Use 流程。v5 device-local progress 逐課保存
+  stage、phrase position、completed phrase IDs，複習 queue 可同時保留跨課卡片。
 - 第 2–20 課的 58 個 MP3 都直接取自教育部詞典官方音檔，保留原始 URL、CC
   BY-ND 3.0 TW attribution 與未修改標記；逐課 mobile QA 見
   `docs/qa/lesson-2-20-390x844.md`。
@@ -59,19 +62,19 @@ Only then: playable lesson integration
 
 ## M2 目前交付狀態
 
-M2.1–M2.4 的實作邊界已進入 `main`；這不等於已經有真實的 approved handoff
-或第二課 playable content：
+M2.1–M2.4 的實作邊界與第 1–20 課 runtime handoff 已進入 `main`；這不等於已有
+真實 teacher approval：
 
 | 工作包 | main 狀態 | Truthful product state |
 | --- | --- | --- |
 | M2.1 Package validator | 已合併 | validator 與測試可拒絕不完整 package |
 | M2.2 Teacher review contract | 已合併 | 未完成審核仍只能是 `planned` |
-| M2.3 內容 16–18 | 已合併 | package 已建立，仍 `planned`；POJ 與官方原始音檔 provenance 已完整 |
-| M2.4 Package-to-lesson handoff | 已合併 | integration boundary 已建立；尚無真實 approved handoff artifact |
+| M2.3 內容 16–18 | 已合併 | package 與 runtime lesson 已建立；teacher review 仍 pending，POJ 與官方原始音檔 provenance 已完整 |
+| M2.4 Package-to-lesson handoff | 已合併 | 第 1–20 課已依 owner risk acceptance 接入 runtime；沒有宣稱 teacher approval |
 | M2.5 Beginner pilot | 計畫已合併 | `planned`／`not-run`，沒有研究結果可宣稱 |
 
-目前沒有 open PR 或 open Issue。下一個工作不應重新宣告 M2.1，而應在前置
-條件齊備後執行 M2.5 pilot readiness／execution。
+目前的產品驗證缺口是外部初學者與教師 evidence。下一個產品工作不應重新宣告
+M2.1 或再堆 planned package，而應先完成 M2.5 pilot readiness，再由真人執行研究。
 
 ## 研究轉成的產品原則
 
@@ -96,7 +99,7 @@ M2.1–M2.4 的實作邊界已進入 `main`；這不等於已經有真實的 app
 
 每個工作包都維持一個 issue、一個 branch、一個 PR，依序處理：
 
-1. M2.1 validator、M2.2 review contract、M2.3 package、M2.4 handoff gate 均已交付；保留所有 planned 課程的誠實狀態。
+1. M2.1 validator、M2.2 review contract、M2.3 package、M2.4 handoff gate 與第 1–20 課 runtime integration 均已交付；teacher review pending 與 owner risk acceptance 必須繼續誠實呈現。
 2. M2.5 先完成 readiness gate：確認真實 teacher approval、音檔 attribution、390×844 mobile evidence、測試 commit 與 facilitator 規則。
 3. readiness gate 通過後，才招募 10–20 位初學者並執行短期 pilot。
 4. pilot 只提交去識別化 aggregate summary；完成前所有結果維持 `not-run`。
@@ -117,7 +120,7 @@ M2 只有在以下條件全部成立時，才可稱為完成：
 
 - package 可以由明確的 teacher brief 重複產製，而不是靠人工複製欄位。
 - validator 對缺少來源、授權、教師審核、五段節奏或音檔狀態的資料會失敗。
-- 第 2–18 課若尚未完成教師審核，仍明確顯示為 `planned`；音檔必須已有來源、授權與未修改證據才可進 handoff。
+- 尚未完成教師審核的 package 必須保留 pending 記錄；目前第 1–20 課 runtime handoff 依 owner risk acceptance 交付，不得改稱 teacher-approved。音檔必須已有來源、授權與未修改證據才可進 handoff。
 - playable lesson integration 有獨立 PR，並通過現有 `npm test`、`npm run lint`
   與手機尺寸驗證。
 - 學習者測試結果能回答「初學者是否完成並記得」，而不只是證明畫面能渲染。
