@@ -1,6 +1,8 @@
 import { forwardRef } from "react";
 import { lessonCatalog } from "../data/lessons";
 import type { LessonCopy, Locale } from "../taigi-content";
+import type { LessonProgress } from "../types/learning";
+import { completedStepCount, hasLessonProgress } from "../utils/learning-progress";
 
 const lessonIcons: Readonly<Record<number, string>> = {
   1: "👋", 2: "🏠", 3: "123", 4: "🍚", 5: "☀️",
@@ -13,10 +15,10 @@ type CoursePathProps = {
   text: LessonCopy;
   locale: Locale;
   activeLessonNumber: number;
-  activeStage: number;
   stageCount: number;
   hasStarted: boolean;
-  completedPhraseIds: ReadonlySet<string>;
+  progressReady: boolean;
+  lessonProgress: Readonly<Record<string, LessonProgress>>;
   onLessonSelect: (lessonNumber: number) => void;
 };
 
@@ -26,16 +28,16 @@ const CoursePath = forwardRef<HTMLElement, CoursePathProps>(
       text,
       locale,
       activeLessonNumber,
-      activeStage,
       stageCount,
       hasStarted,
-      completedPhraseIds,
+      progressReady,
+      lessonProgress,
       onLessonSelect,
     },
     ref,
   ) {
     return (
-      <section className="path-card" id="path" ref={ref}>
+      <section className="path-card" id="path" ref={ref} aria-busy={!progressReady}>
         <div className="path-heading">
           <div><span className="section-label">{text.navPath}</span><h2>{text.path}</h2></div>
           <small>{text.pathSummary}</small>
@@ -43,17 +45,19 @@ const CoursePath = forwardRef<HTMLElement, CoursePathProps>(
         <div className="lesson-list">
           {lessonCatalog.map((lesson) => {
             const isActive = lesson.number === activeLessonNumber;
-            const isComplete = lesson.status === "prototype"
-              && lesson.phrases.every((phrase) => completedPhraseIds.has(phrase.id));
-            const completedStages = isComplete
-              ? stageCount
-              : isActive && hasStarted
-                ? Math.min(activeStage + 1, stageCount)
-                : 0;
+            const storedProgress = lessonProgress[lesson.id];
+            const phraseIds = lesson.status === "prototype"
+              ? lesson.phrases.map((phrase) => phrase.id)
+              : [];
+            const totalSteps = phraseIds.length * stageCount;
+            const completedSteps = completedStepCount(storedProgress, phraseIds, stageCount);
+            const isComplete = lesson.status === "prototype" && totalSteps > 0
+              && completedSteps === totalSteps;
+            const hasProgress = hasLessonProgress(storedProgress);
             const action = isComplete
               ? text.lessonCompleted
-              : isActive && hasStarted
-                ? text.continueLesson(activeStage + 1, stageCount)
+              : hasProgress
+                ? text.continueLesson(completedSteps, totalSteps)
                 : text.startLesson;
             const cardState = lesson.status === "planned"
               ? "locked"
@@ -70,6 +74,7 @@ const CoursePath = forwardRef<HTMLElement, CoursePathProps>(
                     type="button"
                     className="lesson-list-button"
                     onClick={() => onLessonSelect(lesson.number)}
+                    disabled={!progressReady}
                     aria-current={isActive ? "page" : undefined}
                   >
                     <span className="lesson-icon" aria-hidden="true">{lessonIcons[lesson.number] ?? "•"}</span>
@@ -77,17 +82,17 @@ const CoursePath = forwardRef<HTMLElement, CoursePathProps>(
                       <span className="lesson-kicker">{text.lessonNumber(lesson.pathOrder)}</span>
                       <b>{lesson.title[locale]}</b>
                       <small>{lesson.secondaryTitle[locale]} · {text.lessonDuration(lesson.durationMinutes)}</small>
-                      {(isActive || isComplete) && (
+                      {(isActive && hasStarted || hasProgress || isComplete) && (
                         <span className="lesson-progress">
                           <progress
                             role="progressbar"
-                            aria-label={text.lessonProgressLabel(completedStages, stageCount)}
-                            max={stageCount}
-                            value={completedStages}
+                            aria-label={text.lessonProgressLabel(completedSteps, totalSteps)}
+                            max={totalSteps}
+                            value={completedSteps}
                           >
-                            {completedStages}/{stageCount}
+                            {completedSteps}/{totalSteps}
                           </progress>
-                          <small>{completedStages}/{stageCount}</small>
+                          <small>{completedSteps}/{totalSteps}</small>
                         </span>
                       )}
                     </div>

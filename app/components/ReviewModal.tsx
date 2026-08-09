@@ -10,6 +10,7 @@ type ReviewModalProps = {
   text: LessonCopy;
   phrase: LessonPhrase;
   card: ReviewCard | null;
+  dueCount: number;
   isDue: boolean;
   locale: Locale;
   onClose: () => void;
@@ -20,6 +21,7 @@ export default function ReviewModal({
   text,
   phrase,
   card,
+  dueCount,
   isDue,
   locale,
   onClose,
@@ -48,7 +50,7 @@ export default function ReviewModal({
 
         {card && isDue ? (
           <>
-            <div className="review-count"><b>1</b><span>{text.cardsLeft}</span></div>
+            <div className="review-count"><b>{dueCount}</b><span>{text.cardsLeft}</span></div>
             <p>{text.reviewPrompt}</p>
             <h2>{phrase.meaning[locale]}</h2>
             {showAnswer ? (
