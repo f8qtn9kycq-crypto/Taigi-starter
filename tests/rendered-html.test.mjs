@@ -30,9 +30,12 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(coursePath, /aria-current=\{isActive \? "page" : undefined\}/);
   assert.doesNotMatch(coursePath, /aria-pressed/);
   assert.match(coursePath, /text\.startLesson/);
-  assert.match(coursePath, /text\.continueLesson\(activeStage \+ 1, stageCount\)/);
+  assert.match(coursePath, /text\.continueLesson\(completedSteps, totalSteps\)/);
+  assert.match(coursePath, /completedStepCount\(storedProgress, phraseIds, stageCount\)/);
   assert.match(coursePath, /text\.lessonCompleted/);
   assert.match(coursePath, /onLessonSelect\(lesson\.number\)/);
+  assert.match(coursePath, /disabled=\{!progressReady\}/);
+  assert.match(coursePath, /aria-busy=\{!progressReady\}/);
   assert.match(coursePath, /text\.lessonNumber\(lesson\.pathOrder\)/);
   assert.doesNotMatch(coursePath, /text\.lessonNumber\(lesson\.number\)/);
   assert.match(coursePath, /role="progressbar"/);
@@ -113,7 +116,8 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   ]);
 
   assert.match(page, /<BottomNav/);
-  assert.match(page, /activeLesson\.phrases\[progress\.phraseIndex\] \? progress\.phraseIndex : 0/);
+  assert.match(page, /progress\.lessons\[activeLesson\.id\]/);
+  assert.match(page, /activeLesson\.phrases\[activeLessonProgress\?\.phraseIndex \?\? 0\]/);
   assert.match(page, /onStart=\{startLearning\}/);
   assert.match(page, /document\.documentElement\.lang = progress\.locale === "zh" \? "zh-Hant-TW" : "en"/);
   assert.match(landing, /onClick=\{onAudioToggle\}/);
@@ -146,17 +150,23 @@ test("landing interaction and responsive contracts remain explicit", async () =>
 });
 
 test("saved progress and lesson content stay explicit and truthful", async () => {
-  const [storage, types, content, copy] = await Promise.all([
+  const [storage, progressHook, types, content, copy] = await Promise.all([
     readFile(new URL("../app/services/progress-storage.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/hooks/useLearningProgress.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/types/learning.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/data/lessons.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/taigi-content.ts", import.meta.url), "utf8"),
   ]);
 
   assert.match(types, /hasStarted: false/);
-  assert.match(types, /reviewCard: null/);
+  assert.match(types, /version: 5/);
+  assert.match(types, /reviewCards: Readonly<Record<string, ReviewCard>>/);
+  assert.match(types, /completedPhraseIds: readonly string\[\]/);
   assert.match(storage, /hasStarted: parsed\.hasStarted === true/);
-  assert.match(storage, /parsed\.hasStarted === true &&[\s\S]*parsed\.dueCount/);
+  assert.match(storage, /migrateLegacyProgress/);
+  assert.match(storage, /parseVersionFive/);
+  assert.match(progressHook, /hydratedRef\.current = true/);
+  assert.match(progressHook, /if \(!hydratedRef\.current\) pendingUpdatesRef\.current\.push\(applyUpdate\)/);
   assert.match(content, /status: "prototype"/);
   assert.match(content, /CC BY-ND 3\.0 TW/);
   assert.match(copy, /20 課已開放/);

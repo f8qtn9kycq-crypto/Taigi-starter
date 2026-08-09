@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BottomNav from "./components/BottomNav";
 import CoursePath from "./components/CoursePath";
 import LandingHero from "./components/LandingHero";
@@ -12,18 +12,24 @@ import { useAudioPlayer } from "./hooks/useAudioPlayer";
 import { useLearningProgress } from "./hooks/useLearningProgress";
 import { copy } from "./taigi-content";
 import type { PlayableLesson } from "./types/lesson";
-import { isReviewDue } from "./utils/srs";
+import { dueReviewCards, orderedReviewCards } from "./utils/learning-progress";
+
+const playableLessons = lessonCatalog.filter(
+  (lesson): lesson is PlayableLesson => lesson.status === "prototype",
+);
+const progressDefinitions = playableLessons.map((lesson) => ({
+  id: lesson.id,
+  phraseIds: lesson.phrases.map((phrase) => phrase.id),
+  stageCount: lesson.stages.length,
+}));
+const phraseById = new Map(
+  playableLessons.flatMap((lesson) => lesson.phrases.map((phrase) => [phrase.id, phrase] as const)),
+);
 
 export default function TaigiStartPage() {
-  const playableLessons = lessonCatalog.filter(
-    (lesson): lesson is PlayableLesson => lesson.status === "prototype",
-  );
-  const phraseIds = useMemo(
-    () => playableLessons.flatMap((lesson) => lesson.phrases.map((phrase) => phrase.id)),
-    [playableLessons],
-  );
   const {
     progress,
+    isHydrated,
     setLocale,
     setLessonId,
     setStage,
@@ -31,19 +37,27 @@ export default function TaigiStartPage() {
     setHasStarted,
     addReview,
     rateReview,
-  } = useLearningProgress(prototypeLesson.id, phraseIds, prototypeLesson.stages.length);
+  } = useLearningProgress(progressDefinitions, prototypeLesson.id);
   const activeLesson = playableLessons.find((lesson) => lesson.id === progress.lessonId) ?? prototypeLesson;
   const [reviewOpen, setReviewOpen] = useState(false);
-  const [completedPhraseIds, setCompletedPhraseIds] = useState<ReadonlySet<string>>(new Set());
   const [startPending, setStartPending] = useState(false);
   const [activeTab, setActiveTab] = useState<"learn" | "review" | "progress">("learn");
   const lessonRef = useRef<HTMLElement | null>(null);
   const pathRef = useRef<HTMLElement | null>(null);
   const heroAudio = useAudioPlayer(activeLesson.phrases[0].audioUrl);
   const text = copy[progress.locale];
-  const activePhraseIndex = activeLesson.phrases[progress.phraseIndex] ? progress.phraseIndex : 0;
+  const activeLessonProgress = progress.lessons[activeLesson.id];
+  const activeStage = activeLessonProgress?.stage ?? 0;
+  const activePhraseIndex = activeLesson.phrases[activeLessonProgress?.phraseIndex ?? 0]
+    ? activeLessonProgress?.phraseIndex ?? 0
+    : 0;
   const activePhrase = activeLesson.phrases[activePhraseIndex];
-  const dueCount = isReviewDue(progress.reviewCard) ? 1 : 0;
+  const completedPhraseIds = new Set(activeLessonProgress?.completedPhraseIds ?? []);
+  const reviewCards = orderedReviewCards(progress.reviewCards);
+  const reviewsDue = dueReviewCards(progress.reviewCards);
+  const reviewCard = reviewsDue[0] ?? reviewCards[0] ?? null;
+  const reviewPhrase = reviewCard ? phraseById.get(reviewCard.id) ?? activePhrase : activePhrase;
+  const dueCount = reviewsDue.length;
 
   useEffect(() => {
     document.documentElement.lang = progress.locale === "zh" ? "zh-Hant-TW" : "en";
@@ -90,14 +104,12 @@ export default function TaigiStartPage() {
     const lesson = playableLessons.find((candidate) => candidate.number === lessonNumber);
     if (!lesson) return;
     setLessonId(lesson.id);
-    setPhraseIndex(0);
     setHasStarted(true);
     setActiveTab("learn");
     window.requestAnimationFrame(scrollToLesson);
   };
   const completePhrase = (phraseId: string) => {
     addReview(phraseId);
-    setCompletedPhraseIds((current) => new Set(current).add(phraseId));
   };
 
   return (
@@ -107,7 +119,7 @@ export default function TaigiStartPage() {
         locale={progress.locale}
         hasStarted={progress.hasStarted}
         dueCount={dueCount}
-        stage={progress.stage}
+        stage={activeStage}
         totalStages={activeLesson.stages.length}
         isPlaying={heroAudio.isPlaying}
         audioError={heroAudio.hasError}
@@ -123,9 +135,9 @@ export default function TaigiStartPage() {
           ref={lessonRef}
           lesson={activeLesson}
           text={text}
-          stage={progress.stage}
+          stage={activeStage}
           phraseIndex={activePhraseIndex}
-          reviewScheduled={progress.reviewCard?.id === activePhrase.id}
+          reviewScheduled={Boolean(progress.reviewCards[activePhrase.id])}
           completedPhraseIds={completedPhraseIds}
           onStageChange={setStage}
           onReviewAdded={completePhrase}
@@ -137,10 +149,10 @@ export default function TaigiStartPage() {
           text={text}
           locale={progress.locale}
           activeLessonNumber={activeLesson.number}
-          activeStage={progress.stage}
           stageCount={activeLesson.stages.length}
           hasStarted={progress.hasStarted}
-          completedPhraseIds={completedPhraseIds}
+          progressReady={isHydrated}
+          lessonProgress={progress.lessons}
           onLessonSelect={selectLesson}
         />
         <footer>
@@ -162,12 +174,13 @@ export default function TaigiStartPage() {
       {reviewOpen && (
         <ReviewModal
           text={text}
-          phrase={activePhrase}
-          card={progress.reviewCard}
+          phrase={reviewPhrase}
+          card={reviewCard}
+          dueCount={dueCount}
           isDue={dueCount > 0}
           locale={progress.locale}
           onClose={closeReview}
-          onRate={(rating) => { rateReview(rating); closeReview(); }}
+          onRate={(rating) => { if (reviewCard) rateReview(reviewCard.id, rating); closeReview(); }}
         />
       )}
     </main>
