@@ -1,9 +1,10 @@
 # Release evidence
 
-## Current Vercel production
+## Current Vercel runtime baseline
 
 - Canonical source: GitHub `main`
-- Production source commit: `c81c7f0af22063c3362c39df0583404e7477fc88`
+- Last behavior-changing production source commit:
+  `c81c7f0af22063c3362c39df0583404e7477fc88`
 - Vercel deployment: `do2cwqAe2Sx7hjuvbC3KMEu2Ni1a`, Ready／success
 - Deployment URL: https://taigi-starter-6a7hbmivh-alex-vercel-x-projects.vercel.app
 - Date: 2026-08-09
@@ -14,8 +15,10 @@
   GitHub build, Vercel Preview Ready, and 390×844 Preview flow `0/15 → 1/15`
   with `1/15` retained after reload
 
-This is deployment and focused smoke evidence, not external learner research or
-teacher approval. Vercel is the only current production verification target.
+Later documentation-only commits can advance the production deployment SHA
+without changing this runtime baseline. This is deployment and focused smoke
+evidence, not external learner research or teacher approval. Vercel is the only
+current production verification target.
 
 ## Historical Sites snapshot
 
