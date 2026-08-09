@@ -106,4 +106,3 @@ mobile, consent, privacy, and facilitator gates are satisfied. Until then:
 | Horizontal overflow and touch geometry | Pending | Not measured in this walkthrough; required when layout changes |
 | Real iPhone/Safari | Pending | No real-device run was performed |
 | Beginner participant pilot | Blocked | Teacher-approval and human-research prerequisites remain incomplete |
-
