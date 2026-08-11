@@ -24,6 +24,8 @@ playable 五段流程。第 2–20 課仍保留
 - 一般學習者使用 owner 提供的 Google Form，不在本網站儲存回饋。
 - 技術測試者可使用 `.github/ISSUE_TEMPLATE` 的 GitHub Issue Forms。
 - `FEEDBACK_EXTERNAL_FORM_URL` 必須是 HTTPS；網站只顯示外部表單連結。
+- 未設定或不是 HTTPS 時，網站會顯示「回饋表單目前無法使用」的文字 fallback，
+  不會顯示失效連結，也不會把表單網址寫入原始碼。
 - 不得提交回饋匯出檔、憑證或測試者個人資料。
 
 ## 本機開發
@@ -54,7 +56,7 @@ POJ、官方原始 MP3、CC BY-ND attribution、local audio asset 與課程範�
 - `app/hooks`：音訊、錄音與學習進度 hooks
 - `app/types`：共用學習模型
 - `app/utils`：純計算邏輯
-- `app/services`：版本化裝置端儲存
+- `app/services`：版本化裝置端儲存與外部回饋設定驗證
 - `app/data/lesson-packages`：依課程範圍拆分的 authoring package 資料
 - `app/api/feedback-config`：提供已設定的外部表單 URL
 - `public/audio`：授權音檔原檔
