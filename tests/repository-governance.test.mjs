@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
+// Keep the repository-level governance contract executable in CI.
 const templateUrl = new URL("../.github/pull_request_template.md", import.meta.url);
 
 test("pull request template is valid UTF-8 with required delivery gates", async () => {
