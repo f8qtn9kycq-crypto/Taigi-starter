@@ -8,7 +8,10 @@
 - 只在 Vercel project environment 設定 `FEEDBACK_EXTERNAL_FORM_URL`。
 - 值必須是 owner 提供的 HTTPS Google Form URL。
 - Preview 與 production 分別確認環境變數，避免把表單 URL 寫進 repository。
-- `/api/feedback-config` 只回傳通過 HTTPS 驗證的 URL，沒有 URL 時回傳未設定狀態。
+- `/api/feedback-config` 只回傳通過 HTTPS 驗證的 URL；未設定或非 HTTPS 時回傳
+  `externalFormUrl: null`，前端顯示誠實的 unavailable fallback，不提供失效連結。
+- 表單 URL 只存在 Vercel project environment，不得放入 TypeScript、測試 fixture
+  或其他 tracked source。
 
 ## 發佈前檢查
 

@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("ships the first-time Taigi landing content and Vercel feedback path", async () => {
-  const [layout, landing, page, bottomNav, coursePath, lesson, stagePanel, stageContent, recording, recorder, copy, content, feedbackConfig, feedbackForm] = await Promise.all([
+  const [layout, landing, page, bottomNav, coursePath, lesson, stagePanel, stageContent, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/TaigiStartPage.tsx", import.meta.url), "utf8"),
@@ -18,6 +18,7 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
     readFile(new URL("../app/data/lessons.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/api/feedback-config/route.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/FeedbackForm.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/services/feedback.ts", import.meta.url), "utf8"),
   ]);
 
   assert.match(layout, /台語起步 Tâi-gí Start/);
@@ -97,8 +98,10 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(copy, /先完成一次跟讀/);
   assert.match(copy, /我已經跟讀/);
   assert.doesNotMatch(feedbackForm, /fetch\(["']\/api\/feedback["']/);
-  assert.match(feedbackConfig, /process\.env\.FEEDBACK_EXTERNAL_FORM_URL/);
-  assert.match(feedbackConfig, /url\.protocol === "https:"/);
+  assert.match(feedbackService, /process\.env\.FEEDBACK_EXTERNAL_FORM_URL/);
+  assert.match(feedbackService, /url\.protocol === "https:"/);
+  assert.match(feedbackConfig, /getExternalFormUrl\(\)/);
+  assert.doesNotMatch(`${feedbackService}\n${feedbackConfig}`, /docs\.google\.com\/forms\/d\//);
   assert.match(feedbackForm, /api\/feedback-config/);
   assert.doesNotMatch(`${feedbackForm}\n${page}`, /GitHub\s*·\s*Technical feedback|GitHub feedback/i);
   assert.match(feedbackForm, /target="_blank"/);
