@@ -61,6 +61,12 @@ speech scoring, social features, or speculative gamification.
 - Before remote mutation, verify repository identity, tracked instructions, and
   target branch.
 - Implement one issue per branch and PR; never bulk-trigger Codex.
+- Treat explicit owner authorization as persistent for the active conversation:
+  do not ask again for equivalent in-scope GitHub, Git, validation, review,
+  merge, or clean-branch deletion actions. Review gates, human evidence gates,
+  and ordinary execution steps are not new authorization requests. Ask again
+  only when a system-enforced permission requires it or the proposed action
+  materially expands the authorized scope.
 - Default to sole-contributor mode: the owner may review and deliver without a
   GitHub approval count unless an authorized user, reviewer, or this contract
   explicitly adds a human-approval gate.
