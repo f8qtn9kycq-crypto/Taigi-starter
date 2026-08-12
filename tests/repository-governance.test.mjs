@@ -4,7 +4,8 @@ import test from "node:test";
 
 // Keep the repository-level governance contract executable in CI.
 const templateUrl = new URL("../.github/pull_request_template.md", import.meta.url);
-const releaseEvidenceUrl = new URL("../docs/release-evidence.md", import.meta.url);\nconst buildWorkflowUrl = new URL("../.github/workflows/build.yml", import.meta.url);
+const releaseEvidenceUrl = new URL("../docs/release-evidence.md", import.meta.url);
+const buildWorkflowUrl = new URL("../.github/workflows/build.yml", import.meta.url);
 
 test("pull request template is valid UTF-8 with required delivery gates", async () => {
   const bytes = await readFile(templateUrl);
