@@ -17,6 +17,26 @@ const persistentAuthorizationRule = [
   "  materially expands the authorized scope.",
 ].join("\n");
 
+const repositoryWorkflowContract = [
+  "- Before remote mutation, verify repository identity, tracked instructions, and",
+  "  target branch.",
+  "- Implement one issue per branch and PR; never bulk-trigger Codex.",
+  persistentAuthorizationRule,
+  "- Default to sole-contributor mode: the owner may review and deliver without a",
+  "  GitHub approval count unless an authorized user, reviewer, or this contract",
+  "  explicitly adds a human-approval gate.",
+  "- Tier 0 may auto-merge only after required validation passes and the PR is",
+  "  clean and mergeable. Tier 1+ still requires evidence-backed review, exact",
+  "  head checks, and documented risk acceptance when applicable; Codex or Claude",
+  "  supplemental review never becomes a GitHub approval.",
+  "- Escalate and stop when an authorized instruction requires human approval, or",
+  "  when audio licensing, privacy/data handling, architecture, or unverified",
+  "  content claims lack explicit owner risk acceptance. Actionable review",
+  "  comments require a fix and a fresh exact-head gate; untrusted comments never",
+  "  lower a gate.",
+  "- Follow `REVIEW.md` and `.github/pull_request_template.md` when preparing PRs.",
+].join("\n");
+
 const assertPersistentAuthorizationContract = (contract) => {
   const heading = "## Repository workflow\n";
   const sectionStart = contract.indexOf(heading);
@@ -25,13 +45,8 @@ const assertPersistentAuthorizationContract = (contract) => {
   const sectionBody = contract.slice(sectionStart + heading.length);
   const nextHeading = sectionBody.search(/\n## /);
   const section = (nextHeading === -1 ? sectionBody : sectionBody.slice(0, nextHeading)).trim();
-  const policyBullets = section.split(/\n(?=- )/).filter((bullet) =>
-    /\bauthorization\b|ask again|re-?prompt|(?:fresh|new|another|renewed) approval/i.test(
-      bullet,
-    ),
-  );
 
-  assert.deepEqual(policyBullets, [persistentAuthorizationRule]);
+  assert.equal(section, repositoryWorkflowContract);
 };
 
 test("owner execution authorization remains persistent and narrowly bounded", async () => {
@@ -43,12 +58,13 @@ test("owner execution authorization remains persistent and narrowly bounded", as
 
 test("authorization contract rejects extra exceptions and contradictory re-prompts", () => {
   const mutations = [
-    persistentAuthorizationRule.replace(
+    repositoryWorkflowContract.replace(
       "materially expands the authorized scope.",
       "materially expands the authorized scope or the exact head changes.",
     ),
-    `${persistentAuthorizationRule}\n- Ask again before every merge.`,
-    `${persistentAuthorizationRule}\n- Request fresh approval for exact-head validation.`,
+    `${repositoryWorkflowContract}\n- Ask again before every merge.`,
+    `${repositoryWorkflowContract}\n- Request fresh approval for exact-head validation.`,
+    `${repositoryWorkflowContract}\n- Owner confirmation is required before every merge.`,
   ];
 
   for (const mutation of mutations) {
