@@ -3,8 +3,21 @@ import test from "node:test";
 import {
   PILOT_READINESS_BLOCKER_IDS,
   type PilotReadinessEvidence,
+  type PilotReadinessGateEvidence,
 } from "../app/types/pilot.ts";
 import { evaluatePilotReadiness } from "../app/utils/pilot-readiness.ts";
+
+const pendingEvidence = (): PilotReadinessGateEvidence => ({
+  status: "pending",
+  evidenceRef: null,
+  checkedAt: null,
+});
+
+const verifiedEvidence = (evidenceRef: string): PilotReadinessGateEvidence => ({
+  status: "verified",
+  evidenceRef,
+  checkedAt: "2026-08-12T16:00:00.000Z",
+});
 
 test("pilot readiness remains blocked when evidence is absent", () => {
   const result = evaluatePilotReadiness(undefined);
@@ -15,12 +28,12 @@ test("pilot readiness remains blocked when evidence is absent", () => {
 
 test("pilot readiness reports only the missing evidence", () => {
   const evidence: PilotReadinessEvidence = {
-    approvedTeacherHandoff: true,
-    audioAttributionVerified: true,
-    mobileFlowEvidenceVerified: false,
-    facilitatorProtocolReady: true,
-    participantConsentReady: true,
-    privacyReviewPassed: true,
+    approvedTeacherHandoff: verifiedEvidence("teacher-review/lesson-1"),
+    audioAttributionVerified: verifiedEvidence("docs/audio-attribution.md"),
+    mobileFlowEvidenceVerified: pendingEvidence(),
+    facilitatorProtocolReady: verifiedEvidence("docs/beginner-pilot-plan.md"),
+    participantConsentReady: verifiedEvidence("owner-controlled/consent-script"),
+    privacyReviewPassed: verifiedEvidence("owner-controlled/privacy-review"),
   };
 
   assert.deepEqual(evaluatePilotReadiness(evidence), {
@@ -29,14 +42,36 @@ test("pilot readiness reports only the missing evidence", () => {
   });
 });
 
+test("verified labels without traceable evidence remain blocked", () => {
+  const malformed = {
+    status: "verified",
+    evidenceRef: "   ",
+    checkedAt: "2026-08-12",
+  } as unknown as PilotReadinessGateEvidence;
+
+  const evidence: PilotReadinessEvidence = {
+    approvedTeacherHandoff: malformed,
+    audioAttributionVerified: verifiedEvidence("docs/audio-attribution.md"),
+    mobileFlowEvidenceVerified: verifiedEvidence("docs/qa/lesson-2-20-390x844.md"),
+    facilitatorProtocolReady: verifiedEvidence("docs/beginner-pilot-plan.md"),
+    participantConsentReady: verifiedEvidence("owner-controlled/consent-script"),
+    privacyReviewPassed: verifiedEvidence("owner-controlled/privacy-review"),
+  };
+
+  assert.deepEqual(evaluatePilotReadiness(evidence), {
+    ready: false,
+    blockers: ["approved-teacher-handoff"],
+  });
+});
+
 test("pilot readiness is ready only when every evidence gate is explicit", () => {
   const evidence: PilotReadinessEvidence = {
-    approvedTeacherHandoff: true,
-    audioAttributionVerified: true,
-    mobileFlowEvidenceVerified: true,
-    facilitatorProtocolReady: true,
-    participantConsentReady: true,
-    privacyReviewPassed: true,
+    approvedTeacherHandoff: verifiedEvidence("teacher-review/lesson-1"),
+    audioAttributionVerified: verifiedEvidence("docs/audio-attribution.md"),
+    mobileFlowEvidenceVerified: verifiedEvidence("docs/qa/lesson-2-20-390x844.md"),
+    facilitatorProtocolReady: verifiedEvidence("docs/beginner-pilot-plan.md"),
+    participantConsentReady: verifiedEvidence("owner-controlled/consent-script"),
+    privacyReviewPassed: verifiedEvidence("owner-controlled/privacy-review"),
   };
 
   assert.deepEqual(evaluatePilotReadiness(evidence), {

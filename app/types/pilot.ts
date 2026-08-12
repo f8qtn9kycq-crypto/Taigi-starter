@@ -9,13 +9,25 @@ export const PILOT_READINESS_BLOCKER_IDS = [
 
 export type PilotReadinessBlocker = typeof PILOT_READINESS_BLOCKER_IDS[number];
 
+export type PilotReadinessGateEvidence =
+  | Readonly<{
+    status: "pending";
+    evidenceRef: null;
+    checkedAt: null;
+  }>
+  | Readonly<{
+    status: "verified";
+    evidenceRef: string;
+    checkedAt: string;
+  }>;
+
 export type PilotReadinessEvidence = Readonly<{
-  approvedTeacherHandoff: boolean;
-  audioAttributionVerified: boolean;
-  mobileFlowEvidenceVerified: boolean;
-  facilitatorProtocolReady: boolean;
-  participantConsentReady: boolean;
-  privacyReviewPassed: boolean;
+  approvedTeacherHandoff: PilotReadinessGateEvidence;
+  audioAttributionVerified: PilotReadinessGateEvidence;
+  mobileFlowEvidenceVerified: PilotReadinessGateEvidence;
+  facilitatorProtocolReady: PilotReadinessGateEvidence;
+  participantConsentReady: PilotReadinessGateEvidence;
+  privacyReviewPassed: PilotReadinessGateEvidence;
 }>;
 
 export type PilotReadinessResult = Readonly<{
