@@ -4,7 +4,7 @@ import test from "node:test";
 
 // Keep the repository-level governance contract executable in CI.
 const templateUrl = new URL("../.github/pull_request_template.md", import.meta.url);
-const releaseEvidenceUrl = new URL("../docs/release-evidence.md", import.meta.url);
+const releaseEvidenceUrl = new URL("../docs/release-evidence.md", import.meta.url);\nconst buildWorkflowUrl = new URL("../.github/workflows/build.yml", import.meta.url);
 
 test("pull request template is valid UTF-8 with required delivery gates", async () => {
   const bytes = await readFile(templateUrl);
@@ -37,4 +37,13 @@ test("release evidence keeps deployment records as immutable snapshots", async (
   assert.match(evidence, /Current live source and deployment state must be queried/);
   assert.doesNotMatch(evidence, /^## Current Vercel runtime baseline$/m);
   assert.doesNotMatch(evidence, /Current production source commit:/);
+});
+
+test("build workflow uses Node 24-backed GitHub actions", async () => {
+  const workflow = await readFile(buildWorkflowUrl, "utf8");
+
+  assert.match(workflow, /uses: actions\/checkout@v6/);
+  assert.match(workflow, /uses: actions\/setup-node@v6/);
+  assert.doesNotMatch(workflow, /uses: actions\/(?:checkout|setup-node)@v4/);
+  assert.match(workflow, /node-version: 22\.13\.0/);
 });
