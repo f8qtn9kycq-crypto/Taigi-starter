@@ -1,13 +1,13 @@
 # Release evidence
 
-## Current Vercel runtime baseline
+## Verified Vercel production snapshot
 
-- Canonical source: GitHub `main`
-- Current production source commit:
+- Canonical source repository: GitHub `main`
+- Verified snapshot source commit:
   `7148732ee7290879c3dfac58c623e3b3d569a2c1`
-- Vercel deployment: `5871798656`, Ready／success
-- Deployment URL: https://taigi-starter-1g953cjlm-alex-vercel-x-projects.vercel.app
-- Date: 2026-08-12
+- Verified deployment: `5871798656`, Ready／success
+- Exact snapshot URL: https://taigi-starter-1g953cjlm-alex-vercel-x-projects.vercel.app
+- Snapshot date: 2026-08-12
 - Last behavior-changing runtime source commit:
   `c81c7f0af22063c3362c39df0583404e7477fc88`
 - Scope: Lessons 1–20 plus v5 device-local per-lesson progress and a multi-card
@@ -17,10 +17,16 @@
   GitHub build, Vercel Preview Ready, and 390×844 Preview flow `0/15 → 1/15`
   with `1/15` retained after reload
 
-The current production deployment includes later governance-only commits and
-does not change that runtime baseline. On 2026-08-12, its exact deployment URL
-passed a fresh 390×844 smoke: Lessons 1, 2, and 20 rendered without horizontal
-overflow; selecting Lesson 2 or 20 kept progress at `0/15`; Lesson 20 remained
+This is an immutable evidence snapshot, not a claim about whichever deployment
+is currently newest. Current live source and deployment state must be queried
+from GitHub and Vercel; merging documentation can itself create a newer
+production deployment and must not trigger another commit merely to chase that
+moving pointer. Later governance-only deployments do not invalidate the tested
+runtime baseline.
+
+On 2026-08-12, the exact snapshot URL passed a fresh 390×844 smoke: Lessons 1,
+2, and 20 rendered without horizontal overflow; selecting Lesson 2 or 20 kept
+progress at `0/15`; Lesson 20 remained
 active after reload; and the browser console reported no errors or warnings.
 This did not exercise audio, microphone, or feedback submission. M2.5 remains
 `planned`／`not-run`, with no participant evidence or teacher approval to claim.
