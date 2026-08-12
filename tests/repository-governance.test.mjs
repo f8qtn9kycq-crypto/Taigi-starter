@@ -4,8 +4,30 @@ import test from "node:test";
 
 // Keep the repository-level governance contract executable in CI.
 const templateUrl = new URL("../.github/pull_request_template.md", import.meta.url);
+const agentsUrl = new URL("../AGENTS.md", import.meta.url);
 const releaseEvidenceUrl = new URL("../docs/release-evidence.md", import.meta.url);
 const buildWorkflowUrl = new URL("../.github/workflows/build.yml", import.meta.url);
+
+test("owner execution authorization remains persistent and narrowly bounded", async () => {
+  const contract = (await readFile(agentsUrl, "utf8")).replace(/\s+/g, " ");
+
+  assert.match(
+    contract,
+    /Treat explicit owner authorization as persistent for the active conversation:/,
+  );
+  assert.match(
+    contract,
+    /do not ask again for equivalent in-scope GitHub, Git, validation, review, merge, or clean-branch deletion actions\./,
+  );
+  assert.match(
+    contract,
+    /Review gates, human evidence gates, and ordinary execution steps are not new authorization requests\./,
+  );
+  assert.match(
+    contract,
+    /Ask again only when a system-enforced permission requires it or the proposed action materially expands the authorized scope\./,
+  );
+});
 
 test("pull request template is valid UTF-8 with required delivery gates", async () => {
   const bytes = await readFile(templateUrl);
