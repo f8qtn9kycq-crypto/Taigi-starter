@@ -138,6 +138,7 @@ const validateSource = (
 const validateAudio = (
   value: unknown,
   path: string,
+  phrase: UnknownRecord,
   issues: LessonPackageValidationIssue[],
 ): void => {
   if (!isRecord(value)) {
@@ -146,6 +147,9 @@ const validateAudio = (
   }
 
   if (value.status !== "added") addIssue(issues, `${path}.status`, "must be added before a package can enter the release candidate");
+  if (value.contentHanji !== phrase.hanji) {
+    addIssue(issues, `${path}.contentHanji`, "must exactly match the Hanji shown for the audio button");
+  }
   if (!isNonEmptyString(value.audioUrl) || !value.audioUrl.startsWith("/audio/")) {
     addIssue(issues, `${path}.audioUrl`, "must reference a local audio asset");
   }
@@ -191,7 +195,7 @@ const validatePhrase = (
   validateLocalizedText(value.meaning, `${path}.meaning`, issues);
   validateLocalizedText(value.cultureNote, `${path}.cultureNote`, issues);
   validateSource(value.source, `${path}.source`, issues);
-  validateAudio(value.audio, `${path}.audio`, issues);
+  validateAudio(value.audio, `${path}.audio`, value, issues);
 };
 
 const validateTeacherReview = (

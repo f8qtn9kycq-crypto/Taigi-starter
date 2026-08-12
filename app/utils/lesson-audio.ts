@@ -20,10 +20,12 @@ export const lessonAudioUrl = (lessonNumber: number, phraseId: string): string =
 export const createLessonPackageAudio = (
   lessonNumber: number,
   phraseId: string,
+  hanji: string,
   canonicalUrl: string,
   audioUrlOverride?: string,
 ): LessonPackagePhrase["audio"] => ({
   status: "added",
+  contentHanji: hanji,
   audioUrl: audioUrlOverride ?? lessonAudioUrl(lessonNumber, phraseId),
   originalUrl: officialMoeAudioUrl(canonicalUrl),
   license: LICENSE,

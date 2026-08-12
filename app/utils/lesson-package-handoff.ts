@@ -36,7 +36,7 @@ const addIssue = (
 const validateAudioAttribution = (
   value: unknown,
   path: string,
-  phraseIds: ReadonlySet<string>,
+  phraseHanjiById: ReadonlyMap<string, string>,
   issues: LessonPackageHandoffValidationIssue[],
 ): void => {
   if (!Array.isArray(value)) {
@@ -55,12 +55,16 @@ const validateAudioAttribution = (
     const phraseId = attribution.phraseId;
     if (!isNonEmptyString(phraseId)) {
       addIssue(issues, `${attributionPath}.phraseId`, "must be a non-empty string");
-    } else if (!phraseIds.has(phraseId)) {
+    } else if (!phraseHanjiById.has(phraseId)) {
       addIssue(issues, `${attributionPath}.phraseId`, "must match a package phrase");
     } else if (seenPhraseIds.has(phraseId)) {
       addIssue(issues, `${attributionPath}.phraseId`, "must be unique");
     } else {
       seenPhraseIds.add(phraseId);
+    }
+
+    if (isNonEmptyString(phraseId) && attribution.contentHanji !== phraseHanjiById.get(phraseId)) {
+      addIssue(issues, `${attributionPath}.contentHanji`, "must match the attributed phrase in full");
     }
 
     if (!isNonEmptyString(attribution.audioUrl)) {
@@ -86,7 +90,7 @@ const validateAudioAttribution = (
     }
   }
 
-  for (const phraseId of phraseIds) {
+  for (const phraseId of phraseHanjiById.keys()) {
     if (!seenPhraseIds.has(phraseId)) {
       addIssue(issues, path, `must include attribution for ${phraseId}`);
     }
@@ -170,13 +174,13 @@ export function validateLessonPackageHandoff(
 
     const phrases = packageValue.phrases;
     if (Array.isArray(phrases)) {
-      const phraseIds = new Set(
+      const phraseHanjiById = new Map(
         phrases
           .filter(isRecord)
-          .map((phrase) => phrase.id)
-          .filter(isNonEmptyString),
+          .filter((phrase) => isNonEmptyString(phrase.id) && isNonEmptyString(phrase.hanji))
+          .map((phrase) => [phrase.id as string, phrase.hanji as string]),
       );
-      validateAudioAttribution(value.audioAttribution, "audioAttribution", phraseIds, issues);
+      validateAudioAttribution(value.audioAttribution, "audioAttribution", phraseHanjiById, issues);
     }
   }
 

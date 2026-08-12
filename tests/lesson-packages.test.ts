@@ -44,6 +44,7 @@ test("planned lesson packages carry complete POJ and original-audio metadata", (
       assert.match(phrase.source.canonicalUrl, /^https:\/\/sutian\.moe\.edu\.tw\//);
       assert.equal(phrase.source.license, "CC BY-ND 3.0 TW");
       assert.equal(phrase.audio.status, "added");
+      assert.equal(phrase.audio.contentHanji, phrase.hanji);
       assert.match(phrase.audio.audioUrl, /^\/audio\//);
       assert.match(phrase.audio.originalUrl, /^https:\/\/sutian\.moe\.edu\.tw\/media\//);
       assert.equal(phrase.audio.license, "CC BY-ND 3.0 TW");
@@ -61,7 +62,7 @@ test("M2.3 packages keep the source-verified lesson scope", () => {
   );
   assert.deepEqual(
     m23Packages.flatMap((lesson) => lesson.phrases.map((phrase) => phrase.hanji)),
-    ["出門", "坐車", "車站", "食餐廳", "欲", "菜", "買", "物件", "偌濟", "價錢"],
+    ["出門", "坐", "車站", "食餐廳", "欲", "菜", "買", "物件", "偌濟", "價錢"],
   );
   assert.ok(m23Packages.every((lesson) => lesson.status === "planned"));
   assert.ok(m23Packages.every((lesson) => lesson.teacherReview.status === "required"));
@@ -77,4 +78,32 @@ test("Lesson 12 does not duplicate Lesson 1's complete greeting phrase", () => {
     lessonTwelve.phrases.some((phrase) => lessonOneKeys.has(`${phrase.hanji}\t${phrase.tailo}`)),
     false,
   );
+});
+
+test("previously partial audio mappings expose only the exact MOE audio content", () => {
+  const expected = new Map([
+    ["lesson-2-family-home", ["兜", "6917"]],
+    ["lesson-4-food-and-drink-meal", ["飯", "9222"]],
+    ["lesson-4-food-and-drink-water", ["啉水", "7030"]],
+    ["lesson-4-food-and-drink-tea", ["食茶", "14178"]],
+    ["lesson-5-daily-work", ["代誌", "1370"]],
+    ["lesson-7-directions-where", ["佗", "2863"]],
+    ["lesson-12-conversation-meal", ["飯", "9222"]],
+    ["lesson-12-conversation-home", ["兜", "6917"]],
+    ["lesson-15-body-and-health-medicine", ["藥仔", "12843"]],
+    ["lesson-16-travel-ride-vehicle", ["坐", "3022"]],
+  ] as const);
+
+  let auditedCount = 0;
+  for (const lesson of lessonPackages) {
+    for (const phrase of lesson.phrases) {
+      const audited = expected.get(phrase.id);
+      if (!audited) continue;
+      auditedCount += 1;
+      assert.equal(phrase.hanji, audited[0]);
+      assert.equal(phrase.audio.contentHanji, audited[0]);
+      assert.match(phrase.source.canonicalUrl, new RegExp(`/su/${audited[1]}/$`));
+    }
+  }
+  assert.equal(auditedCount, expected.size);
 });

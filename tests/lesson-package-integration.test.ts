@@ -24,6 +24,7 @@ const createHandoff = (poj: string | null = null): Record<string, unknown> => {
     package: lessonPackage,
     audioAttribution: lessonPackage.phrases.map((phrase) => ({
       phraseId: phrase.id,
+      contentHanji: phrase.hanji,
       audioUrl: `/audio/${phrase.id}.mp3`,
       sourceUrl: phrase.source.canonicalUrl,
       originalUrl: "https://audio.example.test/lesson-2.mp3",

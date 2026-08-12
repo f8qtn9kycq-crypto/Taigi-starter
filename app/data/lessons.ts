@@ -55,6 +55,7 @@ export const prototypeLesson: PlayableLesson = {
         speaker: null,
       },
       audioAttribution: {
+        contentHanji: "你食飽未？",
         audioUrl: "/audio/li-tsiah-pa-bue.mp3",
         sourceUrl: "https://sutian.moe.edu.tw/und-hani/su/1653/",
         originalUrl: "https://sutian.moe.edu.tw/media/senn/mp3/imtong/subak/1/1653.mp3",
