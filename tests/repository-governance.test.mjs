@@ -8,25 +8,53 @@ const agentsUrl = new URL("../AGENTS.md", import.meta.url);
 const releaseEvidenceUrl = new URL("../docs/release-evidence.md", import.meta.url);
 const buildWorkflowUrl = new URL("../.github/workflows/build.yml", import.meta.url);
 
-test("owner execution authorization remains persistent and narrowly bounded", async () => {
-  const contract = (await readFile(agentsUrl, "utf8")).replace(/\s+/g, " ");
+const persistentAuthorizationRule = [
+  "- Treat explicit owner authorization as persistent for the active conversation:",
+  "  do not ask again for equivalent in-scope GitHub, Git, validation, review,",
+  "  merge, or clean-branch deletion actions. Review gates, human evidence gates,",
+  "  and ordinary execution steps are not new authorization requests. Ask again",
+  "  only when a system-enforced permission requires it or the proposed action",
+  "  materially expands the authorized scope.",
+].join("\n");
 
-  assert.match(
-    contract,
-    /Treat explicit owner authorization as persistent for the active conversation:/,
+const assertPersistentAuthorizationContract = (contract) => {
+  const heading = "## Repository workflow\n";
+  const sectionStart = contract.indexOf(heading);
+  assert.notEqual(sectionStart, -1, "repository workflow section must exist");
+
+  const sectionBody = contract.slice(sectionStart + heading.length);
+  const nextHeading = sectionBody.search(/\n## /);
+  const section = (nextHeading === -1 ? sectionBody : sectionBody.slice(0, nextHeading)).trim();
+  const policyBullets = section.split(/\n(?=- )/).filter((bullet) =>
+    /\bauthorization\b|ask again|re-?prompt|(?:fresh|new|another|renewed) approval/i.test(
+      bullet,
+    ),
   );
-  assert.match(
-    contract,
-    /do not ask again for equivalent in-scope GitHub, Git, validation, review, merge, or clean-branch deletion actions\./,
-  );
-  assert.match(
-    contract,
-    /Review gates, human evidence gates, and ordinary execution steps are not new authorization requests\./,
-  );
-  assert.match(
-    contract,
-    /Ask again only when a system-enforced permission requires it or the proposed action materially expands the authorized scope\./,
-  );
+
+  assert.deepEqual(policyBullets, [persistentAuthorizationRule]);
+};
+
+test("owner execution authorization remains persistent and narrowly bounded", async () => {
+  const bytes = await readFile(agentsUrl);
+  const contract = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+
+  assertPersistentAuthorizationContract(contract);
+});
+
+test("authorization contract rejects extra exceptions and contradictory re-prompts", () => {
+  const mutations = [
+    persistentAuthorizationRule.replace(
+      "materially expands the authorized scope.",
+      "materially expands the authorized scope or the exact head changes.",
+    ),
+    `${persistentAuthorizationRule}\n- Ask again before every merge.`,
+    `${persistentAuthorizationRule}\n- Request fresh approval for exact-head validation.`,
+  ];
+
+  for (const mutation of mutations) {
+    const contract = `## Repository workflow\n\n${mutation}\n\n## Validation and delivery\n`;
+    assert.throws(() => assertPersistentAuthorizationContract(contract));
+  }
 });
 
 test("pull request template is valid UTF-8 with required delivery gates", async () => {
