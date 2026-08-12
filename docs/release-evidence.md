@@ -18,9 +18,11 @@
   with `1/15` retained after reload
 
 The current production deployment includes later governance-only commits and
-does not change that runtime baseline. Its exact deployment URL still needs a
-fresh 390×844 mobile smoke, lesson-switching check, and console check; the older
-Preview smoke does not substitute for that production evidence. M2.5 remains
+does not change that runtime baseline. On 2026-08-12, its exact deployment URL
+passed a fresh 390×844 smoke: Lessons 1, 2, and 20 rendered without horizontal
+overflow; selecting Lesson 2 or 20 kept progress at `0/15`; Lesson 20 remained
+active after reload; and the browser console reported no errors or warnings.
+This did not exercise audio, microphone, or feedback submission. M2.5 remains
 `planned`／`not-run`, with no participant evidence or teacher approval to claim.
 Vercel is the only current production verification target.
 
