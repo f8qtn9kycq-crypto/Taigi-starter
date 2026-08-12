@@ -20,6 +20,7 @@ const createHandoff = (lessonPackage: LessonPackage): LessonPackageHandoff => ({
   package: lessonPackage,
   audioAttribution: lessonPackage.phrases.map((phrase) => ({
     phraseId: phrase.id,
+    contentHanji: phrase.audio.contentHanji,
     audioUrl: phrase.audio.audioUrl,
     sourceUrl: phrase.source.canonicalUrl,
     license: LICENSE,

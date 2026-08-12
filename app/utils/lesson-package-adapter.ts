@@ -18,6 +18,7 @@ export const adaptLessonPackageHandoff = (
 
     const audioAttribution: LessonAudioAttribution = {
       audioUrl: attribution.audioUrl,
+      contentHanji: attribution.contentHanji,
       sourceUrl: attribution.sourceUrl,
       originalUrl: attribution.originalUrl,
       license: attribution.license,

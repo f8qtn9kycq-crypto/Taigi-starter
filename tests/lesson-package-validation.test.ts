@@ -55,6 +55,17 @@ test("validator rejects missing objective, Tâi-lô, bilingual text, licence, an
   assert.ok(paths.includes("packages[0].phrases[0].audio.originalUrl"));
 });
 
+test("validator rejects audio whose spoken content differs from the displayed phrase", () => {
+  const invalid = clonePackages();
+  const phrase = (invalid[0].phrases as Record<string, unknown>[])[0];
+  const audio = phrase.audio as Record<string, unknown>;
+
+  audio.contentHanji = "只有部分詞目";
+
+  const paths = validateLessonPackages(invalid).map((issue) => issue.path);
+  assert.ok(paths.includes("packages[0].phrases[0].audio.contentHanji"));
+});
+
 test("validator rejects a covered package with fewer than three target phrases", () => {
   const invalid = clonePackages();
   const first = invalid[0];

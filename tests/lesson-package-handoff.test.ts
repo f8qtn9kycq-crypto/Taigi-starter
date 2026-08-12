@@ -32,6 +32,7 @@ const createCompleteHandoff = (): MutableHandoff => {
     package: lessonPackage,
     audioAttribution: phrases.map((phrase) => ({
       phraseId: phrase.id,
+      contentHanji: phrase.hanji,
       audioUrl: `/audio/${phrase.id}.mp3`,
       sourceUrl: "https://audio.example.test/lesson-2",
       originalUrl: "https://audio.example.test/lesson-2.mp3",
@@ -99,6 +100,7 @@ test("handoff rejects incomplete audio attribution and mobile evidence", () => {
   const handoff = createCompleteHandoff();
   handoff.audioAttribution.pop();
   handoff.audioAttribution[0].isUnmodifiedOriginal = false;
+  handoff.audioAttribution[0].contentHanji = "只有部分詞目";
   handoff.mobileFlowEvidence[0].viewport = "phone";
   handoff.mobileFlowEvidence[0].checkedAt = "2026-02-30T00:00:00.000Z";
   handoff.mobileFlowEvidence[0].evidenceRef = "";
@@ -106,6 +108,7 @@ test("handoff rejects incomplete audio attribution and mobile evidence", () => {
   const paths = validateLessonPackageHandoff(handoff).map((issue) => issue.path);
   assert.ok(paths.includes("audioAttribution"));
   assert.ok(paths.includes("audioAttribution[0].isUnmodifiedOriginal"));
+  assert.ok(paths.includes("audioAttribution[0].contentHanji"));
   assert.ok(paths.includes("mobileFlowEvidence[0].viewport"));
   assert.ok(paths.includes("mobileFlowEvidence[0].checkedAt"));
   assert.ok(paths.includes("mobileFlowEvidence[0].evidenceRef"));

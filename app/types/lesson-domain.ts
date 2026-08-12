@@ -13,6 +13,7 @@ export type LessonSource = {
 };
 
 export type LessonAudioAsset = {
+  contentHanji: string;
   audioUrl: string;
   originalUrl: string;
   license: string;
