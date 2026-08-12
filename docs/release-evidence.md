@@ -3,22 +3,26 @@
 ## Current Vercel runtime baseline
 
 - Canonical source: GitHub `main`
-- Last behavior-changing production source commit:
+- Current production source commit:
+  `7148732ee7290879c3dfac58c623e3b3d569a2c1`
+- Vercel deployment: `5871798656`, Ready／success
+- Deployment URL: https://taigi-starter-1g953cjlm-alex-vercel-x-projects.vercel.app
+- Date: 2026-08-12
+- Last behavior-changing runtime source commit:
   `c81c7f0af22063c3362c39df0583404e7477fc88`
-- Vercel deployment: `do2cwqAe2Sx7hjuvbC3KMEu2Ni1a`, Ready／success
-- Deployment URL: https://taigi-starter-6a7hbmivh-alex-vercel-x-projects.vercel.app
-- Date: 2026-08-09
 - Scope: Lessons 1–20 plus v5 device-local per-lesson progress and a multi-card
   review queue; no account, cloud sync, learner-facing AI, recording upload, or
   content change
-- Exact-head evidence: `npm test` 73/73, `npm run lint`, `git diff --check`,
+- Runtime exact-head evidence: `npm test` 73/73, `npm run lint`, `git diff --check`,
   GitHub build, Vercel Preview Ready, and 390×844 Preview flow `0/15 → 1/15`
   with `1/15` retained after reload
 
-Later documentation-only commits can advance the production deployment SHA
-without changing this runtime baseline. This is deployment and focused smoke
-evidence, not external learner research or teacher approval. Vercel is the only
-current production verification target.
+The current production deployment includes later governance-only commits and
+does not change that runtime baseline. Its exact deployment URL still needs a
+fresh 390×844 mobile smoke, lesson-switching check, and console check; the older
+Preview smoke does not substitute for that production evidence. M2.5 remains
+`planned`／`not-run`, with no participant evidence or teacher approval to claim.
+Vercel is the only current production verification target.
 
 ## Historical Sites snapshot
 
