@@ -63,7 +63,9 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(lesson, /lesson.stages.map/);
   assert.match(lesson, /text\.stageLabels\[lessonStage\.id\]/);
   assert.match(lesson, /disabled=\{!isCurrent && !isComplete\}/);
-  assert.match(lesson, /isComplete && onStageChange\(index\)/);
+  assert.match(lesson, /pendingFocusStageRef\.current = nextStage/);
+  assert.match(lesson, /stageTriggerRefs\.current\[stage\]\?\.focus\(\)/);
+  assert.match(lesson, /isComplete && changeStage\(index\)/);
   assert.match(stagePanel, /text\.stageProgress\(stage, lesson\.stages\.length/);
   assert.match(stagePanel, /text\.hearCompletionHint/);
   assert.match(stagePanel, /disabled=\{audioPlays < 1 && !hasError\}/);
