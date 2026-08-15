@@ -64,7 +64,9 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(lesson, /text\.stageLabels\[lessonStage\.id\]/);
   assert.match(lesson, /disabled=\{!isCurrent && !isComplete\}/);
   assert.match(lesson, /pendingFocusStageRef\.current = nextStage/);
-  assert.match(lesson, /pendingFocusStageRef\.current = 0;[\s\S]*onPhraseAdvance\(\)/);
+  assert.match(lesson, /lesson\.phrases\.every\(\(phrase\) => completedPhraseIds\.has\(phrase\.id\)\)/);
+  assert.match(lesson, /findIndex\(\(phrase\) => !completedPhraseIds\.has\(phrase\.id\)\)/);
+  assert.match(lesson, /pendingFocusStageRef\.current = 0;[\s\S]*onPhraseAdvance\(nextIncompletePhraseIndex\)/);
   assert.match(lesson, /stageTriggerRefs\.current\[stage\]\?\.focus\(\)/);
   assert.match(lesson, /isComplete && changeStage\(index\)/);
   assert.match(stagePanel, /text\.stageProgress\(stage, lesson\.stages\.length/);
@@ -75,6 +77,10 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(stagePanel, /text\.recallAttempt/);
   assert.match(stagePanel, /lessonStage\.id === "recall" && showAnswer/);
   assert.match(stagePanel, /reviewScheduled/);
+  assert.match(stagePanel, /nextPhraseIndex >= 0/);
+  assert.match(stagePanel, /lessonComplete && hasUseResponse/);
+  assert.match(stagePanel, /completionRef\.current\?\.focus\(\)/);
+  assert.match(stagePanel, /tabIndex=\{-1\}[\s\S]*className="lesson-complete"/);
   assert.match(stagePanel, /hasUseResponse = useResponse\.trim\(\)\.length > 0/);
   assert.match(stagePanel, /disabled=\{!hasUseResponse\}/);
   assert.doesNotMatch(stagePanel, /fetch\(|localStorage|sessionStorage/);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import type { LessonCopy } from "../taigi-content";
 import type { PlayableLesson } from "../types/lesson";
@@ -12,6 +12,8 @@ type LessonStagePanelProps = {
   text: LessonCopy;
   lesson: PlayableLesson;
   phraseIndex: number;
+  nextPhraseIndex: number;
+  lessonComplete: boolean;
   reviewScheduled: boolean;
   onAdvance: () => void;
   onReviewAdded: (phraseId: string) => void;
@@ -23,6 +25,8 @@ export default function LessonStagePanel({
   text,
   lesson,
   phraseIndex,
+  nextPhraseIndex,
+  lessonComplete,
   reviewScheduled,
   onAdvance,
   onReviewAdded,
@@ -33,10 +37,18 @@ export default function LessonStagePanel({
   const [recallAttempted, setRecallAttempted] = useState(false);
   const [sayCompleted, setSayCompleted] = useState(false);
   const [useResponse, setUseResponse] = useState("");
+  const completionRef = useRef<HTMLParagraphElement | null>(null);
+  const previousReviewScheduledRef = useRef(reviewScheduled);
   const hasUseResponse = useResponse.trim().length > 0;
   const phrase = lesson.phrases[phraseIndex];
   const lessonStage = lesson.stages[stage];
   const { isPlaying, hasError, toggle } = useAudioPlayer(phrase.audioUrl);
+
+  useEffect(() => {
+    const justCompleted = !previousReviewScheduledRef.current && reviewScheduled;
+    previousReviewScheduledRef.current = reviewScheduled;
+    if (justCompleted && lessonComplete && hasUseResponse) completionRef.current?.focus();
+  }, [hasUseResponse, lessonComplete, reviewScheduled]);
 
   const playAudio = async () => {
     const started = await toggle();
@@ -111,11 +123,11 @@ export default function LessonStagePanel({
             </label>
             {!hasUseResponse && <p className="stage-gate-hint" role="status">{text.useCompletionRequired}</p>}
             {reviewScheduled ? (
-              phraseIndex < lesson.phrases.length - 1 ? (
+              nextPhraseIndex >= 0 ? (
                 <button type="button" className="action-button primary-action" onClick={onPhraseAdvance} disabled={!hasUseResponse}>
-                  {text.nextPhrase(lesson.phrases[phraseIndex + 1].hanji)}<span>→</span>
+                  {text.nextPhrase(lesson.phrases[nextPhraseIndex].hanji)}<span>→</span>
                 </button>
-              ) : hasUseResponse && <p className="lesson-complete" role="status">✓ {text.lessonComplete}</p>
+              ) : lessonComplete && hasUseResponse && <p ref={completionRef} tabIndex={-1} className="lesson-complete" role="status">✓ {text.lessonComplete}</p>
             ) : (
               <button type="button" className="action-button primary-action" onClick={() => onReviewAdded(phrase.id)} disabled={!hasUseResponse}>
                 {text.addReview}<span>+</span>

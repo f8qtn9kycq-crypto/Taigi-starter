@@ -142,7 +142,7 @@ export default function TaigiStartPage() {
           onStageChange={setStage}
           onReviewAdded={completePhrase}
           onPhraseChange={setPhraseIndex}
-          onPhraseAdvance={() => setPhraseIndex(activePhraseIndex + 1)}
+          onPhraseAdvance={setPhraseIndex}
         />
         <CoursePath
           ref={pathRef}
