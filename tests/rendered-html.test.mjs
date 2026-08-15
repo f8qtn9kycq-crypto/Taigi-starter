@@ -64,6 +64,7 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(lesson, /text\.stageLabels\[lessonStage\.id\]/);
   assert.match(lesson, /disabled=\{!isCurrent && !isComplete\}/);
   assert.match(lesson, /pendingFocusStageRef\.current = nextStage/);
+  assert.match(lesson, /pendingFocusStageRef\.current = 0;[\s\S]*onPhraseAdvance\(\)/);
   assert.match(lesson, /stageTriggerRefs\.current\[stage\]\?\.focus\(\)/);
   assert.match(lesson, /isComplete && changeStage\(index\)/);
   assert.match(stagePanel, /text\.stageProgress\(stage, lesson\.stages\.length/);

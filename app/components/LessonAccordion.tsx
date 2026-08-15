@@ -42,6 +42,10 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
       onStageChange(nextStage);
     };
     const advance = () => changeStage(Math.min(stage + 1, lastStage));
+    const advancePhrase = () => {
+      pendingFocusStageRef.current = 0;
+      onPhraseAdvance();
+    };
 
     useEffect(() => {
       if (pendingFocusStageRef.current !== stage) return;
@@ -125,7 +129,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
                     reviewScheduled={reviewScheduled}
                     onAdvance={advance}
                     onReviewAdded={onReviewAdded}
-                    onPhraseAdvance={onPhraseAdvance}
+                    onPhraseAdvance={advancePhrase}
                   />
                 )}
               </li>
