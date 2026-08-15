@@ -37,6 +37,8 @@ test("pilot consent template is versioned, reviewable, and not self-approving", 
     "session 後最多 30 日",
     "不建立 participant-record 備份",
     "不複製聯絡資料",
+    "排除 Time Machine",
+    "retention 期間接收回覆",
   ]) {
     assert.match(template, new RegExp(requiredText.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }

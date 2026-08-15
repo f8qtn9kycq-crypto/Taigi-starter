@@ -35,12 +35,14 @@ owner 的 privacy／legal reviewer 依當次資料流確認：
 - 蒐集者與唯一可存取者：Taigi Start 的 sole contributor／product owner；
   facilitator 在同意前以真實姓名自我介紹。
 - 權利請求管道：participant 直接回覆原本的招募／聯絡管道，由 sole contributor
-  處理查詢、複製、更正、停止利用或刪除請求；pilot record 不另存該聯絡資料。
+  處理查詢、複製、更正、停止利用或刪除請求；只使用能在 retention 期間接收
+  回覆的招募管道，pilot record 不另存該聯絡資料。
 - Participant-level record：只放在 owner 的 FileVault 加密 Mac 上、repo 外的
   `Taigi Pilot Private` 本機資料夾；不得放在 iCloud、Google Drive、公開連結或
   任何 repository。
-- 存取與備份：只有 sole contributor 可存取；不建立 participant-record 備份。
-  若意外產生副本，必須與原 record 一併刪除並記錄完成時間。
+- 存取與備份：只有 sole contributor 可存取；資料夾必須先排除 Time Machine，
+  且不建立 participant-record 備份。若意外產生副本，必須與原 record
+  一併刪除並記錄完成時間。
 - Retention：每場 session 後最多 30 日；到期前可因 participant 請求提前刪除。
   到期後只保留無法回推 participant 的 aggregate summary。
 - Delayed recall：只使用既有招募／聯絡管道安排 24–48 小時 follow-up；不把
@@ -50,8 +52,9 @@ The sole contributor is the collector and only authorized accessor. Rights
 requests and delayed recall use the existing recruitment channel without
 copying contact details into pilot records. De-identified participant-level
 records stay only in the local, non-cloud-synced `Taigi Pilot Private` folder
-on the owner's FileVault-encrypted Mac. No participant-record backup is
-created. Each record is deleted within 30 days after its session, or sooner on
+on the owner's FileVault-encrypted Mac. The folder is excluded from Time
+Machine and no other participant-record backup is created. Each record is
+deleted within 30 days after its session, or sooner on
 request; only irreversible aggregate results may remain.
 
 ## Session preflight
@@ -59,14 +62,14 @@ request; only irreversible aggregate results may remain.
 在 repo 外的 working copy 完成並審核下列資料。若任一項空白，不得使用 script：
 
 - [ ] 蒐集者／執行單位名稱：sole contributor／product owner；已在同意前告知真實姓名。
-- [ ] Participant 權利與刪除請求聯絡管道：原本的招募／聯絡管道；不另存聯絡資料。
+- [ ] Participant 權利與刪除請求聯絡管道：原本可在 retention 期間接收回覆的招募／聯絡管道；不另存聯絡資料。
 - [ ] 蒐集目的：只限初學者 usability 與 learning-signal pilot。
 - [ ] 個人資料類別：逐字稿列出的去識別欄位；不得加入聯絡資料或原始錄音。
 - [ ] 利用期間／retention：session 後最多 30 日；本次刪除期限已記錄。
 - [ ] 利用地區：臺灣；不得跨境傳輸 participant-level record。
 - [ ] 利用對象／可存取角色：sole contributor 一人。
 - [ ] 利用方式：現場觀察、受限本機儲存、去識別彙總、到期或依請求刪除。
-- [ ] 受限儲存位置：FileVault 加密 Mac 上、repo 與 cloud sync 外的 `Taigi Pilot Private`。
+- [ ] 受限儲存位置：FileVault 加密 Mac 上、repo 與 cloud sync 外的 `Taigi Pilot Private`；已確認排除 Time Machine。
 - [ ] 刪除方法與完成證據：刪除 active record 與任何意外副本、清空垃圾桶，並在受限 audit log 記錄 ISO timestamp；不宣稱 SSD secure erase。
 - [ ] Delayed recall 聯絡方法：只用既有招募管道安排，不複製聯絡資料。
 - [ ] 測試 commit、deployment、lesson、browser、viewport 與 session 日期：`[SESSION MUST SET]`
