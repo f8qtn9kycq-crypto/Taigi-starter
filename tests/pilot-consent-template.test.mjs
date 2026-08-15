@@ -52,6 +52,8 @@ test("pilot consent template is versioned, reviewable, and not self-approving", 
   assert.doesNotMatch(readiness, /participantConsentReady: verifiedEvidence/);
   assert.doesNotMatch(readiness, /privacyReviewPassed: verifiedEvidence/);
   assert.doesNotMatch(template, /\[OWNER MUST SET/);
+  assert.match(template, /已完成 session-specific 欄位、經 privacy review/);
+  assert.doesNotMatch(template, /已完成 owner 欄位/);
 });
 
 test("blank consent record is de-identified and keeps consent choices separate", async () => {
