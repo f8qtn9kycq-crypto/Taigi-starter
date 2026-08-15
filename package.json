@@ -11,6 +11,7 @@
     "build:vercel": "next build --webpack",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
     "lessons:validate": "node --experimental-strip-types scripts/validate-lessons.ts",
+    "teacher-review:packet": "node --experimental-strip-types scripts/render-teacher-review-packet.ts",
     "test": "npm run lessons:validate && npm run build && node --experimental-strip-types --test tests/*.test.*",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern .worktrees --ignore-pattern .release-work --ignore-pattern node_modules.broken",
     "start:vercel": "next start"
