@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 import type { LessonCopy } from "../taigi-content";
 import type { PlayableLesson } from "../types/lesson";
 import LessonStagePanel from "./LessonStagePanel";
@@ -35,7 +35,19 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
     ref,
   ) {
     const lastStage = lesson.stages.length - 1;
-    const advance = () => onStageChange(Math.min(stage + 1, lastStage));
+    const stageTriggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
+    const pendingFocusStageRef = useRef<number | null>(null);
+    const changeStage = (nextStage: number) => {
+      pendingFocusStageRef.current = nextStage;
+      onStageChange(nextStage);
+    };
+    const advance = () => changeStage(Math.min(stage + 1, lastStage));
+
+    useEffect(() => {
+      if (pendingFocusStageRef.current !== stage) return;
+      stageTriggerRefs.current[stage]?.focus();
+      pendingFocusStageRef.current = null;
+    }, [stage]);
 
     return (
       <section className="lesson-card" aria-labelledby="lesson-title" ref={ref}>
@@ -87,9 +99,10 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
             return (
               <li key={lessonStage.id} className={isCurrent ? "current" : isComplete ? "complete" : "locked"}>
                 <button
+                  ref={(node) => { stageTriggerRefs.current[index] = node; }}
                   type="button"
                   className="stage-trigger"
-                  onClick={() => isComplete && onStageChange(index)}
+                  onClick={() => isComplete && changeStage(index)}
                   disabled={!isCurrent && !isComplete}
                   aria-expanded={isCurrent}
                   aria-current={isCurrent ? "step" : undefined}
