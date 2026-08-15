@@ -28,6 +28,8 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.doesNotMatch(landing, /locale === "zh" \? "EN" : "中"/);
   assert.match(lesson, /stage-accordion/);
   assert.match(bottomNav, /aria-label=\{text\.primaryNavigation\}/);
+  assert.match(bottomNav, /reviewButtonRef: RefObject<HTMLButtonElement \| null>/);
+  assert.match(bottomNav, /ref=\{reviewButtonRef\}[\s\S]*onClick=\{onReview\}/);
   assert.match(coursePath, /aria-current=\{isActive \? "page" : undefined\}/);
   assert.doesNotMatch(coursePath, /aria-pressed/);
   assert.match(coursePath, /text\.startLesson/);
@@ -128,6 +130,9 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   ]);
 
   assert.match(page, /<BottomNav/);
+  assert.match(page, /reviewTriggerRef = useRef<HTMLButtonElement \| null>\(null\)/);
+  assert.match(page, /reviewButtonRef=\{reviewTriggerRef\}/);
+  assert.equal(page.match(/requestAnimationFrame\(\(\) => reviewTriggerRef\.current\?\.focus\(\)\)/g)?.length, 2);
   assert.match(page, /progress\.lessons\[activeLesson\.id\]/);
   assert.match(page, /activeLesson\.phrases\[activeLessonProgress\?\.phraseIndex \?\? 0\]/);
   assert.match(page, /onStart=\{startLearning\}/);

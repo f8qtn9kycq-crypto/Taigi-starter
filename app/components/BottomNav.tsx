@@ -1,9 +1,11 @@
+import type { RefObject } from "react";
 import type { LessonCopy } from "../taigi-content";
 
 type BottomNavProps = {
   text: LessonCopy;
   dueCount: number;
   activeTab: "learn" | "review" | "progress";
+  reviewButtonRef: RefObject<HTMLButtonElement | null>;
   onLearn: () => void;
   onReview: () => void;
   onPath: () => void;
@@ -13,6 +15,7 @@ export default function BottomNav({
   text,
   dueCount,
   activeTab,
+  reviewButtonRef,
   onLearn,
   onReview,
   onPath,
@@ -29,6 +32,7 @@ export default function BottomNav({
         {text.navLearn}
       </button>
       <button
+        ref={reviewButtonRef}
         type="button"
         className={activeTab === "review" ? "active" : undefined}
         onClick={onReview}

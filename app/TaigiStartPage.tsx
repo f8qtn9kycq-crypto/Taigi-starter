@@ -44,6 +44,7 @@ export default function TaigiStartPage() {
   const [activeTab, setActiveTab] = useState<"learn" | "review" | "progress">("learn");
   const lessonRef = useRef<HTMLElement | null>(null);
   const pathRef = useRef<HTMLElement | null>(null);
+  const reviewTriggerRef = useRef<HTMLButtonElement | null>(null);
   const heroAudio = useAudioPlayer(activeLesson.phrases[0].audioUrl);
   const text = copy[progress.locale];
   const activeLessonProgress = progress.lessons[activeLesson.id];
@@ -70,6 +71,7 @@ export default function TaigiStartPage() {
       if (event.key !== "Escape") return;
       setReviewOpen(false);
       setActiveTab("learn");
+      window.requestAnimationFrame(() => reviewTriggerRef.current?.focus());
     };
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", closeOnEscape);
@@ -84,6 +86,7 @@ export default function TaigiStartPage() {
   const closeReview = () => {
     setReviewOpen(false);
     setActiveTab("learn");
+    window.requestAnimationFrame(() => reviewTriggerRef.current?.focus());
   };
   const openReview = () => {
     setActiveTab("review");
@@ -164,6 +167,7 @@ export default function TaigiStartPage() {
         text={text}
         dueCount={dueCount}
         activeTab={activeTab}
+        reviewButtonRef={reviewTriggerRef}
         onLearn={() => { setActiveTab("learn"); scrollToLesson(); }}
         onReview={openReview}
         onPath={() => { setActiveTab("progress"); scrollToPath(); }}
