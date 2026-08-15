@@ -37,6 +37,7 @@ export const lessonPackages7To12: readonly RawLessonPackage[] = [
           zh: "音檔示範教育部詞目「佗」toh；「去佗」khì toh 是「去哪裡」，留到用的階段組合練習。",
           en: "The audio models the MOE headword toh; combine it as khì toh, go where, during the Use stage.",
         },
+        useCombination: { hanji: "去佗", tailo: "Khì toh", meaning: { zh: "去哪裡", en: "go where" } },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/2863/"),
       }),
       makePhrase({
@@ -332,6 +333,7 @@ export const lessonPackages7To12: readonly RawLessonPackage[] = [
           zh: "音檔示範教育部詞目「飯」pn̄g；在用的階段組成「食飯」tsia̍h-pn̄g，把對話帶回用餐情境。",
           en: "The audio models pn̄g; combine it as tsia̍h-pn̄g during the Use stage to ground the conversation in a meal context.",
         },
+        useCombination: { hanji: "食飯", tailo: "Tsia̍h-pn̄g", meaning: { zh: "吃飯、用餐", en: "eat a meal" } },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/9222/"),
       }),
       makePhrase({
@@ -344,6 +346,7 @@ export const lessonPackages7To12: readonly RawLessonPackage[] = [
           zh: "音檔示範教育部詞目「兜」tau；在用的階段組成「阮兜」guán tau，回答生活地點或家庭話題。",
           en: "The audio models tau; combine it as guán tau during the Use stage for a home or family response.",
         },
+        useCombination: { hanji: "阮兜", tailo: "Guán tau", meaning: { zh: "我家／我們家", en: "my home / our home" } },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/6917/"),
       }),
       makePhrase({

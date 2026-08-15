@@ -37,11 +37,18 @@ export type LessonPackagePhrase = {
   poj: string | null;
   meaning: LocalizedText;
   cultureNote: LocalizedText;
+  useCombination?: LessonUseCombination;
   source: LessonSource;
   audio: LessonAudioAsset & {
     status: "added";
     note: LocalizedText;
   };
+};
+
+export type LessonUseCombination = {
+  hanji: string;
+  tailo: string;
+  meaning: LocalizedText;
 };
 
 export type LessonPackage = {

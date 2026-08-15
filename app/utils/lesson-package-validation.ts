@@ -194,6 +194,15 @@ const validatePhrase = (
   if (!isNonEmptyString(value.poj)) addIssue(issues, `${path}.poj`, "must include the source-traceable POJ comparison");
   validateLocalizedText(value.meaning, `${path}.meaning`, issues);
   validateLocalizedText(value.cultureNote, `${path}.cultureNote`, issues);
+  if (value.useCombination !== undefined) {
+    if (!isRecord(value.useCombination)) {
+      addIssue(issues, `${path}.useCombination`, "must include a structured combination");
+    } else {
+      if (!isNonEmptyString(value.useCombination.hanji)) addIssue(issues, `${path}.useCombination.hanji`, "must be a non-empty string");
+      if (!isNonEmptyString(value.useCombination.tailo)) addIssue(issues, `${path}.useCombination.tailo`, "must be a non-empty string");
+      validateLocalizedText(value.useCombination.meaning, `${path}.useCombination.meaning`, issues);
+    }
+  }
   validateSource(value.source, `${path}.source`, issues);
   validateAudio(value.audio, `${path}.audio`, value, issues);
 };

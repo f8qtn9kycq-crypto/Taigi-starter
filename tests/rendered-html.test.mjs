@@ -89,6 +89,9 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(stagePanel, /sayCompleted/);
   assert.match(stagePanel, /disabled=\{!sayCompleted\}/);
   assert.match(stageContent, /stage === "recall"/);
+  assert.match(stageContent, /phrase\.useCombination/);
+  assert.match(stageContent, /text\.useCombination/);
+  assert.match(stageContent, /phrase\.source\.canonicalUrl/);
   assert.match(stageContent, /showAnswer &&/);
   assert.match(stageContent, /text\.tailoLabel/);
   assert.match(stageContent, /text\.pojLabel/);
@@ -158,6 +161,7 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(css, /\.lesson-list article\.active \{[\s\S]*border-color: var\(--jade\)/);
   assert.match(css, /\.media-attribution a \{[\s\S]*min-height: 44px/);
   assert.match(css, /\.use-response textarea \{[\s\S]*min-height: 72px/);
+  assert.match(css, /\.use-combination \{[\s\S]*border-radius: 20px/);
   assert.match(css, /\.progress-line i \{[\s\S]*width: 100%/);
   assert.doesNotMatch(css, /\.progress-line i \{[\s\S]*width: 62%/);
   assert.match(css, /env\(safe-area-inset-bottom\)/);

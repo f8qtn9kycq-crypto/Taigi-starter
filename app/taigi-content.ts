@@ -36,6 +36,9 @@ export type LessonCopy = {
   lesson: string;
   lessonSummary: string;
   lessonMission: string;
+  useCombination: string;
+  useCombinationMeaning: string;
+  verifySource: string;
   lessonTargets: string;
   phraseSelectorLabel: (current: number, total: number) => string;
   phraseSelectorOption: (phrase: string, current: number, total: number) => string;
@@ -157,6 +160,9 @@ export const copy: Record<Locale, LessonCopy> = {
     lesson: "第 1 課 · 相借問",
     lessonSummary: "從日常招呼開始，把聲音、文字和開口練習連起來。",
     lessonMission: "生活任務",
+    useCombination: "用：詞組組合",
+    useCombinationMeaning: "這個組合的意思",
+    verifySource: "查看教育部來源",
     lessonTargets: "本課目標詞",
     phraseSelectorLabel: (current, total) => `選擇要練習的詞語（${current}/${total}）`,
     phraseSelectorOption: (phrase, current, total) => `${phrase}，第 ${current} 個，共 ${total} 個`,
@@ -294,6 +300,9 @@ export const copy: Record<Locale, LessonCopy> = {
     lesson: "Lesson 1 · Greetings",
     lessonSummary: "Connect the sound, script, and speaking practice of an everyday greeting.",
     lessonMission: "Real-life task",
+    useCombination: "Use: build a phrase",
+    useCombinationMeaning: "Meaning of this combination",
+    verifySource: "Verify with the MOE source",
     lessonTargets: "Target phrases",
     phraseSelectorLabel: (current, total) => `Choose a phrase to practise (${current}/${total})`,
     phraseSelectorOption: (phrase, current, total) => `${phrase}, ${current} of ${total}`,

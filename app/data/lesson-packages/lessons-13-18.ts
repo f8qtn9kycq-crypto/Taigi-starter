@@ -179,6 +179,7 @@ export const lessonPackages13To18: readonly RawLessonPackage[] = [
           zh: "音檔示範教育部詞目「藥仔」io̍h-á；「食藥仔」tsia̍h io̍h-á 留到用的階段組合練習，本課不判斷是否需要用藥。",
           en: "The audio models the MOE headword io̍h-á; combine it as tsia̍h io̍h-á during the Use stage without advising whether medicine is needed.",
         },
+        useCombination: { hanji: "食藥仔", tailo: "Tsia̍h io̍h-á", meaning: { zh: "吃藥", en: "take medicine" } },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/12843/"),
       }),
     ],
@@ -226,6 +227,7 @@ export const lessonPackages13To18: readonly RawLessonPackage[] = [
           zh: "音檔示範教育部詞目「坐」tsē；「坐車」tsē tshia 留到用的階段組合練習，表達搭車出門。",
           en: "The audio models the MOE headword tsē; combine it as tsē tshia during the Use stage to describe travelling by vehicle.",
         },
+        useCombination: { hanji: "坐車", tailo: "Tsē tshia", meaning: { zh: "搭車、坐車", en: "ride in a vehicle" } },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/3022/"),
       }),
       makePhrase({

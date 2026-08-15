@@ -1118,6 +1118,52 @@ a:focus-visible {
   gap: 12px;
 }
 
+.use-combination {
+  display: grid;
+  gap: 6px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: #fffaf4;
+}
+
+.use-combination-label,
+.use-combination-meaning {
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.use-combination strong {
+  font-family: "Noto Serif TC", "Songti TC", serif;
+  font-size: 32px;
+}
+
+.use-combination p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+.use-combination .romanization {
+  color: var(--jade-dark);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 650;
+}
+
+.use-combination a {
+  width: fit-content;
+  min-height: 44px;
+  padding-top: 10px;
+  color: var(--jade-dark);
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .use-mission {
   margin-top: 28px;
 }
