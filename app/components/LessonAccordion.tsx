@@ -15,7 +15,7 @@ type LessonAccordionProps = {
   onStageChange: (stage: number) => void;
   onReviewAdded: (phraseId: string) => void;
   onPhraseChange: (phraseIndex: number) => void;
-  onPhraseAdvance: () => void;
+  onPhraseAdvance: (phraseIndex: number) => void;
 };
 
 const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
@@ -35,6 +35,10 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
     ref,
   ) {
     const lastStage = lesson.stages.length - 1;
+    const lessonComplete = lesson.phrases.every((phrase) => completedPhraseIds.has(phrase.id));
+    const nextIncompletePhraseIndex = lessonComplete
+      ? -1
+      : lesson.phrases.findIndex((phrase) => !completedPhraseIds.has(phrase.id));
     const stageTriggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
     const pendingFocusStageRef = useRef<number | null>(null);
     const changeStage = (nextStage: number) => {
@@ -43,8 +47,9 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
     };
     const advance = () => changeStage(Math.min(stage + 1, lastStage));
     const advancePhrase = () => {
+      if (nextIncompletePhraseIndex < 0) return;
       pendingFocusStageRef.current = 0;
-      onPhraseAdvance();
+      onPhraseAdvance(nextIncompletePhraseIndex);
     };
 
     useEffect(() => {
@@ -126,6 +131,8 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
                     text={text}
                     lesson={lesson}
                     phraseIndex={phraseIndex}
+                    nextPhraseIndex={nextIncompletePhraseIndex}
+                    lessonComplete={lessonComplete}
                     reviewScheduled={reviewScheduled}
                     onAdvance={advance}
                     onReviewAdded={onReviewAdded}
