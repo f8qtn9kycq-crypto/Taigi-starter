@@ -12,7 +12,7 @@ export const adaptLessonPackageHandoff = (
   const attributionByPhraseId = new Map(
     handoff.audioAttribution.map((attribution) => [attribution.phraseId, attribution]),
   );
-  const phrases: readonly LessonPhrase[] = handoff.package.phrases.map((phrase) => {
+  const phrases = handoff.package.phrases.map((phrase) => {
     const attribution = attributionByPhraseId.get(phrase.id);
     if (!attribution) return null;
 
@@ -34,7 +34,7 @@ export const adaptLessonPackageHandoff = (
       poj: phrase.poj,
       meaning: phrase.meaning,
       cultureNote: phrase.cultureNote,
-      useCombination: phrase.useCombination,
+      ...(phrase.useCombination ? { useCombination: phrase.useCombination } : {}),
       audioUrl: attribution.audioUrl,
       source: phrase.source,
       audioAttribution,
