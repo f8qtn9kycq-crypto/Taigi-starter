@@ -2,20 +2,20 @@
 
 ## Template status
 
-- Template ID: `m2.5-consent-v1`
+- Template ID: `m2.5-consent-v2`
 - State: `template-only`／`not-approved`／`not-for-use`
 - Candidate lesson: `lesson-19-polite-exchanges-package`
 - Filled-record rule: **DO NOT COMMIT FILLED RECORDS**
 
 這是空白、可審查的 script 與 record 格式，不是 participant consent evidence、
-privacy approval、facilitator attestation 或法律意見。所有 `[OWNER MUST SET]`
+privacy approval、facilitator attestation 或法律意見。所有 session-specific
 欄位必須在 owner-controlled working copy 完成，且經 privacy reviewer 通過後，
 才可以招募或開始任何場次。Repository 內這份空白模板本身不得作為
 `participantConsentReady` 或 `privacyReviewPassed` 的 verified evidence。
 
 This is a blank, reviewable script and record format. It is not consent
 evidence, privacy approval, facilitator attestation, or legal advice. Complete
-every `[OWNER MUST SET]` field in an owner-controlled working copy and obtain a
+every session-specific field in an owner-controlled working copy and obtain a
 privacy review before recruitment or any session. This repository copy must
 not be used to mark a readiness gate verified.
 
@@ -27,23 +27,50 @@ owner 的 privacy／legal reviewer 依當次資料流確認：
 - [個人資料保護法第 3 條](https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=I0050021&flno=3)
 - [個人資料保護法第 7 條](https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=I0050021&flno=7)
 
-## Owner-controlled preflight
+## Owner operating defaults
+
+以下是 sole-contributor pilot 的最低資料處理規則；它們不是 privacy approval，
+也不會因為寫入 repo 就解除 readiness gate：
+
+- 蒐集者與唯一可存取者：Taigi Start 的 sole contributor／product owner；
+  facilitator 在同意前以真實姓名自我介紹。
+- 權利請求管道：participant 直接回覆原本的招募／聯絡管道，由 sole contributor
+  處理查詢、複製、更正、停止利用或刪除請求；pilot record 不另存該聯絡資料。
+- Participant-level record：只放在 owner 的 FileVault 加密 Mac 上、repo 外的
+  `Taigi Pilot Private` 本機資料夾；不得放在 iCloud、Google Drive、公開連結或
+  任何 repository。
+- 存取與備份：只有 sole contributor 可存取；不建立 participant-record 備份。
+  若意外產生副本，必須與原 record 一併刪除並記錄完成時間。
+- Retention：每場 session 後最多 30 日；到期前可因 participant 請求提前刪除。
+  到期後只保留無法回推 participant 的 aggregate summary。
+- Delayed recall：只使用既有招募／聯絡管道安排 24–48 小時 follow-up；不把
+  姓名、email、電話、帳號或新的聯絡資料複製進 pilot record。
+
+The sole contributor is the collector and only authorized accessor. Rights
+requests and delayed recall use the existing recruitment channel without
+copying contact details into pilot records. De-identified participant-level
+records stay only in the local, non-cloud-synced `Taigi Pilot Private` folder
+on the owner's FileVault-encrypted Mac. No participant-record backup is
+created. Each record is deleted within 30 days after its session, or sooner on
+request; only irreversible aggregate results may remain.
+
+## Session preflight
 
 在 repo 外的 working copy 完成並審核下列資料。若任一項空白，不得使用 script：
 
-- [ ] 蒐集者／執行單位名稱：`[OWNER MUST SET]`
-- [ ] Participant 權利與刪除請求聯絡管道：`[OWNER MUST SET]`
-- [ ] 蒐集目的：`[OWNER MUST SET: beginner usability and learning-signal pilot only]`
-- [ ] 個人資料類別：`[OWNER MUST SET: exact de-identified fields and any follow-up data]`
-- [ ] 利用期間／retention：`[OWNER MUST SET: number of days and deletion date]`
-- [ ] 利用地區：`[OWNER MUST SET]`
-- [ ] 利用對象／可存取角色：`[OWNER MUST SET]`
-- [ ] 利用方式：`[OWNER MUST SET: observation, restricted storage, aggregation, deletion]`
-- [ ] 受限儲存位置：`[OWNER MUST SET: system/folder description; never a public link]`
-- [ ] 刪除方法與完成證據：`[OWNER MUST SET]`
-- [ ] Delayed recall 聯絡方法：`[OWNER MUST SET: no contact data, or a separately reviewed method]`
-- [ ] 測試 commit、deployment、lesson、browser、viewport 與 session 日期：`[OWNER MUST SET]`
-- [ ] Privacy reviewer、reviewed-at ISO timestamp、decision 與 immutable evidence ref：`[OWNER MUST SET]`
+- [ ] 蒐集者／執行單位名稱：sole contributor／product owner；已在同意前告知真實姓名。
+- [ ] Participant 權利與刪除請求聯絡管道：原本的招募／聯絡管道；不另存聯絡資料。
+- [ ] 蒐集目的：只限初學者 usability 與 learning-signal pilot。
+- [ ] 個人資料類別：逐字稿列出的去識別欄位；不得加入聯絡資料或原始錄音。
+- [ ] 利用期間／retention：session 後最多 30 日；本次刪除期限已記錄。
+- [ ] 利用地區：臺灣；不得跨境傳輸 participant-level record。
+- [ ] 利用對象／可存取角色：sole contributor 一人。
+- [ ] 利用方式：現場觀察、受限本機儲存、去識別彙總、到期或依請求刪除。
+- [ ] 受限儲存位置：FileVault 加密 Mac 上、repo 與 cloud sync 外的 `Taigi Pilot Private`。
+- [ ] 刪除方法與完成證據：刪除 active record 與任何意外副本、清空垃圾桶，並在受限 audit log 記錄 ISO timestamp；不宣稱 SSD secure erase。
+- [ ] Delayed recall 聯絡方法：只用既有招募管道安排，不複製聯絡資料。
+- [ ] 測試 commit、deployment、lesson、browser、viewport 與 session 日期：`[SESSION MUST SET]`
+- [ ] Privacy reviewer、reviewed-at ISO timestamp、decision 與 immutable evidence ref：`[PRIVACY REVIEWER MUST SET]`
 
 本版本只適用於能自行同意的成人 participant。未成年人、代理同意、報酬、
 跨境資料或額外聯絡資料都超出本模板；遇到任一情形時停止招募，另做
@@ -84,10 +111,12 @@ that review remains an additional gate and cannot be replaced by this template.
 > 處理，不納入 pilot evidence、不上傳、不持久保存；你也可以全程使用不錄音
 > 路徑。如果實際產品或裝置行為與這段說明不同，我們會立即停止 session。
 >
-> 蒐集者是 `[OWNER MUST SET]`，目的為 `[OWNER MUST SET]`。資料使用期間是
-> `[OWNER MUST SET]`，地區是 `[OWNER MUST SET]`，可存取對象是
-> `[OWNER MUST SET]`，使用與刪除方式是 `[OWNER MUST SET]`。你可以透過
-> `[OWNER MUST SET]` 請求查詢或閱覽、取得複製本、補充或更正、停止蒐集／
+> 蒐集者與唯一可存取者是 Taigi Start 的 sole contributor，也就是今天向你
+> 說明的 facilitator。用途只限這次初學者 pilot。Participant-level record 只
+> 存在臺灣、這台 FileVault 加密 Mac 的受限本機資料夾，session 後最多保留
+> 30 日，不建立備份；到期或你提出請求時，會刪除 active record 與任何意外
+> 副本，只留下無法回推你的彙總結果。你可以直接回覆原本邀請你的聯絡管道，
+> 請求查詢或閱覽、取得複製本、補充或更正、停止蒐集／
 > 處理／利用，或刪除你的 participant-level record。
 >
 > 你不提供這些資料的唯一影響是無法參加本次 pilot，不影響使用產品的其他
@@ -120,11 +149,14 @@ Facilitator 只有在 participant 清楚回答同意後，才將 `sessionChoice`
 > persisted. You may use the non-recording path throughout. We will stop the
 > session if the product or device behaves differently from this explanation.
 >
-> The collecting entity is `[OWNER MUST SET]`; the purpose is
-> `[OWNER MUST SET]`. The use period is `[OWNER MUST SET]`, region is
-> `[OWNER MUST SET]`, authorized recipients are `[OWNER MUST SET]`, and the
-> use and deletion methods are `[OWNER MUST SET]`. Through
-> `[OWNER MUST SET]`, you may request access, a copy, correction, an end to
+> The collector and only authorized accessor is Taigi Start's sole contributor,
+> the facilitator speaking with you today. Use is limited to this beginner
+> pilot. The participant-level record stays in Taiwan in a restricted local
+> folder on this FileVault-encrypted Mac for no more than 30 days after the
+> session. No backup is created. At expiry or on request, the active record and
+> any accidental copy are deleted; only results that cannot identify you may
+> remain in aggregate. By replying through the same channel used to invite you,
+> you may request access, a copy, correction, an end to
 > collection/processing/use, or deletion of your participant-level record.
 >
 > Declining only means that you cannot join this pilot; it does not affect any
@@ -136,14 +168,15 @@ Facilitator 只有在 participant 清楚回答同意後，才將 `sessionChoice`
 只有 immediate session 已同意且結束後，才可以分開詢問：
 
 > 我們也可以在 24–48 小時後做一次相同規則的短回想。這是另一個可選項目；
-> 拒絕不影響今天的 session。我們會用 `[OWNER MUST SET: reviewed follow-up
-> method]` 安排，follow-up 資料保存與刪除規則是 `[OWNER MUST SET]`。你是否
+> 拒絕不影響今天的 session。我們只用原本邀請你的聯絡管道安排，不會把聯絡
+> 資料複製進 pilot record；follow-up record 仍在 session 後 30 日內刪除。你是否
 > 另外同意 delayed recall？
 
 > We can also run one short recall check under the same rules in 24–48 hours.
 > This is separately optional; declining does not affect today's session. We
-> will arrange it through `[OWNER MUST SET: reviewed follow-up method]`, with
-> retention and deletion rules `[OWNER MUST SET]`. Do you separately opt in to
+> will arrange it through the original recruitment channel without copying
+> contact details into the pilot record. The follow-up record is still deleted
+> within 30 days after the session. Do you separately opt in to
 > delayed recall?
 
 不得把 immediate-session consent 推定為 delayed-recall consent，也不得因
@@ -157,7 +190,7 @@ participant 同意 follow-up 而收集未經 review 的聯絡資料。
 <!-- CONSENT_RECORD_START -->
 
 ```yaml
-scriptVersion: m2.5-consent-v1
+scriptVersion: m2.5-consent-v2
 participantId: P__
 facilitatorId: owner-controlled-id
 noticeExplainedAt: YYYY-MM-DDTHH:mm:ss.sssZ
@@ -168,6 +201,7 @@ sessionChoice: consent
 delayedRecallOffered: yes-or-no
 delayedRecallChoice: opt-in-or-decline-or-not-offered
 followUpMethodRef: owner-controlled-ref-or-none
+deleteBy: YYYY-MM-DDTHH:mm:ss.sssZ
 withdrawnAt: ISO-timestamp-or-none
 deletionCompletedAt: ISO-timestamp-or-none
 facilitatorAttestation: exact-script-read-and-no-coercion
