@@ -30,9 +30,10 @@ attribution，以及 mobile flow evidence 都完成後才可以開始。這份�
 - observation sheet 可存於 owner-controlled、access-limited 的位置；repo
   只接受去識別化 aggregate summary，不提交 participant-level raw notes。
 - 任一 participant 表示不舒服、被迫錄音或不理解資料用途時，立即停止該場。
-- 使用 `docs/pilot/participant-consent-template.md` 的 exact version；所有 owner
-  placeholder 與 filled record 都只能存在受限 working copy。空白 repo template
-  本身不是 consent 或 privacy evidence。
+- 使用 `docs/pilot/participant-consent-template.md` 的 exact version；owner
+  operating defaults 保留在 repo，session-specific 值、privacy-review evidence
+  與 filled record 只能存在受限 working copy。空白 repo template 本身不是
+  consent 或 privacy evidence。
 
 ## 執行前置條件
 

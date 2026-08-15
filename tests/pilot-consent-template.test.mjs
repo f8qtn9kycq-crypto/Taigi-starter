@@ -49,6 +49,9 @@ test("pilot consent template is versioned, reviewable, and not self-approving", 
   assert.match(plan, /docs\/pilot\/participant-consent-template\.md/);
   assert.match(plan, /consent script 已填完 session-specific 欄位/);
   assert.doesNotMatch(plan, /consent script 已填完 owner 欄位/);
+  assert.match(plan, /owner\s+operating defaults 保留在 repo/);
+  assert.match(plan, /session-specific 值、privacy-review evidence/);
+  assert.doesNotMatch(plan, /所有 owner\s+placeholder/);
   assert.match(readiness, /participantConsentReady: pendingEvidence/);
   assert.match(readiness, /privacyReviewPassed: pendingEvidence/);
   assert.doesNotMatch(readiness, /participantConsentReady: verifiedEvidence/);
