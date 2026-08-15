@@ -87,7 +87,7 @@ that review remains an additional gate and cannot be replaced by this template.
 
 ## Facilitator preflight
 
-- [ ] 使用已完成 owner 欄位、經 privacy review 的 exact script version。
+- [ ] 使用已完成 session-specific 欄位、經 privacy review 的 exact script version。
 - [ ] 說明這是在測產品，不是在考 participant，也沒有 AI 發音評分。
 - [ ] 不代替操作、不提示答案、不要求開啟麥克風或錄音。
 - [ ] 提供不錄音替代路徑；participant 拒絕麥克風仍可進行 session。
