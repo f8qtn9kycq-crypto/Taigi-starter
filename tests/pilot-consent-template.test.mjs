@@ -47,6 +47,8 @@ test("pilot consent template is versioned, reviewable, and not self-approving", 
     assert.match(template, new RegExp(`LawSingle\\.aspx\\?pcode=I0050021&flno=${article}`));
   }
   assert.match(plan, /docs\/pilot\/participant-consent-template\.md/);
+  assert.match(plan, /consent script 已填完 session-specific 欄位/);
+  assert.doesNotMatch(plan, /consent script 已填完 owner 欄位/);
   assert.match(readiness, /participantConsentReady: pendingEvidence/);
   assert.match(readiness, /privacyReviewPassed: pendingEvidence/);
   assert.doesNotMatch(readiness, /participantConsentReady: verifiedEvidence/);

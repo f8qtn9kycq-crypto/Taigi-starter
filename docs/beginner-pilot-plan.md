@@ -45,7 +45,7 @@ attribution，以及 mobile flow evidence 都完成後才可以開始。這份�
 - [ ] playable lesson 有 mobile flow evidence。
 - [ ] 測試 commit、瀏覽器、裝置 viewport 與執行日期已記錄。
 - [ ] facilitator 已熟悉「不代替學習者操作、不提示答案、不宣稱 AI feedback」的規則。
-- [ ] Participant consent script 已填完 owner 欄位、固定版本並通過 privacy review。
+- [ ] Participant consent script 已填完 session-specific 欄位、固定版本並通過 privacy review。
 - [ ] Privacy review 已涵蓋資料流、retention、access、withdrawal 與 deletion，並留下 immutable evidence reference。
 
 ## 單場流程
