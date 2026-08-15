@@ -3,6 +3,7 @@ import type {
   LessonPackagePhrase,
   TeacherReview,
   TeacherReviewCheck,
+  LessonUseCombination,
 } from "../../types/lesson-package.ts";
 import type { LessonSource, LocalizedText } from "../../types/lesson-domain.ts";
 
@@ -60,5 +61,7 @@ export const requiredTeacherReview: TeacherReview = {
 };
 
 export type RawLessonPackage = Omit<LessonPackage, "pathOrder" | "phrases"> & {
-  phrases: readonly Omit<LessonPackagePhrase, "audio">[];
+  phrases: readonly (Omit<LessonPackagePhrase, "audio"> & {
+    useCombination?: LessonUseCombination;
+  })[];
 };

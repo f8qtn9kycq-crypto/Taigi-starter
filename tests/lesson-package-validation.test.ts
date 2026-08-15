@@ -11,6 +11,32 @@ test("all current planned packages satisfy the Lesson Factory contract", () => {
   assert.deepEqual(validateLessonPackages(lessonPackages), []);
 });
 
+test("combination data is structured only for source-traceable use-stage notes", () => {
+  const combinations = lessonPackages.flatMap((lesson) => lesson.phrases
+    .filter((phrase) => phrase.useCombination)
+    .map((phrase) => ({ lesson: lesson.number, phrase })));
+
+  assert.equal(combinations.length, 8);
+  for (const { phrase } of combinations) {
+    assert.ok(phrase.cultureNote.zh.includes("用") || phrase.cultureNote.en.includes("Use"));
+    assert.match(phrase.source.canonicalUrl, /^https:\/\/sutian\.moe\.edu\.tw\//);
+    assert.ok(phrase.useCombination?.hanji);
+    assert.ok(phrase.useCombination?.tailo);
+    assert.ok(phrase.useCombination?.meaning.zh);
+    assert.ok(phrase.useCombination?.meaning.en);
+  }
+});
+
+test("invalid combination fields fail validation", () => {
+  const invalid = clonePackages();
+  const phrase = (invalid[0].phrases as Record<string, unknown>[])[0];
+  phrase.useCombination = { hanji: "", tailo: "", meaning: { zh: "", en: "" } };
+
+  const paths = validateLessonPackages(invalid).map((issue) => issue.path);
+  assert.ok(paths.includes("packages[0].phrases[0].useCombination.hanji"));
+  assert.ok(paths.includes("packages[0].phrases[0].useCombination.meaning.zh"));
+});
+
 test("validator rejects missing stages, sources, review, and incomplete audio", () => {
   const invalid = clonePackages();
   const first = invalid[0];

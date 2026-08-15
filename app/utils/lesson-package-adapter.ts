@@ -34,6 +34,7 @@ export const adaptLessonPackageHandoff = (
       poj: phrase.poj,
       meaning: phrase.meaning,
       cultureNote: phrase.cultureNote,
+      useCombination: phrase.useCombination,
       audioUrl: attribution.audioUrl,
       source: phrase.source,
       audioAttribution,

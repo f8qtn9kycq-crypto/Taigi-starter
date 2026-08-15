@@ -81,6 +81,16 @@ export default function LessonStageContent({
         <span>{text.lessonMission}</span>
         <p>{mission[text.locale]}</p>
       </div>
+      {phrase.useCombination && (
+        <div className="use-combination" aria-labelledby="use-combination-title">
+          <span className="use-combination-label" id="use-combination-title">{text.useCombination}</span>
+          <strong>{phrase.useCombination.hanji}</strong>
+          <p className="romanization">{phrase.useCombination.tailo}</p>
+          <span className="use-combination-meaning">{text.useCombinationMeaning}</span>
+          <p>{phrase.useCombination.meaning[text.locale]}</p>
+          <a href={phrase.source.canonicalUrl} target="_blank" rel="noreferrer">{text.verifySource}</a>
+        </div>
+      )}
       <div className="culture-note">
         <span aria-hidden="true">語</span>
         <p>{phrase.cultureNote[text.locale]}</p>

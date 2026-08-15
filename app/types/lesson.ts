@@ -5,6 +5,7 @@ import type {
   LessonSource,
   LocalizedText,
 } from "./lesson-domain.ts";
+import type { LessonUseCombination } from "./lesson-package.ts";
 
 export {
   LESSON_FACTORY_STEP_IDS,
@@ -18,6 +19,7 @@ export type {
   LessonSource,
   LocalizedText,
 } from "./lesson-domain.ts";
+export type { LessonUseCombination } from "./lesson-package.ts";
 
 export type LessonPhrase = {
   id: string;
@@ -26,6 +28,7 @@ export type LessonPhrase = {
   poj: string | null;
   meaning: LocalizedText;
   cultureNote: LocalizedText;
+  useCombination?: LessonUseCombination;
   audioUrl: string;
   source: LessonSource;
   audioAttribution: LessonAudioAttribution;

@@ -37,6 +37,7 @@ export const lessonPackages2To6: readonly RawLessonPackage[] = [
           zh: "音檔示範教育部詞目「兜」tau；「阮兜」guán tau 是「我家／我們家」，留到用的階段組合練習。",
           en: "The audio models the MOE headword tau; combine it as guán tau, my/our home, during the Use stage.",
         },
+        useCombination: { hanji: "阮兜", tailo: "Guán tau", meaning: { zh: "我家／我們家", en: "my home / our home" } },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/6917/"),
       }),
       makePhrase({
@@ -155,6 +156,7 @@ export const lessonPackages2To6: readonly RawLessonPackage[] = [
           zh: "音檔示範教育部詞目「飯」pn̄g；「食飯」tsia̍h-pn̄g 是吃飯、用餐，留到用的階段組合練習。",
           en: "The audio models the MOE headword pn̄g; combine it as tsia̍h-pn̄g, to eat a meal, during the Use stage.",
         },
+        useCombination: { hanji: "食飯", tailo: "Tsia̍h-pn̄g", meaning: { zh: "吃飯、用餐", en: "eat a meal" } },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/9222/"),
       }),
       makePhrase({
@@ -238,6 +240,7 @@ export const lessonPackages2To6: readonly RawLessonPackage[] = [
           zh: "音檔示範教育部詞目「代誌」tāi-tsì；「做代誌」tsò tāi-tsì 留到用的階段組合練習。",
           en: "The audio models the MOE headword tāi-tsì; combine it as tsò tāi-tsì during the Use stage.",
         },
+        useCombination: { hanji: "做代誌", tailo: "Tsò tāi-tsì", meaning: { zh: "做事情、做事", en: "do things; work on a task" } },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/1370/"),
       }),
     ],
