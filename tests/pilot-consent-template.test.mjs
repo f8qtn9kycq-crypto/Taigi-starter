@@ -17,10 +17,11 @@ test("pilot consent template is versioned, reviewable, and not self-approving", 
   ]);
 
   for (const requiredText of [
-    "Template ID: `m2.5-consent-v1`",
+    "Template ID: `m2.5-consent-v2`",
     "`template-only`／`not-approved`／`not-for-use`",
     "DO NOT COMMIT FILLED RECORDS",
-    "[OWNER MUST SET]",
+    "[SESSION MUST SET]",
+    "[PRIVACY REVIEWER MUST SET]",
     "Separate delayed-recall opt-in",
     "查詢或閱覽、取得複製本、補充或更正、停止蒐集／",
     "蒐集者／執行單位名稱",
@@ -32,6 +33,12 @@ test("pilot consent template is versioned, reviewable, and not self-approving", 
     "唯一影響是無法參加本次 pilot",
     "只適用於能自行同意的成人 participant",
     "privacy/legal review",
+    "Taigi Pilot Private",
+    "session 後最多 30 日",
+    "不建立 participant-record 備份",
+    "不複製聯絡資料",
+    "排除 Time Machine",
+    "retention 期間接收回覆",
   ]) {
     assert.match(template, new RegExp(requiredText.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }
@@ -44,6 +51,7 @@ test("pilot consent template is versioned, reviewable, and not self-approving", 
   assert.match(readiness, /privacyReviewPassed: pendingEvidence/);
   assert.doesNotMatch(readiness, /participantConsentReady: verifiedEvidence/);
   assert.doesNotMatch(readiness, /privacyReviewPassed: verifiedEvidence/);
+  assert.doesNotMatch(template, /\[OWNER MUST SET/);
 });
 
 test("blank consent record is de-identified and keeps consent choices separate", async () => {
@@ -54,9 +62,11 @@ test("blank consent record is de-identified and keeps consent choices separate",
 
   assert.ok(record, "blank consent record must remain machine-auditable");
   assert.match(record, /participantId: P__/);
+  assert.match(record, /scriptVersion: m2\.5-consent-v2/);
   assert.match(record, /consentRecordedAt: YYYY-MM-DDTHH:mm:ss\.sssZ/);
   assert.match(record, /sessionChoice: consent/);
   assert.match(record, /delayedRecallChoice: opt-in-or-decline-or-not-offered/);
+  assert.match(record, /deleteBy: YYYY-MM-DDTHH:mm:ss\.sssZ/);
   assert.match(record, /deletionCompletedAt: ISO-timestamp-or-none/);
   assert.doesNotMatch(
     record,
