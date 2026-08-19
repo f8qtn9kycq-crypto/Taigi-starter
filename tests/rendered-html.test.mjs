@@ -48,7 +48,13 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(copy, /lessonLocked: "尚未開放"/);
   assert.match(copy, /lessonLocked: "Locked"/);
   assert.match(copy, /今仔日，講一句台語。/);
-  assert.match(copy, /每天 3 分鐘，從聽懂到開口。/);
+  assert.match(copy, /每天五分鐘，慢慢培養台語耳。/);
+  assert.match(copy, /每天 5 分鐘，從聽懂到開口。/);
+  assert.match(copy, /previewDuration: "約 5 分鐘"/);
+  assert.match(copy, /Five focused minutes at a time\./);
+  assert.match(copy, /Five minutes a day, from understanding to speaking\./);
+  assert.match(copy, /previewDuration: "About 5 minutes"/);
+  assert.doesNotMatch(copy, /三分鐘|3 分鐘|Three (?:focused )?minutes|About 3 minutes/);
   assert.match(copy, /開始今日一句/);
   assert.match(copy, /先聽發音/);
   assert.match(copy, /音檔無法播放，先看文字/);
