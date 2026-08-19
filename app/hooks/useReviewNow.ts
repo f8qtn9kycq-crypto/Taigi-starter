@@ -10,10 +10,17 @@ export function useReviewNow(
   const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
+    const syncTimer = window.setTimeout(() => setNow(new Date()), 0);
+    return () => window.clearTimeout(syncTimer);
+  }, [reviewCards]);
+
+  useEffect(() => {
     const delay = nextReviewRefreshDelay(reviewCards, now);
     if (delay === null) return;
 
-    const refreshTimer = window.setTimeout(() => setNow(new Date()), delay);
+    const refreshTimer = window.setTimeout(() => {
+      setNow(new Date());
+    }, delay);
     return () => window.clearTimeout(refreshTimer);
   }, [now, reviewCards]);
 

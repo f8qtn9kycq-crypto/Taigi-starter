@@ -137,7 +137,8 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(page, /useReviewNow\(progress\.reviewCards\)/);
   assert.match(page, /dueReviewCards\(progress\.reviewCards, reviewNow\)/);
   assert.match(reviewNowHook, /nextReviewRefreshDelay\(reviewCards, now\)/);
-  assert.match(reviewNowHook, /window\.setTimeout\(\(\) => setNow\(new Date\(\)\), delay\)/);
+  assert.match(reviewNowHook, /window\.setTimeout\(\(\) => setNow\(new Date\(\)\), 0\)/);
+  assert.match(reviewNowHook, /window\.setTimeout\(\(\) => \{[\s\S]*setNow\(new Date\(\)\);[\s\S]*\}, delay\)/);
   assert.match(page, /reviewTriggerRef = useRef<HTMLButtonElement \| null>\(null\)/);
   assert.match(page, /reviewButtonRef=\{reviewTriggerRef\}/);
   assert.equal(page.match(/requestAnimationFrame\(\(\) => reviewTriggerRef\.current\?\.focus\(\)\)/g)?.length, 2);
