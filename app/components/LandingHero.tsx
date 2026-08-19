@@ -31,6 +31,12 @@ export default function LandingHero({
   onStart,
   onPeek,
 }: LandingHeroProps) {
+  const primaryActionLabel = startPending
+    ? text.startingPhrase
+    : hasStarted
+      ? text.resumeLearning
+      : text.startPhrase;
+
   return (
     <div className="landing-viewport">
       <header className="site-header">
@@ -60,7 +66,7 @@ export default function LandingHero({
 
           <div className="hero-actions">
             <button type="button" className="hero-primary-action" onClick={onStart} disabled={startPending} aria-busy={startPending}>
-              <span>{startPending ? text.startingPhrase : text.startPhrase}</span><b aria-hidden="true">→</b>
+              <span>{primaryActionLabel}</span><b aria-hidden="true">→</b>
             </button>
             <button
               type="button"

@@ -111,6 +111,8 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.doesNotMatch(copy, /若目前不是 Safari|open this lesson in Safari/);
   assert.doesNotMatch(`${recording}\n${recorder}`, /fetch\(|XMLHttpRequest|navigator\.sendBeacon/);
   assert.match(landing, /text\.stageCount\(stage, totalStages\)/);
+  assert.match(landing, /startPending[\s\S]*\? text\.startingPhrase[\s\S]*: hasStarted[\s\S]*\? text\.resumeLearning[\s\S]*: text\.startPhrase/);
+  assert.match(landing, /<span>\{primaryActionLabel\}<\/span>/);
   assert.doesNotMatch(copy, /stageCount: \(stage\) => .*\/ 5/);
   assert.match(content, /教育部《臺灣台語常用詞辭典》/);
   assert.match(copy, /20 課已開放/);
