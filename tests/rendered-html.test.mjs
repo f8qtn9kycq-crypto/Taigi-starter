@@ -123,16 +123,22 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
 });
 
 test("landing interaction and responsive contracts remain explicit", async () => {
-  const [page, landing, audioHook, copy, css, audio] = await Promise.all([
+  const [page, landing, audioHook, reviewNowHook, copy, css, audio] = await Promise.all([
     readFile(new URL("../app/TaigiStartPage.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/hooks/useAudioPlayer.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/hooks/useReviewNow.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/taigi-content.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../public/audio/li-tsiah-pa-bue.mp3", import.meta.url)),
   ]);
 
   assert.match(page, /<BottomNav/);
+  assert.match(page, /useReviewNow\(progress\.reviewCards\)/);
+  assert.match(page, /dueReviewCards\(progress\.reviewCards, reviewNow\)/);
+  assert.match(reviewNowHook, /nextReviewRefreshDelay\(reviewCards, now\)/);
+  assert.match(reviewNowHook, /window\.setTimeout\(\(\) => setNow\(new Date\(\)\), 0\)/);
+  assert.match(reviewNowHook, /window\.setTimeout\(\(\) => \{[\s\S]*setNow\(new Date\(\)\);[\s\S]*\}, delay\)/);
   assert.match(page, /reviewTriggerRef = useRef<HTMLButtonElement \| null>\(null\)/);
   assert.match(page, /reviewButtonRef=\{reviewTriggerRef\}/);
   assert.equal(page.match(/requestAnimationFrame\(\(\) => reviewTriggerRef\.current\?\.focus\(\)\)/g)?.length, 2);

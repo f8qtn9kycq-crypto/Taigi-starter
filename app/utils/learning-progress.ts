@@ -102,3 +102,17 @@ export function dueReviewCards(
 ): readonly ReviewCard[] {
   return orderedReviewCards(reviewCards).filter((card) => isReviewDue(card, now));
 }
+
+export function nextReviewRefreshDelay(
+  reviewCards: Readonly<Record<string, ReviewCard>>,
+  now = new Date(),
+  maximumDelay = 2_147_483_647,
+): number | null {
+  const nowTime = now.getTime();
+  const nextDueTime = orderedReviewCards(reviewCards)
+    .map((card) => Date.parse(card.dueAt))
+    .find((dueTime) => Number.isFinite(dueTime) && dueTime > nowTime);
+
+  if (nextDueTime === undefined) return null;
+  return Math.min(nextDueTime - nowTime + 1, maximumDelay);
+}

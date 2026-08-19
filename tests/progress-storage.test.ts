@@ -12,6 +12,7 @@ import {
   completePhrase,
   dueReviewCards,
   hasLessonProgress,
+  nextReviewRefreshDelay,
   orderedReviewCards,
   rateReviewCard,
   selectLesson,
@@ -162,6 +163,28 @@ test("review queue orders all cards and returns every card currently due", () =>
 
   assert.deepEqual(orderedReviewCards(cards).map((card) => card.id), [firstPhraseId, secondPhraseId]);
   assert.deepEqual(dueReviewCards(cards, now).map((card) => card.id), [firstPhraseId]);
+});
+
+test("review queue refreshes at the nearest future due time", () => {
+  const firstPhraseId = prototypeLesson.phrases[0].id;
+  const secondPhraseId = lessonTwo.phraseIds[0];
+  const cards = {
+    [firstPhraseId]: reviewCard(firstPhraseId, "2026-07-11T00:10:00.000Z"),
+    [secondPhraseId]: reviewCard(secondPhraseId, "2026-07-11T00:02:00.000Z"),
+  };
+
+  assert.equal(nextReviewRefreshDelay(cards, now), 120_001);
+  assert.deepEqual(dueReviewCards(cards, new Date(now.getTime() + 120_001)).map((card) => card.id), [secondPhraseId]);
+});
+
+test("review refresh delay is bounded and omitted without a future card", () => {
+  const phraseId = prototypeLesson.phrases[0].id;
+  const future = { [phraseId]: reviewCard(phraseId, "2026-09-01T00:00:00.000Z") };
+  const due = { [phraseId]: reviewCard(phraseId, "2026-07-10T00:00:00.000Z") };
+
+  assert.equal(nextReviewRefreshDelay(future, now, 5_000), 5_000);
+  assert.equal(nextReviewRefreshDelay(due, now), null);
+  assert.equal(nextReviewRefreshDelay({}, now), null);
 });
 
 test("switching lessons preserves independent positions, completion, and review cards", () => {
