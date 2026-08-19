@@ -10,6 +10,7 @@ import ReviewModal from "./components/ReviewModal";
 import { lessonCatalog, prototypeLesson } from "./data/lessons";
 import { useAudioPlayer } from "./hooks/useAudioPlayer";
 import { useLearningProgress } from "./hooks/useLearningProgress";
+import { useReviewNow } from "./hooks/useReviewNow";
 import { copy } from "./taigi-content";
 import type { PlayableLesson } from "./types/lesson";
 import { dueReviewCards, orderedReviewCards } from "./utils/learning-progress";
@@ -54,8 +55,9 @@ export default function TaigiStartPage() {
     : 0;
   const activePhrase = activeLesson.phrases[activePhraseIndex];
   const completedPhraseIds = new Set(activeLessonProgress?.completedPhraseIds ?? []);
+  const reviewNow = useReviewNow(progress.reviewCards);
   const reviewCards = orderedReviewCards(progress.reviewCards);
-  const reviewsDue = dueReviewCards(progress.reviewCards);
+  const reviewsDue = dueReviewCards(progress.reviewCards, reviewNow);
   const reviewCard = reviewsDue[0] ?? reviewCards[0] ?? null;
   const reviewPhrase = reviewCard ? phraseById.get(reviewCard.id) ?? activePhrase : activePhrase;
   const dueCount = reviewsDue.length;
