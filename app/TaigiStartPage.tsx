@@ -2,10 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import BottomNav from "./components/BottomNav";
-import CoursePath from "./components/CoursePath";
 import LandingHero from "./components/LandingHero";
+import LearningWorkspace from "./components/LearningWorkspace";
 import FeedbackForm from "./FeedbackForm";
-import LessonAccordion from "./components/LessonAccordion";
 import ReviewModal from "./components/ReviewModal";
 import { lessonCatalog, prototypeLesson } from "./data/lessons";
 import { useAudioPlayer } from "./hooks/useAudioPlayer";
@@ -42,6 +41,7 @@ export default function TaigiStartPage() {
   const activeLesson = playableLessons.find((lesson) => lesson.id === progress.lessonId) ?? prototypeLesson;
   const [reviewOpen, setReviewOpen] = useState(false);
   const [startPending, setStartPending] = useState(false);
+  const [lessonViewOpen, setLessonViewOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"learn" | "review" | "progress">("learn");
   const lessonRef = useRef<HTMLElement | null>(null);
   const pathRef = useRef<HTMLElement | null>(null);
@@ -83,8 +83,22 @@ export default function TaigiStartPage() {
     };
   }, [reviewOpen]);
 
-  const scrollToLesson = () => lessonRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  const scrollToPath = () => pathRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const focusView = (view: "learn" | "progress") => {
+    window.requestAnimationFrame(() => {
+      (view === "learn" ? lessonRef.current : pathRef.current)?.focus();
+    });
+  };
+  const showLearn = () => {
+    setActiveTab("learn");
+    if (progress.hasStarted) {
+      setLessonViewOpen(true);
+      focusView("learn");
+    }
+  };
+  const showPath = () => {
+    setActiveTab("progress");
+    focusView("progress");
+  };
   const closeReview = () => {
     setReviewOpen(false);
     setActiveTab("learn");
@@ -99,9 +113,10 @@ export default function TaigiStartPage() {
     heroAudio.stop();
     setStartPending(true);
     setHasStarted(true);
+    setLessonViewOpen(true);
     setActiveTab("learn");
     window.requestAnimationFrame(() => {
-      scrollToLesson();
+      lessonRef.current?.focus();
       window.setTimeout(() => setStartPending(false), 450);
     });
   };
@@ -110,8 +125,9 @@ export default function TaigiStartPage() {
     if (!lesson) return;
     setLessonId(lesson.id);
     setHasStarted(true);
+    setLessonViewOpen(true);
     setActiveTab("learn");
-    window.requestAnimationFrame(scrollToLesson);
+    focusView("learn");
   };
   const completePhrase = (phraseId: string) => {
     addReview(phraseId);
@@ -119,60 +135,55 @@ export default function TaigiStartPage() {
 
   return (
     <main className={`site-shell${progress.hasStarted ? " app-active" : ""}`} id="learn">
-      <LandingHero
-        text={text}
-        locale={progress.locale}
-        hasStarted={progress.hasStarted}
-        dueCount={dueCount}
-        stage={activeStage}
-        totalStages={activeLesson.stages.length}
-        isPlaying={heroAudio.isPlaying}
-        audioError={heroAudio.hasError}
-        startPending={startPending}
-        onLocaleChange={() => setLocale(progress.locale === "zh" ? "en" : "zh")}
-        onAudioToggle={() => void heroAudio.toggle()}
-        onStart={startLearning}
-        onPeek={scrollToLesson}
-      />
-
-      <div className="learning-column">
-        <LessonAccordion
-          ref={lessonRef}
-          lesson={activeLesson}
-          text={text}
-          stage={activeStage}
-          phraseIndex={activePhraseIndex}
-          reviewScheduled={Boolean(progress.reviewCards[activePhrase.id])}
-          completedPhraseIds={completedPhraseIds}
-          onStageChange={setStage}
-          onReviewAdded={completePhrase}
-          onPhraseChange={setPhraseIndex}
-          onPhraseAdvance={setPhraseIndex}
-        />
-        <CoursePath
-          ref={pathRef}
+      {activeTab === "learn" && !lessonViewOpen ? (
+        <LandingHero
           text={text}
           locale={progress.locale}
-          activeLessonNumber={activeLesson.number}
-          stageCount={activeLesson.stages.length}
+          hasStarted={progress.hasStarted}
+          dueCount={dueCount}
+          stage={activeStage}
+          totalStages={activeLesson.stages.length}
+          isPlaying={heroAudio.isPlaying}
+          audioError={heroAudio.hasError}
+          startPending={startPending}
+          onLocaleChange={() => setLocale(progress.locale === "zh" ? "en" : "zh")}
+          onAudioToggle={() => void heroAudio.toggle()}
+          onStart={startLearning}
+          onPeek={startLearning}
+        />
+      ) : (
+        <LearningWorkspace
+          activeTab={activeTab}
+          text={text}
+          locale={progress.locale}
+          lesson={activeLesson}
+          stage={activeStage}
+          phraseIndex={activePhraseIndex}
+          dueCount={dueCount}
           hasStarted={progress.hasStarted}
           progressReady={isHydrated}
           lessonProgress={progress.lessons}
+          reviewScheduled={Boolean(progress.reviewCards[activePhrase.id])}
+          completedPhraseIds={completedPhraseIds}
+          lessonRef={lessonRef}
+          pathRef={pathRef}
+          onHome={showLearn}
+          onLocaleChange={() => setLocale(progress.locale === "zh" ? "en" : "zh")}
+          onStageChange={setStage}
+          onReviewAdded={completePhrase}
+          onPhraseChange={setPhraseIndex}
           onLessonSelect={selectLesson}
         />
-        <footer>
-          <span>{text.prototype}</span>
-        </footer>
-      </div>
+      )}
 
       <BottomNav
         text={text}
         dueCount={dueCount}
         activeTab={activeTab}
         reviewButtonRef={reviewTriggerRef}
-        onLearn={() => { setActiveTab("learn"); scrollToLesson(); }}
+        onLearn={showLearn}
         onReview={openReview}
-        onPath={() => { setActiveTab("progress"); scrollToPath(); }}
+        onPath={showPath}
       />
 
       <FeedbackForm locale={progress.locale} />

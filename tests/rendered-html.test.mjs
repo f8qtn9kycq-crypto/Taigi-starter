@@ -3,9 +3,10 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("ships the first-time Taigi landing content and Vercel feedback path", async () => {
-  const [layout, landing, page, bottomNav, coursePath, lesson, stagePanel, stageContent, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService] = await Promise.all([
+  const [layout, landing, siteHeader, page, bottomNav, coursePath, lesson, stagePanel, stageContent, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/SiteHeader.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/TaigiStartPage.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/BottomNav.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/CoursePath.tsx", import.meta.url), "utf8"),
@@ -24,8 +25,8 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(layout, /台語起步 Tâi-gí Start/);
   assert.match(layout, /og\.png/);
   assert.match(landing, /aria-pressed=\{isPlaying\}/);
-  assert.match(landing, /locale === "zh" \? "EN" : "繁"/);
-  assert.doesNotMatch(landing, /locale === "zh" \? "EN" : "中"/);
+  assert.match(siteHeader, /locale === "zh" \? "EN" : "繁"/);
+  assert.doesNotMatch(siteHeader, /locale === "zh" \? "EN" : "中"/);
   assert.match(lesson, /stage-accordion/);
   assert.match(bottomNav, /aria-label=\{text\.primaryNavigation\}/);
   assert.match(bottomNav, /reviewButtonRef: RefObject<HTMLButtonElement \| null>/);
@@ -110,7 +111,7 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(recording, /text\.microphoneEnableHint[\s\S]*<button/);
   assert.doesNotMatch(copy, /若目前不是 Safari|open this lesson in Safari/);
   assert.doesNotMatch(`${recording}\n${recorder}`, /fetch\(|XMLHttpRequest|navigator\.sendBeacon/);
-  assert.match(landing, /text\.stageCount\(stage, totalStages\)/);
+  assert.match(siteHeader, /text\.stageCount\(stage, totalStages\)/);
   assert.match(landing, /startPending[\s\S]*\? text\.startingPhrase[\s\S]*: hasStarted[\s\S]*\? text\.resumeLearning[\s\S]*: text\.startPhrase/);
   assert.match(landing, /<span>\{primaryActionLabel\}<\/span>/);
   assert.doesNotMatch(copy, /stageCount: \(stage\) => .*\/ 5/);
@@ -131,9 +132,13 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
 });
 
 test("landing interaction and responsive contracts remain explicit", async () => {
-  const [page, landing, audioHook, reviewNowHook, copy, css, audio] = await Promise.all([
+  const [page, workspace, landing, siteHeader, lesson, coursePath, audioHook, reviewNowHook, copy, css, audio] = await Promise.all([
     readFile(new URL("../app/TaigiStartPage.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/LearningWorkspace.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/SiteHeader.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/LessonAccordion.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/CoursePath.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/hooks/useAudioPlayer.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/hooks/useReviewNow.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/taigi-content.ts", import.meta.url), "utf8"),
@@ -153,6 +158,21 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(page, /progress\.lessons\[activeLesson\.id\]/);
   assert.match(page, /activeLesson\.phrases\[activeLessonProgress\?\.phraseIndex \?\? 0\]/);
   assert.match(page, /onStart=\{startLearning\}/);
+  assert.match(page, /onPeek=\{startLearning\}/);
+  assert.match(page, /lessonViewOpen, setLessonViewOpen/);
+  assert.match(page, /activeTab === "learn" && !lessonViewOpen/);
+  assert.match(page, /hasStarted=\{progress\.hasStarted\}/);
+  assert.match(page, /setHasStarted\(true\);[\s\S]*setLessonViewOpen\(true\)/);
+  assert.match(workspace, /activeTab !== "review"/);
+  assert.match(workspace, /activeTab === "learn" && \([\s\S]*<LessonAccordion/);
+  assert.match(workspace, /activeTab === "progress" && \([\s\S]*<CoursePath/);
+  assert.doesNotMatch(page, /scrollIntoView/);
+  assert.match(page, /view === "learn" \? lessonRef\.current : pathRef\.current/);
+  assert.match(page, /onLearn=\{showLearn\}/);
+  assert.match(page, /onPath=\{showPath\}/);
+  assert.match(lesson, /ref=\{ref\} tabIndex=\{-1\}/);
+  assert.match(coursePath, /ref=\{ref\}[\s\S]*tabIndex=\{-1\}/);
+  assert.match(siteHeader, /onClick=\{onHome\}/);
   assert.match(page, /document\.documentElement\.lang = progress\.locale === "zh" \? "zh-Hant-TW" : "en"/);
   assert.match(landing, /onClick=\{onAudioToggle\}/);
   assert.match(landing, /aria-pressed=\{isPlaying\}/);
