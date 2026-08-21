@@ -37,7 +37,7 @@ const CoursePath = forwardRef<HTMLElement, CoursePathProps>(
     ref,
   ) {
     return (
-      <section className="path-card" id="path" ref={ref} aria-busy={!progressReady}>
+      <section className="path-card" id="path" ref={ref} aria-busy={!progressReady} tabIndex={-1}>
         <div className="path-heading">
           <div><span className="section-label">{text.navPath}</span><h2>{text.path}</h2></div>
           <small>{text.pathSummary}</small>

@@ -59,7 +59,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
     }, [stage]);
 
     return (
-      <section className="lesson-card" aria-labelledby="lesson-title" ref={ref}>
+      <section className="lesson-card" aria-labelledby="lesson-title" ref={ref} tabIndex={-1}>
         <div className="lesson-heading">
           <span className="section-label">{text.currentLesson}</span>
           <h2 id="lesson-title">{text.lessonNumber(lesson.pathOrder)} · {lesson.title[text.locale]}</h2>
