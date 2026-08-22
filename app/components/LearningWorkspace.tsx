@@ -5,9 +5,10 @@ import type { PlayableLesson } from "../types/lesson";
 import CoursePath from "./CoursePath";
 import LessonAccordion from "./LessonAccordion";
 import SiteHeader from "./SiteHeader";
+import type { AppTab } from "./BottomNav";
 
 type LearningWorkspaceProps = {
-  activeTab: "learn" | "review" | "progress";
+  activeTab: AppTab;
   text: LessonCopy;
   locale: Locale;
   lesson: PlayableLesson;
@@ -63,7 +64,7 @@ export default function LearningWorkspace({
         onLocaleChange={onLocaleChange}
         onHome={onHome}
       />
-      {activeTab !== "review" && (
+      {(activeTab === "learn" || activeTab === "progress") && (
         <div className="learning-column">
           {activeTab === "learn" && (
             <LessonAccordion

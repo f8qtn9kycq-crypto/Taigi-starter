@@ -1,14 +1,18 @@
 import type { RefObject } from "react";
 import type { LessonCopy } from "../taigi-content";
 
+export type AppTab = "learn" | "review" | "progress" | "feedback";
+
 type BottomNavProps = {
   text: LessonCopy;
   dueCount: number;
-  activeTab: "learn" | "review" | "progress";
+  activeTab: AppTab;
   reviewButtonRef: RefObject<HTMLButtonElement | null>;
+  feedbackButtonRef: RefObject<HTMLButtonElement | null>;
   onLearn: () => void;
   onReview: () => void;
   onPath: () => void;
+  onFeedback: () => void;
 };
 
 export default function BottomNav({
@@ -16,9 +20,11 @@ export default function BottomNav({
   dueCount,
   activeTab,
   reviewButtonRef,
+  feedbackButtonRef,
   onLearn,
   onReview,
   onPath,
+  onFeedback,
 }: BottomNavProps) {
   return (
     <nav className="bottom-nav" aria-label={text.primaryNavigation}>
@@ -51,6 +57,16 @@ export default function BottomNav({
       >
         <span aria-hidden="true">☷</span>
         {text.navProgress}
+      </button>
+      <button
+        ref={feedbackButtonRef}
+        type="button"
+        className={activeTab === "feedback" ? "active" : undefined}
+        onClick={onFeedback}
+        aria-current={activeTab === "feedback" ? "page" : undefined}
+      >
+        <span aria-hidden="true">✦</span>
+        {text.navFeedback}
       </button>
     </nav>
   );

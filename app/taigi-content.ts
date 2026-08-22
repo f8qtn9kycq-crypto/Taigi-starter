@@ -105,6 +105,7 @@ export type LessonCopy = {
   pathSummary: string;
   cardsLeft: string;
   reviewPrompt: string;
+  reviewExplanation: string;
   rate: string;
   again: string;
   hard: string;
@@ -120,6 +121,7 @@ export type LessonCopy = {
   navReview: string;
   navPath: string;
   navProgress: string;
+  navFeedback: string;
   primaryNavigation: string;
   startLesson: string;
   continueLesson: (stage: number, total: number) => string;
@@ -251,6 +253,7 @@ export const copy: Record<Locale, LessonCopy> = {
     pathSummary: "20 課已開放",
     cardsLeft: "張待複習",
     reviewPrompt: "看到這句，你會怎麼說？",
+    reviewExplanation: "複習會在適合的時間重新出題。選擇「忘了／有點難／很熟」，系統就會安排下次練習時間。",
     rate: "這次記得多熟？",
     again: "忘了",
     hard: "有點難",
@@ -266,6 +269,7 @@ export const copy: Record<Locale, LessonCopy> = {
     navReview: "複習",
     navPath: "課程",
     navProgress: "進度",
+    navFeedback: "回饋",
     primaryNavigation: "主要導覽",
     startLesson: "開始",
     continueLesson: (stage, total) => `繼續 · ${stage}/${total}`,
@@ -395,6 +399,7 @@ export const copy: Record<Locale, LessonCopy> = {
     pathSummary: "20 lessons available",
     cardsLeft: "cards left",
     reviewPrompt: "How would you say this?",
+    reviewExplanation: "Review brings phrases back when they are due. Choose Again, Hard, or Easy to schedule when you practise each phrase next.",
     rate: "How well did you remember?",
     again: "Again",
     hard: "Hard",
@@ -410,6 +415,7 @@ export const copy: Record<Locale, LessonCopy> = {
     navReview: "Review",
     navPath: "Course",
     navProgress: "Progress",
+    navFeedback: "Feedback",
     primaryNavigation: "Primary navigation",
     startLesson: "Start",
     continueLesson: (stage, total) => `Continue · ${stage}/${total}`,

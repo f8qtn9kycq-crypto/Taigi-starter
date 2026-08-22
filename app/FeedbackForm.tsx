@@ -1,13 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { RefObject } from "react";
 import { useFocusTrap } from "./hooks/useFocusTrap";
 
-type Props = { locale: "zh" | "en" };
+type Props = {
+  locale: "zh" | "en";
+  open: boolean;
+  onClose: () => void;
+  triggerRef: RefObject<HTMLButtonElement | null>;
+};
 
 const labels = {
   zh: {
-    button: "回報問題／提供建議",
     title: "回報問題／提供建議",
     intro: "你的回饋能幫助我們修正問題、改善課程。請使用回饋表單；不需要懂 GitHub。",
     openExternal: "開啟回饋表單",
@@ -17,7 +22,6 @@ const labels = {
     close: "關閉",
   },
   en: {
-    button: "Report a problem / Suggest an improvement",
     title: "Report a problem / Suggest an improvement",
     intro: "Your feedback helps us fix problems and improve lessons. Use the feedback form; you do not need to know GitHub.",
     openExternal: "Open feedback form",
@@ -28,11 +32,9 @@ const labels = {
   },
 } as const;
 
-export default function FeedbackForm({ locale }: Props) {
-  const [open, setOpen] = useState(false);
+export default function FeedbackForm({ locale, open, onClose, triggerRef }: Props) {
   const [externalFormUrl, setExternalFormUrl] = useState<string | null>(null);
   const [feedbackDestinationReady, setFeedbackDestinationReady] = useState(false);
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
   const text = labels[locale];
 
@@ -59,20 +61,15 @@ export default function FeedbackForm({ locale }: Props) {
 
   const dialogRef = useFocusTrap({
     initialFocus: closeRef,
-    onClose: () => setOpen(false),
+    onClose,
     open,
     returnFocus: triggerRef,
   });
 
-  return (
-    <>
-      <button ref={triggerRef} type="button" className="feedback-fab" onClick={() => setOpen(true)}>
-        <span>✦</span>{text.button}
-      </button>
-      {open && (
-        <div className="feedback-backdrop" onMouseDown={(event) => event.target === event.currentTarget && setOpen(false)}>
-          <section ref={dialogRef} className="feedback-modal" role="dialog" aria-modal="true" aria-labelledby="feedback-title">
-            <button ref={closeRef} autoFocus type="button" className="modal-close" onClick={() => setOpen(false)} aria-label={text.close}>×</button>
+  return open ? (
+    <div className="feedback-backdrop" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+      <section ref={dialogRef} className="feedback-modal" role="dialog" aria-modal="true" aria-labelledby="feedback-title">
+            <button ref={closeRef} autoFocus type="button" className="modal-close" onClick={onClose} aria-label={text.close}>×</button>
             {!feedbackDestinationReady ? (
               <div className="feedback-external"><h2 id="feedback-title">{text.title}</h2><p className="feedback-intro">{text.loading}</p></div>
             ) : externalFormUrl ? (
@@ -88,9 +85,7 @@ export default function FeedbackForm({ locale }: Props) {
             ) : (
               <div className="feedback-external"><h2 id="feedback-title">{text.title}</h2><p className="feedback-intro">{text.externalUnavailable}</p></div>
             )}
-          </section>
-        </div>
-      )}
-    </>
-  );
+      </section>
+    </div>
+  ) : null;
 }
