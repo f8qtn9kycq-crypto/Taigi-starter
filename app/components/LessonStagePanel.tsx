@@ -17,6 +17,7 @@ type LessonStagePanelProps = {
   reviewScheduled: boolean;
   completed?: boolean;
   onAdvance: () => void;
+  onUnlock: () => void;
   onReviewAdded: (phraseId: string) => void;
   onPhraseAdvance: () => void;
 };
@@ -31,6 +32,7 @@ export default function LessonStagePanel({
   reviewScheduled,
   completed = false,
   onAdvance,
+  onUnlock,
   onReviewAdded,
   onPhraseAdvance,
 }: LessonStagePanelProps) {
@@ -54,7 +56,18 @@ export default function LessonStagePanel({
 
   const playAudio = async () => {
     const started = await toggle();
-    if (started) setAudioPlays((count) => count + 1);
+    if (started) {
+      if (!completed && audioPlays === 0) onUnlock();
+      setAudioPlays((count) => count + 1);
+    }
+  };
+  const completeSay = (nextCompleted: boolean) => {
+    if (nextCompleted && !sayCompleted && !completed) onUnlock();
+    setSayCompleted(nextCompleted);
+  };
+  const revealAnswer = () => {
+    setShowAnswer(true);
+    if (!completed) onUnlock();
   };
 
   return (
@@ -95,22 +108,32 @@ export default function LessonStagePanel({
             </button>
             {hasError && <p className="media-error" role="alert">{text.audioUnavailable}</p>}
             {audioPlays < 1 && !hasError && <p className="stage-completion-hint" role="status">{text.hearCompletionHint}</p>}
-            <button type="button" className="action-button primary-action" onClick={onAdvance} disabled={audioPlays < 1 && !hasError}>
+            <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance} disabled={audioPlays < 1 && !hasError}>
               {hasError ? text.continueWithoutAudio : text.nextSee}<span>→</span>
             </button>
+            {hasError && !completed && (
+              <button type="button" className="action-button primary-action mobile-stage-complete" onClick={onUnlock}>
+                {text.continueWithoutAudio}<span>✓</span>
+              </button>
+            )}
           </>
         )}
-        {lessonStage.id === "see" && <button type="button" className="action-button primary-action" onClick={onAdvance}>{text.nextSay}<span>→</span></button>}
+        {lessonStage.id === "see" && (
+          <>
+            <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance}>{text.nextSay}<span>→</span></button>
+            {!completed && <button type="button" className="action-button primary-action mobile-stage-complete" onClick={onUnlock}>{text.completeSee}<span>✓</span></button>}
+          </>
+        )}
         {lessonStage.id === "say" && (
           <>
-            <RecordingPractice text={text} onCompletionChange={setSayCompleted} />
+            <RecordingPractice text={text} onCompletionChange={completeSay} />
             {!sayCompleted && <p className="stage-gate-hint" role="status">{text.sayCompletionRequired}</p>}
-            <button type="button" className="action-button primary-action" onClick={onAdvance} disabled={!sayCompleted}>{text.nextRecall}<span>→</span></button>
+            <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance} disabled={!sayCompleted}>{text.nextRecall}<span>→</span></button>
           </>
         )}
         {lessonStage.id === "recall" && !showAnswer && !recallAttempted && <button type="button" className="action-button primary-action" onClick={() => setRecallAttempted(true)}>{text.recallAttempt}<span>✓</span></button>}
-        {lessonStage.id === "recall" && !showAnswer && recallAttempted && <button type="button" className="action-button primary-action" onClick={() => setShowAnswer(true)}>{text.showAnswer}<span>↓</span></button>}
-        {lessonStage.id === "recall" && showAnswer && <button type="button" className="action-button primary-action" onClick={onAdvance}>{text.nextUse}<span>→</span></button>}
+        {lessonStage.id === "recall" && !showAnswer && recallAttempted && <button type="button" className="action-button primary-action" onClick={revealAnswer}>{text.showAnswer}<span>↓</span></button>}
+        {lessonStage.id === "recall" && showAnswer && <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance}>{text.nextUse}<span>→</span></button>}
         {lessonStage.id === "use" && (
           <>
             <label className="use-response">

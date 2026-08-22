@@ -46,6 +46,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
       viewedStage,
       showStage,
       advance,
+      unlockNext,
       navigatePrevious,
       navigateNext,
       handleTouchStart,
@@ -142,7 +143,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
                   <span className="stage-number">{isComplete ? "✓" : index + 1}</span>
                   <span className="stage-name">
                     <b>{label}</b>
-                    <small>{isDisplayed ? text.currentStep : isComplete ? text.completedStep : text.lockedStep}</small>
+                    <small>{isComplete ? text.completedStep : isDisplayed ? text.currentStep : text.lockedStep}</small>
                   </span>
                   <span className="stage-chevron" aria-hidden="true">{isDisplayed ? "−" : "+"}</span>
                 </button>
@@ -159,6 +160,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
                     reviewScheduled={reviewScheduled}
                     completed={isComplete}
                     onAdvance={advance}
+                    onUnlock={unlockNext}
                     onReviewAdded={onReviewAdded}
                     onPhraseAdvance={advancePhrase}
                   />

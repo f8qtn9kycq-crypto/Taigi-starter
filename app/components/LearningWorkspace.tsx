@@ -65,7 +65,7 @@ export default function LearningWorkspace({
         onHome={onHome}
       />
       {(activeTab === "learn" || activeTab === "progress") && (
-        <div className="learning-column">
+        <div className={activeTab === "learn" ? "learning-column stage-page" : "learning-column"}>
           {activeTab === "learn" && (
             <LessonAccordion
               ref={lessonRef}
