@@ -67,6 +67,7 @@ export type LessonCopy = {
   listened: (count: number) => string;
   nextSee: string;
   nextSay: string;
+  completeSee: string;
   nextRecall: string;
   nextUse: string;
   usePrompt: string;
@@ -215,6 +216,7 @@ export const copy: Record<Locale, LessonCopy> = {
     listened: (count) => `已聽 ${count} 次`,
     nextSee: "下一步：看文字",
     nextSay: "下一步：跟著講",
+    completeSee: "我看完了，解鎖下一頁",
     nextRecall: "下一步：想一想",
     nextUse: "下一步：生活用法",
     usePrompt: "你會在什麼情境用這句？",
@@ -361,6 +363,7 @@ export const copy: Record<Locale, LessonCopy> = {
     listened: (count) => `Listened ${count} time${count === 1 ? "" : "s"}`,
     nextSee: "Next: see the script",
     nextSay: "Next: say it",
+    completeSee: "I’ve read it — unlock the next page",
     nextRecall: "Next: recall it",
     nextUse: "Next: use it",
     usePrompt: "When would you use this phrase?",

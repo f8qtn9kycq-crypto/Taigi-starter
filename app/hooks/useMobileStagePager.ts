@@ -35,6 +35,13 @@ export function useMobileStagePager({
     onViewChange(nextStage);
     onStageChange(nextStage);
   };
+  const unlockNext = () => {
+    if (!window.matchMedia("(max-width: 639px)").matches) return;
+    if (viewedStage < stage || stage >= lastStage) return;
+    const nextStage = stage + 1;
+    setPager({ phraseIndex, furthestStage: nextStage, viewedStage });
+    onStageChange(nextStage);
+  };
   const navigatePrevious = () => {
     if (viewedStage > 0) showStage(viewedStage - 1);
   };
@@ -63,5 +70,5 @@ export function useMobileStagePager({
     if (nextStage !== null) showStage(nextStage);
   };
 
-  return { viewedStage, showStage, advance, navigatePrevious, navigateNext, handleTouchStart, handleTouchEnd };
+  return { viewedStage, showStage, advance, unlockNext, navigatePrevious, navigateNext, handleTouchStart, handleTouchEnd };
 }

@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("ships the first-time Taigi landing content and Vercel feedback path", async () => {
-  const [layout, landing, siteHeader, page, bottomNav, coursePath, lesson, stagePanel, stageContent, reviewModal, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService] = await Promise.all([
+  const [layout, landing, siteHeader, page, bottomNav, coursePath, lesson, stagePanel, stageContent, stagePager, reviewModal, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/SiteHeader.tsx", import.meta.url), "utf8"),
@@ -13,6 +13,7 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
     readFile(new URL("../app/components/LessonAccordion.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonStagePanel.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonStageContent.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/hooks/useMobileStagePager.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/components/ReviewModal.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/RecordingPractice.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/hooks/useRecorder.ts", import.meta.url), "utf8"),
@@ -96,6 +97,13 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(lesson, /index <= stage && showStage\(index\)/);
   assert.match(stagePanel, /text\.stageProgress\(stage, lesson\.stages\.length/);
   assert.match(stagePanel, /text\.hearCompletionHint/);
+  assert.match(stagePanel, /audioPlays === 0\) onUnlock\(\)/);
+  assert.match(stagePanel, /onCompletionChange=\{completeSay\}/);
+  assert.match(stagePanel, /const revealAnswer = \(\) => \{[\s\S]*onUnlock\(\)/);
+  assert.match(stagePanel, /text\.completeSee/);
+  assert.match(stagePager, /setPager\(\{ phraseIndex, furthestStage: nextStage, viewedStage \}\)/);
+  assert.match(stagePager, /matchMedia\("\(max-width: 639px\)"\)/);
+  assert.match(stagePager, /onStageChange\(nextStage\)/);
   assert.match(stagePanel, /disabled=\{audioPlays < 1 && !hasError\}/);
   assert.match(stagePanel, /lessonStage\.id === "recall" && !showAnswer/);
   assert.match(stagePanel, /recallAttempted/);
@@ -186,6 +194,7 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(page, /setHasStarted\(true\);[\s\S]*setLessonViewOpen\(true\)/);
   assert.match(workspace, /activeTab === "learn" \|\| activeTab === "progress"/);
   assert.match(workspace, /activeTab === "learn" && \([\s\S]*<LessonAccordion/);
+  assert.match(workspace, /activeTab === "learn" \? "learning-column stage-page" : "learning-column"/);
   assert.match(workspace, /activeTab === "progress" && \([\s\S]*<CoursePath/);
   assert.doesNotMatch(page, /scrollIntoView/);
   assert.match(page, /view === "learn" \? lessonRef\.current : pathRef\.current/);
@@ -221,6 +230,10 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.doesNotMatch(css, /\.progress-line i \{[\s\S]*width: 62%/);
   assert.match(css, /env\(safe-area-inset-bottom\)/);
   assert.match(css, /\.bottom-nav \{[\s\S]*position: fixed/);
+  assert.match(css, /@media \(max-width: 639px\) \{[\s\S]*\.learning-column\.stage-page \{[\s\S]*height: calc\(100dvh - 64px - var\(--nav-height\)/);
+  assert.match(css, /@media \(max-width: 639px\) \{[\s\S]*\.stage-panel \{[\s\S]*overflow-y: auto/);
+  assert.match(css, /\.desktop-stage-action \{[\s\S]*display: none/);
+  assert.match(css, /\.mobile-stage-complete \{[\s\S]*display: flex/);
   assert.equal(audio.subarray(0, 3).toString(), "ID3");
   assert.ok(audio.length > 10_000);
 });

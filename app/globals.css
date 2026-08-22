@@ -880,6 +880,10 @@ a:focus-visible {
   display: none;
 }
 
+.mobile-stage-complete {
+  display: none;
+}
+
 .stage-panel {
   display: flex;
   min-height: min(620px, calc(100dvh - 150px));
@@ -1911,8 +1915,131 @@ footer a:hover {
 }
 
 @media (max-width: 639px) {
+  .learning-column.stage-page {
+    height: calc(100dvh - 64px - var(--nav-height) - env(safe-area-inset-bottom));
+    gap: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .lesson-card {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    border-width: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .lesson-heading {
+    flex: none;
+    padding: 9px 14px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .lesson-heading > .section-label,
+  .lesson-heading > p,
+  .lesson-heading > .lesson-mission,
+  .lesson-heading > .lesson-rhythm,
+  .lesson-heading > .progress-line {
+    display: none;
+  }
+
+  .lesson-heading h2 {
+    overflow: hidden;
+    margin: 0 0 7px;
+    font-family: inherit;
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .lesson-targets {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .lesson-targets > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .lesson-targets ul {
+    flex-wrap: nowrap;
+    gap: 6px;
+    margin: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .lesson-targets li,
+  .english-phrases li {
+    flex: 0 0 auto;
+  }
+
+  .lesson-targets button,
+  .english-phrases button {
+    width: auto;
+    max-width: 190px;
+    min-height: 44px;
+    padding: 5px 9px;
+  }
+
+  .lesson-targets button > span {
+    grid-template-columns: auto auto;
+    align-items: baseline;
+    gap: 2px 7px;
+  }
+
+  .lesson-targets .phrase-meaning,
+  .lesson-targets .phrase-romanization {
+    grid-column: 1 / -1;
+  }
+
+  .stage-accordion {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+  }
+
   .stage-accordion > li:not(.displayed) {
     display: none;
+  }
+
+  .stage-accordion > li.displayed {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .stage-trigger {
+    min-height: 54px;
+    flex: none;
+    padding-block: 8px;
+  }
+
+  .stage-panel {
+    min-height: 0;
+    flex: 1;
+    padding-top: 16px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .desktop-stage-action {
+    display: none;
+  }
+
+  .mobile-stage-complete {
+    display: flex;
   }
 
   .mobile-stage-navigation {
@@ -1920,7 +2047,8 @@ footer a:hover {
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
     gap: 8px;
-    padding: 12px 15px calc(18px + env(safe-area-inset-bottom));
+    flex: none;
+    padding: 8px 15px 10px;
     border-top: 1px solid var(--line);
     background: var(--paper);
   }
