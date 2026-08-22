@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import BottomNav from "./components/BottomNav";
+import type { AppTab } from "./components/BottomNav";
 import LandingHero from "./components/LandingHero";
 import LearningWorkspace from "./components/LearningWorkspace";
 import FeedbackForm from "./FeedbackForm";
@@ -42,10 +43,11 @@ export default function TaigiStartPage() {
   const [reviewOpen, setReviewOpen] = useState(false);
   const [startPending, setStartPending] = useState(false);
   const [lessonViewOpen, setLessonViewOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"learn" | "review" | "progress">("learn");
+  const [activeTab, setActiveTab] = useState<AppTab>("learn");
   const lessonRef = useRef<HTMLElement | null>(null);
   const pathRef = useRef<HTMLElement | null>(null);
   const reviewTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const feedbackTriggerRef = useRef<HTMLButtonElement | null>(null);
   const heroAudio = useAudioPlayer(activeLesson.phrases[0].audioUrl);
   const text = copy[progress.locale];
   const activeLessonProgress = progress.lessons[activeLesson.id];
@@ -108,6 +110,11 @@ export default function TaigiStartPage() {
     setActiveTab("review");
     setReviewOpen(true);
   };
+  const closeFeedback = () => {
+    setActiveTab("learn");
+    window.requestAnimationFrame(() => feedbackTriggerRef.current?.focus());
+  };
+  const openFeedback = () => setActiveTab("feedback");
   const startLearning = () => {
     if (startPending) return;
     heroAudio.stop();
@@ -181,12 +188,19 @@ export default function TaigiStartPage() {
         dueCount={dueCount}
         activeTab={activeTab}
         reviewButtonRef={reviewTriggerRef}
+        feedbackButtonRef={feedbackTriggerRef}
         onLearn={showLearn}
         onReview={openReview}
         onPath={showPath}
+        onFeedback={openFeedback}
       />
 
-      <FeedbackForm locale={progress.locale} />
+      <FeedbackForm
+        locale={progress.locale}
+        open={activeTab === "feedback"}
+        onClose={closeFeedback}
+        triggerRef={feedbackTriggerRef}
+      />
 
       {reviewOpen && (
         <ReviewModal

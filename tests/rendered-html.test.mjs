@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("ships the first-time Taigi landing content and Vercel feedback path", async () => {
-  const [layout, landing, siteHeader, page, bottomNav, coursePath, lesson, stagePanel, stageContent, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService] = await Promise.all([
+  const [layout, landing, siteHeader, page, bottomNav, coursePath, lesson, stagePanel, stageContent, reviewModal, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/SiteHeader.tsx", import.meta.url), "utf8"),
@@ -13,6 +13,7 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
     readFile(new URL("../app/components/LessonAccordion.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonStagePanel.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonStageContent.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/ReviewModal.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/RecordingPractice.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/hooks/useRecorder.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/taigi-content.ts", import.meta.url), "utf8"),
@@ -30,7 +31,10 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(lesson, /stage-accordion/);
   assert.match(bottomNav, /aria-label=\{text\.primaryNavigation\}/);
   assert.match(bottomNav, /reviewButtonRef: RefObject<HTMLButtonElement \| null>/);
+  assert.match(bottomNav, /feedbackButtonRef: RefObject<HTMLButtonElement \| null>/);
   assert.match(bottomNav, /ref=\{reviewButtonRef\}[\s\S]*onClick=\{onReview\}/);
+  assert.match(bottomNav, /ref=\{feedbackButtonRef\}[\s\S]*onClick=\{onFeedback\}/);
+  assert.match(bottomNav, /text\.navProgress[\s\S]*text\.navFeedback/);
   assert.match(coursePath, /aria-current=\{isActive \? "page" : undefined\}/);
   assert.doesNotMatch(coursePath, /aria-pressed/);
   assert.match(coursePath, /text\.startLesson/);
@@ -48,6 +52,10 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(coursePath, /: "available"/);
   assert.match(copy, /lessonLocked: "尚未開放"/);
   assert.match(copy, /lessonLocked: "Locked"/);
+  assert.match(copy, /複習會在適合的時間重新出題/);
+  assert.match(copy, /Review brings phrases back when they are due/);
+  assert.match(reviewModal, /aria-describedby="review-explanation"/);
+  assert.match(reviewModal, /text\.reviewExplanation/);
   assert.match(copy, /今仔日，講一句台語。/);
   assert.match(copy, /每天五分鐘，慢慢培養台語耳。/);
   assert.match(copy, /每天 5 分鐘，從聽懂到開口。/);
@@ -134,6 +142,9 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(feedbackConfig, /getExternalFormUrl\(\)/);
   assert.doesNotMatch(`${feedbackService}\n${feedbackConfig}`, /docs\.google\.com\/forms\/d\//);
   assert.match(feedbackForm, /api\/feedback-config/);
+  assert.doesNotMatch(feedbackForm, /feedback-fab/);
+  assert.match(feedbackForm, /open: boolean/);
+  assert.match(page, /open=\{activeTab === "feedback"\}/);
   assert.doesNotMatch(`${feedbackForm}\n${page}`, /GitHub\s*·\s*Technical feedback|GitHub feedback/i);
   assert.match(feedbackForm, /target="_blank"/);
   assert.doesNotMatch(`${feedbackConfig}\n${feedbackForm}`, /cloudflare:workers|codex-preview|_sites-preview|react-loading-skeleton/);
@@ -162,6 +173,8 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(reviewNowHook, /window\.setTimeout\(\(\) => \{[\s\S]*setNow\(new Date\(\)\);[\s\S]*\}, delay\)/);
   assert.match(page, /reviewTriggerRef = useRef<HTMLButtonElement \| null>\(null\)/);
   assert.match(page, /reviewButtonRef=\{reviewTriggerRef\}/);
+  assert.match(page, /feedbackButtonRef=\{feedbackTriggerRef\}/);
+  assert.match(page, /requestAnimationFrame\(\(\) => feedbackTriggerRef\.current\?\.focus\(\)\)/);
   assert.equal(page.match(/requestAnimationFrame\(\(\) => reviewTriggerRef\.current\?\.focus\(\)\)/g)?.length, 2);
   assert.match(page, /progress\.lessons\[activeLesson\.id\]/);
   assert.match(page, /activeLesson\.phrases\[activeLessonProgress\?\.phraseIndex \?\? 0\]/);
@@ -171,7 +184,7 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(page, /activeTab === "learn" && !lessonViewOpen/);
   assert.match(page, /hasStarted=\{progress\.hasStarted\}/);
   assert.match(page, /setHasStarted\(true\);[\s\S]*setLessonViewOpen\(true\)/);
-  assert.match(workspace, /activeTab !== "review"/);
+  assert.match(workspace, /activeTab === "learn" \|\| activeTab === "progress"/);
   assert.match(workspace, /activeTab === "learn" && \([\s\S]*<LessonAccordion/);
   assert.match(workspace, /activeTab === "progress" && \([\s\S]*<CoursePath/);
   assert.doesNotMatch(page, /scrollIntoView/);

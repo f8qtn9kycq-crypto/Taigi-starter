@@ -43,10 +43,11 @@ export default function ReviewModal({
 
   return (
     <div className="modal-backdrop" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
-      <section ref={dialogRef} className="review-modal" role="dialog" aria-modal="true" aria-label={text.navReview}>
+      <section ref={dialogRef} className="review-modal" role="dialog" aria-modal="true" aria-label={text.navReview} aria-describedby="review-explanation">
         <div className="modal-handle" aria-hidden="true" />
         <button ref={closeRef} autoFocus type="button" className="modal-close" onClick={onClose} aria-label={text.close}>×</button>
         <span className="section-label">SRS · {text.navReview}</span>
+        <p id="review-explanation" className="review-explanation">{text.reviewExplanation}</p>
 
         {card && isDue ? (
           <>
