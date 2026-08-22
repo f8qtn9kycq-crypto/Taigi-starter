@@ -114,9 +114,11 @@ export type LessonCopy = {
   curriculumLessonCount: (count: number) => string;
   curriculumDisclaimer: string;
   curriculumSource: string;
-  cardsLeft: string;
+  reviewDueTitle: (count: number) => string;
   reviewPrompt: string;
   reviewExplanation: string;
+  reviewEmptyTitle: string;
+  reviewEmptyExplanation: string;
   rate: string;
   again: string;
   hard: string;
@@ -125,7 +127,6 @@ export type LessonCopy = {
   hardHint: string;
   easyHint: string;
   nextReview: (date: string) => string;
-  allDone: string;
   close: string;
   prototype: string;
   navLearn: string;
@@ -273,9 +274,11 @@ export const copy: Record<Locale, LessonCopy> = {
     curriculumLessonCount: (count) => `${count} 課`,
     curriculumDisclaimer: "依國家教育研究院閩南語文課綱整理，供學習方向參考；不是教育部認證教材。",
     curriculumSource: "查看官方課綱",
-    cardsLeft: "張待複習",
+    reviewDueTitle: (count) => `今天要複習 ${count} 句`,
     reviewPrompt: "看到這句，你會怎麼說？",
-    reviewExplanation: "複習會在適合的時間重新出題。選擇「忘了／有點難／很熟」，系統就會安排下次練習時間。",
+    reviewExplanation: "先想怎麼說，再顯示答案。最後選記得程度，我們會安排下次。",
+    reviewEmptyTitle: "今天沒有要複習的句子",
+    reviewEmptyExplanation: "完成課程後，學過的句子會在適合的時間回來。",
     rate: "這次記得多熟？",
     again: "忘了",
     hard: "有點難",
@@ -284,11 +287,10 @@ export const copy: Record<Locale, LessonCopy> = {
     hardHint: "明天",
     easyHint: "4 天後",
     nextReview: (date) => `下次複習：${date}`,
-    allDone: "今日複習完成",
     close: "關閉",
     prototype: "第 1–20 課已開放 · 學習紀錄儲存在此裝置",
     navLearn: "學習",
-    navReview: "複習",
+    navReview: "今日複習",
     navPath: "課程",
     navProgress: "進度",
     navFeedback: "回饋",
@@ -430,9 +432,11 @@ export const copy: Record<Locale, LessonCopy> = {
     curriculumLessonCount: (count) => `${count} ${count === 1 ? "lesson" : "lessons"}`,
     curriculumDisclaimer: "Mapped with reference to the NAER Taiwanese-language curriculum. This is not MOE-certified teaching material.",
     curriculumSource: "View the official curriculum",
-    cardsLeft: "cards left",
+    reviewDueTitle: (count) => `${count} ${count === 1 ? "phrase" : "phrases"} to review today`,
     reviewPrompt: "How would you say this?",
-    reviewExplanation: "Review brings phrases back when they are due. Choose Again, Hard, or Easy to schedule when you practise each phrase next.",
+    reviewExplanation: "Recall it first, then reveal the answer. Finally, rate how well you remembered so we can schedule the next review.",
+    reviewEmptyTitle: "No phrases to review today",
+    reviewEmptyExplanation: "After you complete a lesson, learned phrases will return at the right time.",
     rate: "How well did you remember?",
     again: "Again",
     hard: "Hard",
@@ -441,11 +445,10 @@ export const copy: Record<Locale, LessonCopy> = {
     hardHint: "Tomorrow",
     easyHint: "4 days",
     nextReview: (date) => `Next review: ${date}`,
-    allDone: "Today’s review is complete",
     close: "Close",
     prototype: "Lessons 1–20 working release · progress stays on this device",
     navLearn: "Learn",
-    navReview: "Review",
+    navReview: "Review today",
     navPath: "Course",
     navProgress: "Progress",
     navFeedback: "Feedback",
