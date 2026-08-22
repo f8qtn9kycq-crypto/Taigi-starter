@@ -8,6 +8,11 @@ type MobileStageNavigationProps = {
   viewedStage: number;
   onPrevious: () => void;
   onNext: () => void;
+  currentAction?: {
+    label: string;
+    disabled?: boolean;
+    onClick: () => void;
+  };
 };
 
 export default function MobileStageNavigation({
@@ -17,9 +22,13 @@ export default function MobileStageNavigation({
   viewedStage,
   onPrevious,
   onNext,
+  currentAction,
 }: MobileStageNavigationProps) {
   const previousStageLabel = viewedStage > 0 ? text.stageLabels[stages[viewedStage - 1].id] : null;
   const nextStageLabel = viewedStage < unlockedStage ? text.stageLabels[stages[viewedStage + 1].id] : null;
+  const nextAction = nextStageLabel
+    ? { label: text.nextStageTo(nextStageLabel), disabled: false, onClick: onNext }
+    : currentAction ?? { label: text.nextUnlockedStage, disabled: true, onClick: onNext };
 
   return (
     <nav className="mobile-stage-navigation" aria-label={text.learningStages}>
@@ -27,8 +36,8 @@ export default function MobileStageNavigation({
         <span aria-hidden="true">←</span>{previousStageLabel ? text.previousStageTo(previousStageLabel) : text.previousStage}
       </button>
       <span aria-live="polite">{text.stageCount(viewedStage, stages.length)}</span>
-      <button type="button" onClick={onNext} disabled={viewedStage >= unlockedStage}>
-        {nextStageLabel ? text.nextStageTo(nextStageLabel) : text.nextUnlockedStage}<span aria-hidden="true">→</span>
+      <button type="button" onClick={nextAction.onClick} disabled={nextAction.disabled}>
+        {nextAction.label}<span aria-hidden="true">→</span>
       </button>
       {nextStageLabel && viewedStage === 0 ? (
         <p className="stage-unlocked-hint" role="status">
