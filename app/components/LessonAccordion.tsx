@@ -5,6 +5,7 @@ import { useMobileStagePager } from "../hooks/useMobileStagePager";
 import type { LessonCopy } from "../taigi-content";
 import type { PlayableLesson } from "../types/lesson";
 import LessonStagePanel from "./LessonStagePanel";
+import MobileStageNavigation from "./MobileStageNavigation";
 
 type LessonAccordionProps = {
   text: LessonCopy;
@@ -63,7 +64,6 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
       pendingFocusStageRef.current = 0;
       onPhraseAdvance(nextIncompletePhraseIndex);
     };
-
     useEffect(() => {
       if (pendingFocusStageRef.current !== viewedStage) return;
       stageTriggerRefs.current[viewedStage]?.focus();
@@ -169,19 +169,14 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
             );
           })}
         </ol>
-        <nav className="mobile-stage-navigation" aria-label={text.learningStages}>
-          <button type="button" onClick={navigatePrevious} disabled={viewedStage === 0}>
-            <span aria-hidden="true">←</span>{text.previousStage}
-          </button>
-          <span aria-live="polite">{text.stageCount(viewedStage, lesson.stages.length)}</span>
-          <button type="button" onClick={navigateNext} disabled={viewedStage >= stage}>
-            {text.nextUnlockedStage}<span aria-hidden="true">→</span>
-          </button>
-          <p>
-            {viewedStage > 0 && <span><i aria-hidden="true">←</i>{text.swipeLeftPrevious}</span>}
-            {viewedStage < stage && <span>{text.swipeRightNext}<i aria-hidden="true">→</i></span>}
-          </p>
-        </nav>
+        <MobileStageNavigation
+          text={text}
+          stages={lesson.stages}
+          unlockedStage={stage}
+          viewedStage={viewedStage}
+          onPrevious={navigatePrevious}
+          onNext={navigateNext}
+        />
       </section>
     );
   },

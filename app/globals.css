@@ -2185,6 +2185,21 @@ footer a:hover {
     font-size: 9px;
   }
 
+  .mobile-stage-navigation .stage-unlocked-hint {
+    display: flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    background: #e7f5ef;
+    color: var(--jade-dark);
+    font-size: 11px;
+    font-weight: 750;
+    line-height: 1.45;
+  }
+
   .mobile-stage-navigation p span {
     display: inline-flex;
     align-items: center;
