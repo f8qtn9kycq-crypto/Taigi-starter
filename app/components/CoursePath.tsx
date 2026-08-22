@@ -3,7 +3,6 @@ import { lessonCatalog } from "../data/lessons";
 import type { LessonCopy, Locale } from "../taigi-content";
 import type { LessonProgress } from "../types/learning";
 import { completedStepCount, hasLessonProgress } from "../utils/learning-progress";
-import CurriculumCoverage from "./CurriculumCoverage";
 
 const lessonIcons: Readonly<Record<number, string>> = {
   1: "👋", 2: "🏠", 3: "123", 4: "🍚", 5: "☀️",
@@ -43,7 +42,6 @@ const CoursePath = forwardRef<HTMLElement, CoursePathProps>(
           <div><span className="section-label">{text.navPath}</span><h2>{text.path}</h2></div>
           <small>{text.pathSummary}</small>
         </div>
-        <CurriculumCoverage text={text} locale={locale} />
         <div className="lesson-list">
           {lessonCatalog.map((lesson) => {
             const isActive = lesson.number === activeLessonNumber;
