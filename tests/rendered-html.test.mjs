@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("ships the first-time Taigi landing content and Vercel feedback path", async () => {
-  const [layout, landing, siteHeader, page, bottomNav, coursePath, curriculumCoverage, lesson, stagePanel, stageContent, stagePager, reviewModal, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService] = await Promise.all([
+  const [layout, landing, siteHeader, page, bottomNav, coursePath, curriculumCoverage, lesson, mobileStageNavigation, stagePanel, stageContent, stagePager, reviewModal, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/SiteHeader.tsx", import.meta.url), "utf8"),
@@ -12,6 +12,7 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
     readFile(new URL("../app/components/CoursePath.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/CurriculumCoverage.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonAccordion.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/MobileStageNavigation.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonStagePanel.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonStageContent.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/hooks/useMobileStagePager.ts", import.meta.url), "utf8"),
@@ -62,6 +63,11 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(copy, /lessonLocked: "尚未開放"/);
   assert.match(copy, /lessonLocked: "Locked"/);
   assert.match(copy, /複習會在適合的時間重新出題/);
+  assert.match(copy, /按右方「下一步：\$\{next\}」或向右滑/);
+  assert.match(copy, /Use “Next: \$\{next\}” on the right or swipe right/);
+  assert.match(lesson, /<MobileStageNavigation/);
+  assert.match(mobileStageNavigation, /text\.nextStageTo\(nextStageLabel\)/);
+  assert.match(mobileStageNavigation, /className="stage-unlocked-hint" role="status"/);
   assert.match(copy, /Review brings phrases back when they are due/);
   assert.match(reviewModal, /aria-describedby="review-explanation"/);
   assert.match(reviewModal, /text\.reviewExplanation/);
@@ -99,9 +105,9 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(lesson, /stageTriggerRefs\.current\[viewedStage\]\?\.focus\(\)/);
   assert.match(lesson, /useMobileStagePager/);
   assert.match(lesson, /onTouchStart=\{handleTouchStart\}/);
-  assert.match(lesson, /viewedStage < stage/);
-  assert.match(lesson, /className="mobile-stage-navigation"/);
-  assert.match(lesson, /disabled=\{viewedStage >= stage\}/);
+  assert.match(mobileStageNavigation, /viewedStage < unlockedStage/);
+  assert.match(mobileStageNavigation, /className="mobile-stage-navigation"/);
+  assert.match(mobileStageNavigation, /disabled=\{viewedStage >= unlockedStage\}/);
   assert.match(lesson, /index <= stage && showStage\(index\)/);
   assert.match(stagePanel, /text\.stageProgress\(stage, lesson\.stages\.length/);
   assert.match(stagePanel, /text\.hearCompletionHint/);

@@ -55,6 +55,9 @@ export type LessonCopy = {
   lockedStep: string;
   previousStage: string;
   nextUnlockedStage: string;
+  previousStageTo: (stage: string) => string;
+  nextStageTo: (stage: string) => string;
+  unlockedStageHint: (current: string, next: string) => string;
   swipeLeftPrevious: string;
   swipeRightNext: string;
   stageCount: (stage: number, total: number) => string;
@@ -198,6 +201,9 @@ export const copy: Record<Locale, LessonCopy> = {
     lockedStep: "稍後開放",
     previousStage: "上一步",
     nextUnlockedStage: "下一步",
+    previousStageTo: (stage) => `上一步：${stage}`,
+    nextStageTo: (stage) => `下一步：${stage}`,
+    unlockedStageHint: (current, next) => `「${current}」完成。按右方「下一步：${next}」或向右滑，進入「${next}」。`,
     swipeLeftPrevious: "向左滑回上一步",
     swipeRightNext: "向右滑到下一步",
     stageCount: (stage, total) => `步驟 ${stage + 1} / ${total}`,
@@ -351,6 +357,9 @@ export const copy: Record<Locale, LessonCopy> = {
     lockedStep: "Up next",
     previousStage: "Previous",
     nextUnlockedStage: "Next",
+    previousStageTo: (stage) => `Previous: ${stage}`,
+    nextStageTo: (stage) => `Next: ${stage}`,
+    unlockedStageHint: (current, next) => `${current} complete. Use “Next: ${next}” on the right or swipe right to open ${next}.`,
     swipeLeftPrevious: "Swipe left for the previous step",
     swipeRightNext: "Swipe right for the next step",
     stageCount: (stage, total) => `Step ${stage + 1} of ${total}`,
