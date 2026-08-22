@@ -79,7 +79,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
             <span>{text.lessonMission}</span>
             <p>{lesson.mission[text.locale]}</p>
           </div>
-          <div className="lesson-targets">
+          <div className={text.locale === "en" ? "lesson-targets english-phrases" : "lesson-targets"}>
             <span id="phrase-selector-label">{text.phraseSelectorLabel(phraseIndex + 1, lesson.phrases.length)}</span>
             <ul aria-labelledby="phrase-selector-label">
               {lesson.phrases.map((phrase, index) => (
@@ -89,11 +89,17 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
                     className={index === phraseIndex ? "active" : ""}
                     onClick={() => onPhraseChange(index)}
                     aria-pressed={index === phraseIndex}
-                    aria-label={text.phraseSelectorOption(phrase.hanji, index + 1, lesson.phrases.length)}
+                    aria-label={text.phraseSelectorOption(
+                      phrase.hanji,
+                      phrase.meaning[text.locale],
+                      index + 1,
+                      lesson.phrases.length,
+                    )}
                   >
                     <span>
                       <b>{phrase.hanji}</b>
-                      <small>{phrase.tailo}</small>
+                      {text.locale === "en" && <small className="phrase-meaning">{phrase.meaning.en}</small>}
+                      <small className="phrase-romanization">{phrase.tailo}</small>
                     </span>
                     {completedPhraseIds.has(phrase.id) && <i aria-label={text.completedPhrase}>✓</i>}
                   </button>

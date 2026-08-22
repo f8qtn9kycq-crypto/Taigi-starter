@@ -65,6 +65,9 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(copy, /lessonTime: "約 5 分鐘"/);
   assert.match(lesson, /lesson-rhythm/);
   assert.match(lesson, /aria-pressed=\{index === phraseIndex\}/);
+  assert.match(lesson, /text\.locale === "en" && <small className="phrase-meaning">\{phrase\.meaning\.en\}<\/small>/);
+  assert.match(lesson, /phrase\.meaning\[text\.locale\]/);
+  assert.match(lesson, /className="phrase-romanization"/);
   assert.match(lesson, /onPhraseChange\(index\)/);
   assert.match(lesson, /completedPhraseIds\.has\(phrase\.id\)/);
   assert.match(copy, /選擇要練習的詞語/);

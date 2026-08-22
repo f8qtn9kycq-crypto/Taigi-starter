@@ -41,7 +41,7 @@ export type LessonCopy = {
   verifySource: string;
   lessonTargets: string;
   phraseSelectorLabel: (current: number, total: number) => string;
-  phraseSelectorOption: (phrase: string, current: number, total: number) => string;
+  phraseSelectorOption: (phrase: string, meaning: string, current: number, total: number) => string;
   completedPhrase: string;
   lessonRhythm: string;
   lessonTime: string;
@@ -169,7 +169,7 @@ export const copy: Record<Locale, LessonCopy> = {
     verifySource: "查看教育部來源",
     lessonTargets: "本課目標詞",
     phraseSelectorLabel: (current, total) => `選擇要練習的詞語（${current}/${total}）`,
-    phraseSelectorOption: (phrase, current, total) => `${phrase}，第 ${current} 個，共 ${total} 個`,
+    phraseSelectorOption: (phrase, _meaning, current, total) => `${phrase}，第 ${current} 個，共 ${total} 個`,
     completedPhrase: "本次已完成",
     lessonRhythm: "先聽 → 看文字 → 開口講 → 回想 → 生活運用",
     lessonTime: "約 5 分鐘",
@@ -313,7 +313,7 @@ export const copy: Record<Locale, LessonCopy> = {
     verifySource: "Verify with the MOE source",
     lessonTargets: "Target phrases",
     phraseSelectorLabel: (current, total) => `Choose a phrase to practise (${current}/${total})`,
-    phraseSelectorOption: (phrase, current, total) => `${phrase}, ${current} of ${total}`,
+    phraseSelectorOption: (phrase, meaning, current, total) => `${phrase}, ${meaning}, ${current} of ${total}`,
     completedPhrase: "Completed this session",
     lessonRhythm: "Hear → see → say → recall → use",
     lessonTime: "About 5 minutes",
