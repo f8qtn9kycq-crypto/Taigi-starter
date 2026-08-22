@@ -1399,6 +1399,95 @@ a:focus-visible {
   text-underline-offset: 2px;
 }
 
+.curriculum-coverage {
+  margin: 0 0 22px;
+  padding: 18px;
+  border: 1px solid #c9e0d8;
+  border-radius: 20px;
+  background: #f2f8f5;
+}
+
+.curriculum-coverage-heading h3 {
+  margin: 5px 0 8px;
+  color: var(--ink);
+  font-family: "Noto Serif TC", "Songti TC", serif;
+  font-size: 20px;
+}
+
+.curriculum-coverage-heading p,
+.curriculum-disclaimer {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.curriculum-groups {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0 12px;
+}
+
+.curriculum-groups details {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.curriculum-groups summary {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.curriculum-groups summary span,
+.curriculum-groups summary small {
+  display: block;
+}
+
+.curriculum-groups summary small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.curriculum-groups summary em {
+  flex: 0 0 auto;
+  color: var(--jade-dark);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.curriculum-groups ul {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding: 0 14px 14px 30px;
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+
+.curriculum-disclaimer {
+  font-size: 10px;
+}
+
+.curriculum-coverage > a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 6px;
+  color: var(--jade-dark);
+  font-size: 11px;
+  font-weight: 800;
+  text-underline-offset: 3px;
+}
+
 .path-card {
   padding: 22px 18px 8px;
 }

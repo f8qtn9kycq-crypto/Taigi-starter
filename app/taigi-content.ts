@@ -104,6 +104,12 @@ export type LessonCopy = {
   lessonComplete: string;
   path: string;
   pathSummary: string;
+  curriculumEyebrow: string;
+  curriculumTitle: string;
+  curriculumSummary: string;
+  curriculumLessonCount: (count: number) => string;
+  curriculumDisclaimer: string;
+  curriculumSource: string;
   cardsLeft: string;
   reviewPrompt: string;
   reviewExplanation: string;
@@ -253,6 +259,12 @@ export const copy: Record<Locale, LessonCopy> = {
     lessonComplete: "這課完成了！",
     path: "初學者路徑",
     pathSummary: "20 課已開放",
+    curriculumEyebrow: "國小台語課綱參考",
+    curriculumTitle: "生活主題涵蓋",
+    curriculumSummary: "看看目前 20 課練到哪些生活溝通主題。點開主題可查看相關課程。",
+    curriculumLessonCount: (count) => `${count} 課`,
+    curriculumDisclaimer: "依國家教育研究院閩南語文課綱整理，供學習方向參考；不是教育部認證教材。",
+    curriculumSource: "查看官方課綱",
     cardsLeft: "張待複習",
     reviewPrompt: "看到這句，你會怎麼說？",
     reviewExplanation: "複習會在適合的時間重新出題。選擇「忘了／有點難／很熟」，系統就會安排下次練習時間。",
@@ -400,6 +412,12 @@ export const copy: Record<Locale, LessonCopy> = {
     lessonComplete: "Lesson complete!",
     path: "Beginner path",
     pathSummary: "20 lessons available",
+    curriculumEyebrow: "ELEMENTARY CURRICULUM REFERENCE",
+    curriculumTitle: "Everyday topic coverage",
+    curriculumSummary: "See which everyday communication themes the current 20 lessons practise. Open a theme to view its lessons.",
+    curriculumLessonCount: (count) => `${count} ${count === 1 ? "lesson" : "lessons"}`,
+    curriculumDisclaimer: "Mapped with reference to the NAER Taiwanese-language curriculum. This is not MOE-certified teaching material.",
+    curriculumSource: "View the official curriculum",
     cardsLeft: "cards left",
     reviewPrompt: "How would you say this?",
     reviewExplanation: "Review brings phrases back when they are due. Choose Again, Hard, or Easy to schedule when you practise each phrase next.",

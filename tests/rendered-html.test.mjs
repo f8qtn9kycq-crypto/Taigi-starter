@@ -3,13 +3,14 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("ships the first-time Taigi landing content and Vercel feedback path", async () => {
-  const [layout, landing, siteHeader, page, bottomNav, coursePath, lesson, stagePanel, stageContent, stagePager, reviewModal, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService] = await Promise.all([
+  const [layout, landing, siteHeader, page, bottomNav, coursePath, curriculumCoverage, lesson, stagePanel, stageContent, stagePager, reviewModal, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/SiteHeader.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/TaigiStartPage.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/BottomNav.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/CoursePath.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/CurriculumCoverage.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonAccordion.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonStagePanel.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonStageContent.tsx", import.meta.url), "utf8"),
@@ -51,6 +52,13 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(coursePath, /text\.lessonDuration\(lesson\.durationMinutes\)/);
   assert.match(coursePath, /lesson\.status === "planned"[\s\S]*\? "locked"/);
   assert.match(coursePath, /: "available"/);
+  assert.match(coursePath, /<CurriculumCoverage text=\{text\} locale=\{locale\} \/>/);
+  assert.match(curriculumCoverage, /<details key=\{group\.id\}>/);
+  assert.match(curriculumCoverage, /elementaryTaiwaneseCurriculumUrl/);
+  assert.match(curriculumCoverage, /text\.curriculumDisclaimer/);
+  assert.match(copy, /不是教育部認證教材/);
+  assert.match(copy, /not MOE-certified teaching material/);
+  assert.match(copy, /count === 1 \? "lesson" : "lessons"/);
   assert.match(copy, /lessonLocked: "尚未開放"/);
   assert.match(copy, /lessonLocked: "Locked"/);
   assert.match(copy, /複習會在適合的時間重新出題/);
