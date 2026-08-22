@@ -5,7 +5,6 @@ import { useMobileStagePager } from "../hooks/useMobileStagePager";
 import type { LessonCopy } from "../taigi-content";
 import type { PlayableLesson } from "../types/lesson";
 import LessonStagePanel from "./LessonStagePanel";
-import MobileStageNavigation from "./MobileStageNavigation";
 
 type LessonAccordionProps = {
   text: LessonCopy;
@@ -163,20 +162,16 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
                     onUnlock={unlockNext}
                     onReviewAdded={onReviewAdded}
                     onPhraseAdvance={advancePhrase}
+                    unlockedStage={stage}
+                    viewedStage={viewedStage}
+                    onPrevious={navigatePrevious}
+                    onNext={navigateNext}
                   />
                 )}
               </li>
             );
           })}
         </ol>
-        <MobileStageNavigation
-          text={text}
-          stages={lesson.stages}
-          unlockedStage={stage}
-          viewedStage={viewedStage}
-          onPrevious={navigatePrevious}
-          onNext={navigateNext}
-        />
       </section>
     );
   },

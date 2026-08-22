@@ -5,6 +5,7 @@ import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import type { LessonCopy } from "../taigi-content";
 import type { PlayableLesson } from "../types/lesson";
 import LessonStageContent from "./LessonStageContent";
+import MobileStageNavigation from "./MobileStageNavigation";
 import RecordingPractice from "./RecordingPractice";
 
 type LessonStagePanelProps = {
@@ -20,6 +21,10 @@ type LessonStagePanelProps = {
   onUnlock: () => void;
   onReviewAdded: (phraseId: string) => void;
   onPhraseAdvance: () => void;
+  unlockedStage: number;
+  viewedStage: number;
+  onPrevious: () => void;
+  onNext: () => void;
 };
 
 export default function LessonStagePanel({
@@ -35,6 +40,10 @@ export default function LessonStagePanel({
   onUnlock,
   onReviewAdded,
   onPhraseAdvance,
+  unlockedStage,
+  viewedStage,
+  onPrevious,
+  onNext,
 }: LessonStagePanelProps) {
   const [audioPlays, setAudioPlays] = useState(completed ? 1 : 0);
   const [showAnswer, setShowAnswer] = useState(completed);
@@ -69,6 +78,27 @@ export default function LessonStagePanel({
     setShowAnswer(true);
     if (!completed) onUnlock();
   };
+  const mobileAction = lessonStage.id === "hear"
+    ? {
+        label: hasError ? text.continueWithoutAudio : text.nextSee,
+        disabled: audioPlays < 1 && !hasError,
+        onClick: onAdvance,
+      }
+    : lessonStage.id === "see"
+      ? { label: text.nextSay, onClick: onAdvance }
+      : lessonStage.id === "say"
+        ? { label: text.nextRecall, disabled: !sayCompleted, onClick: onAdvance }
+        : lessonStage.id === "recall"
+          ? !recallAttempted
+            ? { label: text.recallAttempt, onClick: () => setRecallAttempted(true) }
+            : !showAnswer
+              ? { label: text.showAnswer, onClick: revealAnswer }
+              : { label: text.nextUse, onClick: onAdvance }
+          : reviewScheduled
+            ? nextPhraseIndex >= 0
+              ? { label: text.nextPhrase(lesson.phrases[nextPhraseIndex].hanji), disabled: !hasUseResponse, onClick: onPhraseAdvance }
+              : undefined
+            : { label: text.addReview, disabled: !hasUseResponse, onClick: () => onReviewAdded(phrase.id) };
 
   return (
     <div className="stage-panel" aria-live="polite">
@@ -111,17 +141,11 @@ export default function LessonStagePanel({
             <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance} disabled={audioPlays < 1 && !hasError}>
               {hasError ? text.continueWithoutAudio : text.nextSee}<span>→</span>
             </button>
-            {hasError && !completed && (
-              <button type="button" className="action-button primary-action mobile-stage-complete" onClick={onUnlock}>
-                {text.continueWithoutAudio}<span>✓</span>
-              </button>
-            )}
           </>
         )}
         {lessonStage.id === "see" && (
           <>
             <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance}>{text.nextSay}<span>→</span></button>
-            {!completed && <button type="button" className="action-button primary-action mobile-stage-complete" onClick={onUnlock}>{text.completeSee}<span>✓</span></button>}
           </>
         )}
         {lessonStage.id === "say" && (
@@ -131,8 +155,8 @@ export default function LessonStagePanel({
             <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance} disabled={!sayCompleted}>{text.nextRecall}<span>→</span></button>
           </>
         )}
-        {lessonStage.id === "recall" && !showAnswer && !recallAttempted && <button type="button" className="action-button primary-action" onClick={() => setRecallAttempted(true)}>{text.recallAttempt}<span>✓</span></button>}
-        {lessonStage.id === "recall" && !showAnswer && recallAttempted && <button type="button" className="action-button primary-action" onClick={revealAnswer}>{text.showAnswer}<span>↓</span></button>}
+        {lessonStage.id === "recall" && !showAnswer && !recallAttempted && <button type="button" className="action-button primary-action desktop-stage-action" onClick={() => setRecallAttempted(true)}>{text.recallAttempt}<span>✓</span></button>}
+        {lessonStage.id === "recall" && !showAnswer && recallAttempted && <button type="button" className="action-button primary-action desktop-stage-action" onClick={revealAnswer}>{text.showAnswer}<span>↓</span></button>}
         {lessonStage.id === "recall" && showAnswer && <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance}>{text.nextUse}<span>→</span></button>}
         {lessonStage.id === "use" && (
           <>
@@ -149,18 +173,27 @@ export default function LessonStagePanel({
             {!hasUseResponse && <p className="stage-gate-hint" role="status">{text.useCompletionRequired}</p>}
             {reviewScheduled ? (
               nextPhraseIndex >= 0 ? (
-                <button type="button" className="action-button primary-action" onClick={onPhraseAdvance} disabled={!hasUseResponse}>
+                <button type="button" className="action-button primary-action desktop-stage-action" onClick={onPhraseAdvance} disabled={!hasUseResponse}>
                   {text.nextPhrase(lesson.phrases[nextPhraseIndex].hanji)}<span>→</span>
                 </button>
               ) : lessonComplete && hasUseResponse && <p ref={completionRef} tabIndex={-1} className="lesson-complete" role="status">✓ {text.lessonComplete}</p>
             ) : (
-              <button type="button" className="action-button primary-action" onClick={() => onReviewAdded(phrase.id)} disabled={!hasUseResponse}>
+              <button type="button" className="action-button primary-action desktop-stage-action" onClick={() => onReviewAdded(phrase.id)} disabled={!hasUseResponse}>
                 {text.addReview}<span>+</span>
               </button>
             )}
           </>
         )}
       </div>
+      <MobileStageNavigation
+        text={text}
+        stages={lesson.stages}
+        unlockedStage={unlockedStage}
+        viewedStage={viewedStage}
+        onPrevious={onPrevious}
+        onNext={onNext}
+        currentAction={mobileAction}
+      />
     </div>
   );
 }

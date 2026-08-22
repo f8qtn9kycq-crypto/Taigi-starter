@@ -39,6 +39,7 @@ export type LessonCopy = {
   useCombination: string;
   useCombinationMeaning: string;
   verifySource: string;
+  contextNote: string;
   lessonTargets: string;
   phraseSelectorLabel: (current: number, total: number) => string;
   phraseSelectorOption: (phrase: string, meaning: string, current: number, total: number) => string;
@@ -179,6 +180,7 @@ export const copy: Record<Locale, LessonCopy> = {
     useCombination: "用：詞組組合",
     useCombinationMeaning: "這個組合的意思",
     verifySource: "查看教育部來源",
+    contextNote: "語境補充",
     lessonTargets: "本課目標詞",
     phraseSelectorLabel: (current, total) => `選擇要練習的詞語（${current}/${total}）`,
     phraseSelectorOption: (phrase, _meaning, current, total) => `${phrase}，第 ${current} 個，共 ${total} 個`,
@@ -335,6 +337,7 @@ export const copy: Record<Locale, LessonCopy> = {
     useCombination: "Use: build a phrase",
     useCombinationMeaning: "Meaning of this combination",
     verifySource: "Verify with the MOE source",
+    contextNote: "Context note",
     lessonTargets: "Target phrases",
     phraseSelectorLabel: (current, total) => `Choose a phrase to practise (${current}/${total})`,
     phraseSelectorOption: (phrase, meaning, current, total) => `${phrase}, ${meaning}, ${current} of ${total}`,

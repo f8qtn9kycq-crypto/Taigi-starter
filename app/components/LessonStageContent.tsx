@@ -91,10 +91,14 @@ export default function LessonStageContent({
           <a href={phrase.source.canonicalUrl} target="_blank" rel="noreferrer">{text.verifySource}</a>
         </div>
       )}
-      <div className="culture-note">
+      <div className="culture-note desktop-culture-note">
         <span aria-hidden="true">語</span>
         <p>{phrase.cultureNote[text.locale]}</p>
       </div>
+      <details className="mobile-culture-note">
+        <summary><span aria-hidden="true">語</span>{text.contextNote}</summary>
+        <p>{phrase.cultureNote[text.locale]}</p>
+      </details>
     </div>
   );
 }
