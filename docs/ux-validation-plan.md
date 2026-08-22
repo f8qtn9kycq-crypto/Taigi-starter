@@ -36,6 +36,11 @@ For each product change, record:
 Run this after the final code commit and restart it whenever the PR head changes.
 Use the Vercel Preview attached to that exact head SHA.
 
+For every learner-facing mobile PR, always run iPhone 13 portrait at `390×844`
+as the default reference viewport. This is the mandatory baseline, not a claim
+that browser automation is a physical iPhone. Record the actual browser and
+evidence level separately.
+
 1. Confirm the page loads and the course path becomes interactive after saved
    progress hydrates.
 2. At 390×844, select a three-phrase lesson. A fresh lesson must show `0/15`;
@@ -52,9 +57,10 @@ Use the Vercel Preview attached to that exact head SHA.
 8. Record viewport, URL, head SHA, journey, result, and any console or visual
    issue. Do not claim a viewport or browser that was not exercised.
 
-Run 320×700 and 412×915 when layout, navigation, copy length, or touch geometry
-changes. Run a real iPhone/Safari check when audio, recording, sticky controls,
-or touch behavior changes.
+In addition to the mandatory iPhone 13 `390×844` baseline, run 320×700 and
+412×915 when layout, navigation, copy length, touch geometry, sticky controls,
+or viewport behavior changes. Run a real iPhone/Safari check when audio,
+recording, sticky controls, or touch behavior changes.
 
 ## PR review gate
 

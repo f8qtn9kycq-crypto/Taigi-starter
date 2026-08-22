@@ -6,6 +6,7 @@ import test from "node:test";
 const templateUrl = new URL("../.github/pull_request_template.md", import.meta.url);
 const agentsUrl = new URL("../AGENTS.md", import.meta.url);
 const releaseEvidenceUrl = new URL("../docs/release-evidence.md", import.meta.url);
+const uxValidationPlanUrl = new URL("../docs/ux-validation-plan.md", import.meta.url);
 const buildWorkflowUrl = new URL("../.github/workflows/build.yml", import.meta.url);
 
 const persistentAuthorizationRule = [
@@ -104,6 +105,16 @@ test("release evidence keeps deployment records as immutable snapshots", async (
   assert.match(evidence, /Current live source and deployment state must be queried/);
   assert.doesNotMatch(evidence, /^## Current Vercel runtime baseline$/m);
   assert.doesNotMatch(evidence, /Current production source commit:/);
+});
+
+test("learner-facing mobile PRs always use the iPhone 13 reference viewport", async () => {
+  const plan = await readFile(uxValidationPlanUrl, "utf8");
+
+  assert.match(plan, /every learner-facing mobile PR/);
+  assert.match(plan, /always run iPhone 13 portrait at `390×844`/);
+  assert.match(plan, /mandatory baseline/);
+  assert.match(plan, /browser automation is a physical iPhone/);
+  assert.match(plan, /run 320×700 and\s+412×915 when layout/);
 });
 
 test("build workflow uses Node 24-backed GitHub actions", async () => {

@@ -58,8 +58,8 @@ export type LessonCopy = {
   previousStageTo: (stage: string) => string;
   nextStageTo: (stage: string) => string;
   unlockedStageHint: (current: string, next: string) => string;
-  swipeLeftPrevious: string;
-  swipeRightNext: string;
+  swipeRightPrevious: string;
+  swipeLeftNext: string;
   stageCount: (stage: number, total: number) => string;
   stageProgress: (stage: number, total: number, label: string) => string;
   hearCompletionHint: string;
@@ -203,9 +203,9 @@ export const copy: Record<Locale, LessonCopy> = {
     nextUnlockedStage: "下一步",
     previousStageTo: (stage) => `上一步：${stage}`,
     nextStageTo: (stage) => `下一步：${stage}`,
-    unlockedStageHint: (current, next) => `「${current}」完成。按右方「下一步：${next}」或向右滑，進入「${next}」。`,
-    swipeLeftPrevious: "向左滑回上一步",
-    swipeRightNext: "向右滑到下一步",
+    unlockedStageHint: (current, next) => `「${current}」完成。按右方「下一步：${next}」或向左滑，進入「${next}」。`,
+    swipeRightPrevious: "向右滑回上一步",
+    swipeLeftNext: "向左滑到下一步",
     stageCount: (stage, total) => `步驟 ${stage + 1} / ${total}`,
     stageProgress: (stage, total, label) => `${stage + 1} / ${total} · ${label}`,
     hearCompletionHint: "請先播放一次示範音檔，才可以進入看文字。",
@@ -359,9 +359,9 @@ export const copy: Record<Locale, LessonCopy> = {
     nextUnlockedStage: "Next",
     previousStageTo: (stage) => `Previous: ${stage}`,
     nextStageTo: (stage) => `Next: ${stage}`,
-    unlockedStageHint: (current, next) => `${current} complete. Use “Next: ${next}” on the right or swipe right to open ${next}.`,
-    swipeLeftPrevious: "Swipe left for the previous step",
-    swipeRightNext: "Swipe right for the next step",
+    unlockedStageHint: (current, next) => `${current} complete. Use “Next: ${next}” on the right or swipe left to open ${next}.`,
+    swipeRightPrevious: "Swipe right for the previous step",
+    swipeLeftNext: "Swipe left for the next step",
     stageCount: (stage, total) => `Step ${stage + 1} of ${total}`,
     stageProgress: (stage, total, label) => `${stage + 1} / ${total} · ${label}`,
     hearCompletionHint: "Play the example once before moving on to see the script.",
