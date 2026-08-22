@@ -37,8 +37,8 @@ export default function MobileStageNavigation({
         </p>
       ) : (viewedStage > 0 || nextStageLabel) ? (
         <p>
-          {viewedStage > 0 && <span><i aria-hidden="true">←</i>{text.swipeLeftPrevious}</span>}
-          {nextStageLabel && <span>{text.swipeRightNext}<i aria-hidden="true">→</i></span>}
+          {viewedStage > 0 && <span><i aria-hidden="true">←</i>{text.swipeRightPrevious}</span>}
+          {nextStageLabel && <span>{text.swipeLeftNext}<i aria-hidden="true">→</i></span>}
         </p>
       ) : null}
     </nav>

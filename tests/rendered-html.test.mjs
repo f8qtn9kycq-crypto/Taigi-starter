@@ -63,8 +63,8 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(copy, /lessonLocked: "尚未開放"/);
   assert.match(copy, /lessonLocked: "Locked"/);
   assert.match(copy, /複習會在適合的時間重新出題/);
-  assert.match(copy, /按右方「下一步：\$\{next\}」或向右滑/);
-  assert.match(copy, /Use “Next: \$\{next\}” on the right or swipe right/);
+  assert.match(copy, /按右方「下一步：\$\{next\}」或向左滑/);
+  assert.match(copy, /Use “Next: \$\{next\}” on the right or swipe left/);
   assert.match(lesson, /<MobileStageNavigation/);
   assert.match(mobileStageNavigation, /text\.nextStageTo\(nextStageLabel\)/);
   assert.match(mobileStageNavigation, /className="stage-unlocked-hint" role="status"/);

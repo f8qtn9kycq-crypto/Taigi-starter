@@ -19,7 +19,7 @@ export function resolveStageSwipe(
     return null;
   }
 
-  if (deltaX > 0) {
+  if (deltaX < 0) {
     return viewedStage < furthestUnlockedStage ? viewedStage + 1 : null;
   }
 
