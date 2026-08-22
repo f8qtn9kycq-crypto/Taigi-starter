@@ -46,12 +46,12 @@ export default function ReviewModal({
       <section ref={dialogRef} className="review-modal" role="dialog" aria-modal="true" aria-label={text.navReview} aria-describedby="review-explanation">
         <div className="modal-handle" aria-hidden="true" />
         <button ref={closeRef} autoFocus type="button" className="modal-close" onClick={onClose} aria-label={text.close}>×</button>
-        <span className="section-label">SRS · {text.navReview}</span>
-        <p id="review-explanation" className="review-explanation">{text.reviewExplanation}</p>
+        <span className="section-label">{text.navReview}</span>
 
         {card && isDue ? (
           <>
-            <div className="review-count"><b>{dueCount}</b><span>{text.cardsLeft}</span></div>
+            <h2 className="review-heading">{text.reviewDueTitle(dueCount)}</h2>
+            <p id="review-explanation" className="review-explanation">{text.reviewExplanation}</p>
             <p>{text.reviewPrompt}</p>
             <h2>{phrase.meaning[locale]}</h2>
             {showAnswer ? (
@@ -73,7 +73,9 @@ export default function ReviewModal({
           </>
         ) : (
           <div className="done-state">
-            <span>✓</span><h2>{text.allDone}</h2>
+            <span>✓</span>
+            <h2>{text.reviewEmptyTitle}</h2>
+            <p id="review-explanation">{text.reviewEmptyExplanation}</p>
             {nextReview && <p>{text.nextReview(nextReview)}</p>}
           </div>
         )}
