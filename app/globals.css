@@ -829,18 +829,18 @@ a:focus-visible {
   text-align: center;
 }
 
-.stage-accordion .current .stage-trigger {
+.stage-accordion .displayed .stage-trigger {
   background: #f2f8f5;
 }
 
-.stage-accordion .current .stage-number {
+.stage-accordion .displayed .stage-number {
   border-color: var(--orange);
   background: var(--orange);
   box-shadow: 0 0 0 5px rgb(217 85 50 / 0.1);
   color: white;
 }
 
-.stage-accordion .current .stage-name small {
+.stage-accordion .displayed .stage-name small {
   color: var(--jade);
   font-weight: 750;
 }
@@ -857,6 +857,10 @@ a:focus-visible {
 
 .stage-accordion .locked .stage-trigger {
   color: #747d79;
+}
+
+.mobile-stage-navigation {
+  display: none;
 }
 
 .stage-panel {
@@ -1877,6 +1881,82 @@ footer a:hover {
 
   .stage-panel {
     padding-inline: 15px;
+  }
+}
+
+@media (max-width: 639px) {
+  .stage-accordion > li:not(.displayed) {
+    display: none;
+  }
+
+  .mobile-stage-navigation {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    padding: 12px 15px calc(18px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+  }
+
+  .mobile-stage-navigation button {
+    min-height: 44px;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: white;
+    color: var(--ink);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .mobile-stage-navigation button:first-child {
+    justify-self: stretch;
+    text-align: left;
+  }
+
+  .mobile-stage-navigation button:last-of-type {
+    justify-self: stretch;
+    text-align: right;
+  }
+
+  .mobile-stage-navigation button:disabled {
+    opacity: 0.38;
+  }
+
+  .mobile-stage-navigation > span {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .mobile-stage-navigation p {
+    display: flex;
+    grid-column: 1 / -1;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 9px;
+  }
+
+  .mobile-stage-navigation p span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .mobile-stage-navigation p span:last-child {
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .mobile-stage-navigation i {
+    color: var(--jade);
+    font-size: 14px;
+    font-style: normal;
   }
 }
 

@@ -15,6 +15,7 @@ type LessonStagePanelProps = {
   nextPhraseIndex: number;
   lessonComplete: boolean;
   reviewScheduled: boolean;
+  completed?: boolean;
   onAdvance: () => void;
   onReviewAdded: (phraseId: string) => void;
   onPhraseAdvance: () => void;
@@ -28,14 +29,15 @@ export default function LessonStagePanel({
   nextPhraseIndex,
   lessonComplete,
   reviewScheduled,
+  completed = false,
   onAdvance,
   onReviewAdded,
   onPhraseAdvance,
 }: LessonStagePanelProps) {
-  const [audioPlays, setAudioPlays] = useState(0);
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [recallAttempted, setRecallAttempted] = useState(false);
-  const [sayCompleted, setSayCompleted] = useState(false);
+  const [audioPlays, setAudioPlays] = useState(completed ? 1 : 0);
+  const [showAnswer, setShowAnswer] = useState(completed);
+  const [recallAttempted, setRecallAttempted] = useState(completed);
+  const [sayCompleted, setSayCompleted] = useState(completed);
   const [useResponse, setUseResponse] = useState("");
   const completionRef = useRef<HTMLParagraphElement | null>(null);
   const previousReviewScheduledRef = useRef(reviewScheduled);

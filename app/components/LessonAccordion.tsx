@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef, useEffect, useRef } from "react";
+import { useMobileStagePager } from "../hooks/useMobileStagePager";
 import type { LessonCopy } from "../taigi-content";
 import type { PlayableLesson } from "../types/lesson";
 import LessonStagePanel from "./LessonStagePanel";
@@ -41,11 +42,21 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
       : lesson.phrases.findIndex((phrase) => !completedPhraseIds.has(phrase.id));
     const stageTriggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
     const pendingFocusStageRef = useRef<number | null>(null);
-    const changeStage = (nextStage: number) => {
-      pendingFocusStageRef.current = nextStage;
-      onStageChange(nextStage);
-    };
-    const advance = () => changeStage(Math.min(stage + 1, lastStage));
+    const {
+      viewedStage,
+      showStage,
+      advance,
+      navigatePrevious,
+      navigateNext,
+      handleTouchStart,
+      handleTouchEnd,
+    } = useMobileStagePager({
+      stage,
+      phraseIndex,
+      lastStage,
+      onStageChange,
+      onViewChange: (nextStage) => { pendingFocusStageRef.current = nextStage; },
+    });
     const advancePhrase = () => {
       if (nextIncompletePhraseIndex < 0) return;
       pendingFocusStageRef.current = 0;
@@ -53,10 +64,10 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
     };
 
     useEffect(() => {
-      if (pendingFocusStageRef.current !== stage) return;
-      stageTriggerRefs.current[stage]?.focus();
+      if (pendingFocusStageRef.current !== viewedStage) return;
+      stageTriggerRefs.current[viewedStage]?.focus();
       pendingFocusStageRef.current = null;
-    }, [stage]);
+    }, [viewedStage]);
 
     return (
       <section className="lesson-card" aria-labelledby="lesson-title" ref={ref} tabIndex={-1}>
@@ -99,41 +110,48 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
           </div>
         </div>
 
-        <ol className="stage-accordion" aria-label={text.learningStages}>
+        <ol
+          className="stage-accordion"
+          aria-label={text.learningStages}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           {lesson.stages.map((lessonStage, index) => {
             const label = text.stageLabels[lessonStage.id];
+            const isDisplayed = index === viewedStage;
             const isCurrent = index === stage;
             const isComplete = index < stage;
 
             return (
-              <li key={lessonStage.id} className={isCurrent ? "current" : isComplete ? "complete" : "locked"}>
+              <li key={lessonStage.id} className={`${isCurrent ? "current" : isComplete ? "complete" : "locked"}${isDisplayed ? " displayed" : ""}`}>
                 <button
                   ref={(node) => { stageTriggerRefs.current[index] = node; }}
                   type="button"
                   className="stage-trigger"
-                  onClick={() => isComplete && changeStage(index)}
-                  disabled={!isCurrent && !isComplete}
-                  aria-expanded={isCurrent}
-                  aria-current={isCurrent ? "step" : undefined}
+                  onClick={() => index <= stage && showStage(index)}
+                  disabled={index > stage}
+                  aria-expanded={isDisplayed}
+                  aria-current={isDisplayed ? "step" : undefined}
                 >
                   <span className="stage-number">{isComplete ? "✓" : index + 1}</span>
                   <span className="stage-name">
                     <b>{label}</b>
-                    <small>{isCurrent ? text.currentStep : isComplete ? text.completedStep : text.lockedStep}</small>
+                    <small>{isDisplayed ? text.currentStep : isComplete ? text.completedStep : text.lockedStep}</small>
                   </span>
-                  <span className="stage-chevron" aria-hidden="true">{isCurrent ? "−" : "+"}</span>
+                  <span className="stage-chevron" aria-hidden="true">{isDisplayed ? "−" : "+"}</span>
                 </button>
 
-                {isCurrent && (
+                {isDisplayed && (
                   <LessonStagePanel
                     key={`${lesson.id}-${phraseIndex}-${lessonStage.id}`}
-                    stage={stage}
+                    stage={viewedStage}
                     text={text}
                     lesson={lesson}
                     phraseIndex={phraseIndex}
                     nextPhraseIndex={nextIncompletePhraseIndex}
                     lessonComplete={lessonComplete}
                     reviewScheduled={reviewScheduled}
+                    completed={isComplete}
                     onAdvance={advance}
                     onReviewAdded={onReviewAdded}
                     onPhraseAdvance={advancePhrase}
@@ -143,6 +161,19 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
             );
           })}
         </ol>
+        <nav className="mobile-stage-navigation" aria-label={text.learningStages}>
+          <button type="button" onClick={navigatePrevious} disabled={viewedStage === 0}>
+            <span aria-hidden="true">←</span>{text.previousStage}
+          </button>
+          <span aria-live="polite">{text.stageCount(viewedStage, lesson.stages.length)}</span>
+          <button type="button" onClick={navigateNext} disabled={viewedStage >= stage}>
+            {text.nextUnlockedStage}<span aria-hidden="true">→</span>
+          </button>
+          <p>
+            {viewedStage > 0 && <span><i aria-hidden="true">←</i>{text.swipeLeftPrevious}</span>}
+            {viewedStage < stage && <span>{text.swipeRightNext}<i aria-hidden="true">→</i></span>}
+          </p>
+        </nav>
       </section>
     );
   },

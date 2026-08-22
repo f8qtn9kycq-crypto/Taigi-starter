@@ -53,6 +53,10 @@ export type LessonCopy = {
   currentStep: string;
   completedStep: string;
   lockedStep: string;
+  previousStage: string;
+  nextUnlockedStage: string;
+  swipeLeftPrevious: string;
+  swipeRightNext: string;
   stageCount: (stage: number, total: number) => string;
   stageProgress: (stage: number, total: number, label: string) => string;
   hearCompletionHint: string;
@@ -183,6 +187,10 @@ export const copy: Record<Locale, LessonCopy> = {
     currentStep: "目前步驟",
     completedStep: "已完成",
     lockedStep: "稍後開放",
+    previousStage: "上一步",
+    nextUnlockedStage: "下一步",
+    swipeLeftPrevious: "向左滑回上一步",
+    swipeRightNext: "向右滑到下一步",
     stageCount: (stage, total) => `步驟 ${stage + 1} / ${total}`,
     stageProgress: (stage, total, label) => `${stage + 1} / ${total} · ${label}`,
     hearCompletionHint: "請先播放一次示範音檔，才可以進入看文字。",
@@ -323,6 +331,10 @@ export const copy: Record<Locale, LessonCopy> = {
     currentStep: "Current step",
     completedStep: "Completed",
     lockedStep: "Up next",
+    previousStage: "Previous",
+    nextUnlockedStage: "Next",
+    swipeLeftPrevious: "Swipe left for the previous step",
+    swipeRightNext: "Swipe right for the next step",
     stageCount: (stage, total) => `Step ${stage + 1} of ${total}`,
     stageProgress: (stage, total, label) => `${stage + 1} / ${total} · ${label}`,
     hearCompletionHint: "Play the example once before moving on to see the script.",
