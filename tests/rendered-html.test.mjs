@@ -53,7 +53,7 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(coursePath, /text\.lessonDuration\(lesson\.durationMinutes\)/);
   assert.match(coursePath, /lesson\.status === "planned"[\s\S]*\? "locked"/);
   assert.match(coursePath, /: "available"/);
-  assert.match(coursePath, /<CurriculumCoverage text=\{text\} locale=\{locale\} \/>/);
+  assert.doesNotMatch(coursePath, /CurriculumCoverage/);
   assert.match(curriculumCoverage, /<details key=\{group\.id\}>/);
   assert.match(curriculumCoverage, /elementaryTaiwaneseCurriculumUrl/);
   assert.match(curriculumCoverage, /text\.curriculumDisclaimer/);
