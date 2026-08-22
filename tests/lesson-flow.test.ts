@@ -53,3 +53,14 @@ test("every package lesson is playable only through a complete source-backed han
   }
 
 });
+
+test("every playable phrase has an English meaning for the English phrase picker", () => {
+  const playableLessons = lessonCatalog.filter((lesson) => lesson.status === "prototype");
+  const phrases = playableLessons.flatMap((lesson) => lesson.phrases);
+
+  assert.equal(playableLessons.length, 20);
+  assert.equal(phrases.length, 59);
+  for (const phrase of phrases) {
+    assert.ok(phrase.meaning.en.trim(), `missing English meaning: ${phrase.id}`);
+  }
+});
