@@ -12,6 +12,7 @@ type LearningWorkspaceProps = {
   text: LessonCopy;
   locale: Locale;
   lesson: PlayableLesson;
+  nextLesson: PlayableLesson | null;
   stage: number;
   phraseIndex: number;
   dueCount: number;
@@ -28,6 +29,7 @@ type LearningWorkspaceProps = {
   onReviewAdded: (phraseId: string) => void;
   onPhraseChange: (phraseIndex: number) => void;
   onLessonSelect: (lessonNumber: number) => void;
+  onLessonComplete: () => void;
 };
 
 export default function LearningWorkspace({
@@ -35,6 +37,7 @@ export default function LearningWorkspace({
   text,
   locale,
   lesson,
+  nextLesson,
   stage,
   phraseIndex,
   dueCount,
@@ -51,6 +54,7 @@ export default function LearningWorkspace({
   onReviewAdded,
   onPhraseChange,
   onLessonSelect,
+  onLessonComplete,
 }: LearningWorkspaceProps) {
   return (
     <>
@@ -70,6 +74,7 @@ export default function LearningWorkspace({
             <LessonAccordion
               ref={lessonRef}
               lesson={lesson}
+              nextLesson={nextLesson}
               text={text}
               stage={stage}
               phraseIndex={phraseIndex}
@@ -79,6 +84,7 @@ export default function LearningWorkspace({
               onReviewAdded={onReviewAdded}
               onPhraseChange={onPhraseChange}
               onPhraseAdvance={onPhraseChange}
+              onLessonComplete={onLessonComplete}
             />
           )}
           {activeTab === "progress" && (
