@@ -49,6 +49,45 @@ export const lessonPackages19To20: readonly RawLessonPackage[] = [
           zh: "教育部例句直接用「多謝你！」；完成任務時要把它放在對方幫忙之後，而不是只背意思。",
           en: "The MOE gives To-siā--lí as a direct example; place it after someone helps you rather than memorizing it in isolation.",
         },
+        useScenario: {
+          prompt: {
+            zh: "陌生人剛幫你指出正確的路。你現在最適合說哪一句？",
+            en: "A stranger has just shown you the right way. What is the best thing to say now?",
+          },
+          explanation: {
+            zh: "「多謝」用來表達感謝，最符合別人剛幫忙之後的回應。",
+            en: "“To-siā” expresses thanks, so it is the best response after someone has helped you.",
+          },
+          choices: [
+            {
+              id: "thanks",
+              hanji: "多謝",
+              tailo: "To-siā",
+              meaning: { zh: "謝謝、感謝", en: "thank you; express thanks" },
+              feedback: { zh: "這句直接感謝對方剛才的幫忙。", en: "This directly thanks the person for their help." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/2415/",
+              isCorrect: true,
+            },
+            {
+              id: "ask-politely",
+              hanji: "請問",
+              tailo: "Tshiánn-mn̄g",
+              meaning: { zh: "請問；客氣地向人詢問", en: "excuse me; a polite way to ask" },
+              feedback: { zh: "「請問」適合在詢問之前使用；現在對方已經幫完忙。", en: "“Tshiánn-mn̄g” belongs before asking; the person has already helped." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/11443/",
+              isCorrect: false,
+            },
+            {
+              id: "apologize",
+              hanji: "失禮",
+              tailo: "Sit-lé",
+              meaning: { zh: "對不起；向人賠罪", en: "sorry; apologize to someone" },
+              feedback: { zh: "「失禮」用來道歉；這個情境需要的是感謝。", en: "“Sit-lé” is for apologizing; this situation calls for thanks." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/1826/",
+              isCorrect: false,
+            },
+          ],
+        },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/2415/"),
       }),
       makePhrase({
@@ -119,6 +158,45 @@ export const lessonPackages19To20: readonly RawLessonPackage[] = [
         cultureNote: {
           zh: "教育部例句「有話慢慢仔講」直接對應溝通修復；本課讓學習者在聽無時請對方慢慢仔講。",
           en: "The MOE example Ū uē bān-bān-á kóng directly fits communication repair; use it to ask someone to speak slowly.",
+        },
+        useScenario: {
+          prompt: {
+            zh: "對方說得太快，你聽不懂。哪一句最能請對方放慢速度？",
+            en: "The other person is speaking too quickly and you cannot follow. Which phrase best asks them to slow down?",
+          },
+          explanation: {
+            zh: "「慢慢仔講」直接請對方慢慢說，是聽不懂時的溝通修復。",
+            en: "“Bān-bān-á kóng” directly asks the person to speak slowly, repairing the conversation when you cannot follow.",
+          },
+          choices: [
+            {
+              id: "speak-slowly",
+              hanji: "慢慢仔講",
+              tailo: "Bān-bān-á kóng",
+              meaning: { zh: "慢慢說、說慢一點", en: "speak slowly; slow down when speaking" },
+              feedback: { zh: "這句直接請對方放慢說話速度。", en: "This directly asks the person to slow their speech." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/10519/",
+              isCorrect: true,
+            },
+            {
+              id: "help",
+              hanji: "幫助",
+              tailo: "Pang-tsōo",
+              meaning: { zh: "幫忙；給予支援", en: "help; give support" },
+              feedback: { zh: "「幫助」只表示求助，沒有說明要把話說慢一點。", en: "“Pang-tsōo” asks for help generally but does not specify slower speech." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/12157/",
+              isCorrect: false,
+            },
+            {
+              id: "slow",
+              hanji: "慢",
+              tailo: "Bān",
+              meaning: { zh: "慢；速度較緩", en: "slow; at a slower speed" },
+              feedback: { zh: "「慢」只描述速度；「慢慢仔講」才是完整、清楚的請求。", en: "“Bān” only describes speed; “Bān-bān-á kóng” makes the complete, clear request." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/10498/",
+              isCorrect: false,
+            },
+          ],
         },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/10519/"),
       }),

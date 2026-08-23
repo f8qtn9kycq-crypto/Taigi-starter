@@ -443,6 +443,45 @@ export const lessonPackages13To18: readonly RawLessonPackage[] = [
           zh: "教育部列 beh 為主音讀，另記 bueh；本課先以 beh 示範，將 bueh 留作教師審核的可接受讀音變體。",
           en: "The MOE lists beh as the main reading and bueh as another reading; use beh as the first model and keep bueh as a teacher-reviewed variant.",
         },
+        useScenario: {
+          prompt: {
+            zh: "服務生等你點餐。你要開始說「我＿＿這道菜」，空格應該放哪一個詞？",
+            en: "The server is waiting for your order. To begin ‘I＿＿this dish,’ which word belongs in the blank?",
+          },
+          explanation: {
+            zh: "「欲」表示要、想，能表達你想點這道菜的意願。",
+            en: "“Beh / bueh” means want, so it expresses your intention to order the dish.",
+          },
+          choices: [
+            {
+              id: "want",
+              hanji: "欲",
+              tailo: "Beh / bueh",
+              meaning: { zh: "要、想，表示意願", en: "want; express an intention" },
+              feedback: { zh: "這個詞能開始表達你想要的餐點。", en: "This word begins expressing which food you want." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/7469/",
+              isCorrect: true,
+            },
+            {
+              id: "dish",
+              hanji: "菜",
+              tailo: "Tshài",
+              meaning: { zh: "一道道的料理；也可指青菜或素食", en: "a dish; also vegetables or vegetarian food depending on context" },
+              feedback: { zh: "「菜」是餐點本身，不能放在空格表達「想要」。", en: "“Tshài” names the dish; it does not express wanting it." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/8930/",
+              isCorrect: false,
+            },
+            {
+              id: "eat-out",
+              hanji: "食餐廳",
+              tailo: "Tsia̍h-tshan-thiann",
+              meaning: { zh: "去餐廳吃飯", en: "go to a restaurant to eat" },
+              feedback: { zh: "「食餐廳」表示去餐廳吃飯，沒有說出想點哪道菜。", en: "“Tsia̍h-tshan-thiann” means eating at a restaurant; it does not state which dish you want." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/14182/",
+              isCorrect: false,
+            },
+          ],
+        },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/7469/"),
       }),
       makePhrase({
@@ -513,6 +552,45 @@ export const lessonPackages13To18: readonly RawLessonPackage[] = [
         cultureNote: {
           zh: "教育部例句以「一斤偌濟錢」詢問價格，也記錄 guā-tsuē 及 juā、luā 等讀音差異；正式示範音留待教師決定。",
           en: "The MOE uses guā-tsē in a price question and records guā-tsuē plus juā and luā variants; the teacher should set the final model order.",
+        },
+        useScenario: {
+          prompt: {
+            zh: "你在店裡想問這個物件多少錢。哪一個詞用來問「多少」？",
+            en: "In a shop, you want to ask how much an item costs. Which word asks ‘how much’?",
+          },
+          explanation: {
+            zh: "「偌濟」表示多少，能放進詢問價格的問題。",
+            en: "“Guā-tsē / guā-tsuē” means how much or how many, so it fits a price question.",
+          },
+          choices: [
+            {
+              id: "how-much",
+              hanji: "偌濟",
+              tailo: "Guā-tsē / guā-tsuē",
+              meaning: { zh: "多少", en: "how much; how many" },
+              feedback: { zh: "這個詞直接詢問數量或價格是多少。", en: "This word directly asks what the amount or price is." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/6998/",
+              isCorrect: true,
+            },
+            {
+              id: "price",
+              hanji: "價錢",
+              tailo: "Kè-tsînn",
+              meaning: { zh: "價格、價碼", en: "price" },
+              feedback: { zh: "「價錢」是價格這個名詞，本身沒有問多少。", en: "“Kè-tsînn” names the price but does not itself ask how much." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/10971/",
+              isCorrect: false,
+            },
+            {
+              id: "buy",
+              hanji: "買",
+              tailo: "Bé / bué",
+              meaning: { zh: "使用金錢購物", en: "buy; use money to shop" },
+              feedback: { zh: "「買」是購買的動作，不是詢問價格的疑問詞。", en: "“Bé / bué” is the action of buying, not a question word for price." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/9037/",
+              isCorrect: false,
+            },
+          ],
         },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/6998/"),
       }),
