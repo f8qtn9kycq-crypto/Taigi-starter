@@ -118,35 +118,36 @@ export default function LessonStagePanel({
 
   return (
     <div className="stage-panel" aria-live="polite">
-      <div className="stage-copy">
-        <span>{text.stageProgress(stage, lesson.stages.length, text.stageLabels[lessonStage.id])} · {text.stageTime(lessonStage.estimatedMinutes)}</span>
-        <h3>{text.stageHeadings[lessonStage.id]}</h3>
-        <p>{text.stageBodies[lessonStage.id]}</p>
-      </div>
+      <div className="stage-panel-scroll">
+        <div className="stage-copy">
+          <span>{text.stageProgress(stage, lesson.stages.length, text.stageLabels[lessonStage.id])} · {text.stageTime(lessonStage.estimatedMinutes)}</span>
+          <h3>{text.stageHeadings[lessonStage.id]}</h3>
+          <p>{text.stageBodies[lessonStage.id]}</p>
+        </div>
 
-      <LessonStageContent
-        stage={lessonStage.id}
-        text={text}
-        phrase={phrase}
-        mission={lesson.mission}
-        showAnswer={showAnswer}
-        onPlay={() => void playAudio()}
-      />
+        <LessonStageContent
+          stage={lessonStage.id}
+          text={text}
+          phrase={phrase}
+          mission={lesson.mission}
+          showAnswer={showAnswer}
+          onPlay={() => void playAudio()}
+        />
 
-      {lessonStage.id === "hear" && (
-        <p className="media-attribution">
-          {text.audioSourcePrefix}{" "}
-          <a href={phrase.audioAttribution.sourceUrl} target="_blank" rel="noreferrer">
-            {phrase.source.title[text.locale]}
-          </a>{" · "}
-          <a href={phrase.audioAttribution.licenseUrl} target="_blank" rel="noreferrer">
-            {phrase.audioAttribution.license}
-          </a>
-        </p>
-      )}
-
-      <div className="lesson-action-zone">
         {lessonStage.id === "hear" && (
+          <p className="media-attribution">
+            {text.audioSourcePrefix}{" "}
+            <a href={phrase.audioAttribution.sourceUrl} target="_blank" rel="noreferrer">
+              {phrase.source.title[text.locale]}
+            </a>{" · "}
+            <a href={phrase.audioAttribution.licenseUrl} target="_blank" rel="noreferrer">
+              {phrase.audioAttribution.license}
+            </a>
+          </p>
+        )}
+
+        <div className="lesson-action-zone">
+          {lessonStage.id === "hear" && (
           <>
             <button type="button" className="action-button listen-button" onClick={() => void playAudio()}>
               <span className={isPlaying ? "sound-mark playing" : "sound-mark"}>{isPlaying ? "Ⅱ" : "▶"}</span>
@@ -158,30 +159,31 @@ export default function LessonStagePanel({
               {hasError ? text.continueWithoutAudio : text.nextSee}<span>→</span>
             </button>
           </>
-        )}
-        {lessonStage.id === "see" && (
+          )}
+          {lessonStage.id === "see" && (
           <>
             <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance}>{text.nextSay}<span>→</span></button>
           </>
-        )}
-        {lessonStage.id === "say" && (
+          )}
+          {lessonStage.id === "say" && (
           <>
             <RecordingPractice text={text} onCompletionChange={completeSay} />
             {!sayCompleted && <p className="stage-gate-hint" role="status">{text.sayCompletionRequired}</p>}
             <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance} disabled={!sayCompleted}>{text.nextRecall}<span>→</span></button>
           </>
-        )}
-        {lessonStage.id === "recall" && !showAnswer && !recallAttempted && <button type="button" className="action-button primary-action desktop-stage-action" onClick={() => setRecallAttempted(true)}>{text.recallAttempt}<span>✓</span></button>}
-        {lessonStage.id === "recall" && !showAnswer && recallAttempted && <button type="button" className="action-button primary-action desktop-stage-action" onClick={revealAnswer}>{text.showAnswer}<span>↓</span></button>}
-        {lessonStage.id === "recall" && showAnswer && <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance}>{text.nextUse}<span>→</span></button>}
-        {lessonStage.id === "use" && (
-          <UseStageActions text={text} lesson={lesson} phrase={phrase} nextLesson={nextLesson}
-            nextPhraseIndex={nextPhraseIndex} lessonComplete={lessonComplete} reviewScheduled={reviewScheduled}
-            hasUseResponse={hasUseResponse} useResponse={useResponse} selectedChoiceId={selectedUseChoiceId}
-            completionRef={completionRef} onUseResponseChange={setUseResponse}
-            onChoiceSelect={setSelectedUseChoiceId} onPhraseAdvance={onPhraseAdvance}
-            onReviewAdded={onReviewAdded} onLessonComplete={onLessonComplete} />
-        )}
+          )}
+          {lessonStage.id === "recall" && !showAnswer && !recallAttempted && <button type="button" className="action-button primary-action desktop-stage-action" onClick={() => setRecallAttempted(true)}>{text.recallAttempt}<span>✓</span></button>}
+          {lessonStage.id === "recall" && !showAnswer && recallAttempted && <button type="button" className="action-button primary-action desktop-stage-action" onClick={revealAnswer}>{text.showAnswer}<span>↓</span></button>}
+          {lessonStage.id === "recall" && showAnswer && <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance}>{text.nextUse}<span>→</span></button>}
+          {lessonStage.id === "use" && (
+            <UseStageActions text={text} lesson={lesson} phrase={phrase} nextLesson={nextLesson}
+              nextPhraseIndex={nextPhraseIndex} lessonComplete={lessonComplete} reviewScheduled={reviewScheduled}
+              hasUseResponse={hasUseResponse} useResponse={useResponse} selectedChoiceId={selectedUseChoiceId}
+              completionRef={completionRef} onUseResponseChange={setUseResponse}
+              onChoiceSelect={setSelectedUseChoiceId} onPhraseAdvance={onPhraseAdvance}
+              onReviewAdded={onReviewAdded} onLessonComplete={onLessonComplete} />
+          )}
+        </div>
       </div>
       <MobileStageNavigation
         text={text}

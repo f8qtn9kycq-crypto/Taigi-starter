@@ -152,6 +152,7 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(page, /nextLesson \? selectLesson\(nextLesson\.number\) : showPath\(\)/);
   assert.match(stagePanel, /phrase\.useScenario[\s\S]*selectedUseChoice\?\.isCorrect === true/);
   assert.match(stagePanel, /<UseStageActions/);
+  assert.match(stagePanel, /className="stage-panel-scroll"/);
   assert.match(useStageActions, /<UseScenarioExercise/);
   assert.match(useStageActions, /!hasUseResponse && !lessonComplete && !phrase\.useScenario/);
   assert.match(useStageActions, /disabled=\{!hasUseResponse\}/);
@@ -280,12 +281,14 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(css, /\.stage-panel \{[\s\S]*background: var\(--surface-learning-canvas\)/);
   assert.doesNotMatch(css, /linear-gradient\(180deg, #fffdf7 0%, #fffdf7 78%/);
   assert.match(css, /\.bottom-nav \{[\s\S]*position: fixed/);
-  assert.match(css, /@media \(max-width: 639px\) \{[\s\S]*\.learning-column\.stage-page \{[\s\S]*height: calc\(100dvh - 64px - var\(--nav-height\)/);
+  assert.match(css, /@media \(max-width: 639px\) \{[\s\S]*\.site-header \{[\s\S]*min-height: 52px/);
+  assert.match(css, /@media \(max-width: 639px\) \{[\s\S]*\.learning-column\.stage-page \{[\s\S]*height: calc\(100dvh - 52px - var\(--nav-height\)/);
   assert.match(css, /@media \(max-width: 639px\) \{[\s\S]*\.lesson-heading \{[\s\S]*background: var\(--surface-lesson-frame\)/);
   assert.match(css, /@media \(max-width: 639px\) \{[\s\S]*\.mobile-stage-navigation \{[\s\S]*background: var\(--surface-lesson-frame\)/);
   assert.match(css, /@media \(max-width: 639px\) \{[\s\S]*\.stage-panel \{[\s\S]*overflow: hidden/);
+  assert.match(css, /@media \(max-width: 639px\) \{[\s\S]*\.stage-panel-scroll \{[\s\S]*overflow-y: auto/);
   assert.match(css, /@media \(max-width: 639px\) \{[\s\S]*\.lesson-action-zone \{[\s\S]*position: static[\s\S]*background: none/);
-  assert.match(css, /@media \(max-width: 639px\) and \(max-height: 760px\) \{[\s\S]*\.mobile-culture-note\[open\]/);
+  assert.doesNotMatch(css, /@media \(max-width: 639px\) and \(max-height: 760px\) \{[\s\S]*\.mobile-culture-note\[open\]/);
   assert.match(css, /\.desktop-stage-action \{[\s\S]*display: none/);
   assert.doesNotMatch(css, /\.mobile-stage-complete \{[\s\S]*display: flex/);
   assert.equal(audio.subarray(0, 3).toString(), "ID3");

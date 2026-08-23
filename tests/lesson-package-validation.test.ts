@@ -11,23 +11,32 @@ test("all current planned packages satisfy the Lesson Factory contract", () => {
   assert.deepEqual(validateLessonPackages(lessonPackages), []);
 });
 
-test("Lessons 2–20 each add one valid Use scenario without replacing the context note", () => {
+test("every phrase in Lessons 2–20 has a valid Use scenario without replacing the context note", () => {
   const lessons = lessonPackages.filter((lesson) => lesson.number >= 2 && lesson.number <= 20);
 
   assert.equal(lessons.length, 19);
   for (const lesson of lessons) {
-    const scenarioPhrases = lesson.phrases.filter((phrase) => phrase.useScenario);
-    assert.equal(scenarioPhrases.length, 1, `Lesson ${lesson.number} scenario count`);
-
-    const phrase = scenarioPhrases[0];
-    const scenario = phrase.useScenario;
-    assert.ok(scenario);
-    assert.ok(phrase.cultureNote.zh.trim(), `Lesson ${lesson.number} zh context note`);
-    assert.ok(phrase.cultureNote.en.trim(), `Lesson ${lesson.number} en context note`);
-    assert.equal(scenario.choices.length, 3);
-    assert.equal(scenario.choices.filter((choice) => choice.isCorrect).length, 1);
-    assert.ok(scenario.choices.every((choice) => /^https:\/\/sutian\.moe\.edu\.tw\//.test(choice.sourceUrl)));
+    for (const phrase of lesson.phrases) {
+      const scenario = phrase.useScenario;
+      assert.ok(scenario, `Lesson ${lesson.number} ${phrase.id} scenario`);
+      assert.ok(phrase.cultureNote.zh.trim(), `Lesson ${lesson.number} zh context note`);
+      assert.ok(phrase.cultureNote.en.trim(), `Lesson ${lesson.number} en context note`);
+      assert.equal(scenario.choices.length, 3);
+      assert.equal(scenario.choices.filter((choice) => choice.isCorrect).length, 1);
+      assert.ok(scenario.choices.every((choice) => /^https:\/\/sutian\.moe\.edu\.tw\//.test(choice.sourceUrl)));
+    }
   }
+});
+
+test("generated scenarios preserve authored scenarios and vary the correct choice position", () => {
+  const lessonTwo = lessonPackages.find((lesson) => lesson.number === 2);
+  assert.ok(lessonTwo);
+  assert.match(lessonTwo.phrases[0].useScenario?.prompt.zh ?? "", /朋友問哪一間是你家/);
+  assert.match(lessonTwo.phrases[1].useScenario?.prompt.zh ?? "", /介紹站在旁邊的媽媽/);
+  assert.deepEqual(
+    lessonTwo.phrases.map((phrase) => phrase.useScenario?.choices.findIndex((choice) => choice.isCorrect)),
+    [0, 1, 2],
+  );
 });
 
 test("combination data is structured only for source-traceable use-stage notes", () => {

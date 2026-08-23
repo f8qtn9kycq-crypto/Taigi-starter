@@ -891,6 +891,10 @@ a:focus-visible {
   background: var(--surface-learning-canvas);
 }
 
+.stage-panel-scroll {
+  display: contents;
+}
+
 .stage-copy > span {
   color: var(--orange);
   font-family: var(--font-geist-mono), monospace;
@@ -2099,8 +2103,28 @@ footer a:hover {
 }
 
 @media (max-width: 639px) {
+  :root {
+    --nav-height: 64px;
+  }
+
+  .site-header {
+    min-height: 52px;
+    padding: 4px 12px;
+  }
+
+  .site-header .brand-mark {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+  }
+
+  .status-chip {
+    min-height: 36px;
+    padding-inline: 10px;
+  }
+
   .learning-column.stage-page {
-    height: calc(100dvh - 64px - var(--nav-height) - env(safe-area-inset-bottom));
+    height: calc(100dvh - 52px - var(--nav-height) - env(safe-area-inset-bottom));
     gap: 0;
     padding: 0;
     overflow: hidden;
@@ -2214,8 +2238,18 @@ footer a:hover {
   .stage-panel {
     min-height: 0;
     flex: 1;
-    padding: 10px 15px 0;
+    padding: 0;
     overflow: hidden;
+  }
+
+  .stage-panel-scroll {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    padding: 10px 15px 8px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .stage-copy > span {
@@ -2449,10 +2483,23 @@ footer a:hover {
     align-items: center;
     gap: 8px;
     flex: none;
-    margin: auto -15px 0;
-    padding: 7px 15px 8px;
+    margin: 0;
+    padding: 6px 12px 7px;
     border-top: 1px solid var(--line);
     background: var(--surface-lesson-frame);
+  }
+
+  .bottom-nav {
+    padding: 4px 8px calc(4px + env(safe-area-inset-bottom));
+  }
+
+  .bottom-nav button {
+    min-height: 54px;
+    gap: 2px;
+  }
+
+  .bottom-nav button > span {
+    font-size: 18px;
   }
 
   .mobile-stage-navigation button {
@@ -2581,36 +2628,15 @@ footer a:hover {
   }
 
   .mobile-culture-note {
-    position: absolute;
-    top: 66px;
-    right: 20px;
-    z-index: 2;
-    width: 44px;
-    margin: 0;
+    position: static;
+    width: auto;
+    margin-top: 0;
   }
 
   .mobile-culture-note summary {
-    justify-content: center;
-    gap: 0;
-    padding: 6px;
-    overflow: hidden;
-    font-size: 0;
-  }
-
-  .mobile-culture-note[open] {
-    top: 54px;
-    right: 10px;
-    left: 10px;
-    z-index: 4;
-    width: auto;
-    max-height: calc(100% - 64px);
-    overflow: auto;
-    box-shadow: 0 14px 34px rgb(23 50 77 / 0.18);
-  }
-
-  .mobile-culture-note[open] summary {
     justify-content: flex-start;
     gap: 8px;
+    padding: 6px 10px;
     font-size: 11px;
   }
 }
