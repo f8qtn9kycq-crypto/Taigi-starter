@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import type { LessonCopy } from "../taigi-content";
 import type { PlayableLesson } from "../types/lesson";
-import LessonCompletionActions from "./LessonCompletionActions";
 import LessonStageContent from "./LessonStageContent";
 import MobileStageNavigation from "./MobileStageNavigation";
 import RecordingPractice from "./RecordingPractice";
+import UseStageActions from "./UseStageActions";
 
 type LessonStagePanelProps = {
   stage: number;
@@ -55,10 +55,14 @@ export default function LessonStagePanel({
   const [recallAttempted, setRecallAttempted] = useState(completed);
   const [sayCompleted, setSayCompleted] = useState(completed);
   const [useResponse, setUseResponse] = useState("");
+  const [selectedUseChoiceId, setSelectedUseChoiceId] = useState<string | null>(null);
   const completionRef = useRef<HTMLParagraphElement | null>(null);
   const previousReviewScheduledRef = useRef(reviewScheduled);
-  const hasUseResponse = useResponse.trim().length > 0;
   const phrase = lesson.phrases[phraseIndex];
+  const selectedUseChoice = phrase.useScenario?.choices.find((choice) => choice.id === selectedUseChoiceId);
+  const hasUseResponse = phrase.useScenario
+    ? completed || selectedUseChoice?.isCorrect === true
+    : useResponse.trim().length > 0;
   const lessonStage = lesson.stages[stage];
   const { isPlaying, hasError, toggle } = useAudioPlayer(phrase.audioUrl);
 
@@ -171,37 +175,12 @@ export default function LessonStagePanel({
         {lessonStage.id === "recall" && !showAnswer && recallAttempted && <button type="button" className="action-button primary-action desktop-stage-action" onClick={revealAnswer}>{text.showAnswer}<span>↓</span></button>}
         {lessonStage.id === "recall" && showAnswer && <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance}>{text.nextUse}<span>→</span></button>}
         {lessonStage.id === "use" && (
-          <>
-            <label className="use-response">
-              <span>{text.usePrompt}</span>
-              <textarea
-                value={useResponse}
-                onChange={(event) => setUseResponse(event.target.value)}
-                placeholder={text.usePlaceholder}
-                maxLength={120}
-                rows={2}
-              />
-            </label>
-            {!hasUseResponse && !lessonComplete && <p className="stage-gate-hint" role="status">{text.useCompletionRequired}</p>}
-            {reviewScheduled ? (
-              nextPhraseIndex >= 0 ? (
-                <button type="button" className="action-button primary-action desktop-stage-action" onClick={onPhraseAdvance} disabled={!hasUseResponse}>
-                  {text.nextPhrase(lesson.phrases[nextPhraseIndex].hanji)}<span>→</span>
-                </button>
-              ) : lessonComplete && (
-                <LessonCompletionActions
-                  ref={completionRef}
-                  text={text}
-                  nextLesson={nextLesson}
-                  onContinue={onLessonComplete}
-                />
-              )
-            ) : (
-              <button type="button" className="action-button primary-action desktop-stage-action" onClick={() => onReviewAdded(phrase.id)} disabled={!hasUseResponse}>
-                {text.addReview}<span>+</span>
-              </button>
-            )}
-          </>
+          <UseStageActions text={text} lesson={lesson} phrase={phrase} nextLesson={nextLesson}
+            nextPhraseIndex={nextPhraseIndex} lessonComplete={lessonComplete} reviewScheduled={reviewScheduled}
+            hasUseResponse={hasUseResponse} useResponse={useResponse} selectedChoiceId={selectedUseChoiceId}
+            completionRef={completionRef} onUseResponseChange={setUseResponse}
+            onChoiceSelect={setSelectedUseChoiceId} onPhraseAdvance={onPhraseAdvance}
+            onReviewAdded={onReviewAdded} onLessonComplete={onLessonComplete} />
         )}
       </div>
       <MobileStageNavigation

@@ -77,6 +77,9 @@ export type LessonCopy = {
   usePrompt: string;
   usePlaceholder: string;
   useCompletionRequired: string;
+  useChooseResponse: string;
+  useCorrect: string;
+  useTryAgain: string;
   tailoLabel: string;
   pojLabel: string;
   romanizationSystem: string;
@@ -240,6 +243,9 @@ export const copy: Record<Locale, LessonCopy> = {
     usePrompt: "你會在什麼情境用這句？",
     usePlaceholder: "寫一個自己的生活情境…",
     useCompletionRequired: "先寫下一個自己的情境，再完成這一步。",
+    useChooseResponse: "選一句最適合的回答",
+    useCorrect: "答對了",
+    useTryAgain: "再想一下",
     tailoLabel: "台羅",
     pojLabel: "白話字",
     romanizationSystem: "羅馬字系統",
@@ -401,6 +407,9 @@ export const copy: Record<Locale, LessonCopy> = {
     usePrompt: "When would you use this phrase?",
     usePlaceholder: "Write one everyday situation…",
     useCompletionRequired: "Add one personal situation before completing this step.",
+    useChooseResponse: "Choose the best reply",
+    useCorrect: "That’s right",
+    useTryAgain: "Try again",
     tailoLabel: "Tâi-lô",
     pojLabel: "POJ",
     romanizationSystem: "Romanization system",

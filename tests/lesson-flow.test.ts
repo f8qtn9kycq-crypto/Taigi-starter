@@ -25,6 +25,20 @@ test("Lesson 1 keeps the Busuu-style timebox within a beginner-sized session", (
   assert.ok(prototypeLesson.stages.every((stage) => stage.estimatedMinutes <= 2));
 });
 
+test("Lesson 1 Use has one source-backed best response among three choices", () => {
+  const scenario = prototypeLesson.phrases[0].useScenario;
+
+  assert.ok(scenario);
+  assert.equal(scenario.choices.length, 3);
+  assert.equal(scenario.choices.filter((choice) => choice.isCorrect).length, 1);
+  assert.equal(scenario.choices.find((choice) => choice.isCorrect)?.hanji, "我食飽矣。");
+  assert.ok(scenario.prompt.zh.trim());
+  assert.ok(scenario.prompt.en.trim());
+  assert.ok(scenario.explanation.zh.trim());
+  assert.ok(scenario.explanation.en.trim());
+  assert.ok(scenario.choices.every((choice) => choice.sourceUrl.startsWith("https://sutian.moe.edu.tw/")));
+});
+
 test("planned lessons remain truthful content placeholders", () => {
   for (const lesson of lessonCatalog.filter((item) => item.status === "planned")) {
     assert.equal("durationMinutes" in lesson, false);

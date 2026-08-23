@@ -26,6 +26,22 @@ export type LessonAudioAttribution = LessonAudioAsset & {
   speaker: string | null;
 };
 
+export type LessonUseScenarioChoice = {
+  id: string;
+  hanji: string;
+  tailo: string;
+  meaning: LocalizedText;
+  feedback: LocalizedText;
+  sourceUrl: string;
+  isCorrect: boolean;
+};
+
+export type LessonUseScenario = {
+  prompt: LocalizedText;
+  explanation: LocalizedText;
+  choices: readonly LessonUseScenarioChoice[];
+};
+
 export const LESSON_FACTORY_STEP_IDS = ["hear", "see", "say", "recall", "use"] as const;
 
 export type LessonFactoryStepId = (typeof LESSON_FACTORY_STEP_IDS)[number];

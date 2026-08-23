@@ -35,6 +35,7 @@ export const adaptLessonPackageHandoff = (
       meaning: phrase.meaning,
       cultureNote: phrase.cultureNote,
       ...(phrase.useCombination ? { useCombination: phrase.useCombination } : {}),
+      ...(phrase.useScenario ? { useScenario: phrase.useScenario } : {}),
       audioUrl: attribution.audioUrl,
       source: phrase.source,
       audioAttribution,

@@ -1366,6 +1366,105 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
+.use-scenario {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 13px;
+  border: 1px solid rgb(8 127 109 / 0.22);
+  border-radius: 14px;
+  background: #f4faf7;
+}
+
+.use-scenario legend {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  padding: 0;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.use-scenario legend span {
+  color: var(--jade-dark);
+  font-size: 10px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.use-scenario-choices {
+  display: grid;
+  gap: 7px;
+}
+
+.use-scenario-choices button {
+  display: grid;
+  min-height: 52px;
+  gap: 2px;
+  padding: 8px 11px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: white;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+
+.use-scenario-choices button.selected {
+  border-color: var(--jade);
+  box-shadow: 0 0 0 2px rgb(8 127 109 / 0.13);
+}
+
+.use-scenario-choices button span {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.use-scenario-choices button i {
+  color: var(--jade-dark);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 12px;
+}
+
+.use-scenario-choices button small {
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+
+.use-choice-feedback {
+  padding: 9px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.use-choice-feedback.correct {
+  background: #e7f5ef;
+  color: var(--jade-dark);
+}
+
+.use-choice-feedback.retry {
+  background: #fff1e9;
+  color: var(--orange);
+}
+
+.use-choice-feedback p {
+  margin: 2px 0 0;
+}
+
+.use-choice-feedback a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: inherit;
+  font-weight: 800;
+}
+
 .recording-playback {
   display: grid;
   gap: 8px;

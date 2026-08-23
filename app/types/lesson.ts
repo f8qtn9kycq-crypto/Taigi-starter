@@ -3,6 +3,7 @@ import type {
   LessonContentStatus,
   LessonFactoryStepId,
   LessonSource,
+  LessonUseScenario,
   LocalizedText,
 } from "./lesson-domain.ts";
 import type { LessonUseCombination } from "./lesson-package.ts";
@@ -17,6 +18,8 @@ export type {
   LessonContentStatus,
   LessonFactoryStepId,
   LessonSource,
+  LessonUseScenario,
+  LessonUseScenarioChoice,
   LocalizedText,
 } from "./lesson-domain.ts";
 export type { LessonUseCombination } from "./lesson-package.ts";
@@ -29,6 +32,7 @@ export type LessonPhrase = {
   meaning: LocalizedText;
   cultureNote: LocalizedText;
   useCombination?: LessonUseCombination;
+  useScenario?: LessonUseScenario;
   audioUrl: string;
   source: LessonSource;
   audioAttribution: LessonAudioAttribution;
