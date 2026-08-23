@@ -43,6 +43,51 @@ export const prototypeLesson: PlayableLesson = {
         zh: "「你食飽未？」常是關心人的招呼，不一定真的在問用餐狀況。",
         en: "“Lí tsia̍h-pá--buē?” is often a caring hello, not a literal question about your meal.",
       },
+      useScenario: {
+        prompt: {
+          zh: "早餐後，阿媽問：「你食飽未？」你已經吃飽，哪一句回答最清楚？",
+          en: "After breakfast, Grandma asks, “Lí tsia̍h-pá--buē?” You have eaten. Which reply is clearest?",
+        },
+        explanation: {
+          zh: "「我食飽矣」直接回答已經吃飽；教育部辭典也收錄這個用例。",
+          en: "“Guá tsia̍h-pá--ah” directly says that you have eaten; it is also an example in the MOE dictionary.",
+        },
+        choices: [
+          {
+            id: "already-ate",
+            hanji: "我食飽矣。",
+            tailo: "Guá tsia̍h-pá--ah.",
+            meaning: { zh: "我吃飽了。", en: "I’ve eaten." },
+            feedback: { zh: "這句直接回答自己已經吃飽。", en: "This directly answers that you have eaten." },
+            sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/3336/",
+            isCorrect: true,
+          },
+          {
+            id: "repeat-question",
+            hanji: "你食飽未？",
+            tailo: "Lí tsia̍h-pá--buē?",
+            meaning: { zh: "你吃飽了嗎？", en: "Have you eaten?" },
+            feedback: {
+              zh: "這是在重複阿媽的問題，沒有回答自己是否吃飽。",
+              en: "This repeats Grandma’s question instead of answering whether you have eaten.",
+            },
+            sourceUrl: "https://sutian.moe.edu.tw/und-hani/su/1653/",
+            isCorrect: false,
+          },
+          {
+            id: "say-thanks",
+            hanji: "多謝。",
+            tailo: "To-siā.",
+            meaning: { zh: "謝謝。", en: "Thank you." },
+            feedback: {
+              zh: "「多謝」是在道謝，沒有告訴阿媽你已經吃飽。",
+              en: "“To-siā” gives thanks but does not tell Grandma that you have eaten.",
+            },
+            sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/2415/",
+            isCorrect: false,
+          },
+        ],
+      },
       audioUrl: "/audio/li-tsiah-pa-bue.mp3",
       source: {
         title: {

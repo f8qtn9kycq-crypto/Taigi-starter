@@ -3,6 +3,7 @@ import type {
   LessonAudioAttribution,
   LessonContentStatus,
   LessonSource,
+  LessonUseScenario,
   LocalizedText,
 } from "./lesson-domain.ts";
 
@@ -38,6 +39,7 @@ export type LessonPackagePhrase = {
   meaning: LocalizedText;
   cultureNote: LocalizedText;
   useCombination?: LessonUseCombination;
+  useScenario?: LessonUseScenario;
   source: LessonSource;
   audio: LessonAudioAsset & {
     status: "added";

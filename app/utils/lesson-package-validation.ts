@@ -170,6 +170,55 @@ const validateAudio = (
   validateLocalizedText(value.note, `${path}.note`, issues);
 };
 
+const validateUseScenario = (
+  value: unknown,
+  path: string,
+  issues: LessonPackageValidationIssue[],
+): void => {
+  if (!isRecord(value)) {
+    addIssue(issues, path, "must include a structured use scenario");
+    return;
+  }
+
+  validateLocalizedText(value.prompt, `${path}.prompt`, issues);
+  validateLocalizedText(value.explanation, `${path}.explanation`, issues);
+  if (!Array.isArray(value.choices)) {
+    addIssue(issues, `${path}.choices`, "must contain exactly three choices");
+    return;
+  }
+  if (value.choices.length !== 3) {
+    addIssue(issues, `${path}.choices`, "must contain exactly three choices");
+  }
+
+  const choiceIds = new Set<string>();
+  let correctChoiceCount = 0;
+  for (const [index, choice] of value.choices.entries()) {
+    const choicePath = `${path}.choices[${index}]`;
+    if (!isRecord(choice)) {
+      addIssue(issues, choicePath, "must be a choice record");
+      continue;
+    }
+    if (!isNonEmptyString(choice.id) || choiceIds.has(choice.id)) {
+      addIssue(issues, `${choicePath}.id`, "must be a unique non-empty string");
+    } else {
+      choiceIds.add(choice.id);
+    }
+    for (const field of ["hanji", "tailo"] as const) {
+      if (!isNonEmptyString(choice[field])) addIssue(issues, `${choicePath}.${field}`, "must be a non-empty string");
+    }
+    validateLocalizedText(choice.meaning, `${choicePath}.meaning`, issues);
+    validateLocalizedText(choice.feedback, `${choicePath}.feedback`, issues);
+    if (!isNonEmptyString(choice.sourceUrl) || !MOE_DICTIONARY_URL.test(choice.sourceUrl)) {
+      addIssue(issues, `${choicePath}.sourceUrl`, "must be an MOE Dictionary URL");
+    }
+    if (choice.isCorrect === true) correctChoiceCount += 1;
+    else if (choice.isCorrect !== false) addIssue(issues, `${choicePath}.isCorrect`, "must be a boolean");
+  }
+  if (correctChoiceCount !== 1) {
+    addIssue(issues, `${path}.choices`, "must contain exactly one correct choice");
+  }
+};
+
 const validatePhrase = (
   value: unknown,
   path: string,
@@ -202,6 +251,9 @@ const validatePhrase = (
       if (!isNonEmptyString(value.useCombination.tailo)) addIssue(issues, `${path}.useCombination.tailo`, "must be a non-empty string");
       validateLocalizedText(value.useCombination.meaning, `${path}.useCombination.meaning`, issues);
     }
+  }
+  if (value.useScenario !== undefined) {
+    validateUseScenario(value.useScenario, `${path}.useScenario`, issues);
   }
   validateSource(value.source, `${path}.source`, issues);
   validateAudio(value.audio, `${path}.audio`, value, issues);

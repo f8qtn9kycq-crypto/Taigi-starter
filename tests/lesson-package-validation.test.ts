@@ -37,6 +37,26 @@ test("invalid combination fields fail validation", () => {
   assert.ok(paths.includes("packages[0].phrases[0].useCombination.meaning.zh"));
 });
 
+test("invalid use scenarios fail the three-choice and single-answer contract", () => {
+  const invalid = clonePackages();
+  const phrase = (invalid[0].phrases as Record<string, unknown>[])[0];
+  phrase.useScenario = {
+    prompt: { zh: "", en: "Scenario" },
+    explanation: { zh: "說明", en: "Explanation" },
+    choices: [
+      { id: "same", hanji: "甲", tailo: "A", meaning: { zh: "甲", en: "A" }, feedback: { zh: "", en: "A" }, sourceUrl: "https://example.com", isCorrect: true },
+      { id: "same", hanji: "乙", tailo: "B", meaning: { zh: "乙", en: "B" }, feedback: { zh: "乙", en: "B" }, sourceUrl: "https://example.com", isCorrect: true },
+    ],
+  };
+
+  const paths = validateLessonPackages(invalid).map((issue) => issue.path);
+  assert.ok(paths.includes("packages[0].phrases[0].useScenario.prompt.zh"));
+  assert.ok(paths.includes("packages[0].phrases[0].useScenario.choices"));
+  assert.ok(paths.includes("packages[0].phrases[0].useScenario.choices[1].id"));
+  assert.ok(paths.includes("packages[0].phrases[0].useScenario.choices[0].feedback.zh"));
+  assert.ok(paths.includes("packages[0].phrases[0].useScenario.choices[0].sourceUrl"));
+});
+
 test("validator rejects missing stages, sources, review, and incomplete audio", () => {
   const invalid = clonePackages();
   const first = invalid[0];

@@ -77,10 +77,12 @@ export default function LessonStageContent({
 
   return (
     <div className="use-content">
-      <div className="lesson-mission use-mission">
-        <span>{text.lessonMission}</span>
-        <p>{mission[text.locale]}</p>
-      </div>
+      {!phrase.useScenario && (
+        <div className="lesson-mission use-mission">
+          <span>{text.lessonMission}</span>
+          <p>{mission[text.locale]}</p>
+        </div>
+      )}
       {phrase.useCombination && (
         <div className="use-combination" aria-labelledby="use-combination-title">
           <span className="use-combination-label" id="use-combination-title">{text.useCombination}</span>
