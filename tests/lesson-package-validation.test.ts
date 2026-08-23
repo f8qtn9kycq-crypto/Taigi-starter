@@ -11,10 +11,10 @@ test("all current planned packages satisfy the Lesson Factory contract", () => {
   assert.deepEqual(validateLessonPackages(lessonPackages), []);
 });
 
-test("Lessons 2–16 each add one valid Use scenario without replacing the context note", () => {
-  const lessons = lessonPackages.filter((lesson) => lesson.number >= 2 && lesson.number <= 16);
+test("Lessons 2–20 each add one valid Use scenario without replacing the context note", () => {
+  const lessons = lessonPackages.filter((lesson) => lesson.number >= 2 && lesson.number <= 20);
 
-  assert.equal(lessons.length, 15);
+  assert.equal(lessons.length, 19);
   for (const lesson of lessons) {
     const scenarioPhrases = lesson.phrases.filter((phrase) => phrase.useScenario);
     assert.equal(scenarioPhrases.length, 1, `Lesson ${lesson.number} scenario count`);
