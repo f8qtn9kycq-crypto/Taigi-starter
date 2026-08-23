@@ -11,6 +11,25 @@ test("all current planned packages satisfy the Lesson Factory contract", () => {
   assert.deepEqual(validateLessonPackages(lessonPackages), []);
 });
 
+test("Lessons 2–6 each add one valid Use scenario without replacing the context note", () => {
+  const lessons = lessonPackages.filter((lesson) => lesson.number >= 2 && lesson.number <= 6);
+
+  assert.equal(lessons.length, 5);
+  for (const lesson of lessons) {
+    const scenarioPhrases = lesson.phrases.filter((phrase) => phrase.useScenario);
+    assert.equal(scenarioPhrases.length, 1, `Lesson ${lesson.number} scenario count`);
+
+    const phrase = scenarioPhrases[0];
+    const scenario = phrase.useScenario;
+    assert.ok(scenario);
+    assert.ok(phrase.cultureNote.zh.trim(), `Lesson ${lesson.number} zh context note`);
+    assert.ok(phrase.cultureNote.en.trim(), `Lesson ${lesson.number} en context note`);
+    assert.equal(scenario.choices.length, 3);
+    assert.equal(scenario.choices.filter((choice) => choice.isCorrect).length, 1);
+    assert.ok(scenario.choices.every((choice) => /^https:\/\/sutian\.moe\.edu\.tw\//.test(choice.sourceUrl)));
+  }
+});
+
 test("combination data is structured only for source-traceable use-stage notes", () => {
   const combinations = lessonPackages.flatMap((lesson) => lesson.phrases
     .filter((phrase) => phrase.useCombination)
