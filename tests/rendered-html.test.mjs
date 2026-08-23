@@ -254,8 +254,16 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(css, /\.progress-line i \{[\s\S]*width: 100%/);
   assert.doesNotMatch(css, /\.progress-line i \{[\s\S]*width: 62%/);
   assert.match(css, /env\(safe-area-inset-bottom\)/);
+  assert.match(css, /--surface-lesson-frame: var\(--cream\)/);
+  assert.match(css, /--surface-learning-canvas: var\(--paper\)/);
+  assert.match(css, /--surface-current-stage: #f2f8f5/);
+  assert.match(css, /\.stage-accordion \.displayed \.stage-trigger \{[\s\S]*background: var\(--surface-current-stage\)/);
+  assert.match(css, /\.stage-panel \{[\s\S]*background: var\(--surface-learning-canvas\)/);
+  assert.doesNotMatch(css, /linear-gradient\(180deg, #fffdf7 0%, #fffdf7 78%/);
   assert.match(css, /\.bottom-nav \{[\s\S]*position: fixed/);
   assert.match(css, /@media \(max-width: 639px\) \{[\s\S]*\.learning-column\.stage-page \{[\s\S]*height: calc\(100dvh - 64px - var\(--nav-height\)/);
+  assert.match(css, /@media \(max-width: 639px\) \{[\s\S]*\.lesson-heading \{[\s\S]*background: var\(--surface-lesson-frame\)/);
+  assert.match(css, /@media \(max-width: 639px\) \{[\s\S]*\.mobile-stage-navigation \{[\s\S]*background: var\(--surface-lesson-frame\)/);
   assert.match(css, /@media \(max-width: 639px\) \{[\s\S]*\.stage-panel \{[\s\S]*overflow: hidden/);
   assert.match(css, /@media \(max-width: 639px\) \{[\s\S]*\.lesson-action-zone \{[\s\S]*position: static[\s\S]*background: none/);
   assert.match(css, /@media \(max-width: 639px\) and \(max-height: 760px\) \{[\s\S]*\.mobile-culture-note\[open\]/);

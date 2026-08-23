@@ -9,6 +9,9 @@
   --cream: #f6f1e7;
   --paper: #fffdf7;
   --line: #d7d0c3;
+  --surface-lesson-frame: var(--cream);
+  --surface-learning-canvas: var(--paper);
+  --surface-current-stage: #f2f8f5;
   --muted: #68736f;
   --nav-height: 76px;
 }
@@ -847,7 +850,7 @@ a:focus-visible {
 }
 
 .stage-accordion .displayed .stage-trigger {
-  background: #f2f8f5;
+  background: var(--surface-current-stage);
 }
 
 .stage-accordion .displayed .stage-number {
@@ -885,8 +888,7 @@ a:focus-visible {
   min-height: min(620px, calc(100dvh - 150px));
   flex-direction: column;
   padding: 28px 18px 20px;
-  background:
-    linear-gradient(180deg, #fffdf7 0%, #fffdf7 78%, rgb(246 241 231 / 0.9) 100%);
+  background: var(--surface-learning-canvas);
 }
 
 .stage-copy > span {
@@ -2013,6 +2015,7 @@ footer a:hover {
     flex: none;
     padding: 9px 14px 10px;
     border-bottom: 1px solid var(--line);
+    background: var(--surface-lesson-frame);
   }
 
   .lesson-heading > .section-label,
@@ -2345,7 +2348,7 @@ footer a:hover {
     margin: auto -15px 0;
     padding: 7px 15px 8px;
     border-top: 1px solid var(--line);
-    background: var(--paper);
+    background: var(--surface-lesson-frame);
   }
 
   .mobile-stage-navigation button {
