@@ -1,5 +1,6 @@
 import type { LessonPackage } from "../types/lesson-package.ts";
 import { createLessonPackageAudio } from "../utils/lesson-audio.ts";
+import { buildFallbackUseScenario } from "../utils/lesson-use-scenario.ts";
 import { lessonPackages2To6 } from "./lesson-packages/lessons-2-6.ts";
 import { lessonPackages7To12 } from "./lesson-packages/lessons-7-12.ts";
 import { lessonPackages13To18 } from "./lesson-packages/lessons-13-18.ts";
@@ -104,6 +105,7 @@ const completeLessonPackage = (lessonPackage: RawLessonPackage): LessonPackage =
     return {
       ...phrase,
       poj,
+      useScenario: phrase.useScenario ?? buildFallbackUseScenario(phrase, lessonPackage.phrases),
       audio: createLessonPackageAudio(
         lessonPackage.number,
         phrase.id,
