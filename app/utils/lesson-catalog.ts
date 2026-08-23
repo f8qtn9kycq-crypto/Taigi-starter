@@ -1,4 +1,4 @@
-import type { Lesson } from "../types/lesson.ts";
+import type { Lesson, PlayableLesson } from "../types/lesson.ts";
 import { lessonPackageHandoffToPlayableLesson } from "./lesson-package-handoff.ts";
 
 export const buildLessonCatalog = (
@@ -17,4 +17,13 @@ export const buildLessonCatalog = (
   }
 
   return [...lessonsByNumber.values()].sort((left, right) => left.pathOrder - right.pathOrder);
+};
+
+export const nextPlayableLesson = (
+  lessons: readonly PlayableLesson[],
+  activeLessonId: string,
+): PlayableLesson | null => {
+  const orderedLessons = [...lessons].sort((left, right) => left.pathOrder - right.pathOrder);
+  const activeIndex = orderedLessons.findIndex((lesson) => lesson.id === activeLessonId);
+  return activeIndex >= 0 ? orderedLessons[activeIndex + 1] ?? null : null;
 };

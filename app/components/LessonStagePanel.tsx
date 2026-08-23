@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import type { LessonCopy } from "../taigi-content";
 import type { PlayableLesson } from "../types/lesson";
+import LessonCompletionActions from "./LessonCompletionActions";
 import LessonStageContent from "./LessonStageContent";
 import MobileStageNavigation from "./MobileStageNavigation";
 import RecordingPractice from "./RecordingPractice";
@@ -15,12 +16,14 @@ type LessonStagePanelProps = {
   phraseIndex: number;
   nextPhraseIndex: number;
   lessonComplete: boolean;
+  nextLesson: PlayableLesson | null;
   reviewScheduled: boolean;
   completed?: boolean;
   onAdvance: () => void;
   onUnlock: () => void;
   onReviewAdded: (phraseId: string) => void;
   onPhraseAdvance: () => void;
+  onLessonComplete: () => void;
   unlockedStage: number;
   viewedStage: number;
   onPrevious: () => void;
@@ -34,12 +37,14 @@ export default function LessonStagePanel({
   phraseIndex,
   nextPhraseIndex,
   lessonComplete,
+  nextLesson,
   reviewScheduled,
   completed = false,
   onAdvance,
   onUnlock,
   onReviewAdded,
   onPhraseAdvance,
+  onLessonComplete,
   unlockedStage,
   viewedStage,
   onPrevious,
@@ -97,7 +102,14 @@ export default function LessonStagePanel({
           : reviewScheduled
             ? nextPhraseIndex >= 0
               ? { label: text.nextPhrase(lesson.phrases[nextPhraseIndex].hanji), disabled: !hasUseResponse, onClick: onPhraseAdvance }
-              : undefined
+              : lessonComplete
+                ? {
+                    label: nextLesson
+                      ? text.nextLesson(nextLesson.pathOrder, nextLesson.title[text.locale])
+                      : text.viewProgress,
+                    onClick: onLessonComplete,
+                  }
+                : undefined
             : { label: text.addReview, disabled: !hasUseResponse, onClick: () => onReviewAdded(phrase.id) };
 
   return (
@@ -170,13 +182,20 @@ export default function LessonStagePanel({
                 rows={2}
               />
             </label>
-            {!hasUseResponse && <p className="stage-gate-hint" role="status">{text.useCompletionRequired}</p>}
+            {!hasUseResponse && !lessonComplete && <p className="stage-gate-hint" role="status">{text.useCompletionRequired}</p>}
             {reviewScheduled ? (
               nextPhraseIndex >= 0 ? (
                 <button type="button" className="action-button primary-action desktop-stage-action" onClick={onPhraseAdvance} disabled={!hasUseResponse}>
                   {text.nextPhrase(lesson.phrases[nextPhraseIndex].hanji)}<span>→</span>
                 </button>
-              ) : lessonComplete && hasUseResponse && <p ref={completionRef} tabIndex={-1} className="lesson-complete" role="status">✓ {text.lessonComplete}</p>
+              ) : lessonComplete && (
+                <LessonCompletionActions
+                  ref={completionRef}
+                  text={text}
+                  nextLesson={nextLesson}
+                  onContinue={onLessonComplete}
+                />
+              )
             ) : (
               <button type="button" className="action-button primary-action desktop-stage-action" onClick={() => onReviewAdded(phrase.id)} disabled={!hasUseResponse}>
                 {text.addReview}<span>+</span>

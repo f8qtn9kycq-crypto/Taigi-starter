@@ -106,6 +106,9 @@ export type LessonCopy = {
   reviewAdded: string;
   nextPhrase: (phrase: string) => string;
   lessonComplete: string;
+  courseComplete: string;
+  nextLesson: (number: number, title: string) => string;
+  viewProgress: string;
   path: string;
   pathSummary: string;
   curriculumEyebrow: string;
@@ -266,6 +269,9 @@ export const copy: Record<Locale, LessonCopy> = {
     reviewAdded: "已加入複習",
     nextPhrase: (phrase) => `下一個詞：${phrase}`,
     lessonComplete: "這課完成了！",
+    courseComplete: "全部課程完成！",
+    nextLesson: (number, title) => `下一課：第 ${number} 課 ${title}`,
+    viewProgress: "查看學習進度",
     path: "初學者路徑",
     pathSummary: "20 課已開放",
     curriculumEyebrow: "國小台語課綱參考",
@@ -424,6 +430,9 @@ export const copy: Record<Locale, LessonCopy> = {
     reviewAdded: "Added to review",
     nextPhrase: (phrase) => `Next phrase: ${phrase}`,
     lessonComplete: "Lesson complete!",
+    courseComplete: "All lessons complete!",
+    nextLesson: (number, title) => `Next: Lesson ${number} · ${title}`,
+    viewProgress: "View learning progress",
     path: "Beginner path",
     pathSummary: "20 lessons available",
     curriculumEyebrow: "ELEMENTARY CURRICULUM REFERENCE",

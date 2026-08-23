@@ -1231,6 +1231,11 @@ a:focus-visible {
   background: linear-gradient(180deg, transparent 0, var(--paper) 22px, var(--paper) 100%);
 }
 
+.lesson-completion-actions {
+  display: grid;
+  gap: 10px;
+}
+
 .action-button {
   display: flex;
   width: 100%;

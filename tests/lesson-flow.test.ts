@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { lessonCatalog, prototypeLesson } from "../app/data/lessons.ts";
 import { LESSON_STAGE_IDS } from "../app/types/lesson.ts";
+import { nextPlayableLesson } from "../app/utils/lesson-catalog.ts";
 
 test("Lesson 1 uses a short, ordered teaching rhythm", () => {
   assert.equal(prototypeLesson.durationMinutes, 5);
@@ -63,4 +64,14 @@ test("every playable phrase has an English meaning for the English phrase picker
   for (const phrase of phrases) {
     assert.ok(phrase.meaning.en.trim(), `missing English meaning: ${phrase.id}`);
   }
+});
+
+test("completed lessons continue through playable path order", () => {
+  const playableLessons = lessonCatalog.filter((lesson) => lesson.status === "prototype");
+  const orderedLessons = [...playableLessons].sort((left, right) => left.pathOrder - right.pathOrder);
+
+  assert.equal(nextPlayableLesson(playableLessons, orderedLessons[0].id)?.id, orderedLessons[1].id);
+  assert.equal(nextPlayableLesson(playableLessons, orderedLessons[18].id)?.id, orderedLessons[19].id);
+  assert.equal(nextPlayableLesson(playableLessons, orderedLessons[19].id), null);
+  assert.equal(nextPlayableLesson(playableLessons, "missing-lesson"), null);
 });

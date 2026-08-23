@@ -14,6 +14,7 @@ import { useReviewNow } from "./hooks/useReviewNow";
 import { copy } from "./taigi-content";
 import type { PlayableLesson } from "./types/lesson";
 import { dueReviewCards, orderedReviewCards } from "./utils/learning-progress";
+import { nextPlayableLesson } from "./utils/lesson-catalog";
 
 const playableLessons = lessonCatalog.filter(
   (lesson): lesson is PlayableLesson => lesson.status === "prototype",
@@ -40,6 +41,7 @@ export default function TaigiStartPage() {
     rateReview,
   } = useLearningProgress(progressDefinitions, prototypeLesson.id);
   const activeLesson = playableLessons.find((lesson) => lesson.id === progress.lessonId) ?? prototypeLesson;
+  const nextLesson = nextPlayableLesson(playableLessons, activeLesson.id);
   const [reviewOpen, setReviewOpen] = useState(false);
   const [startPending, setStartPending] = useState(false);
   const [lessonViewOpen, setLessonViewOpen] = useState(false);
@@ -164,6 +166,7 @@ export default function TaigiStartPage() {
           text={text}
           locale={progress.locale}
           lesson={activeLesson}
+          nextLesson={nextLesson}
           stage={activeStage}
           phraseIndex={activePhraseIndex}
           dueCount={dueCount}
@@ -180,6 +183,7 @@ export default function TaigiStartPage() {
           onReviewAdded={completePhrase}
           onPhraseChange={setPhraseIndex}
           onLessonSelect={selectLesson}
+          onLessonComplete={() => nextLesson ? selectLesson(nextLesson.number) : showPath()}
         />
       )}
 

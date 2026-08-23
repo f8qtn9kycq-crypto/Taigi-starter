@@ -13,10 +13,12 @@ type LessonAccordionProps = {
   phraseIndex: number;
   reviewScheduled: boolean;
   completedPhraseIds: ReadonlySet<string>;
+  nextLesson: PlayableLesson | null;
   onStageChange: (stage: number) => void;
   onReviewAdded: (phraseId: string) => void;
   onPhraseChange: (phraseIndex: number) => void;
   onPhraseAdvance: (phraseIndex: number) => void;
+  onLessonComplete: () => void;
 };
 
 const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
@@ -28,10 +30,12 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
       phraseIndex,
       reviewScheduled,
       completedPhraseIds,
+      nextLesson,
       onStageChange,
       onReviewAdded,
       onPhraseChange,
       onPhraseAdvance,
+      onLessonComplete,
     },
     ref,
   ) {
@@ -156,12 +160,14 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
                     phraseIndex={phraseIndex}
                     nextPhraseIndex={nextIncompletePhraseIndex}
                     lessonComplete={lessonComplete}
+                    nextLesson={nextLesson}
                     reviewScheduled={reviewScheduled}
                     completed={isComplete}
                     onAdvance={advance}
                     onUnlock={unlockNext}
                     onReviewAdded={onReviewAdded}
                     onPhraseAdvance={advancePhrase}
+                    onLessonComplete={onLessonComplete}
                     unlockedStage={stage}
                     viewedStage={viewedStage}
                     onPrevious={navigatePrevious}

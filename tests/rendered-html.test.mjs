@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("ships the first-time Taigi landing content and Vercel feedback path", async () => {
-  const [layout, landing, siteHeader, page, bottomNav, coursePath, curriculumCoverage, lesson, mobileStageNavigation, stagePanel, stageContent, stagePager, reviewModal, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService] = await Promise.all([
+  const [layout, landing, siteHeader, page, bottomNav, coursePath, curriculumCoverage, lesson, mobileStageNavigation, stagePanel, completionActions, stageContent, stagePager, reviewModal, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/SiteHeader.tsx", import.meta.url), "utf8"),
@@ -14,6 +14,7 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
     readFile(new URL("../app/components/LessonAccordion.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/MobileStageNavigation.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonStagePanel.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/LessonCompletionActions.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonStageContent.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/hooks/useMobileStagePager.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/components/ReviewModal.tsx", import.meta.url), "utf8"),
@@ -137,9 +138,18 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(stagePanel, /reviewScheduled/);
   assert.match(stagePanel, /nextPhraseIndex >= 0/);
   assert.match(stagePanel, /lessonComplete && hasUseResponse/);
+  assert.match(stagePanel, /: lessonComplete[\s\S]*text\.nextLesson/);
+  assert.match(stagePanel, /\) : lessonComplete && \(/);
   assert.match(stagePanel, /completionRef\.current\?\.focus\(\)/);
-  assert.match(stagePanel, /tabIndex=\{-1\}[\s\S]*className="lesson-complete"/);
+  assert.match(stagePanel, /nextLesson[\s\S]*text\.nextLesson/);
+  assert.match(stagePanel, /onLessonComplete/);
+  assert.match(completionActions, /tabIndex=\{-1\}[\s\S]*className="lesson-complete"/);
+  assert.match(completionActions, /nextLesson \? text\.lessonComplete : text\.courseComplete/);
+  assert.match(completionActions, /text\.viewProgress/);
+  assert.match(page, /nextPlayableLesson\(playableLessons, activeLesson\.id\)/);
+  assert.match(page, /nextLesson \? selectLesson\(nextLesson\.number\) : showPath\(\)/);
   assert.match(stagePanel, /hasUseResponse = useResponse\.trim\(\)\.length > 0/);
+  assert.match(stagePanel, /!hasUseResponse && !lessonComplete/);
   assert.match(stagePanel, /disabled=\{!hasUseResponse\}/);
   assert.doesNotMatch(stagePanel, /fetch\(|localStorage|sessionStorage/);
   assert.match(stagePanel, /sayCompleted/);
