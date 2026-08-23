@@ -49,6 +49,45 @@ export const lessonPackages13To18: readonly RawLessonPackage[] = [
           zh: "教育部例句有「你叫啥物名？」；這個問法適合讓初學者從單字進入真實的姓名對話。",
           en: "The MOE gives lí kiò siánn-mih miâ as an example; it moves beginners from a single word into a real name exchange.",
         },
+        useScenario: {
+          prompt: {
+            zh: "對方問你的名字。你要回答「我＿＿小美」，空格應該放哪一個詞？",
+            en: "Someone asks your name. To answer ‘I am called Sió-bí,’ which word belongs in the blank?",
+          },
+          explanation: {
+            zh: "「叫」可以用來說名字或稱呼，放在「我」和名字之間。",
+            en: "“Kiò” is used when saying a name or form of address, between ‘I’ and the name.",
+          },
+          choices: [
+            {
+              id: "called",
+              hanji: "叫",
+              tailo: "Kiò",
+              meaning: { zh: "叫；用來說名字或稱呼", en: "be called; use when saying a name or form of address" },
+              feedback: { zh: "這個詞能接在「我」後面開始回答姓名。", en: "This word can follow ‘I’ to begin giving your name." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/1402/",
+              isCorrect: true,
+            },
+            {
+              id: "be",
+              hanji: "是",
+              tailo: "Sī",
+              meaning: { zh: "是；用來說明身分或判斷", en: "be; use to state identity or make an identification" },
+              feedback: { zh: "「是」可說明身分，但題目指定的是用「叫」回答姓名的句型。", en: "“Sī” can state identity, but this sentence specifically asks for the name pattern using ‘be called’." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/4997/",
+              isCorrect: false,
+            },
+            {
+              id: "i",
+              hanji: "我",
+              tailo: "Guá",
+              meaning: { zh: "我；第一人稱代詞", en: "I; first-person pronoun" },
+              feedback: { zh: "句首已經有「我」，再放一次不會完成姓名句。", en: "The sentence already starts with ‘I’; repeating it does not complete the name pattern." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/3139/",
+              isCorrect: false,
+            },
+          ],
+        },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/1402/"),
       }),
       makePhrase({
@@ -108,6 +147,45 @@ export const lessonPackages13To18: readonly RawLessonPackage[] = [
           zh: "教育部將 tha̍k-tsheh 用在讀書、求學等語境；教材可讓不同年齡學習者代入自己的學習經驗。",
           en: "The MOE uses tha̍k-tsheh for studying and attending school; learners of different ages can connect it to their own experience.",
         },
+        useScenario: {
+          prompt: {
+            zh: "你現在是學生。別人問你平常做什麼，哪一個回答最適合？",
+            en: "You are currently a student. Someone asks what you usually do. Which reply fits best?",
+          },
+          explanation: {
+            zh: "「讀冊」表示讀書、學習或上學，能回答學生目前在做的事。",
+            en: "“Tha̍k-tsheh” means studying, learning, or attending school, so it answers what a student does.",
+          },
+          choices: [
+            {
+              id: "study",
+              hanji: "讀冊",
+              tailo: "Tha̍k-tsheh",
+              meaning: { zh: "讀書、學習、上學", en: "study, learn, or attend school" },
+              feedback: { zh: "這個詞直接表達學生的學習活動。", en: "This directly expresses a student’s learning activity." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/13231/",
+              isCorrect: true,
+            },
+            {
+              id: "job",
+              hanji: "頭路",
+              tailo: "Thâu-lōo",
+              meaning: { zh: "工作、職業", en: "work; occupation" },
+              feedback: { zh: "「頭路」是工作或職業，和題目指定的學生身分不同。", en: "“Thâu-lōo” means work or occupation, which differs from the stated student role." },
+              sourceUrl: "https://sutian.moe.edu.tw/und-hani/su/12076/",
+              isCorrect: false,
+            },
+            {
+              id: "school",
+              hanji: "學校",
+              tailo: "Ha̍k-hāu",
+              meaning: { zh: "學校；學習的場所", en: "school; a place for learning" },
+              feedback: { zh: "「學校」是地點，沒有回答平常在做什麼。", en: "“Ha̍k-hāu” is the place; it does not answer what you usually do." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/11622/",
+              isCorrect: false,
+            },
+          ],
+        },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/13231/"),
       }),
       makePhrase({
@@ -166,6 +244,45 @@ export const lessonPackages13To18: readonly RawLessonPackage[] = [
         cultureNote: {
           zh: "教育部記錄 bē-sóng、buē-sóng；課程要把可接受讀音說清楚，也避免把語言練習誤當成診斷。",
           en: "The MOE records bē-sóng and buē-sóng; make the accepted readings clear and never present language practice as diagnosis.",
+        },
+        useScenario: {
+          prompt: {
+            zh: "你感覺不舒服，想先告訴家人。句子「身體＿＿」空格應該放哪一個詞？",
+            en: "You feel unwell and want to tell your family. Which word completes ‘body＿＿’?",
+          },
+          explanation: {
+            zh: "「袂爽」表示感覺不舒服；放在「身體」後面能表達目前的身體感受，不是診斷。",
+            en: "“Bē-sóng / buē-sóng” means feeling unwell; after ‘body’ it communicates how you feel without making a diagnosis.",
+          },
+          choices: [
+            {
+              id: "unwell",
+              hanji: "袂爽",
+              tailo: "Bē-sóng / buē-sóng",
+              meaning: { zh: "不舒服；感覺不適", en: "feel unwell; feel uncomfortable" },
+              feedback: { zh: "這個詞能表達你目前感覺不舒服。", en: "This word communicates that you currently feel unwell." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/17722/",
+              isCorrect: true,
+            },
+            {
+              id: "take-medicine",
+              hanji: "食藥仔",
+              tailo: "Tsia̍h io̍h-á",
+              meaning: { zh: "吃藥", en: "take medicine" },
+              feedback: { zh: "「食藥仔」是吃藥的動作，不能用來描述目前的感受；本課也不建議是否用藥。", en: "“Tsia̍h io̍h-á” is the action of taking medicine, not a description of how you feel; this lesson does not advise whether to take it." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/12843/",
+              isCorrect: false,
+            },
+            {
+              id: "body",
+              hanji: "身體",
+              tailo: "Sin-thé",
+              meaning: { zh: "身體、軀體", en: "body; physical self" },
+              feedback: { zh: "句首已經有「身體」，再放一次不會說明哪裡不舒服。", en: "The sentence already starts with ‘body’; repeating it does not communicate discomfort." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/3517/",
+              isCorrect: false,
+            },
+          ],
         },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/17722/"),
       }),
@@ -228,6 +345,45 @@ export const lessonPackages13To18: readonly RawLessonPackage[] = [
           en: "The audio models the MOE headword tsē; combine it as tsē tshia during the Use stage to describe travelling by vehicle.",
         },
         useCombination: { hanji: "坐車", tailo: "Tsē tshia", meaning: { zh: "搭車、坐車", en: "ride in a vehicle" } },
+        useScenario: {
+          prompt: {
+            zh: "對方問你怎麼去車站，你是搭車前往。哪一句最適合？",
+            en: "Someone asks how you are getting to the station, and you are going by vehicle. Which reply fits best?",
+          },
+          explanation: {
+            zh: "「坐車」表示搭車，能直接回答前往車站的交通方式。",
+            en: "“Tsē tshia” means riding in a vehicle, so it directly answers how you are travelling to the station.",
+          },
+          choices: [
+            {
+              id: "ride-vehicle",
+              hanji: "坐車",
+              tailo: "Tsē tshia",
+              meaning: { zh: "搭車、坐車", en: "ride in a vehicle" },
+              feedback: { zh: "這句直接說明交通方式是搭車。", en: "This directly says that the mode of travel is by vehicle." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/3022/",
+              isCorrect: true,
+            },
+            {
+              id: "go-out",
+              hanji: "出門",
+              tailo: "Tshut-mn̂g",
+              meaning: { zh: "離家外出", en: "leave home; go out" },
+              feedback: { zh: "「出門」表示離家，沒有說明搭什麼交通工具。", en: "“Tshut-mn̂g” means leaving home; it does not say which transport you use." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/1490/",
+              isCorrect: false,
+            },
+            {
+              id: "station",
+              hanji: "車站",
+              tailo: "Tshia-tsām",
+              meaning: { zh: "供車輛停靠、接泊旅客的地方，多指火車站", en: "a station where vehicles stop and pick up passengers, usually a train station" },
+              feedback: { zh: "「車站」是目的地，不是前往的交通方式。", en: "“Tshia-tsām” is the destination, not the mode of travel." },
+              sourceUrl: "https://sutian.moe.edu.tw/zh-hant/su/3449/",
+              isCorrect: false,
+            },
+          ],
+        },
         source: moeSource("https://sutian.moe.edu.tw/zh-hant/su/3022/"),
       }),
       makePhrase({
