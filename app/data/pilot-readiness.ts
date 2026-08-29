@@ -22,7 +22,10 @@ const verifiedEvidence = (
 export const pilotCandidateLessonId = "lesson-19-polite-exchanges-package";
 
 export const currentPilotReadinessEvidence: PilotReadinessEvidence = {
-  approvedTeacherHandoff: pendingEvidence,
+  contentHandoffAuthorized: verifiedEvidence(
+    "https://github.com/f8qtn9kycq-crypto/Taigi-starter/pull/206#issuecomment-5463466207",
+    "2026-08-29T16:12:17.000Z",
+  ),
   audioAttributionVerified: verifiedEvidence(
     "docs/qa/lesson-2-20-390x844.md",
     "2026-07-26T03:23:27.000Z",

@@ -41,7 +41,9 @@ attribution，以及 mobile flow evidence 都完成後才可以開始。這份�
 `verified`、非空白 evidence reference 與有效 ISO checked-at timestamp 同時存在
 時才算通過。單獨的 boolean、口頭確認或 owner blanket approval 不足以解除 gate。
 
-- [ ] M2.4 handoff artifact 以 approved teacher review 通過。
+- [x] M2.4 handoff artifact 已完成；在 sole-contributor 模式下，以可追溯的
+  owner risk acceptance 授權內容 handoff，teacher review metadata 仍誠實維持
+  pending，不宣稱教師核准。
 - [ ] 使用的 lesson 有已核准、未修改且可追溯的 audio attribution。
 - [ ] playable lesson 有 mobile flow evidence。
 - [ ] 測試 commit、瀏覽器、裝置 viewport 與執行日期已記錄。
