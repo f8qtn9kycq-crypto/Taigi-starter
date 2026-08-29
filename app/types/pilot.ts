@@ -1,5 +1,5 @@
 export const PILOT_READINESS_BLOCKER_IDS = [
-  "approved-teacher-handoff",
+  "content-handoff-authorization",
   "audio-attribution",
   "mobile-flow-evidence",
   "facilitator-protocol",
@@ -22,7 +22,7 @@ export type PilotReadinessGateEvidence =
   }>;
 
 export type PilotReadinessEvidence = Readonly<{
-  approvedTeacherHandoff: PilotReadinessGateEvidence;
+  contentHandoffAuthorized: PilotReadinessGateEvidence;
   audioAttributionVerified: PilotReadinessGateEvidence;
   mobileFlowEvidenceVerified: PilotReadinessGateEvidence;
   facilitatorProtocolReady: PilotReadinessGateEvidence;

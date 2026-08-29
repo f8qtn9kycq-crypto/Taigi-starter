@@ -23,13 +23,17 @@ test("current pilot readiness names one candidate lesson and traceable evidence"
     evidenceRef: "docs/qa/lesson-2-20-390x844.md",
     checkedAt: "2026-07-26T03:23:27.000Z",
   });
+  assert.deepEqual(currentPilotReadinessEvidence.contentHandoffAuthorized, {
+    status: "verified",
+    evidenceRef: "https://github.com/f8qtn9kycq-crypto/Taigi-starter/pull/206#issuecomment-5463466207",
+    checkedAt: "2026-08-29T16:12:17.000Z",
+  });
 });
 
 test("current pilot readiness stays blocked on human evidence", () => {
   assert.deepEqual(currentPilotReadiness, {
     ready: false,
     blockers: [
-      "approved-teacher-handoff",
       "facilitator-protocol",
       "participant-consent",
       "privacy-review",
@@ -37,7 +41,6 @@ test("current pilot readiness stays blocked on human evidence", () => {
   });
 
   for (const gate of [
-    currentPilotReadinessEvidence.approvedTeacherHandoff,
     currentPilotReadinessEvidence.facilitatorProtocolReady,
     currentPilotReadinessEvidence.participantConsentReady,
     currentPilotReadinessEvidence.privacyReviewPassed,

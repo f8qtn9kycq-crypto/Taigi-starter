@@ -28,7 +28,7 @@ test("pilot readiness remains blocked when evidence is absent", () => {
 
 test("pilot readiness reports only the missing evidence", () => {
   const evidence: PilotReadinessEvidence = {
-    approvedTeacherHandoff: verifiedEvidence("teacher-review/lesson-1"),
+    contentHandoffAuthorized: verifiedEvidence("owner-risk/lesson-1"),
     audioAttributionVerified: verifiedEvidence("docs/audio-attribution.md"),
     mobileFlowEvidenceVerified: pendingEvidence(),
     facilitatorProtocolReady: verifiedEvidence("docs/beginner-pilot-plan.md"),
@@ -50,7 +50,7 @@ test("verified labels without traceable evidence remain blocked", () => {
   } as unknown as PilotReadinessGateEvidence;
 
   const evidence: PilotReadinessEvidence = {
-    approvedTeacherHandoff: malformed,
+    contentHandoffAuthorized: malformed,
     audioAttributionVerified: verifiedEvidence("docs/audio-attribution.md"),
     mobileFlowEvidenceVerified: verifiedEvidence("docs/qa/lesson-2-20-390x844.md"),
     facilitatorProtocolReady: verifiedEvidence("docs/beginner-pilot-plan.md"),
@@ -60,13 +60,13 @@ test("verified labels without traceable evidence remain blocked", () => {
 
   assert.deepEqual(evaluatePilotReadiness(evidence), {
     ready: false,
-    blockers: ["approved-teacher-handoff"],
+    blockers: ["content-handoff-authorization"],
   });
 });
 
 test("pilot readiness is ready only when every evidence gate is explicit", () => {
   const evidence: PilotReadinessEvidence = {
-    approvedTeacherHandoff: verifiedEvidence("teacher-review/lesson-1"),
+    contentHandoffAuthorized: verifiedEvidence("owner-risk/lesson-1"),
     audioAttributionVerified: verifiedEvidence("docs/audio-attribution.md"),
     mobileFlowEvidenceVerified: verifiedEvidence("docs/qa/lesson-2-20-390x844.md"),
     facilitatorProtocolReady: verifiedEvidence("docs/beginner-pilot-plan.md"),

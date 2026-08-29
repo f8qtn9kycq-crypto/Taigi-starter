@@ -9,7 +9,7 @@ const readinessChecks: readonly Readonly<{
   key: keyof PilotReadinessEvidence;
   blocker: PilotReadinessBlocker;
 }>[] = [
-  { key: "approvedTeacherHandoff", blocker: "approved-teacher-handoff" },
+  { key: "contentHandoffAuthorized", blocker: "content-handoff-authorization" },
   { key: "audioAttributionVerified", blocker: "audio-attribution" },
   { key: "mobileFlowEvidenceVerified", blocker: "mobile-flow-evidence" },
   { key: "facilitatorProtocolReady", blocker: "facilitator-protocol" },
