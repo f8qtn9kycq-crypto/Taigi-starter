@@ -51,6 +51,11 @@ attribution，以及 mobile flow evidence 都完成後才可以開始。這份�
 - [ ] Participant consent script 已填完 session-specific 欄位、固定版本並通過 privacy review。
 - [ ] Privacy review 已涵蓋資料流、retention、access、withdrawal 與 deletion，並留下 immutable evidence reference。
 
+Facilitator 在招募前使用
+`docs/pilot/facilitator-rehearsal.md` 完成無 participant dry run。Repo 內的空白
+artifact 不等於 rehearsal evidence；filled record 只能留在 owner-controlled、
+access-limited 的位置。
+
 ## 單場流程
 
 建議每場約 10–15 分鐘，使用 390×844 viewport；若裝置不同，必須記錄實際
