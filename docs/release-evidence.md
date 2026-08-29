@@ -4,18 +4,20 @@
 
 - Canonical source repository: GitHub `main`
 - Verified snapshot source commit:
-  `7148732ee7290879c3dfac58c623e3b3d569a2c1`
-- Verified deployment: `5871798656`, Ready／success
-- Exact snapshot URL: https://taigi-starter-1g953cjlm-alex-vercel-x-projects.vercel.app
-- Snapshot date: 2026-08-12
+  `6ca287b398c58c99d7dd6398a46f1e2ef156a826`
+- Verified deployment: GitHub deployment `6044403773`, Ready／success
+- Exact snapshot URL: https://taigi-starter-i8h47h3kc-alex-vercel-x-projects.vercel.app
+- Canonical production URL: https://taigi-starter.vercel.app
+- Snapshot date: 2026-08-23
 - Last behavior-changing runtime source commit:
-  `c81c7f0af22063c3362c39df0583404e7477fc88`
-- Scope: Lessons 1–20 plus v5 device-local per-lesson progress and a multi-card
-  review queue; no account, cloud sync, learner-facing AI, recording upload, or
-  content change
-- Runtime exact-head evidence: `npm test` 73/73, `npm run lint`, `git diff --check`,
-  GitHub build, Vercel Preview Ready, and 390×844 Preview flow `0/15 → 1/15`
-  with `1/15` retained after reload
+  `6ca287b398c58c99d7dd6398a46f1e2ef156a826`
+- Scope: Lessons 1–20 with 59 playable phrases, v5 device-local per-lesson
+  progress, the multi-card review queue, mobile five-page stages, explainable
+  Today Review, and three-choice real-life Use scenarios for every phrase; no
+  account, cloud sync, learner-facing AI, or recording upload
+- Runtime exact-head evidence: `npm test` 107/107, `npm run lint`,
+  `git diff --check`, GitHub build, Vercel Preview Ready, 390×844 responsive
+  browser checks, and post-merge Production read-back
 
 This is an immutable evidence snapshot, not a claim about whichever deployment
 is currently newest. Current live source and deployment state must be queried
@@ -24,12 +26,23 @@ production deployment and must not trigger another commit merely to chase that
 moving pointer. Later governance-only deployments do not invalidate the tested
 runtime baseline.
 
-On 2026-08-12, the exact snapshot URL passed a fresh 390×844 smoke: Lessons 1,
-2, and 20 rendered without horizontal overflow; selecting Lesson 2 or 20 kept
-progress at `0/15`; Lesson 20 remained
-active after reload; and the browser console reported no errors or warnings.
-This did not exercise audio, microphone, or feedback submission. M2.5 remains
-`planned`／`not-run`, with no participant evidence or teacher approval to claim.
+On 2026-08-30, canonical Production passed a fresh 390×844 expert walkthrough
+covering Lessons 1, 5, 10, 15, and 20: lesson switching, phrase pickers,
+independent saved positions, and the Today Review explanation rendered without
+a P0/P1 finding. The latest exact-source suite separately passed 107/107 tests,
+lesson validation for 20 playable lessons and 59 phrases, lint, and
+`git diff --check`. This walkthrough did not repeat every audio or microphone
+path, so it does not replace the earlier isolated media evidence below.
+
+The owner also completed a physical iPhone Safari review of the canonical
+Production Lesson 1 Use flow and marked it Pass: post-answer navigation stayed
+visible, context content was unobstructed, and each lesson phrase exposed its
+scenario. This is real-device owner evidence, not participant research.
+
+Qualified-teacher approval is not a current delivery gate under the explicit
+sole-contributor decision. Lesson metadata remains truthful—teacher review is
+not relabelled approved—and the owner accepts the residual language-content
+risk. M2.5 remains `planned`／`not-run`, with no participant evidence to claim.
 Vercel is the only current production verification target.
 
 ## Historical Sites snapshot
