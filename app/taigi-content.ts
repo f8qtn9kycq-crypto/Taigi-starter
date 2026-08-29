@@ -114,12 +114,6 @@ export type LessonCopy = {
   viewProgress: string;
   path: string;
   pathSummary: string;
-  curriculumEyebrow: string;
-  curriculumTitle: string;
-  curriculumSummary: string;
-  curriculumLessonCount: (count: number) => string;
-  curriculumDisclaimer: string;
-  curriculumSource: string;
   reviewDueTitle: (count: number) => string;
   reviewPrompt: string;
   reviewExplanation: string;
@@ -280,12 +274,6 @@ export const copy: Record<Locale, LessonCopy> = {
     viewProgress: "查看學習進度",
     path: "初學者路徑",
     pathSummary: "20 課已開放",
-    curriculumEyebrow: "國小台語課綱參考",
-    curriculumTitle: "生活主題涵蓋",
-    curriculumSummary: "看看目前 20 課練到哪些生活溝通主題。點開主題可查看相關課程。",
-    curriculumLessonCount: (count) => `${count} 課`,
-    curriculumDisclaimer: "依國家教育研究院閩南語文課綱整理，供學習方向參考；不是教育部認證教材。",
-    curriculumSource: "查看官方課綱",
     reviewDueTitle: (count) => `今天要複習 ${count} 句`,
     reviewPrompt: "看到這句，你會怎麼說？",
     reviewExplanation: "先想怎麼說，再顯示答案。最後選記得程度，我們會安排下次。",
@@ -444,12 +432,6 @@ export const copy: Record<Locale, LessonCopy> = {
     viewProgress: "View learning progress",
     path: "Beginner path",
     pathSummary: "20 lessons available",
-    curriculumEyebrow: "ELEMENTARY CURRICULUM REFERENCE",
-    curriculumTitle: "Everyday topic coverage",
-    curriculumSummary: "See which everyday communication themes the current 20 lessons practise. Open a theme to view its lessons.",
-    curriculumLessonCount: (count) => `${count} ${count === 1 ? "lesson" : "lessons"}`,
-    curriculumDisclaimer: "Mapped with reference to the NAER Taiwanese-language curriculum. This is not MOE-certified teaching material.",
-    curriculumSource: "View the official curriculum",
     reviewDueTitle: (count) => `${count} ${count === 1 ? "phrase" : "phrases"} to review today`,
     reviewPrompt: "How would you say this?",
     reviewExplanation: "Recall it first, then reveal the answer. Finally, rate how well you remembered so we can schedule the next review.",

@@ -3,14 +3,13 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("ships the first-time Taigi landing content and Vercel feedback path", async () => {
-  const [layout, landing, siteHeader, page, bottomNav, coursePath, curriculumCoverage, lesson, mobileStageNavigation, stagePanel, completionActions, useStageActions, useScenarioExercise, stageContent, stagePager, reviewModal, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService] = await Promise.all([
+  const [layout, landing, siteHeader, page, bottomNav, coursePath, lesson, mobileStageNavigation, stagePanel, completionActions, useStageActions, useScenarioExercise, stageContent, stagePager, reviewModal, recording, recorder, copy, content, feedbackConfig, feedbackForm, feedbackService, css] = await Promise.all([
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LandingHero.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/SiteHeader.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/TaigiStartPage.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/BottomNav.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/CoursePath.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/components/CurriculumCoverage.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonAccordion.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/MobileStageNavigation.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LessonStagePanel.tsx", import.meta.url), "utf8"),
@@ -27,6 +26,7 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
     readFile(new URL("../app/api/feedback-config/route.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/FeedbackForm.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/services/feedback.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
   ]);
 
   assert.match(layout, /台語起步 Tâi-gí Start/);
@@ -57,12 +57,8 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(coursePath, /lesson\.status === "planned"[\s\S]*\? "locked"/);
   assert.match(coursePath, /: "available"/);
   assert.doesNotMatch(coursePath, /CurriculumCoverage/);
-  assert.match(curriculumCoverage, /<details key=\{group\.id\}>/);
-  assert.match(curriculumCoverage, /elementaryTaiwaneseCurriculumUrl/);
-  assert.match(curriculumCoverage, /text\.curriculumDisclaimer/);
-  assert.match(copy, /不是教育部認證教材/);
-  assert.match(copy, /not MOE-certified teaching material/);
-  assert.match(copy, /count === 1 \? "lesson" : "lessons"/);
+  assert.doesNotMatch(copy, /課綱參考|官方課綱|curriculum reference|official curriculum/i);
+  assert.doesNotMatch(css, /curriculum-coverage|curriculum-groups|curriculum-disclaimer/);
   assert.match(copy, /lessonLocked: "尚未開放"/);
   assert.match(copy, /lessonLocked: "Locked"/);
   assert.match(copy, /今天要複習 \$\{count\} 句/);
