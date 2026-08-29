@@ -43,7 +43,8 @@ Only then: playable lesson integration
   BY-ND 3.0 TW attribution 與未修改標記；逐課 mobile QA 見
   `docs/qa/lesson-2-20-390x844.md`。
 - Teacher review 沒有被偽造為 approved。這次 release 以產品擁有者明確的
-  owner risk acceptance 通過 handoff；後續仍可補回逐課教師審核紀錄。
+  owner risk acceptance 通過 handoff。sole-contributor 模式目前不把合格教師
+  approval 當 delivery blocker；若未來取得審核，仍可補回逐課可追溯紀錄。
 - 第 21 課以後沒有被誤標為 playable；M2.5 beginner pilot 仍未執行。
 
 以 2026-07-26 的 roadmap snapshot parent `main`（`08732a4`）為歷史基準；此 SHA
@@ -73,8 +74,9 @@ M2.1–M2.4 的實作邊界與第 1–20 課 runtime handoff 已進入 `main`；
 | M2.4 Package-to-lesson handoff | 已合併 | 第 1–20 課已依 owner risk acceptance 接入 runtime；沒有宣稱 teacher approval |
 | M2.5 Beginner pilot | 計畫已合併 | `planned`／`not-run`，沒有研究結果可宣稱 |
 
-目前的產品驗證缺口是外部初學者與教師 evidence。下一個產品工作不應重新宣告
-M2.1 或再堆 planned package，而應先完成 M2.5 pilot readiness，再由真人執行研究。
+目前的產品驗證缺口是外部初學者 evidence，不是另一輪 UI 堆疊或教師 gate。
+下一個產品工作不應重新宣告 M2.1 或再堆 planned package，而應以目前的
+sole-contributor／owner-risk 邊界準備 M2.5，再由真人執行研究。
 
 ## 研究轉成的產品原則
 
@@ -100,7 +102,7 @@ M2.1 或再堆 planned package，而應先完成 M2.5 pilot readiness，再由�
 每個工作包都維持一個 issue、一個 branch、一個 PR，依序處理：
 
 1. M2.1 validator、M2.2 review contract、M2.3 package、M2.4 handoff gate 與第 1–20 課 runtime integration 均已交付；teacher review pending 與 owner risk acceptance 必須繼續誠實呈現。
-2. M2.5 先完成 readiness gate：確認真實 teacher approval、音檔 attribution、390×844 mobile evidence、測試 commit 與 facilitator 規則。
+2. M2.5 先完成 readiness gate：確認可追溯的 owner risk acceptance、音檔 attribution、390×844 mobile evidence、測試 commit、privacy decision 與 facilitator 規則；不偽造 teacher approval。
 3. readiness gate 通過後，才招募 10–20 位初學者並執行短期 pilot。
 4. pilot 只提交去識別化 aggregate summary；完成前所有結果維持 `not-run`。
 5. 只有 aggregate summary、privacy review 與 mobile evidence 完成後，才決定下一個 lesson integration PR。
