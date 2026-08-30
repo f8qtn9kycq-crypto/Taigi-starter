@@ -262,6 +262,9 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(css, /\.locale \{[\s\S]*min-height: 44px/);
   assert.match(css, /\.script-tabs button \{[\s\S]*min-height: 44px/);
   assert.match(css, /\.lesson-targets button \{[\s\S]*min-height: 44px/);
+  assert.match(css, /\.lesson-targets button \{[\s\S]*border: 1px solid var\(--line\)[\s\S]*border-radius: 12px[\s\S]*background: white/);
+  assert.match(css, /\.lesson-targets button\.active \{[\s\S]*border-color: var\(--jade\)[\s\S]*background: #e7f5ef/);
+  assert.match(css, /\.lesson-targets button:hover,[\s\S]*\.lesson-targets button:focus-visible \{[\s\S]*border-color: var\(--jade\)/);
   assert.match(css, /\.lesson-list-button \{[\s\S]*grid-column: 1 \/ -1/);
   assert.match(css, /\.lesson-list article\.active \{[\s\S]*border-color: var\(--jade\)/);
   assert.match(css, /\.media-attribution a \{[\s\S]*min-height: 44px/);
