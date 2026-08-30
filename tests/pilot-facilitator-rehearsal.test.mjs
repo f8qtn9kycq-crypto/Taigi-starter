@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-test("facilitator rehearsal is executable without self-approving readiness", async () => {
+test("facilitator rehearsal is executable without self-approving the remaining gates", async () => {
   const [artifact, consentTemplate, readinessSource, plan] = await Promise.all([
     readFile(new URL("../docs/pilot/facilitator-rehearsal.md", import.meta.url), "utf8"),
     readFile(new URL("../docs/pilot/participant-consent-template.md", import.meta.url), "utf8"),
@@ -26,6 +26,9 @@ test("facilitator rehearsal is executable without self-approving readiness", asy
   assert.match(plan, /exact `m2\.5-consent-v2`/);
   assert.doesNotMatch(`${artifact}\n${plan}`, /m2\.5-consent-v1/);
   assert.match(plan, /docs\/pilot\/facilitator-rehearsal\.md/);
-  assert.match(readinessSource, /facilitatorProtocolReady: pendingEvidence/);
-  assert.doesNotMatch(readinessSource, /facilitatorProtocolReady: verifiedEvidence/);
+  assert.match(readinessSource, /facilitatorProtocolReady: verifiedEvidence\(/);
+  assert.match(readinessSource, /owner-controlled:m2\.5-facilitator-rehearsal-/);
+  assert.match(readinessSource, /#sha256=[a-f0-9]{64}/);
+  assert.match(readinessSource, /participantConsentReady: pendingEvidence/);
+  assert.match(readinessSource, /privacyReviewPassed: pendingEvidence/);
 });

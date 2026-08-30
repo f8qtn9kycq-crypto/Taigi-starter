@@ -30,18 +30,23 @@ test("current pilot readiness names one candidate lesson and traceable evidence"
   });
 });
 
-test("current pilot readiness stays blocked on human evidence", () => {
+test("current pilot readiness reports only the remaining consent and privacy blockers", () => {
   assert.deepEqual(currentPilotReadiness, {
     ready: false,
     blockers: [
-      "facilitator-protocol",
       "participant-consent",
       "privacy-review",
     ],
   });
 
+  assert.deepEqual(currentPilotReadinessEvidence.facilitatorProtocolReady, {
+    status: "verified",
+    evidenceRef:
+      "owner-controlled:m2.5-facilitator-rehearsal-2026-08-30T163038Z.yaml#sha256=e5c93f265e5733b51bb912054646e6ed09adf90f8f6dba181a12c6142241ba56",
+    checkedAt: "2026-08-30T16:30:38.000Z",
+  });
+
   for (const gate of [
-    currentPilotReadinessEvidence.facilitatorProtocolReady,
     currentPilotReadinessEvidence.participantConsentReady,
     currentPilotReadinessEvidence.privacyReviewPassed,
   ]) {
