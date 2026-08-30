@@ -3,8 +3,9 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("facilitator rehearsal is executable without self-approving readiness", async () => {
-  const [artifact, readinessSource, plan] = await Promise.all([
+  const [artifact, consentTemplate, readinessSource, plan] = await Promise.all([
     readFile(new URL("../docs/pilot/facilitator-rehearsal.md", import.meta.url), "utf8"),
+    readFile(new URL("../docs/pilot/participant-consent-template.md", import.meta.url), "utf8"),
     readFile(new URL("../app/data/pilot-readiness.ts", import.meta.url), "utf8"),
     readFile(new URL("../docs/beginner-pilot-plan.md", import.meta.url), "utf8"),
   ]);
@@ -20,6 +21,10 @@ test("facilitator rehearsal is executable without self-approving readiness", asy
   assert.match(artifact, /participantRecordCreated: no/);
   assert.match(artifact, /FACILITATOR_REHEARSAL_RECORD_START/);
   assert.match(artifact, /FACILITATOR_REHEARSAL_RECORD_END/);
+  assert.match(consentTemplate, /Template ID: `m2\.5-consent-v2`/);
+  assert.match(artifact, /consentScriptVersion: m2\.5-consent-v2/);
+  assert.match(plan, /exact `m2\.5-consent-v2`/);
+  assert.doesNotMatch(`${artifact}\n${plan}`, /m2\.5-consent-v1/);
   assert.match(plan, /docs\/pilot\/facilitator-rehearsal\.md/);
   assert.match(readinessSource, /facilitatorProtocolReady: pendingEvidence/);
   assert.doesNotMatch(readinessSource, /facilitatorProtocolReady: verifiedEvidence/);

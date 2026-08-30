@@ -16,7 +16,7 @@ template、CI 通過或 Codex 執行檢查都不代表 facilitator 已完成 reh
 
 - [ ] 使用 canonical Production 與當下 exact GitHub main SHA。
 - [ ] 記錄實際 browser、device／viewport、日期與 consent script version。
-- [ ] 使用 `m2.5-consent-v1` 的 owner-controlled working copy；不在 repo 填入
+- [ ] 使用 `m2.5-consent-v2` 的 owner-controlled working copy；不在 repo 填入
   owner 或 participant 資料。
 - [ ] 使用成人 participant 範圍；未成年人、報酬、跨境資料或額外聯絡資料均
   停止並另做 review。
@@ -67,7 +67,7 @@ rehearsedAt: YYYY-MM-DDTHH:mm:ss.sssZ
 sourceCommit: full-git-sha
 productionDeploymentRef: immutable-deployment-ref
 browserAndDevice: owner-controlled-description
-consentScriptVersion: m2.5-consent-v1
+consentScriptVersion: m2.5-consent-v2
 allWalkthroughItemsPassed: yes-or-no
 allStopConditionDrillsPassed: yes-or-no
 participantPresent: no
@@ -87,4 +87,3 @@ evidenceRef: immutable-access-controlled-ref
 3. Record 包含 exact source SHA、Production deployment、ISO timestamp 與 immutable
    access-controlled evidence reference。
 4. Consent 與 privacy gates 仍獨立評估；facilitator rehearsal 不會解除它們。
-
