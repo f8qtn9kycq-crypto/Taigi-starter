@@ -85,9 +85,10 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(copy, /Five minutes a day, from understanding to speaking\./);
   assert.match(copy, /previewDuration: "About 5 minutes"/);
   assert.doesNotMatch(copy, /三分鐘|3 分鐘|Three (?:focused )?minutes|About 3 minutes/);
-  assert.match(copy, /startLessonEntry: \(number, minutes\) => `開始第 \$\{number\} 課 · 約 \$\{minutes\} 分鐘`/);
-  assert.match(copy, /resumeLessonEntry: \(number, stage\) => `繼續第 \$\{number\} 課 · 從「\$\{stage\}」繼續`/);
-  assert.match(copy, /startNextLessonEntry: \(number\) => `開始下一課 · 第 \$\{number\} 課`/);
+  assert.match(copy, /startPhrase: "開始今日一句"/);
+  assert.match(copy, /resumeLearning: "繼續學習"/);
+  assert.match(copy, /startPhrase: "Start Today’s Phrase"/);
+  assert.match(copy, /resumeLearning: "Resume learning"/);
   assert.match(copy, /viewAllLessons: \(count\) => `查看全部 \$\{count\} 課`/);
   assert.match(copy, /先聽發音/);
   assert.match(copy, /音檔無法播放，先看文字/);
@@ -235,6 +236,7 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(page, /onSecondaryAction=\{showPath\}/);
   assert.match(page, /resolveLandingAction/);
   assert.match(page, /landingAction\.kind === "next"/);
+  assert.match(page, /const landingActionLabel = progress\.hasStarted \? text\.resumeLearning : text\.startPhrase/);
   assert.match(page, /text\.viewAllLessons\(playableLessons\.length\)/);
   assert.match(page, /lessonViewOpen, setLessonViewOpen/);
   assert.match(page, /activeTab === "learn" && !lessonViewOpen/);
@@ -256,9 +258,8 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(landing, /aria-pressed=\{isPlaying\}/);
   assert.match(audioHook, /let activeAudio: HTMLAudioElement \| null = null/);
   assert.match(audioHook, /activeAudio\.pause\(\)/);
-  assert.match(copy, /startLessonEntry: \(number, minutes\)/);
-  assert.match(copy, /resumeLessonEntry: \(number, stage\)/);
-  assert.match(copy, /startNextLessonEntry: \(number\)/);
+  assert.match(copy, /startPhrase: string/);
+  assert.match(copy, /resumeLearning: string/);
   assert.match(copy, /viewAllLessons: \(count\)/);
   assert.match(copy, /listenFirst: "先聽發音"/);
   assert.match(copy, /listenFirst: "Listen First"/);
