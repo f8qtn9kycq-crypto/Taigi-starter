@@ -67,16 +67,7 @@ export default function TaigiStartPage() {
     completedPhraseIds,
     stage: activeStage,
   });
-  const landingActionLabel = landingAction.kind === "start"
-    ? text.startLessonEntry(landingAction.lesson.pathOrder, landingAction.lesson.durationMinutes)
-    : landingAction.kind === "resume"
-      ? text.resumeLessonEntry(
-          landingAction.lesson.pathOrder,
-          text.stageLabels[landingAction.lesson.stages[landingAction.stage].id],
-        )
-      : landingAction.kind === "next"
-        ? text.startNextLessonEntry(landingAction.lesson.pathOrder)
-        : text.viewProgress;
+  const landingActionLabel = progress.hasStarted ? text.resumeLearning : text.startPhrase;
   const reviewNow = useReviewNow(progress.reviewCards);
   const reviewCards = orderedReviewCards(progress.reviewCards);
   const reviewsDue = dueReviewCards(progress.reviewCards, reviewNow);
