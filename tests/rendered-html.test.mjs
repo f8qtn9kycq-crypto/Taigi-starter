@@ -85,7 +85,10 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(copy, /Five minutes a day, from understanding to speaking\./);
   assert.match(copy, /previewDuration: "About 5 minutes"/);
   assert.doesNotMatch(copy, /三分鐘|3 分鐘|Three (?:focused )?minutes|About 3 minutes/);
-  assert.match(copy, /開始今日一句/);
+  assert.match(copy, /startLessonEntry: \(number, minutes\) => `開始第 \$\{number\} 課 · 約 \$\{minutes\} 分鐘`/);
+  assert.match(copy, /resumeLessonEntry: \(number, stage\) => `繼續第 \$\{number\} 課 · 從「\$\{stage\}」繼續`/);
+  assert.match(copy, /startNextLessonEntry: \(number\) => `開始下一課 · 第 \$\{number\} 課`/);
+  assert.match(copy, /viewAllLessons: \(count\) => `查看全部 \$\{count\} 課`/);
   assert.match(copy, /先聽發音/);
   assert.match(copy, /音檔無法播放，先看文字/);
   assert.match(copy, /聽 → 看 → 說 → 想 → 用/);
@@ -177,8 +180,9 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.doesNotMatch(copy, /若目前不是 Safari|open this lesson in Safari/);
   assert.doesNotMatch(`${recording}\n${recorder}`, /fetch\(|XMLHttpRequest|navigator\.sendBeacon/);
   assert.match(siteHeader, /text\.stageCount\(stage, totalStages\)/);
-  assert.match(landing, /startPending[\s\S]*\? text\.startingPhrase[\s\S]*: hasStarted[\s\S]*\? text\.resumeLearning[\s\S]*: text\.startPhrase/);
-  assert.match(landing, /<span>\{primaryActionLabel\}<\/span>/);
+  assert.match(landing, /startPending \? text\.startingPhrase : primaryActionLabel/);
+  assert.match(landing, /onClick=\{onSecondaryAction\}/);
+  assert.match(landing, /\{secondaryActionLabel\}/);
   assert.doesNotMatch(copy, /stageCount: \(stage\) => .*\/ 5/);
   assert.match(content, /教育部《臺灣台語常用詞辭典》/);
   assert.match(copy, /20 課已開放/);
@@ -228,7 +232,10 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(page, /progress\.lessons\[activeLesson\.id\]/);
   assert.match(page, /activeLesson\.phrases\[activeLessonProgress\?\.phraseIndex \?\? 0\]/);
   assert.match(page, /onStart=\{startLearning\}/);
-  assert.match(page, /onPeek=\{startLearning\}/);
+  assert.match(page, /onSecondaryAction=\{showPath\}/);
+  assert.match(page, /resolveLandingAction/);
+  assert.match(page, /landingAction\.kind === "next"/);
+  assert.match(page, /text\.viewAllLessons\(playableLessons\.length\)/);
   assert.match(page, /lessonViewOpen, setLessonViewOpen/);
   assert.match(page, /activeTab === "learn" && !lessonViewOpen/);
   assert.match(page, /hasStarted=\{progress\.hasStarted\}/);
@@ -249,8 +256,10 @@ test("landing interaction and responsive contracts remain explicit", async () =>
   assert.match(landing, /aria-pressed=\{isPlaying\}/);
   assert.match(audioHook, /let activeAudio: HTMLAudioElement \| null = null/);
   assert.match(audioHook, /activeAudio\.pause\(\)/);
-  assert.match(copy, /startPhrase: "開始今日一句"/);
-  assert.match(copy, /startPhrase: "Start Today’s Phrase"/);
+  assert.match(copy, /startLessonEntry: \(number, minutes\)/);
+  assert.match(copy, /resumeLessonEntry: \(number, stage\)/);
+  assert.match(copy, /startNextLessonEntry: \(number\)/);
+  assert.match(copy, /viewAllLessons: \(count\)/);
   assert.match(copy, /listenFirst: "先聽發音"/);
   assert.match(copy, /listenFirst: "Listen First"/);
   assert.match(copy, /continueWithoutAudio: "Audio unavailable, continue to the script"/);

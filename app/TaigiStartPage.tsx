@@ -14,6 +14,7 @@ import { useReviewNow } from "./hooks/useReviewNow";
 import { copy } from "./taigi-content";
 import type { PlayableLesson } from "./types/lesson";
 import { dueReviewCards, orderedReviewCards } from "./utils/learning-progress";
+import { resolveLandingAction } from "./utils/landing-action";
 import { nextPlayableLesson } from "./utils/lesson-catalog";
 
 const playableLessons = lessonCatalog.filter(
@@ -59,6 +60,23 @@ export default function TaigiStartPage() {
     : 0;
   const activePhrase = activeLesson.phrases[activePhraseIndex];
   const completedPhraseIds = new Set(activeLessonProgress?.completedPhraseIds ?? []);
+  const landingAction = resolveLandingAction({
+    hasStarted: progress.hasStarted,
+    activeLesson,
+    nextLesson,
+    completedPhraseIds,
+    stage: activeStage,
+  });
+  const landingActionLabel = landingAction.kind === "start"
+    ? text.startLessonEntry(landingAction.lesson.pathOrder, landingAction.lesson.durationMinutes)
+    : landingAction.kind === "resume"
+      ? text.resumeLessonEntry(
+          landingAction.lesson.pathOrder,
+          text.stageLabels[landingAction.lesson.stages[landingAction.stage].id],
+        )
+      : landingAction.kind === "next"
+        ? text.startNextLessonEntry(landingAction.lesson.pathOrder)
+        : text.viewProgress;
   const reviewNow = useReviewNow(progress.reviewCards);
   const reviewCards = orderedReviewCards(progress.reviewCards);
   const reviewsDue = dueReviewCards(progress.reviewCards, reviewNow);
@@ -121,6 +139,12 @@ export default function TaigiStartPage() {
     if (startPending) return;
     heroAudio.stop();
     setStartPending(true);
+    if (landingAction.kind === "next") setLessonId(landingAction.lesson.id);
+    if (landingAction.kind === "progress") {
+      setStartPending(false);
+      showPath();
+      return;
+    }
     setHasStarted(true);
     setLessonViewOpen(true);
     setActiveTab("learn");
@@ -155,10 +179,12 @@ export default function TaigiStartPage() {
           isPlaying={heroAudio.isPlaying}
           audioError={heroAudio.hasError}
           startPending={startPending}
+          primaryActionLabel={landingActionLabel}
+          secondaryActionLabel={text.viewAllLessons(playableLessons.length)}
           onLocaleChange={() => setLocale(progress.locale === "zh" ? "en" : "zh")}
           onAudioToggle={() => void heroAudio.toggle()}
           onStart={startLearning}
-          onPeek={startLearning}
+          onSecondaryAction={showPath}
         />
       ) : (
         <LearningWorkspace
