@@ -11,10 +11,12 @@ type LandingHeroProps = {
   isPlaying: boolean;
   audioError: boolean;
   startPending: boolean;
+  primaryActionLabel: string;
+  secondaryActionLabel: string;
   onLocaleChange: () => void;
   onAudioToggle: () => void;
   onStart: () => void;
-  onPeek: () => void;
+  onSecondaryAction: () => void;
 };
 
 export default function LandingHero({
@@ -27,17 +29,13 @@ export default function LandingHero({
   isPlaying,
   audioError,
   startPending,
+  primaryActionLabel,
+  secondaryActionLabel,
   onLocaleChange,
   onAudioToggle,
   onStart,
-  onPeek,
+  onSecondaryAction,
 }: LandingHeroProps) {
-  const primaryActionLabel = startPending
-    ? text.startingPhrase
-    : hasStarted
-      ? text.resumeLearning
-      : text.startPhrase;
-
   return (
     <div className="landing-viewport">
       <SiteHeader
@@ -60,7 +58,7 @@ export default function LandingHero({
 
           <div className="hero-actions">
             <button type="button" className="hero-primary-action" onClick={onStart} disabled={startPending} aria-busy={startPending}>
-              <span>{primaryActionLabel}</span><b aria-hidden="true">→</b>
+              <span>{startPending ? text.startingPhrase : primaryActionLabel}</span><b aria-hidden="true">→</b>
             </button>
             <button
               type="button"
@@ -79,9 +77,9 @@ export default function LandingHero({
         </div>
       </section>
 
-      <button type="button" className="next-page-peek" onClick={onPeek}>
-        <span><small>{text.previewLabel}</small><b>{text.previewTitle}</b></span>
-        <em>{text.previewDuration}</em>
+      <button type="button" className="next-page-peek" onClick={onSecondaryAction}>
+        <span><small>{text.previewLabel}</small><b>{secondaryActionLabel}</b></span>
+        <em aria-hidden="true">→</em>
       </button>
     </div>
   );

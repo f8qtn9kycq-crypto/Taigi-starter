@@ -16,6 +16,10 @@ export type LessonCopy = {
   heroSupport: string;
   startPhrase: string;
   startingPhrase: string;
+  startLessonEntry: (number: number, minutes: number) => string;
+  resumeLessonEntry: (number: number, stage: string) => string;
+  startNextLessonEntry: (number: number) => string;
+  viewAllLessons: (count: number) => string;
   listenFirst: string;
   pausePreview: string;
   previewPlaying: string;
@@ -158,6 +162,10 @@ export const copy: Record<Locale, LessonCopy> = {
     heroSupport: "每天 5 分鐘，從聽懂到開口。",
     startPhrase: "開始今日一句",
     startingPhrase: "正在開啟…",
+    startLessonEntry: (number, minutes) => `開始第 ${number} 課 · 約 ${minutes} 分鐘`,
+    resumeLessonEntry: (number, stage) => `繼續第 ${number} 課 · 從「${stage}」繼續`,
+    startNextLessonEntry: (number) => `開始下一課 · 第 ${number} 課`,
+    viewAllLessons: (count) => `查看全部 ${count} 課`,
     listenFirst: "先聽發音",
     pausePreview: "暫停發音",
     previewPlaying: "發音播放中",
@@ -316,6 +324,10 @@ export const copy: Record<Locale, LessonCopy> = {
     heroSupport: "Five minutes a day, from understanding to speaking.",
     startPhrase: "Start Today’s Phrase",
     startingPhrase: "Opening…",
+    startLessonEntry: (number, minutes) => `Start Lesson ${number} · about ${minutes} min`,
+    resumeLessonEntry: (number, stage) => `Resume Lesson ${number} · continue from ${stage}`,
+    startNextLessonEntry: (number) => `Start next · Lesson ${number}`,
+    viewAllLessons: (count) => `View all ${count} lessons`,
     listenFirst: "Listen First",
     pausePreview: "Pause Preview",
     previewPlaying: "Pronunciation preview playing",
