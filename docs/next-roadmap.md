@@ -81,9 +81,10 @@ reviewer、consent 與 participant-level retention／deletion 都是重新啟動
 投入沒有實際資料流的 pilot infrastructure。
 
 下一個產品階段是 **first-session usability**：讓第一次使用者在 3 秒內看懂
-唯一的下一個動作。借鏡 Busuu 的短課程節奏與 Duolingo 的低摩擦單一任務，
-但不複製其視覺、遊戲化或 streak；Taigi Start 仍維持自己的溫暖、文化導向與
-Hear → See → Say → Recall → Use 學習契約。
+唯一的下一個動作，並以後續獨立 PR 驗證約 15 秒的第一個發音學習閉環。借鏡
+Busuu 的短課程節奏與 Duolingo 的低摩擦單一任務，但不複製其視覺、遊戲化或
+streak；Taigi Start 仍維持自己的溫暖、文化導向與 Hear → See → Say → Recall
+→ Use 學習契約。
 
 ## 研究轉成的產品原則
 
@@ -126,6 +127,13 @@ Hear → See → Say → Recall → Use 學習契約。
 首個 learner-facing PR 必須同時驗證 fresh、existing、completed progress，zh-TW／
 English 與 iPhone 13 Safari 390×844。主操作在參考 viewport 不需捲動即可看到，
 且不得遮擋既有 lesson pager、底部導覽或改動學習／儲存邏輯。
+
+第二個 learner-facing PR 才處理 tester 提出的 speaking/audio continuity，不與入口
+PR 混在一起。它應在一個代表性詞語上把既有能力編排成明確的
+`聽示範 → 錄自己 → 聽自己 → 再聽示範 → 繼續`，切換詞語時清除上一詞的錄音
+狀態，並讓新詞的示範音可用一個明顯按鈕播放。預設不自動播放、不加入 AI
+發音評分，也不廣泛增加華語拼音；只在已觀察到混淆的詞語，用簡短意思提示
+說明這是台語表達，避免初學者把陌生的台語讀音誤認為音檔錯誤。
 
 ## M2 不做的事情
 
