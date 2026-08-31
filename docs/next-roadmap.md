@@ -72,11 +72,19 @@ M2.1–M2.4 的實作邊界與第 1–20 課 runtime handoff 已進入 `main`；
 | M2.2 Teacher review contract | 已合併 | 未完成審核仍只能是 `planned` |
 | M2.3 內容 16–18 | 已合併 | package 與 runtime lesson 已建立；teacher review 仍 pending，POJ 與官方原始音檔 provenance 已完整 |
 | M2.4 Package-to-lesson handoff | 已合併 | 第 1–20 課已依 owner risk acceptance 接入 runtime；沒有宣稱 teacher approval |
-| M2.5 Beginner pilot | 計畫已合併 | `planned`／`not-run`，沒有研究結果可宣稱 |
+| M2.5 Beginner pilot | Deferred until real participant demand | `planned`／`not-run`，沒有 participant、participant record 或研究結果可宣稱 |
 
-目前的產品驗證缺口是外部初學者 evidence，不是另一輪 UI 堆疊或教師 gate。
-下一個產品工作不應重新宣告 M2.1 或再堆 planned package，而應以目前的
-sole-contributor／owner-risk 邊界準備 M2.5，再由真人執行研究。
+外部初學者 evidence 仍是尚未取得的研究缺口，但目前沒有 participant 或近期
+招募 use case，因此 M2.5 不再是當前產品開發 blocker。FileVault、privacy
+reviewer、consent 與 participant-level retention／deletion 都是重新啟動招募前
+必須完成的 gates；在此之前維持 pending，不把 pending 改寫成 Pass，也不繼續
+投入沒有實際資料流的 pilot infrastructure。
+
+下一個產品階段是 **first-session usability**：讓第一次使用者在 3 秒內看懂
+唯一的下一個動作，並以後續獨立 PR 驗證約 15 秒的第一個發音學習閉環。借鏡
+Busuu 的短課程節奏與 Duolingo 的低摩擦單一任務，但不複製其視覺、遊戲化或
+streak；Taigi Start 仍維持自己的溫暖、文化導向與 Hear → See → Say → Recall
+→ Use 學習契約。
 
 ## 研究轉成的產品原則
 
@@ -95,17 +103,37 @@ sole-contributor／owner-risk 邊界準備 M2.5，再由真人執行研究。
 | M2.2 | Teacher review contract | 可追蹤的審核欄位與待確認清單 | 未完成審核的 package 仍只能是 `planned`，不能被 runtime catalog 當成可玩課程 |
 | M2.3 | 下一批內容 16–18 | `出門坐車`、`餐廳點菜`、`買物件佮問價` 的 source-verified package | 每課先核實教育部詞條，再通過 validator；只加入可追溯、未修改的官方原始音檔 |
 | M2.4 | Package-to-lesson handoff | 把 package 轉成 playable lesson 的明確輸入契約 | 需要音檔 attribution、mobile flow 證據；未完成 teacher review 時另需 owner risk acceptance |
-| M2.5 | Beginner pilot | 10–20 位初學者的短期驗證表 | 量測完成率、完成時間、回想、開口信心與放棄位置；不收集未授權的原始錄音 |
+| M2.5 | Beginner pilot | Deferred until real participant demand | 有真實招募 use case 後，重新啟動 readiness、consent 與 privacy gates；執行前仍維持 `not-run` |
 
 ## 實作順序與 PR 邊界
 
 每個工作包都維持一個 issue、一個 branch、一個 PR，依序處理：
 
 1. M2.1 validator、M2.2 review contract、M2.3 package、M2.4 handoff gate 與第 1–20 課 runtime integration 均已交付；teacher review pending 與 owner risk acceptance 必須繼續誠實呈現。
-2. M2.5 先完成 readiness gate：確認可追溯的 owner risk acceptance、音檔 attribution、390×844 mobile evidence、測試 commit、privacy decision 與 facilitator 規則；不偽造 teacher approval。
-3. readiness gate 通過後，才招募 10–20 位初學者並執行短期 pilot。
-4. pilot 只提交去識別化 aggregate summary；完成前所有結果維持 `not-run`。
-5. 只有 aggregate summary、privacy review 與 mobile evidence 完成後，才決定下一個 lesson integration PR。
+2. M2.5 維持 deferred／`not-run`；沒有真實 participant demand 時，不把 FileVault 或 privacy reviewer 當成一般產品 PR blocker。
+3. 有明確招募計畫後，才重新啟動 readiness：確認 owner risk acceptance、音檔 attribution、mobile evidence、consent、privacy decision 與 facilitator 規則；不偽造 teacher approval。
+4. readiness gate 通過後才招募，pilot 只提交去識別化 aggregate summary；完成前所有結果維持 `not-run`。
+5. 當前先以獨立 Issue／PR 改善 first-session usability；不把 UI 專家 walkthrough 冒充 participant evidence。
+
+## 下一階段：First-session usability
+
+目標不是新增 onboarding 說明頁，而是讓首頁只突出一個可立即理解的下一步：
+
+- fresh progress：`開始第 1 課 · 約 5 分鐘`；
+- existing progress：`繼續第 X 課 · 從「聽／看／講／記／用」繼續`；
+- completed lesson：`開始下一課`；
+- `查看全部 20 課` 保留為次要入口。
+
+首個 learner-facing PR 必須同時驗證 fresh、existing、completed progress，zh-TW／
+English 與 iPhone 13 Safari 390×844。主操作在參考 viewport 不需捲動即可看到，
+且不得遮擋既有 lesson pager、底部導覽或改動學習／儲存邏輯。
+
+第二個 learner-facing PR 才處理 tester 提出的 speaking/audio continuity，不與入口
+PR 混在一起。它應在一個代表性詞語上把既有能力編排成明確的
+`聽示範 → 錄自己 → 聽自己 → 再聽示範 → 繼續`，切換詞語時清除上一詞的錄音
+狀態，並讓新詞的示範音可用一個明顯按鈕播放。預設不自動播放、不加入 AI
+發音評分，也不廣泛增加華語拼音；只在已觀察到混淆的詞語，用簡短意思提示
+說明這是台語表達，避免初學者把陌生的台語讀音誤認為音檔錯誤。
 
 ## M2 不做的事情
 
@@ -127,6 +155,7 @@ M2 只有在以下條件全部成立時，才可稱為完成：
   與手機尺寸驗證。
 - 學習者測試結果能回答「初學者是否完成並記得」，而不只是證明畫面能渲染。
 
-目前 M2 尚未宣稱完成；缺口是 M2.5 的真實 participant evidence，而不是再增加
-planned package。下一個最小實作單位是 **M2.5 pilot readiness／execution**，其
-前置條件與資料界線詳見 `docs/beginner-pilot-plan.md`。
+目前 M2 尚未宣稱完成；M2.5 的真實 participant evidence 仍是缺口，但已 deferred
+until real participant demand。其前置條件與資料界線仍以
+`docs/beginner-pilot-plan.md` 為準。當前最小實作單位是 **first-session 3-second
+entry**，而不是新增 lesson package 或繼續建置未使用的 pilot infrastructure。
