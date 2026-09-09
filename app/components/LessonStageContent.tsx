@@ -51,7 +51,6 @@ export default function LessonStageContent({
   if (stage === "say") {
     return (
       <div className="speaking-cue">
-        <button type="button" onClick={onPlay} aria-label={text.listen}>▶</button>
         <div><strong>{phrase.hanji}</strong><span>{phrase.tailo}</span></div>
       </div>
     );
