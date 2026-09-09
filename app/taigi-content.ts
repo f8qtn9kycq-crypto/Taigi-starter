@@ -87,6 +87,11 @@ export type LessonCopy = {
   audioSourcePrefix: string;
   audioUnavailable: string;
   continueWithoutAudio: string;
+  sayLoopLabel: string;
+  sayModelFirst: string;
+  sayListenSelf: string;
+  sayModelAgain: string;
+  sayThanksClarification: string;
   record: string;
   recording: string;
   microphoneRequest: string;
@@ -248,6 +253,11 @@ export const copy: Record<Locale, LessonCopy> = {
     audioSourcePrefix: "原音來源：",
     audioUnavailable: "音檔暫時無法播放，請檢查網路後再試一次。",
     continueWithoutAudio: "音檔無法播放，先看文字",
+    sayLoopLabel: "聽示範、錄自己、回聽比較",
+    sayModelFirst: "聽示範",
+    sayListenSelf: "聽自己的錄音",
+    sayModelAgain: "再聽示範",
+    sayThanksClarification: "這是台語的「謝謝」：多謝 · To-siā",
     record: "開始錄音",
     recording: "錄音中，再按一次完成",
     microphoneRequest: "正在請求麥克風權限…",
@@ -407,6 +417,11 @@ export const copy: Record<Locale, LessonCopy> = {
     audioSourcePrefix: "Original audio:",
     audioUnavailable: "The audio could not play. Check your connection and try again.",
     continueWithoutAudio: "Audio unavailable, continue to the script",
+    sayLoopLabel: "Listen, record, and compare",
+    sayModelFirst: "Listen to the model",
+    sayListenSelf: "Listen to your recording",
+    sayModelAgain: "Listen to the model again",
+    sayThanksClarification: "This is the Taigi expression for “thank you”: 多謝 · To-siā",
     record: "Start recording",
     recording: "Recording, tap again to finish",
     microphoneRequest: "Requesting microphone access…",

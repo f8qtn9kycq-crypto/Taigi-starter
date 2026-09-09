@@ -74,7 +74,7 @@ export default function LessonStagePanel({
 
   const playAudio = async () => {
     const started = await toggle();
-    if (started) {
+    if (started && lessonStage.id === "hear") {
       if (!completed && audioPlays === 0) onUnlock();
       setAudioPlays((count) => count + 1);
     }
@@ -167,9 +167,18 @@ export default function LessonStagePanel({
           )}
           {lessonStage.id === "say" && (
           <>
-            <RecordingPractice text={text} onCompletionChange={completeSay} />
+            <RecordingPractice
+              text={text}
+              isModelPlaying={isPlaying}
+              modelAudioError={hasError}
+              clarification={phrase.id === "lesson-19-polite-thanks" ? text.sayThanksClarification : null}
+              onModelPlay={() => void playAudio()}
+              onCompletionChange={completeSay}
+            />
             {!sayCompleted && <p className="stage-gate-hint" role="status">{text.sayCompletionRequired}</p>}
-            <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance} disabled={!sayCompleted}>{text.nextRecall}<span>→</span></button>
+            <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance} disabled={!sayCompleted}>
+              <span className="say-step-index" aria-hidden="true">5</span>{text.nextRecall}<span>→</span>
+            </button>
           </>
           )}
           {lessonStage.id === "recall" && !showAnswer && !recallAttempted && <button type="button" className="action-button primary-action desktop-stage-action" onClick={() => setRecallAttempted(true)}>{text.recallAttempt}<span>✓</span></button>}

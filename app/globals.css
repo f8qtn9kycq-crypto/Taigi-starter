@@ -1006,8 +1006,7 @@ a:focus-visible {
   line-height: 1.2;
 }
 
-.han-row button,
-.speaking-cue > button {
+.han-row button {
   display: grid;
   width: 44px;
   height: 44px;
@@ -1327,6 +1326,61 @@ a:focus-visible {
 .recording-practice {
   display: grid;
   gap: 10px;
+}
+
+.say-clarification {
+  margin: 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--jade);
+  border-radius: 8px;
+  background: #eaf6f1;
+  color: var(--jade-dark);
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+.say-loop-step {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+}
+
+.say-step-index {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  place-items: center;
+  border: 1px solid rgb(8 127 109 / 0.24);
+  border-radius: 50%;
+  background: #eaf6f1;
+  color: var(--jade-dark);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.say-loop-step .action-button {
+  min-height: 44px;
+}
+
+.say-record-step {
+  display: grid;
+  gap: 6px;
+}
+
+.say-record-step > p {
+  margin: 0;
+  color: var(--orange);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.primary-action > .say-step-index {
+  border-color: rgb(255 255 255 / 0.45);
+  background: rgb(255 255 255 / 0.12);
+  color: white;
 }
 
 .recording-practice > p,
@@ -2377,6 +2431,11 @@ footer a:hover {
 
   .recording-practice {
     gap: 6px;
+  }
+
+  .say-clarification {
+    padding: 7px 9px;
+    font-size: 10px;
   }
 
   .recording-playback {
