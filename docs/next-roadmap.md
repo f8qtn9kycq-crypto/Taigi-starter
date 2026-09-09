@@ -80,8 +80,8 @@ reviewer、consent 與 participant-level retention／deletion 都是重新啟動
 必須完成的 gates；在此之前維持 pending，不把 pending 改寫成 Pass，也不繼續
 投入沒有實際資料流的 pilot infrastructure。
 
-下一個產品階段是 **first-session usability**：讓第一次使用者在 3 秒內看懂
-唯一的下一個動作，並以後續獨立 PR 驗證約 15 秒的第一個發音學習閉環。借鏡
+目前產品階段是 **first-session usability**：讓第一次使用者在 3 秒內看懂
+唯一的下一個動作，並以清楚的 Say 比較流程完成第一個發音學習閉環。借鏡
 Busuu 的短課程節奏與 Duolingo 的低摩擦單一任務，但不複製其視覺、遊戲化或
 streak；Taigi Start 仍維持自己的溫暖、文化導向與 Hear → See → Say → Recall
 → Use 學習契約。
@@ -117,23 +117,31 @@ streak；Taigi Start 仍維持自己的溫暖、文化導向與 Hear → See →
 
 ## 下一階段：First-session usability
 
-目標不是新增 onboarding 說明頁，而是讓首頁只突出一個可立即理解的下一步：
+目標不是新增 onboarding 說明頁，而是讓首頁只突出一個可立即理解的下一步。
+PR #226 已依 owner review 交付精簡入口：
 
-- fresh progress：`開始第 1 課 · 約 5 分鐘`；
-- existing progress：`繼續第 X 課 · 從「聽／看／講／記／用」繼續`；
-- completed lesson：`開始下一課`；
+- fresh progress：`開始今日一句`；
+- existing progress：`繼續學習`；
+- completed lesson：沿用同一個精簡入口並由既有 progress routing 進入下一個可學內容；
 - `查看全部 20 課` 保留為次要入口。
 
-首個 learner-facing PR 必須同時驗證 fresh、existing、completed progress，zh-TW／
-English 與 iPhone 13 Safari 390×844。主操作在參考 viewport 不需捲動即可看到，
-且不得遮擋既有 lesson pager、底部導覽或改動學習／儲存邏輯。
+PR #226 已覆蓋 fresh、existing、completed progress、zh-TW／English 與 iPhone 13
+390×844 的自動化驗證。主操作在參考 viewport 不需捲動即可看到，且沒有改動
+學習／儲存邏輯；真人、真機與 participant evidence 仍須分開記錄。
 
-第二個 learner-facing PR 才處理 tester 提出的 speaking/audio continuity，不與入口
-PR 混在一起。它應在一個代表性詞語上把既有能力編排成明確的
+PR #229 已獨立處理 tester 提出的 speaking/audio continuity，沒有與入口 PR 混在
+一起。Say 現在把既有能力編排成明確的
 `聽示範 → 錄自己 → 聽自己 → 再聽示範 → 繼續`，切換詞語時清除上一詞的錄音
-狀態，並讓新詞的示範音可用一個明顯按鈕播放。預設不自動播放、不加入 AI
-發音評分，也不廣泛增加華語拼音；只在已觀察到混淆的詞語，用簡短意思提示
-說明這是台語表達，避免初學者把陌生的台語讀音誤認為音檔錯誤。
+狀態，並讓新詞的示範音可用一個明顯按鈕播放；只有 Hear 的音檔播放會解鎖
+Hear，Say 的示範音不再誤解鎖 stage。預設不自動播放、不加入 AI 發音評分，
+也不廣泛增加華語拼音；只在已觀察到混淆的「多謝」，用簡短意思提示說明這是
+台語表達，避免初學者把陌生的台語讀音誤認為音檔錯誤。
+
+PR #229 的本機驗證為 113／113 tests、lint 與 diff check 通過；scripted browser
+覆蓋 320×700、390×844 與 412×915，canonical Production 的 390×844 Say flow
+通過。Vercel deployment Ready，但受 Vercel Authentication 保護的 exact Preview
+不能算真人 walkthrough Pass；實體 iPhone Safari 的 microphone／錄音比較仍是
+Pending，M2.5 participant pilot 仍是 `not-run`。
 
 ## M2 不做的事情
 
@@ -157,5 +165,6 @@ M2 只有在以下條件全部成立時，才可稱為完成：
 
 目前 M2 尚未宣稱完成；M2.5 的真實 participant evidence 仍是缺口，但已 deferred
 until real participant demand。其前置條件與資料界線仍以
-`docs/beginner-pilot-plan.md` 為準。當前最小實作單位是 **first-session 3-second
-entry**，而不是新增 lesson package 或繼續建置未使用的 pilot infrastructure。
+`docs/beginner-pilot-plan.md` 為準。下一個最小證據單位是實體 iPhone Safari 的
+Say 錄音比較流程與後續真實 feedback synthesis；取得新證據前，不再新增推測性
+功能，也不繼續建置未使用的 pilot infrastructure。
