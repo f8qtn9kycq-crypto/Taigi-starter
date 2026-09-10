@@ -105,8 +105,8 @@ npm run build:vercel
 將 `FEEDBACK_EXTERNAL_FORM_URL` 設為 owner 的 HTTPS Google Form URL，再由
 Vercel Git integration 以 GitHub `main` 建立 preview 與 production deployment。
 Vercel 是目前唯一的 production 驗證與發佈目標；既有 chatgpt.site／Sites
-版本只保留為歷史紀錄，不再是必要 fallback 或 release gate。為避免改變既有
-專案設定，`.openai/hosting.json` 仍原樣保留。
+版本已作廢，不再是 fallback、同步目標或 release gate；已移除舊
+`.openai/hosting.json`，避免工具誤判為有效 Sites 專案。
 
 部署前 gate 請見[回饋安全部署邊界](./docs/feedback-security-deployment.md)與
 [Production exit plan](./docs/production-exit-plan.md)。

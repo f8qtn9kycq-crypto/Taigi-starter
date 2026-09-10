@@ -2,13 +2,12 @@
 
 本專案目前採 Vercel Hobby preview／production 路徑。Vercel 是唯一的 current
 production 驗證與發佈目標；chatgpt.site／Sites 已退役，不再是 fallback、同步
-目標或 release gate。`.openai/hosting.json` 為相容既有專案設定而保留，但不得據此
-推論仍需保存或部署 Sites 版本。
+目標或 release gate。舊 `.openai/hosting.json` 已移除，避免觸發已作廢的 Sites 流程。
 
 ## 必要 source gates
 
 ```bash
-npm run lesson:validate
+npm run lessons:validate
 npm test
 npm run lint
 npm run build:vercel
