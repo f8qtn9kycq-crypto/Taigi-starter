@@ -11,6 +11,7 @@ type MobileStageNavigationProps = {
   currentAction?: {
     label: string;
     disabled?: boolean;
+    secondary?: boolean;
     onClick: () => void;
   };
 };
@@ -27,7 +28,7 @@ export default function MobileStageNavigation({
   const previousStageLabel = viewedStage > 0 ? text.stageLabels[stages[viewedStage - 1].id] : null;
   const nextStageLabel = viewedStage < unlockedStage ? text.stageLabels[stages[viewedStage + 1].id] : null;
   const nextAction = nextStageLabel
-    ? { label: text.nextStageTo(nextStageLabel), disabled: false, onClick: onNext }
+    ? { label: text.nextStageTo(nextStageLabel), disabled: false, secondary: currentAction?.secondary, onClick: onNext }
     : currentAction ?? { label: text.nextUnlockedStage, disabled: true, onClick: onNext };
 
   return (
@@ -36,7 +37,7 @@ export default function MobileStageNavigation({
         <span aria-hidden="true">←</span>{previousStageLabel ? text.previousStageTo(previousStageLabel) : text.previousStage}
       </button>
       <span aria-live="polite">{text.stageCount(viewedStage, stages.length)}</span>
-      <button type="button" onClick={nextAction.onClick} disabled={nextAction.disabled}>
+      <button type="button" className={nextAction.secondary ? "say-secondary" : undefined} onClick={nextAction.onClick} disabled={nextAction.disabled}>
         {nextAction.label}<span aria-hidden="true">→</span>
       </button>
       {nextStageLabel && viewedStage === 0 ? (

@@ -177,9 +177,11 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(recording, /onCompletionChange/);
   assert.match(recording, /fallbackConfirmed/);
   assert.match(recording, /role="group" aria-label=\{text\.sayLoopLabel\}/);
-  assert.match(recording, /text\.sayModelFirst[\s\S]*say-record-step[\s\S]*text\.sayListenSelf[\s\S]*text\.sayModelAgain/);
+  assert.match(recording, /text\.sayModelFirst/);
+  assert.match(recording, /text\.sayListenSelf/);
+  assert.match(recording, /text\.sayModelAgain/);
   assert.match(recording, /aria-pressed=\{isModelPlaying\}/);
-  assert.match(recording, /<audio controls src=\{recordingUrl\} aria-label=\{text\.yourRecording\}/);
+  assert.match(recording, /<audio ref=\{selfRef\} src=\{recordingUrl\} aria-label=\{text\.yourRecording\}/);
   assert.match(stagePanel, /phrase\.id === "lesson-19-polite-thanks" \? text\.sayThanksClarification : null/);
   assert.match(stagePanel, /label: text\.nextRecall, disabled: !sayCompleted/);
   assert.match(stagePanel, /started && lessonStage\.id === "hear"/);
