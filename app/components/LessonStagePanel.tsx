@@ -56,7 +56,6 @@ export default function LessonStagePanel({
 }: LessonStagePanelProps) {
   const [audioPlays, setAudioPlays] = useState(completed ? 1 : 0);
   const [showAnswer, setShowAnswer] = useState(completed);
-  const [recallAttempted, setRecallAttempted] = useState(completed);
   const [sayPlaybackDone, setSayPlaybackDone] = useState(false);
   const [sayCompleted, setSayCompleted] = useState(completed);
   const [useResponse, setUseResponse] = useState("");
@@ -105,11 +104,9 @@ export default function LessonStagePanel({
       : lessonStage.id === "say"
         ? { label: text.nextRecall, disabled: !sayCompleted, secondary: !sayPlaybackDone, onClick: onAdvance }
         : lessonStage.id === "recall"
-          ? !recallAttempted
-            ? { label: text.recallAttempt, onClick: () => setRecallAttempted(true) }
-            : !showAnswer
-              ? { label: text.showAnswer, onClick: revealAnswer }
-              : { label: text.nextUse, onClick: onAdvance }
+          ? !showAnswer
+            ? { label: text.showAnswer, onClick: revealAnswer }
+            : { label: text.nextUse, onClick: onAdvance }
           : reviewScheduled
             ? nextPhraseIndex >= 0
               ? { label: text.nextPhrase(lesson.phrases[nextPhraseIndex].hanji), disabled: !hasUseResponse, onClick: onPhraseAdvance }
@@ -191,8 +188,7 @@ export default function LessonStagePanel({
             </button>
           </>
           )}
-          {lessonStage.id === "recall" && !showAnswer && !recallAttempted && <button type="button" className="action-button primary-action desktop-stage-action" onClick={() => setRecallAttempted(true)}>{text.recallAttempt}<span>✓</span></button>}
-          {lessonStage.id === "recall" && !showAnswer && recallAttempted && <button type="button" className="action-button primary-action desktop-stage-action" onClick={revealAnswer}>{text.showAnswer}<span>↓</span></button>}
+          {lessonStage.id === "recall" && !showAnswer && <button type="button" className="action-button primary-action desktop-stage-action" onClick={revealAnswer}>{text.showAnswer}<span>↓</span></button>}
           {lessonStage.id === "recall" && showAnswer && <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance}>{text.nextUse}<span>→</span></button>}
           {lessonStage.id === "use" && (
             <UseStageActions text={text} lesson={lesson} phrase={phrase} nextLesson={nextLesson}

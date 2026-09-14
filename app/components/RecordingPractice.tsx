@@ -87,15 +87,17 @@ export default function RecordingPractice({
     void start();
   };
 
-  const primaryClass = "action-button primary-action";
-  const secondaryClass = "action-button say-secondary";
+  const modelPrimaryClass = "action-button primary-action say-model-action";
+  const modelSecondaryClass = "action-button say-secondary say-model-action";
+  const selfPrimaryClass = "action-button primary-action say-self-action";
+  const selfSecondaryClass = "action-button say-secondary say-self-action";
   const recordPrimary = !showModelFirst && !unavailable && status !== "ready" && !fallbackConfirmed;
 
   return (
     <div className="recording-practice" role="group" aria-label={text.sayLoopLabel}>
       {clarification && <p className="say-clarification">{clarification}</p>}
       {status !== "recording" && (
-        <button type="button" className={showModelFirst ? primaryClass : secondaryClass}
+        <button type="button" className={showModelFirst ? modelPrimaryClass : modelSecondaryClass}
           onClick={() => void playModel()} aria-pressed={isModelPlaying} disabled={busy}>
           {isModelPlaying ? text.listening : modelStarted ? text.sayModelAgain : text.sayModelFirst}
           <span aria-hidden="true">{isModelPlaying ? "Ⅱ" : "▶"}</span>
@@ -107,21 +109,21 @@ export default function RecordingPractice({
         {status === "denied" && <p role="alert">{text.microphoneDenied}</p>}
         {status === "unsupported" && <p role="alert">{text.microphoneUnsupported}</p>}
         {!showModelFirst && (
-          <button type="button" className={recordPrimary ? primaryClass : secondaryClass}
+          <button type="button" className={recordPrimary ? selfPrimaryClass : selfSecondaryClass}
             onClick={handleClick} disabled={busy}>
             {buttonLabel}<span aria-hidden="true">{status === "recording" ? "■" : "●"}</span>
           </button>
         )}
         {status === "recording" && <p role="status">{text.recordingPrivacy}</p>}
         {unavailable && !fallbackConfirmed && (
-          <button type="button" className={primaryClass} onClick={() => setFallbackConfirmed(true)}>
+          <button type="button" className={selfPrimaryClass} onClick={() => setFallbackConfirmed(true)}>
             {text.confirmSay}
           </button>
         )}
       </div>
       {recordingUrl && (
         <div className="recording-playback">
-          <button type="button" className={selfPlayed ? secondaryClass : primaryClass}
+          <button type="button" className={selfPlayed ? selfSecondaryClass : selfPrimaryClass}
             onClick={() => void playSelf()} aria-pressed={selfPlaying}>
             {selfPlaying ? text.pauseSelf : text.sayListenSelf}
             <span aria-hidden="true">{selfPlaying ? "Ⅱ" : "▶"}</span>

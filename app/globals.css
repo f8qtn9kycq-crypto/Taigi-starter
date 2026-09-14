@@ -2612,3 +2612,25 @@ footer a:hover {
 }
 .say-secondary:disabled { opacity: 0.5; cursor: default; }
 .recording-playback .action-button { width: 100%; }
+
+/* Model audio stays jade; the learner's voice uses orange for instant source recognition. */
+.action-button.say-model-action {
+  border-color: rgb(8 127 109 / 0.42);
+  background: #e8f6f1;
+  color: var(--jade-dark);
+}
+.action-button.say-model-action.primary-action {
+  border: 1px solid var(--jade);
+  background: var(--jade);
+  color: #fff;
+}
+.action-button.say-self-action {
+  border-color: rgb(189 69 40 / 0.42);
+  background: #fff0e9;
+  color: #96361f;
+}
+.action-button.say-self-action.primary-action {
+  border: 1px solid var(--orange);
+  background: var(--orange);
+  color: #fff;
+}

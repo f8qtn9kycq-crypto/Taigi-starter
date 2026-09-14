@@ -134,8 +134,8 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(stagePager, /onStageChange\(nextStage\)/);
   assert.match(stagePanel, /disabled=\{audioPlays < 1 && !hasError\}/);
   assert.match(stagePanel, /lessonStage\.id === "recall" && !showAnswer/);
-  assert.match(stagePanel, /recallAttempted/);
-  assert.match(stagePanel, /text\.recallAttempt/);
+  assert.doesNotMatch(stagePanel, /recallAttempted|text\.recallAttempt/);
+  assert.match(stagePanel, /lessonStage\.id === "recall" && !showAnswer[\s\S]*text\.showAnswer/);
   assert.match(stagePanel, /lessonStage\.id === "recall" && showAnswer/);
   assert.match(stagePanel, /reviewScheduled/);
   assert.match(stagePanel, /nextPhraseIndex >= 0/);
@@ -181,6 +181,8 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(recording, /text\.sayListenSelf/);
   assert.match(recording, /text\.sayModelAgain/);
   assert.match(recording, /useState\(modelAlreadyHeard\)/);
+  assert.match(recording, /say-model-action/);
+  assert.match(recording, /say-self-action/);
   assert.match(recording, /aria-pressed=\{isModelPlaying\}/);
   assert.match(recording, /<audio ref=\{selfRef\} src=\{recordingUrl\} aria-label=\{text\.yourRecording\}/);
   assert.match(stagePanel, /phrase\.id === "lesson-19-polite-thanks" \? text\.sayThanksClarification : null/);
