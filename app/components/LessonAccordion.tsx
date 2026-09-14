@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useEffect, useRef } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { useMobileStagePager } from "../hooks/useMobileStagePager";
 import type { LessonCopy } from "../taigi-content";
 import type { PlayableLesson } from "../types/lesson";
@@ -46,6 +46,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
       : lesson.phrases.findIndex((phrase) => !completedPhraseIds.has(phrase.id));
     const stageTriggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
     const pendingFocusStageRef = useRef<number | null>(null);
+    const [heardPhraseIds, setHeardPhraseIds] = useState<ReadonlySet<string>>(() => new Set());
     const {
       viewedStage,
       showStage,
@@ -163,8 +164,13 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
                     nextLesson={nextLesson}
                     reviewScheduled={reviewScheduled}
                     completed={isComplete}
+                    modelAlreadyHeard={heardPhraseIds.has(lesson.phrases[phraseIndex].id)}
                     onAdvance={advance}
                     onUnlock={unlockNext}
+                    onPhraseHeard={(phraseId) => setHeardPhraseIds((current) => {
+                      if (current.has(phraseId)) return current;
+                      return new Set(current).add(phraseId);
+                    })}
                     onReviewAdded={onReviewAdded}
                     onPhraseAdvance={advancePhrase}
                     onLessonComplete={onLessonComplete}

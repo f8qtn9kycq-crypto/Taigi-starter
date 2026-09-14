@@ -19,8 +19,10 @@ type LessonStagePanelProps = {
   nextLesson: PlayableLesson | null;
   reviewScheduled: boolean;
   completed?: boolean;
+  modelAlreadyHeard: boolean;
   onAdvance: () => void;
   onUnlock: () => void;
+  onPhraseHeard: (phraseId: string) => void;
   onReviewAdded: (phraseId: string) => void;
   onPhraseAdvance: () => void;
   onLessonComplete: () => void;
@@ -40,8 +42,10 @@ export default function LessonStagePanel({
   nextLesson,
   reviewScheduled,
   completed = false,
+  modelAlreadyHeard,
   onAdvance,
   onUnlock,
+  onPhraseHeard,
   onReviewAdded,
   onPhraseAdvance,
   onLessonComplete,
@@ -52,7 +56,7 @@ export default function LessonStagePanel({
 }: LessonStagePanelProps) {
   const [audioPlays, setAudioPlays] = useState(completed ? 1 : 0);
   const [showAnswer, setShowAnswer] = useState(completed);
-  const [recallAttempted, setRecallAttempted] = useState(completed);
+  const [sayPlaybackDone, setSayPlaybackDone] = useState(false);
   const [sayCompleted, setSayCompleted] = useState(completed);
   const [useResponse, setUseResponse] = useState("");
   const [selectedUseChoiceId, setSelectedUseChoiceId] = useState<string | null>(null);
@@ -64,7 +68,7 @@ export default function LessonStagePanel({
     ? completed || selectedUseChoice?.isCorrect === true
     : useResponse.trim().length > 0;
   const lessonStage = lesson.stages[stage];
-  const { isPlaying, hasError, toggle } = useAudioPlayer(phrase.audioUrl);
+  const { isPlaying, hasError, toggle, stop } = useAudioPlayer(phrase.audioUrl);
 
   useEffect(() => {
     const justCompleted = !previousReviewScheduledRef.current && reviewScheduled;
@@ -77,7 +81,9 @@ export default function LessonStagePanel({
     if (started && lessonStage.id === "hear") {
       if (!completed && audioPlays === 0) onUnlock();
       setAudioPlays((count) => count + 1);
+      onPhraseHeard(phrase.id);
     }
+    return started;
   };
   const completeSay = (nextCompleted: boolean) => {
     if (nextCompleted && !sayCompleted && !completed) onUnlock();
@@ -96,13 +102,11 @@ export default function LessonStagePanel({
     : lessonStage.id === "see"
       ? { label: text.nextSay, onClick: onAdvance }
       : lessonStage.id === "say"
-        ? { label: text.nextRecall, disabled: !sayCompleted, onClick: onAdvance }
+        ? { label: text.nextRecall, disabled: !sayCompleted, secondary: !sayPlaybackDone, onClick: onAdvance }
         : lessonStage.id === "recall"
-          ? !recallAttempted
-            ? { label: text.recallAttempt, onClick: () => setRecallAttempted(true) }
-            : !showAnswer
-              ? { label: text.showAnswer, onClick: revealAnswer }
-              : { label: text.nextUse, onClick: onAdvance }
+          ? !showAnswer
+            ? { label: text.showAnswer, onClick: revealAnswer }
+            : { label: text.nextUse, onClick: onAdvance }
           : reviewScheduled
             ? nextPhraseIndex >= 0
               ? { label: text.nextPhrase(lesson.phrases[nextPhraseIndex].hanji), disabled: !hasUseResponse, onClick: onPhraseAdvance }
@@ -171,18 +175,20 @@ export default function LessonStagePanel({
               text={text}
               isModelPlaying={isPlaying}
               modelAudioError={hasError}
+              modelAlreadyHeard={modelAlreadyHeard}
               clarification={phrase.id === "lesson-19-polite-thanks" ? text.sayThanksClarification : null}
-              onModelPlay={() => void playAudio()}
+              onModelPlay={playAudio}
+              onModelStop={stop}
+              onPlaybackChange={setSayPlaybackDone}
               onCompletionChange={completeSay}
             />
             {!sayCompleted && <p className="stage-gate-hint" role="status">{text.sayCompletionRequired}</p>}
-            <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance} disabled={!sayCompleted}>
-              <span className="say-step-index" aria-hidden="true">5</span>{text.nextRecall}<span>→</span>
+            <button type="button" className={`action-button ${sayPlaybackDone ? "primary-action" : "say-secondary"} desktop-stage-action`} onClick={onAdvance} disabled={!sayCompleted}>
+              {text.nextRecall}<span>→</span>
             </button>
           </>
           )}
-          {lessonStage.id === "recall" && !showAnswer && !recallAttempted && <button type="button" className="action-button primary-action desktop-stage-action" onClick={() => setRecallAttempted(true)}>{text.recallAttempt}<span>✓</span></button>}
-          {lessonStage.id === "recall" && !showAnswer && recallAttempted && <button type="button" className="action-button primary-action desktop-stage-action" onClick={revealAnswer}>{text.showAnswer}<span>↓</span></button>}
+          {lessonStage.id === "recall" && !showAnswer && <button type="button" className="action-button primary-action desktop-stage-action" onClick={revealAnswer}>{text.showAnswer}<span>↓</span></button>}
           {lessonStage.id === "recall" && showAnswer && <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance}>{text.nextUse}<span>→</span></button>}
           {lessonStage.id === "use" && (
             <UseStageActions text={text} lesson={lesson} phrase={phrase} nextLesson={nextLesson}

@@ -90,6 +90,9 @@ export type LessonCopy = {
   sayLoopLabel: string;
   sayModelFirst: string;
   sayListenSelf: string;
+  recordingReady: string;
+  pauseSelf: string;
+  selfAudioError: string;
   sayModelAgain: string;
   sayThanksClarification: string;
   record: string;
@@ -110,7 +113,6 @@ export type LessonCopy = {
   yourRecording: string;
   recordingLocalOnly: string;
   showAnswer: string;
-  recallAttempt: string;
   addReview: string;
   reviewAdded: string;
   nextPhrase: (phrase: string) => string;
@@ -256,14 +258,17 @@ export const copy: Record<Locale, LessonCopy> = {
     sayLoopLabel: "聽示範、錄自己、回聽比較",
     sayModelFirst: "聽示範",
     sayListenSelf: "聽自己的錄音",
+    recordingReady: "錄好了，聽聽自己的聲音，再和示範比較。",
+    pauseSelf: "暫停自己的錄音",
+    selfAudioError: "錄音暫時無法播放，請重試或再錄一次。",
     sayModelAgain: "再聽示範",
     sayThanksClarification: "這是台語的「謝謝」：多謝 · To-siā",
     record: "開始錄音",
     recording: "錄音中，再按一次完成",
     microphoneRequest: "正在請求麥克風權限…",
     microphoneChecking: "正在檢查錄音功能…",
-    microphoneEnable: "檢查麥克風並開始錄音",
-    microphoneEnableHint: "確認瀏覽器可用後才會開始錄音；若不支援，會引導你改用 Safari。",
+    microphoneEnable: "換你說：開始錄音",
+    microphoneEnableHint: "按下後允許麥克風即可開始；無法錄音時，也能完成不錄音的跟讀。",
     stopRecording: "停止錄音",
     confirmSay: "我已經跟讀",
     sayCompleted: "已完成一次跟讀，可以進下一步。",
@@ -276,7 +281,6 @@ export const copy: Record<Locale, LessonCopy> = {
     yourRecording: "你的錄音",
     recordingLocalOnly: "錄音只留在這個頁面，不會上傳或保存。",
     showAnswer: "顯示答案",
-    recallAttempt: "我已先回想",
     addReview: "加入今日複習",
     reviewAdded: "已加入複習",
     nextPhrase: (phrase) => `下一個詞：${phrase}`,
@@ -420,14 +424,17 @@ export const copy: Record<Locale, LessonCopy> = {
     sayLoopLabel: "Listen, record, and compare",
     sayModelFirst: "Listen to the model",
     sayListenSelf: "Listen to your recording",
+    recordingReady: "Recorded. Listen to yourself, then compare with the model.",
+    pauseSelf: "Pause your recording",
+    selfAudioError: "Your recording could not play. Try again or record a new one.",
     sayModelAgain: "Listen to the model again",
     sayThanksClarification: "This is the Taigi expression for “thank you”: 多謝 · To-siā",
     record: "Start recording",
     recording: "Recording, tap again to finish",
     microphoneRequest: "Requesting microphone access…",
     microphoneChecking: "Checking recording support…",
-    microphoneEnable: "Check microphone and start recording",
-    microphoneEnableHint: "Recording starts only after this browser confirms support. If unavailable, open the lesson in Safari.",
+    microphoneEnable: "Your turn: record",
+    microphoneEnableHint: "Allow microphone access to start. If recording is unavailable, you can still practice without it.",
     stopRecording: "Stop recording",
     confirmSay: "I said it aloud",
     sayCompleted: "Speaking practice complete. You can continue.",
@@ -440,7 +447,6 @@ export const copy: Record<Locale, LessonCopy> = {
     yourRecording: "Your recording",
     recordingLocalOnly: "This recording stays on this page and is never uploaded or saved.",
     showAnswer: "Show answer",
-    recallAttempt: "I tried to recall it",
     addReview: "Add to today’s review",
     reviewAdded: "Added to review",
     nextPhrase: (phrase) => `Next phrase: ${phrase}`,
