@@ -180,11 +180,14 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(recording, /text\.sayModelFirst/);
   assert.match(recording, /text\.sayListenSelf/);
   assert.match(recording, /text\.sayModelAgain/);
+  assert.match(recording, /useState\(modelAlreadyHeard\)/);
   assert.match(recording, /aria-pressed=\{isModelPlaying\}/);
   assert.match(recording, /<audio ref=\{selfRef\} src=\{recordingUrl\} aria-label=\{text\.yourRecording\}/);
   assert.match(stagePanel, /phrase\.id === "lesson-19-polite-thanks" \? text\.sayThanksClarification : null/);
   assert.match(stagePanel, /label: text\.nextRecall, disabled: !sayCompleted/);
   assert.match(stagePanel, /started && lessonStage\.id === "hear"/);
+  assert.match(stagePanel, /onPhraseHeard\(phrase\.id\)/);
+  assert.match(lesson, /heardPhraseIds\.has\(lesson\.phrases\[phraseIndex\]\.id\)/);
   assert.match(copy, /sayThanksClarification: "這是台語的「謝謝」：多謝 · To-siā"/);
   assert.match(copy, /sayThanksClarification: "This is the Taigi expression for “thank you”: 多謝 · To-siā"/);
   assert.doesNotMatch(recording, /openSafariHint/);

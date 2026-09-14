@@ -19,8 +19,10 @@ type LessonStagePanelProps = {
   nextLesson: PlayableLesson | null;
   reviewScheduled: boolean;
   completed?: boolean;
+  modelAlreadyHeard: boolean;
   onAdvance: () => void;
   onUnlock: () => void;
+  onPhraseHeard: (phraseId: string) => void;
   onReviewAdded: (phraseId: string) => void;
   onPhraseAdvance: () => void;
   onLessonComplete: () => void;
@@ -40,8 +42,10 @@ export default function LessonStagePanel({
   nextLesson,
   reviewScheduled,
   completed = false,
+  modelAlreadyHeard,
   onAdvance,
   onUnlock,
+  onPhraseHeard,
   onReviewAdded,
   onPhraseAdvance,
   onLessonComplete,
@@ -78,6 +82,7 @@ export default function LessonStagePanel({
     if (started && lessonStage.id === "hear") {
       if (!completed && audioPlays === 0) onUnlock();
       setAudioPlays((count) => count + 1);
+      onPhraseHeard(phrase.id);
     }
     return started;
   };
@@ -173,6 +178,7 @@ export default function LessonStagePanel({
               text={text}
               isModelPlaying={isPlaying}
               modelAudioError={hasError}
+              modelAlreadyHeard={modelAlreadyHeard}
               clarification={phrase.id === "lesson-19-polite-thanks" ? text.sayThanksClarification : null}
               onModelPlay={playAudio}
               onModelStop={stop}

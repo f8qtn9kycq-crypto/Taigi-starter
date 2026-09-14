@@ -8,6 +8,7 @@ type RecordingPracticeProps = {
   text: LessonCopy;
   isModelPlaying: boolean;
   modelAudioError: boolean;
+  modelAlreadyHeard: boolean;
   clarification: string | null;
   onModelPlay: () => Promise<boolean>;
   onModelStop: () => void;
@@ -19,6 +20,7 @@ export default function RecordingPractice({
   text,
   isModelPlaying,
   modelAudioError,
+  modelAlreadyHeard,
   clarification,
   onModelPlay,
   onModelStop,
@@ -27,7 +29,7 @@ export default function RecordingPractice({
 }: RecordingPracticeProps) {
   const { status, recordingUrl, start, stop, reset } = useRecorder();
   const [fallbackConfirmed, setFallbackConfirmed] = useState(false);
-  const [modelStarted, setModelStarted] = useState(false);
+  const [modelStarted, setModelStarted] = useState(modelAlreadyHeard);
   const [selfPlaying, setSelfPlaying] = useState(false);
   const [selfPlayed, setSelfPlayed] = useState(false);
   const [selfError, setSelfError] = useState(false);
