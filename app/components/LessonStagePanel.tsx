@@ -22,6 +22,7 @@ type LessonStagePanelProps = {
   modelAlreadyHeard: boolean;
   onAdvance: () => void;
   onUnlock: () => void;
+  onRecallRevealed: () => void;
   onPhraseHeard: (phraseId: string) => void;
   onReviewAdded: (phraseId: string) => void;
   onPhraseAdvance: () => void;
@@ -45,6 +46,7 @@ export default function LessonStagePanel({
   modelAlreadyHeard,
   onAdvance,
   onUnlock,
+  onRecallRevealed,
   onPhraseHeard,
   onReviewAdded,
   onPhraseAdvance,
@@ -91,8 +93,20 @@ export default function LessonStagePanel({
   };
   const revealAnswer = () => {
     setShowAnswer(true);
-    if (!completed) onUnlock();
+    if (!completed) onRecallRevealed();
   };
+  const useAction = reviewScheduled
+    ? nextPhraseIndex >= 0
+      ? { label: text.nextPhrase(lesson.phrases[nextPhraseIndex].hanji), disabled: !hasUseResponse, onClick: onPhraseAdvance }
+      : lessonComplete
+        ? {
+            label: nextLesson
+              ? text.nextLesson(nextLesson.pathOrder, nextLesson.title[text.locale])
+              : text.viewProgress,
+            onClick: onLessonComplete,
+          }
+        : undefined
+    : { label: text.addReview, disabled: !hasUseResponse, onClick: () => onReviewAdded(phrase.id) };
   const mobileAction = lessonStage.id === "hear"
     ? {
         label: hasError ? text.continueWithoutAudio : text.nextSee,
@@ -106,19 +120,8 @@ export default function LessonStagePanel({
         : lessonStage.id === "recall"
           ? !showAnswer
             ? { label: text.showAnswer, onClick: revealAnswer }
-            : { label: text.nextUse, onClick: onAdvance }
-          : reviewScheduled
-            ? nextPhraseIndex >= 0
-              ? { label: text.nextPhrase(lesson.phrases[nextPhraseIndex].hanji), disabled: !hasUseResponse, onClick: onPhraseAdvance }
-              : lessonComplete
-                ? {
-                    label: nextLesson
-                      ? text.nextLesson(nextLesson.pathOrder, nextLesson.title[text.locale])
-                      : text.viewProgress,
-                    onClick: onLessonComplete,
-                  }
-                : undefined
-            : { label: text.addReview, disabled: !hasUseResponse, onClick: () => onReviewAdded(phrase.id) };
+            : useAction
+          : useAction;
 
   return (
     <div className="stage-panel" aria-live="polite">
@@ -137,6 +140,24 @@ export default function LessonStagePanel({
           showAnswer={showAnswer}
           onPlay={() => void playAudio()}
         />
+
+        {lessonStage.id === "recall" && showAnswer && (
+          <div className="recall-use-reveal">
+            <div className="stage-copy">
+              <span>{text.stageLabels.use}</span>
+              <h3>{text.stageHeadings.use}</h3>
+              <p>{text.stageBodies.use}</p>
+            </div>
+            <LessonStageContent
+              stage="use"
+              text={text}
+              phrase={phrase}
+              mission={lesson.mission}
+              showAnswer
+              onPlay={() => void playAudio()}
+            />
+          </div>
+        )}
 
         {lessonStage.id === "hear" && (
           <p className="media-attribution">
@@ -189,7 +210,14 @@ export default function LessonStagePanel({
           </>
           )}
           {lessonStage.id === "recall" && !showAnswer && <button type="button" className="action-button primary-action desktop-stage-action" onClick={revealAnswer}>{text.showAnswer}<span>↓</span></button>}
-          {lessonStage.id === "recall" && showAnswer && <button type="button" className="action-button primary-action desktop-stage-action" onClick={onAdvance}>{text.nextUse}<span>→</span></button>}
+          {lessonStage.id === "recall" && showAnswer && (
+            <UseStageActions text={text} lesson={lesson} phrase={phrase} nextLesson={nextLesson}
+              nextPhraseIndex={nextPhraseIndex} lessonComplete={lessonComplete} reviewScheduled={reviewScheduled}
+              hasUseResponse={hasUseResponse} useResponse={useResponse} selectedChoiceId={selectedUseChoiceId}
+              completionRef={completionRef} onUseResponseChange={setUseResponse}
+              onChoiceSelect={setSelectedUseChoiceId} onPhraseAdvance={onPhraseAdvance}
+              onReviewAdded={onReviewAdded} onLessonComplete={onLessonComplete} />
+          )}
           {lessonStage.id === "use" && (
             <UseStageActions text={text} lesson={lesson} phrase={phrase} nextLesson={nextLesson}
               nextPhraseIndex={nextPhraseIndex} lessonComplete={lessonComplete} reviewScheduled={reviewScheduled}
@@ -207,6 +235,7 @@ export default function LessonStagePanel({
         viewedStage={viewedStage}
         onPrevious={onPrevious}
         onNext={onNext}
+        hideNextStageNavigation={lessonStage.id === "recall" && showAnswer}
         currentAction={mobileAction}
       />
     </div>

@@ -42,6 +42,12 @@ export function useMobileStagePager({
     setPager({ phraseIndex, furthestStage: nextStage, viewedStage });
     onStageChange(nextStage);
   };
+  const completeCurrentWithoutNavigation = () => {
+    if (viewedStage < stage || stage >= lastStage) return;
+    const nextStage = stage + 1;
+    setPager({ phraseIndex, furthestStage: nextStage, viewedStage });
+    onStageChange(nextStage);
+  };
   const navigatePrevious = () => {
     if (viewedStage > 0) showStage(viewedStage - 1);
   };
@@ -70,5 +76,15 @@ export function useMobileStagePager({
     if (nextStage !== null) showStage(nextStage);
   };
 
-  return { viewedStage, showStage, advance, unlockNext, navigatePrevious, navigateNext, handleTouchStart, handleTouchEnd };
+  return {
+    viewedStage,
+    showStage,
+    advance,
+    unlockNext,
+    completeCurrentWithoutNavigation,
+    navigatePrevious,
+    navigateNext,
+    handleTouchStart,
+    handleTouchEnd,
+  };
 }

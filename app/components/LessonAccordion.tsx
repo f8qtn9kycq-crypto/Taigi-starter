@@ -52,6 +52,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
       showStage,
       advance,
       unlockNext,
+      completeCurrentWithoutNavigation,
       navigatePrevious,
       navigateNext,
       handleTouchStart,
@@ -167,6 +168,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
                     modelAlreadyHeard={heardPhraseIds.has(lesson.phrases[phraseIndex].id)}
                     onAdvance={advance}
                     onUnlock={unlockNext}
+                    onRecallRevealed={completeCurrentWithoutNavigation}
                     onPhraseHeard={(phraseId) => setHeardPhraseIds((current) => {
                       if (current.has(phraseId)) return current;
                       return new Set(current).add(phraseId);
