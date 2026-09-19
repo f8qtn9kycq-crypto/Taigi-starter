@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import type { LessonCopy } from "../taigi-content";
-import type { PlayableLesson } from "../types/lesson";
+import type { LessonStage, PlayableLesson } from "../types/lesson";
 import LessonStageContent from "./LessonStageContent";
 import MobileStageNavigation from "./MobileStageNavigation";
 import RecordingPractice from "./RecordingPractice";
@@ -13,6 +13,7 @@ type LessonStagePanelProps = {
   stage: number;
   text: LessonCopy;
   lesson: PlayableLesson;
+  visibleStages: readonly LessonStage[];
   phraseIndex: number;
   nextPhraseIndex: number;
   lessonComplete: boolean;
@@ -37,6 +38,7 @@ export default function LessonStagePanel({
   stage,
   text,
   lesson,
+  visibleStages,
   phraseIndex,
   nextPhraseIndex,
   lessonComplete,
@@ -127,7 +129,7 @@ export default function LessonStagePanel({
     <div className="stage-panel" aria-live="polite">
       <div className="stage-panel-scroll">
         <div className="stage-copy">
-          <span>{text.stageProgress(stage, lesson.stages.length, text.stageLabels[lessonStage.id])} · {text.stageTime(lessonStage.estimatedMinutes)}</span>
+          <span>{text.stageProgress(stage, visibleStages.length, lessonStage.id === "recall" ? `${text.stageLabels.recall}＋${text.stageLabels.use}` : text.stageLabels[lessonStage.id])} · {text.stageTime(lessonStage.estimatedMinutes)}</span>
           <h3>{text.stageHeadings[lessonStage.id]}</h3>
           <p>{text.stageBodies[lessonStage.id]}</p>
         </div>
@@ -230,7 +232,7 @@ export default function LessonStagePanel({
       </div>
       <MobileStageNavigation
         text={text}
-        stages={lesson.stages}
+        stages={visibleStages}
         unlockedStage={unlockedStage}
         viewedStage={viewedStage}
         onPrevious={onPrevious}

@@ -114,6 +114,9 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(lesson, /pendingFocusStageRef\.current = 0;[\s\S]*onPhraseAdvance\(nextIncompletePhraseIndex\)/);
   assert.match(lesson, /stageTriggerRefs\.current\[viewedStage\]\?\.focus\(\)/);
   assert.match(lesson, /useMobileStagePager/);
+  assert.match(lesson, /lessonStage\.id === "recall"/);
+  assert.match(lesson, /if \(index > lastVisibleStage\) return null/);
+  assert.match(lesson, /lessonStage\.id === "recall"[\s\S]*text\.stageLabels\.recall[\s\S]*text\.stageLabels\.use/);
   assert.match(lesson, /onTouchStart=\{handleTouchStart\}/);
   assert.match(mobileStageNavigation, /viewedStage < unlockedStage/);
   assert.match(mobileStageNavigation, /!hideNextStageNavigation && viewedStage < unlockedStage/);
@@ -122,7 +125,7 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(mobileStageNavigation, /currentAction \?\?/);
   assert.match(mobileStageNavigation, /disabled=\{nextAction\.disabled\}/);
   assert.match(lesson, /index <= stage && showStage\(index\)/);
-  assert.match(stagePanel, /text\.stageProgress\(stage, lesson\.stages\.length/);
+  assert.match(stagePanel, /text\.stageProgress\(stage, visibleStages\.length/);
   assert.match(stagePanel, /text\.hearCompletionHint/);
   assert.match(stagePanel, /audioPlays === 0\) onUnlock\(\)/);
   assert.match(stagePanel, /onCompletionChange=\{completeSay\}/);
@@ -134,6 +137,7 @@ test("ships the first-time Taigi landing content and Vercel feedback path", asyn
   assert.match(stagePager, /matchMedia\("\(max-width: 639px\)"\)/);
   assert.match(stagePager, /onStageChange\(nextStage\)/);
   assert.match(stagePager, /const completeCurrentWithoutNavigation = \(\) =>/);
+  assert.match(stagePager, /Math\.min\(stage, lastVisibleStage\)/);
   assert.match(stagePanel, /disabled=\{audioPlays < 1 && !hasError\}/);
   assert.match(stagePanel, /lessonStage\.id === "recall" && !showAnswer/);
   assert.doesNotMatch(stagePanel, /recallAttempted|text\.recallAttempt/);

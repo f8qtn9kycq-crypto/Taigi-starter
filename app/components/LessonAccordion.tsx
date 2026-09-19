@@ -40,6 +40,8 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
     ref,
   ) {
     const lastStage = lesson.stages.length - 1;
+    const lastVisibleStage = lesson.stages.findIndex((lessonStage) => lessonStage.id === "recall");
+    const visibleStages = lesson.stages.slice(0, lastVisibleStage + 1);
     const lessonComplete = lesson.phrases.every((phrase) => completedPhraseIds.has(phrase.id));
     const nextIncompletePhraseIndex = lessonComplete
       ? -1
@@ -61,6 +63,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
       stage,
       phraseIndex,
       lastStage,
+      lastVisibleStage,
       onStageChange,
       onViewChange: (nextStage) => { pendingFocusStageRef.current = nextStage; },
     });
@@ -129,7 +132,10 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
           onTouchEnd={handleTouchEnd}
         >
           {lesson.stages.map((lessonStage, index) => {
-            const label = text.stageLabels[lessonStage.id];
+            if (index > lastVisibleStage) return null;
+            const label = lessonStage.id === "recall"
+              ? `${text.stageLabels.recall}＋${text.stageLabels.use}`
+              : text.stageLabels[lessonStage.id];
             const isDisplayed = index === viewedStage;
             const isCurrent = index === stage;
             const isComplete = index < stage;
@@ -159,6 +165,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
                     stage={viewedStage}
                     text={text}
                     lesson={lesson}
+                    visibleStages={visibleStages}
                     phraseIndex={phraseIndex}
                     nextPhraseIndex={nextIncompletePhraseIndex}
                     lessonComplete={lessonComplete}
@@ -176,7 +183,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
                     onReviewAdded={onReviewAdded}
                     onPhraseAdvance={advancePhrase}
                     onLessonComplete={onLessonComplete}
-                    unlockedStage={stage}
+                    unlockedStage={Math.min(stage, lastVisibleStage)}
                     viewedStage={viewedStage}
                     onPrevious={navigatePrevious}
                     onNext={navigateNext}
