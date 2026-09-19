@@ -8,6 +8,7 @@ type MobileStageNavigationProps = {
   viewedStage: number;
   onPrevious: () => void;
   onNext: () => void;
+  hideNextStageNavigation?: boolean;
   currentAction?: {
     label: string;
     disabled?: boolean;
@@ -23,10 +24,13 @@ export default function MobileStageNavigation({
   viewedStage,
   onPrevious,
   onNext,
+  hideNextStageNavigation = false,
   currentAction,
 }: MobileStageNavigationProps) {
   const previousStageLabel = viewedStage > 0 ? text.stageLabels[stages[viewedStage - 1].id] : null;
-  const nextStageLabel = viewedStage < unlockedStage ? text.stageLabels[stages[viewedStage + 1].id] : null;
+  const nextStageLabel = !hideNextStageNavigation && viewedStage < unlockedStage
+    ? text.stageLabels[stages[viewedStage + 1].id]
+    : null;
   const nextAction = nextStageLabel
     ? { label: text.nextStageTo(nextStageLabel), disabled: false, secondary: currentAction?.secondary, onClick: onNext }
     : currentAction ?? { label: text.nextUnlockedStage, disabled: true, onClick: onNext };
