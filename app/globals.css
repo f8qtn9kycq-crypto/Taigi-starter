@@ -920,6 +920,18 @@ a:focus-visible {
   line-height: 1.7;
 }
 
+.recall-use-reveal {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgb(8 127 109 / 0.2);
+}
+
+.recall-use-reveal .stage-copy > span {
+  color: var(--jade);
+}
+
 .stage-completion-hint {
   margin: 0;
   color: var(--orange);

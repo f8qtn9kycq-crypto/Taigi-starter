@@ -63,8 +63,8 @@ export default function LearningWorkspace({
         locale={locale}
         hasStarted={hasStarted}
         dueCount={dueCount}
-        stage={stage}
-        totalStages={lesson.stages.length}
+        stage={Math.min(stage, 3)}
+        totalStages={4}
         onLocaleChange={onLocaleChange}
         onHome={onHome}
       />

@@ -165,8 +165,8 @@ export default function TaigiStartPage() {
           locale={progress.locale}
           hasStarted={progress.hasStarted}
           dueCount={dueCount}
-          stage={activeStage}
-          totalStages={activeLesson.stages.length}
+          stage={Math.min(activeStage, 3)}
+          totalStages={4}
           isPlaying={heroAudio.isPlaying}
           audioError={heroAudio.hasError}
           startPending={startPending}

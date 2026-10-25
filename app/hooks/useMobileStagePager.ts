@@ -8,6 +8,7 @@ type PagerOptions = {
   stage: number;
   phraseIndex: number;
   lastStage: number;
+  lastVisibleStage?: number;
   onStageChange: (stage: number) => void;
   onViewChange: (stage: number) => void;
 };
@@ -16,18 +17,26 @@ export function useMobileStagePager({
   stage,
   phraseIndex,
   lastStage,
+  lastVisibleStage = lastStage,
   onStageChange,
   onViewChange,
 }: PagerOptions) {
-  const [pager, setPager] = useState({ phraseIndex, furthestStage: stage, viewedStage: stage });
+  const [pager, setPager] = useState({
+    phraseIndex,
+    furthestStage: stage,
+    viewedStage: Math.min(stage, lastVisibleStage),
+  });
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const progressChanged = pager.phraseIndex !== phraseIndex || pager.furthestStage !== stage;
-  const viewedStage = progressChanged ? stage : pager.viewedStage;
-  if (progressChanged) setPager({ phraseIndex, furthestStage: stage, viewedStage: stage });
+  const viewedStage = progressChanged ? Math.min(stage, lastVisibleStage) : pager.viewedStage;
+  if (progressChanged) {
+    setPager({ phraseIndex, furthestStage: stage, viewedStage: Math.min(stage, lastVisibleStage) });
+  }
 
   const showStage = (nextStage: number) => {
-    onViewChange(nextStage);
-    setPager({ phraseIndex, furthestStage: stage, viewedStage: nextStage });
+    const visibleStage = Math.max(0, Math.min(nextStage, stage, lastVisibleStage));
+    onViewChange(visibleStage);
+    setPager({ phraseIndex, furthestStage: stage, viewedStage: visibleStage });
   };
   const advance = () => {
     if (viewedStage < stage) return showStage(viewedStage + 1);
@@ -42,11 +51,17 @@ export function useMobileStagePager({
     setPager({ phraseIndex, furthestStage: nextStage, viewedStage });
     onStageChange(nextStage);
   };
+  const completeCurrentWithoutNavigation = () => {
+    if (viewedStage < stage || stage >= lastStage) return;
+    const nextStage = stage + 1;
+    setPager({ phraseIndex, furthestStage: nextStage, viewedStage });
+    onStageChange(nextStage);
+  };
   const navigatePrevious = () => {
     if (viewedStage > 0) showStage(viewedStage - 1);
   };
   const navigateNext = () => {
-    if (viewedStage < stage) showStage(viewedStage + 1);
+    if (viewedStage < Math.min(stage, lastVisibleStage)) showStage(viewedStage + 1);
   };
   const isInteractiveTarget = (target: EventTarget | null) => (
     target instanceof Element && Boolean(target.closest("button, a, input, textarea, select, audio"))
@@ -65,10 +80,20 @@ export function useMobileStagePager({
       start,
       { x: touch.clientX, y: touch.clientY },
       viewedStage,
-      stage,
+      Math.min(stage, lastVisibleStage),
     );
     if (nextStage !== null) showStage(nextStage);
   };
 
-  return { viewedStage, showStage, advance, unlockNext, navigatePrevious, navigateNext, handleTouchStart, handleTouchEnd };
+  return {
+    viewedStage,
+    showStage,
+    advance,
+    unlockNext,
+    completeCurrentWithoutNavigation,
+    navigatePrevious,
+    navigateNext,
+    handleTouchStart,
+    handleTouchEnd,
+  };
 }
