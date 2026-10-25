@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+      - codex/say-guided-demo
   push:
     branches:
       - main
