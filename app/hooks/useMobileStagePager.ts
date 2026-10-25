@@ -34,8 +34,9 @@ export function useMobileStagePager({
   }
 
   const showStage = (nextStage: number) => {
-    onViewChange(nextStage);
-    setPager({ phraseIndex, furthestStage: stage, viewedStage: nextStage });
+    const visibleStage = Math.max(0, Math.min(nextStage, stage, lastVisibleStage));
+    onViewChange(visibleStage);
+    setPager({ phraseIndex, furthestStage: stage, viewedStage: visibleStage });
   };
   const advance = () => {
     if (viewedStage < stage) return showStage(viewedStage + 1);
@@ -79,7 +80,7 @@ export function useMobileStagePager({
       start,
       { x: touch.clientX, y: touch.clientY },
       viewedStage,
-      stage,
+      Math.min(stage, lastVisibleStage),
     );
     if (nextStage !== null) showStage(nextStage);
   };

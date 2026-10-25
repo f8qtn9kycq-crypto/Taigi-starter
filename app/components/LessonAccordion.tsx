@@ -137,8 +137,8 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
               ? `${text.stageLabels.recall}＋${text.stageLabels.use}`
               : text.stageLabels[lessonStage.id];
             const isDisplayed = index === viewedStage;
-            const isCurrent = index === stage;
-            const isComplete = index < stage;
+            const isComplete = index === lastVisibleStage ? reviewScheduled : index < stage;
+            const isCurrent = index === Math.min(stage, lastVisibleStage) && !isComplete;
 
             return (
               <li key={lessonStage.id} className={`${isCurrent ? "current" : isComplete ? "complete" : "locked"}${isDisplayed ? " displayed" : ""}`}>
@@ -171,7 +171,7 @@ const LessonAccordion = forwardRef<HTMLElement, LessonAccordionProps>(
                     lessonComplete={lessonComplete}
                     nextLesson={nextLesson}
                     reviewScheduled={reviewScheduled}
-                    completed={isComplete}
+                    completed={index < stage}
                     modelAlreadyHeard={heardPhraseIds.has(lesson.phrases[phraseIndex].id)}
                     onAdvance={advance}
                     onUnlock={unlockNext}

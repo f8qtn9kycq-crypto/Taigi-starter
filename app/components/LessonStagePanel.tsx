@@ -69,8 +69,8 @@ export default function LessonStagePanel({
   const phrase = lesson.phrases[phraseIndex];
   const selectedUseChoice = phrase.useScenario?.choices.find((choice) => choice.id === selectedUseChoiceId);
   const hasUseResponse = phrase.useScenario
-    ? completed || selectedUseChoice?.isCorrect === true
-    : useResponse.trim().length > 0;
+    ? reviewScheduled || selectedUseChoice?.isCorrect === true
+    : reviewScheduled || useResponse.trim().length > 0;
   const lessonStage = lesson.stages[stage];
   const { isPlaying, hasError, toggle, stop } = useAudioPlayer(phrase.audioUrl);
 
